@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ExamaApplication<exama>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "ch.diedreifragezeichen.exama.ExamaApplication",
+            "projectName": "exama",
+            "args": ""
+        }
+    ]
+}

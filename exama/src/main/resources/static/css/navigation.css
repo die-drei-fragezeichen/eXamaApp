@@ -1,0 +1,282 @@
+/* ----------------------- */
+/* copyright 2021 by eXama */
+/*     NAVIGATION STYLE    */
+/* ----------------------- */
+
+
+
+/* ------------------------------- */
+/* ---------- variables ---------- */
+/* ------------------------------- */
+
+/*
+:root {
+    ... 
+}
+*/
+
+
+
+/* ---------------------------- */
+/* ---------- styles ---------- */
+/* ---------------------------- */
+
+/* ---------- navigation top ---------- */
+#header {
+    position: fixed;
+    top:0;
+    left:0;
+    z-index: 999;
+
+    width:100%;
+    height:4em;
+
+    background-color: var(--red);
+}
+
+
+#navigation-header {
+    position: absolute;
+    top: 0.75em;
+    left: 0.75em;
+
+    width:auto;
+    height: 2.5em;
+}
+
+
+.navigation-header-item{
+    position: relative;
+    float: left;
+    clear: none;
+
+    width:2.5em;
+    height:2.5em;
+    margin:0 2.5em 0 0;
+
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
+.nav-home{
+    background-image:url(img/home_w.svg);
+}
+.nav-home:hover{
+    background-image:url(img/home_r2.svg);
+}
+
+.nav-calendar{
+    background-image:url(img/calendar_w.svg);
+}
+.nav-calendar:hover{
+    background-image:url(img/calendar_r2.svg);
+}
+
+.nav-notifications{
+    background-image:url(img/notification_w.svg);
+}
+.nav-notifications:hover{
+    background-image:url(img/notification_r2.svg);
+}
+
+.nav-settings{
+    background-image:url(img/settings_w.svg);
+}
+.nav-settings:hover{
+    background-image:url(img/settings_r2.svg);
+}
+
+.nav-logout{
+    width:2em;
+    height:2em;
+    margin:0;
+
+    background-image:url(img/logout_w.svg);
+}
+.nav-logout:hover{
+    background-image:url(img/logout_r2.svg);
+}
+
+.nav-burgermenu{
+    display: none;
+
+    margin-top:0.5em;
+
+    background-image:url(img/burger_w.svg);
+}
+.nav-burgermenu:hover{
+    background-image:url(img/burger_r2.svg);
+}
+
+
+#title {
+    position: absolute;
+    left: 50%;
+    top: 0.25em;
+    -webkit-transform: translate(-50%, 0.25em);
+    transform: translate(-50%, 0.25em);
+
+    width: auto;
+    height: 1.66em;
+
+    font-size: 1.5em;
+    line-height: 1.66em;
+    color: var(--white);
+    text-align: center;
+}
+
+
+#logout {
+    position: absolute;
+    top: 1em;
+    right: 0.75em;
+
+    width:auto;
+    height: 2em;
+}
+
+
+/* ---------- navigation bottom ---------- */
+#footer {
+    display:none;
+
+    position: fixed;
+    bottom:0;
+    left:0;
+    z-index: 999;
+
+    width:100%;
+    height:4em;
+
+    background-color: var(--lightGray);
+}
+
+
+#navigation-footer {
+    position: absolute;
+    top: 0.75em;
+    left: 0.75em;
+
+    width:calc(100% - 1.5em);
+    height: 2.5em;
+}
+
+
+.navigation-footer-item{
+    position: relative;
+    float: left;
+    clear: none;
+
+    width:2.5em;
+    height:2.5em;
+    margin-right: calc((100% - 3em - var(--numMenuItems) * 2.5em) / (var(--numMenuItems) - 1));
+
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.navigation-footer-item:first-child{
+    margin-left: 1.5em;
+}
+.navigation-footer-item:last-child{
+    margin-right: 1.5em;
+}
+
+.nav2-home{
+    background-image:url(img/home_r2.svg);
+}
+
+.nav2-calendar{
+    background-image:url(img/calendar_r.svg);
+}
+
+.nav2-notifications{
+    background-image:url(img/notification_r2.svg);
+}
+
+.nav2-settings{
+    background-image:url(img/settings_r2.svg);
+}
+
+
+/* ---------- navigation left (course navigation) ---------- */
+#course-navigation{position: fixed;
+    left: 0;
+    top: 50%;
+    -webkit-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+
+    width: 4em;
+    height: auto;
+    
+    background-color: var(--red);
+    border-radius: 0 1.5em 1.5em 0;
+
+    color:var(--white);
+    text-transform: uppercase;
+}
+
+
+.course-navigation-item{
+    width: 100%;
+    padding: 0.67em 0;
+    margin:0;
+    
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.course-navigation-item:active, .course-navigation-item:hover{
+    background-color: var(--lightRed);
+}
+
+.course-navigation-item:active{
+    border-color: var(--red);
+    border-width: 2px;
+}
+
+.course-navigation-item:first-child{
+    border-radius: 0 1em 0 0;
+}
+
+.course-navigation-item:last-child{
+    border-radius: 0 0 1em 0;
+}
+
+
+
+/* --------------------------------------- */
+/* ---------- responsive layout ---------- */
+/* --------------------------------------- */
+
+@media screen and (max-width: 2800px) {
+}
+
+@media screen and (max-width: 2000px) {
+}
+
+@media screen and (max-width: 1500px) {
+}
+
+@media screen and (max-width: 1200px) {
+    #course-navigation, .nav-home, .nav-calendar, .nav-notifications, .nav-settings{
+        display: none;
+    }
+
+    .nav-burgermenu{
+        display: block;
+    }
+
+    #footer{
+        display:block;
+    }
+}
+
+@media screen and (max-width: 1024px){
+}
+
+@media screen and (max-width: 1024px) and (orientation: portrait){
+}
+
+@media screen and (max-width: 1024px) and (orientation: landscape){
+}

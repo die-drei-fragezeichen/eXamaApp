@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="830.85" height="644.84" viewBox="0 0 830.85 644.84">
+  <g id="Logo" opacity="0.15">
+    <path id="ic_school_24px" d="M97.011,246.892V343.9l169.768,92.645L436.547,343.9v-97.01L266.779,339.537ZM266.779,0,0,145.516,266.779,291.032l218.274-119.08V339.537h48.505V145.516Z" transform="translate(0 266.779) rotate(-30)"/>
+    <path id="ic_trending_up_24px" d="M242.645,0l39.69,39.69-84.579,84.579L128.429,54.942,0,183.544l24.438,24.438L128.429,103.991l69.327,69.327L306.946,64.3l39.69,39.69V0Z" transform="matrix(0.966, -0.259, 0.259, 0.966, 442.196, 350.183)"/>
+    <text id="eXama" transform="translate(488.904 585.278)" font-size="60" font-family="Montserrat-SemiBold, Montserrat" font-weight="600"><tspan x="-211.68" y="0">eXama</tspan></text>
+  </g>
+</svg>
