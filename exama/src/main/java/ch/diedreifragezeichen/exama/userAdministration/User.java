@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama;
+package ch.diedreifragezeichen.exama.userAdministration;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,15 +20,26 @@ import javax.persistence.Table;
 public class User {
 
 	@Id
-	@Column(name = "user_id")
+	@Column(name = "id", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name = "email", unique = true, nullable = false, length = 45)
 	private String email;
+
+	@Column(name = "password", nullable = false, length = 255)
 	private String password;
+
+	@Column(name = "first_name", nullable = false, length = 20)
 	private String firstName;
+
+	@Column(name = "last_name", nullable = false, length = 20)
 	private String lastName;
+
+	@Column(name = "is_enabled", nullable = false, length = 1)
 	private boolean isEnabled;
+
+	@Column(name = "is_locked", nullable = false, length = 1)
 	private boolean isLocked;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

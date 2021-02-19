@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama;
+package ch.diedreifragezeichen.exama.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;

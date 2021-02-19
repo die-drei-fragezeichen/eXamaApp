@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama;
+package ch.diedreifragezeichen.exama.userAdministration;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 

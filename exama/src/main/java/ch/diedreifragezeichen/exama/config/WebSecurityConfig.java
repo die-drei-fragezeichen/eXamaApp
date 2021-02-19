@@ -1,4 +1,5 @@
-package ch.diedreifragezeichen.exama;
+package ch.diedreifragezeichen.exama.config;
+import ch.diedreifragezeichen.exama.userAdministration.*;
 
 import javax.sql.DataSource;
 
@@ -55,8 +56,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             
             .authorizeRequests()
-                .antMatchers("/register")
-                .permitAll()
+                .antMatchers("/").hasAnyAuthority("SYSTEMADMIN", "ADMIN", "TEACHER", "REFERENCESTUDENT", "STUDENT")
+                .antMatchers("/register").hasAnyAuthority("SYSTEMADMIN")
                 .and()
             
             .authorizeRequests()
@@ -74,7 +75,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login")
                 .permitAll()
                 .and()
-            
+            .exceptionHandling()
+                .accessDeniedPage("/403")
+                .and()
+
             .httpBasic()
             ;
     }

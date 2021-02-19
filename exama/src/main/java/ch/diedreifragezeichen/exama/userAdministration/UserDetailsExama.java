@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama;
+package ch.diedreifragezeichen.exama.userAdministration;
 
 import java.util.Collection;
 import java.util.Set;

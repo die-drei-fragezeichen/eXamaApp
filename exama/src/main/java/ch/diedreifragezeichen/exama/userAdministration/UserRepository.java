@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama;
+package ch.diedreifragezeichen.exama.userAdministration;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

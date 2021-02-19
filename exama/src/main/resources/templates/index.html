@@ -20,7 +20,12 @@
                     <div class="navigation-header-item nav-settings"></div>
                 </div>
                 <div id="title">eXama</div>
-                <div id="logout"><div class="navigation-header-item nav-logout"></div></div>
+                <div id="logout">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="navigation-header-item nav-logout"/>
+                    </form>
+                </div>
+                </div>
             </div>
 
             <!-- course navigation (only desktop and tablet) on the left side -->
@@ -34,7 +39,7 @@
 
             <!-- content displayed in the center of the window -->
             <div id="content-wrapper">
-                index.html
+                Welcome to eXama, <b>[[${#request.userPrincipal.principal.fullName}]]</b>! Your rights are: <b>[[${#request.userPrincipal.principal.authorities}]]</b>!
             </div>
 
             <!-- footer with navigation (only mobile) -->
