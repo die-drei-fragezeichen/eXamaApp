@@ -14,10 +14,22 @@
                 <div id="logo-login"></div>
                 <div id="login-wrapper">
                     <div id="login-form">
-                        <form action="home-lehrer.html">
-                            <input type="email" id="email-login" class="login-field" name="email" placeholder="Email">
-                            <input type="password" id="password-login" class="login-field" name="password" placeholder="Passwort">
-                            <input type="submit" class="login-button" value="Anmelden">
+                        <form name="f" th:action="@{/login}" method="post">               
+                            <fieldset>
+                                <!-- <label for="email">Email</label> -->
+                                <input type="text" id="email" name="email" placeholder="Email" class="login-field"/>        
+                                <!-- <label for="password">Passwort</label> -->
+                                <input type="password" id="password" name="password" placeholder="Passwort" class="login-field"/>    
+                                <div class="form-actions">
+                                    <button type="submit" class="login-button">Anmelden</button>
+                                </div>
+                                <div th:if="${param.error}" class="alert alert-error">    
+                                    Ungültige Anmeldeinformationen.
+                                </div>
+                                <div th:if="${param.logout}" class="alert alert-success"> 
+                                    Sie wurden erfolgreich abgemeldet.
+                                </div>
+                            </fieldset>
                         </form>
                     </div>
                 </div>

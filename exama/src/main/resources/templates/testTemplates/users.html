@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en"></head>
+<body>
+<div class="container text-center">
+    <div>
+        <form th:action="@{/logout}" method="post">
+            <p>
+                Welcome to eXama, <b>[[${#request.userPrincipal.principal.fullName}]]</b>! You're a <b>[[${#request.userPrincipal.principal.role}]]</b>! When you're done, please 
+            <input type="submit" value="Sign Out" />
+        </form>
+    </div>
+    <div>
+        <h1>You have Made it to The Secret Temple of eXama</h1>
+        <h4>Here is a list of all our users - confidentiality applies</h4>
+    </div>
+     
+    <div>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>User ID</th>
+                    <th>E-mail</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="user: ${listUsers}">
+                    <td th:text="${user.id}">User ID</td>
+                    <td th:text="${user.email}">E-mail</td>
+                    <td th:text="${user.firstName}">First Name</td>
+                    <td th:text="${user.lastName}">Last Name</td>
+                    <td th:text="${user.role}">Last Name</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

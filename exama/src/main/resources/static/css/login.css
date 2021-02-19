@@ -49,6 +49,9 @@
     font-family: 'Montserrat';
 }
 
+fieldset{
+    border: none;
+}
 
 #login-form {
     position: absolute;
@@ -86,6 +89,17 @@
     
     color: var(--white);
     text-transform: uppercase;
+}
+
+.alert{
+    line-height: 2.5em;
+    text-align: center;
+}
+.alert-error{
+    color: var(--red);
+}
+.alert-success{
+    color: var(--gruen);
 }
 
 

@@ -13,36 +13,69 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+@Configuration
+@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @SuppressWarnings("unused")
+    @Autowired
+    private DataSource dataSource;
     
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsServiceExama();
+    }
+    
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+         
+        return authProvider;
+    }
+ 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //list_users is protected and needs an authorisationRequest that is provided from Login
         http
+            .anonymous()
+                .and()
+
             .authorizeRequests()
-                //.antMatchers("/", "/css/**", "/images/**", "/js/**")
-                //.permitAll()
-                .anyRequest()
+                .antMatchers("/css/**", "/images/**", "/js/**")
                 .permitAll()
-                //.authenticated()
+                .and()
             
-            .and()
+            .authorizeRequests()
+                .antMatchers("/register")
+                .permitAll()
+                .and()
             
+            .authorizeRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+
             .formLogin()
-                //parameter entity for login
-                //.loginPage("/login.html")
-                //.loginProcessingUrl("/login")
                 .loginPage("/login")
                 .usernameParameter("email")
                 .permitAll()
-                //.defaultSuccessUrl("/users")
-            
-            .and()
+                .and()
 
             .logout()
                 .logoutSuccessUrl("/login")
                 .permitAll()
+                .and()
+            
+            .httpBasic()
             ;
     }
     

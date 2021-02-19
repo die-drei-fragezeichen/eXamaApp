@@ -24,18 +24,16 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String username;
+	private String email;
 	private String password;
+	private String firstName;
+	private String lastName;
 	private boolean isEnabled;
-    private boolean isLocked;
-	
+	private boolean isLocked;
+
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(
-			name = "users_roles",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "role_id")
-			)
-	private Set<Role> roles = new HashSet<>(); 
+	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
 
 	public Long getId() {
 		return id;
@@ -45,12 +43,12 @@ public class User {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {
@@ -61,6 +59,22 @@ public class User {
 		this.password = password;
 	}
 
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
 	public boolean isEnabled() {
 		return isEnabled;
 	}
@@ -69,11 +83,11 @@ public class User {
 		this.isEnabled = enabled;
 	}
 
-    public boolean isLocked() {
+	public boolean isLocked() {
 		return isLocked;
 	}
 
-	public void setIsLocked(boolean isLocked) {
+	public void setLocked(boolean isLocked) {
 		this.isLocked = isLocked;
 	}
 
@@ -83,5 +97,5 @@ public class User {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
-	}	
+	}
 }
