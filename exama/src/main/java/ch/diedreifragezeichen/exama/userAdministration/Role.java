@@ -11,24 +11,6 @@ import javax.persistence.Table;
 @Table(name = "roles")
 public class Role {
 
-    public static enum definedRoles {
-        
-        SYSTEMADMIN("Systemadministrator"),
-        ADMIN("Administrator"),
-        REFERENCESTUDENT("Referenzschüler"),
-        STUDENT("Schüler");
-        
-        private final String displayName;
-        
-        definedRoles(String displayName) {
-            this.displayName = displayName;
-        }
-    
-        public String getDisplayName() {
-            return displayName;
-        }
-    }
-
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
