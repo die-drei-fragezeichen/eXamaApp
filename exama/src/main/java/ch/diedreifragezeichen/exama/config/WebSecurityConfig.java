@@ -57,7 +57,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             
             .authorizeRequests()
                 .antMatchers("/").hasAnyAuthority("SYSTEMADMIN", "ADMIN", "TEACHER", "REFERENCESTUDENT", "STUDENT")
-                .antMatchers("/register").hasAnyAuthority("SYSTEMADMIN")
+                .antMatchers("/systemadminTemplates/**").hasAnyAuthority("SYSTEMADMIN")
+                .antMatchers("/adminTemplates/**").hasAnyAuthority("SYSTEMADMIN", "ADMIN")
+                .antMatchers("/teacherTemplates/**").hasAnyAuthority("SYSTEMADMIN", "TEACHER")
+                .antMatchers("/rstudentTemplates/**").hasAnyAuthority("SYSTEMADMIN", "REFERENCESTUDENT")
+                .antMatchers("/studentTemplates/**").hasAnyAuthority("SYSTEMADMIN", "STUDENT")
                 .and()
             
             .authorizeRequests()
@@ -75,6 +79,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login")
                 .permitAll()
                 .and()
+
             .exceptionHandling()
                 .accessDeniedPage("/403")
                 .and()

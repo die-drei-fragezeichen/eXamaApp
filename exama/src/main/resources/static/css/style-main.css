@@ -121,6 +121,26 @@ button{
     background: none;
     cursor: pointer;
 }
+
+table{
+    text-align: left;
+    border-collapse: collapse;
+    width: 100%;
+}
+td, th{
+    border: 1px solid var(--black);
+}
+tr:nth-child(even){
+    background-color: var(--lighterGray);
+}
+tr:hover {
+    background-color: var(--lightGray)
+}
+thead, thead>tr:hover{
+    background-color: var(--lightRed);
+    border: 1px solid var(--black);
+}
+
 /* ---------- content area ---------- */
 #content-wrapper{
     position: absolute;
