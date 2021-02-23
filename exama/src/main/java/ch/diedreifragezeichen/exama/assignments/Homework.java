@@ -11,4 +11,9 @@ public class Homework extends Assignment {
             Date dueDate, Workload workload) {
         super(id, user, course, students, subject, editDate, startDate, dueDate, workload);
     }
+
+    public Homework(long id, long user, int course, List<Long> students, int subject, Date editDate,
+            Date dueDate, Workload workload) {
+        super(id, user, course, students, subject, editDate, editDate, dueDate, workload);
+    }
 }

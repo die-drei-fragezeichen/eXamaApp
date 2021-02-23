@@ -32,6 +32,14 @@ public class User {
 	@Column(name = "is_locked", nullable = false, length = 1)
 	private boolean isLocked;
 
+	// TODO
+	// @Column(name = "logged_in", nullable = false, length = 1)
+	// private boolean logged_in;
+
+	// TODO
+	// @Column(name = "last_login", nullable = false, length = ?)
+	// private Date last_login;
+
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
