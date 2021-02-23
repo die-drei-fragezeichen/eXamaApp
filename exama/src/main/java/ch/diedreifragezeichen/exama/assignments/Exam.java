@@ -3,9 +3,6 @@ package ch.diedreifragezeichen.exama.assignments;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
-
-@Entity
 public class Exam extends Assignment {
     public enum ExamType {
         TYPE1;

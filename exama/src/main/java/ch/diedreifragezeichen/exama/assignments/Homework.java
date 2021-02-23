@@ -3,9 +3,6 @@ package ch.diedreifragezeichen.exama.assignments;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
-
-@Entity
 public class Homework extends Assignment {
     public Homework(long id, long user, int course, List<Long> students, int subject, Date editDate, Date startDate,
             Date dueDate, Workload workload) {
