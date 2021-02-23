@@ -36,6 +36,10 @@ public class User {
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
+	// @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	// @JoinTable(name = "courses", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	// private Set<Role> courses = new HashSet<>();
+
 	public Long getId() {
 		return id;
 	}
