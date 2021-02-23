@@ -20,12 +20,12 @@ public class UserDetailsExama implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Role> roles = user.getRoles();
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        Set<Role> userRoles = user.getRoles();
+        List<SimpleGrantedAuthority> userAuthorities = new ArrayList<>();
+        for (Role role : userRoles) {
+            userAuthorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         }
-        return authorities;
+        return userAuthorities;
     }
 
     @Override
