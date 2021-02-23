@@ -52,19 +52,19 @@ public class AppController {
         return "/adminTemplates/userSaved";
     }
 
-    //TODO: Edit without unique-Email-Error and without set new password mandatory
-    @GetMapping("/users/edit/{id}")
-    public ModelAndView editUser(@PathVariable(name = "id") Long id) {
-        User user = userRepo.getUserByID(id);
-        ModelAndView mav = new ModelAndView("adminTemplates/editUser");
-        mav.addObject("user", user);
+    // TODO: Edit without unique-Email-Error and without set new password mandatory
+    // @GetMapping("/users/edit/{id}")
+    // public ModelAndView editUser(@PathVariable(name = "id") Long id) {
+    //     User user = userRepo.getUserByID(id);
+    //     ModelAndView mav = new ModelAndView("adminTemplates/editUser");
+    //     mav.addObject("user", user);
          
-        List<Role> roles = (List<Role>) roleRepo.findAll();
+    //     List<Role> roles = (List<Role>) roleRepo.findAll();
          
-        mav.addObject("allRoles", roles);
+    //     mav.addObject("allRoles", roles);
          
-        return mav;
-    }
+    //     return mav;
+    // }
     
     @GetMapping("/users/delete/{id}")
     public String deleteUser(@PathVariable(name = "id") Long id) throws UsernameNotFoundException{
