@@ -1,3 +1,4 @@
+package ch.diedreifragezeichen.exama.courses;
 // package ch.diedreifragezeichen.exama.courses;
 
 // import java.util.HashSet;

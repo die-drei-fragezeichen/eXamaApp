@@ -1,0 +1,78 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="/css/style-main.css" type="text/css" media="screen" />
+
+        <title>Exama</title>
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <!-- header with navigation (only desktop and tablet), title and logout-button -->
+            <div id="header">
+                <div id="navigation-header">
+                    <div class="navigation-header-item nav-burgermenu"></div>
+                    <div class="navigation-header-item nav-home"></div>
+                    <div class="navigation-header-item nav-calendar"></div>
+                    <div class="navigation-header-item nav-notifications"></div>
+                    <div class="navigation-header-item nav-settings"></div>
+                </div>
+                <div id="title">eXama</div>
+                <div id="logout">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="navigation-header-item nav-logout"/>
+                    </form>
+                </div>
+                </div>
+            </div>
+
+            <!-- content displayed in the center of the window -->
+            <div id="content-wrapper">
+                <h1>Alle Subjets von Exama</h1>
+                {% comment %} <a href="/users/edit">> neuen User hinzufügen</a><br><br>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>E-mail</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Rechte</th>
+                            <th>Aktiv</th>
+                            <th>Blockiert</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user: ${listUsers}">
+                                <td th:text="${user.id}"></td>
+                                <td th:text="${user.email}"></td>
+                                <td th:text="${user.firstName}"></td>
+                                <td th:text="${user.lastName}"></td>
+                                <td th:text="${user.roles}"></td>
+                                <td th:text="${user.isEnabled}"></td>
+                                <td th:text="${user.isLocked}"></td>
+                                <td><a th:href="@{/users/edit/{id}(id=${user.id})}">bearbeiten</a></td>
+                            </a>
+                        </tr>
+                    </tbody>
+                </table> {% endcomment %}
+
+            </div>
+
+            <!-- footer with navigation (only mobile) -->
+            <div id="footer">
+                <div id="navigation-footer">
+                    <div class="navigation-footer-item nav2-home"></div>
+                    <div class="navigation-footer-item nav2-calendar"></div>
+                    <div class="navigation-footer-item nav2-notifications"></div>
+                    <div class="navigation-footer-item nav2-settings"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>

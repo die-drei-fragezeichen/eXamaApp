@@ -17,7 +17,7 @@ import ch.diedreifragezeichen.exama.subject.SubjectRepository;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
-public class ExamaApplicationTests {
+public class ExamaSubjectTests {
     @Autowired
     private SubjectRepository subjectRepo;
 
@@ -27,8 +27,8 @@ public class ExamaApplicationTests {
     @Test
     public void testCreateSubject(){
         Subject testSubject = new Subject();
-        testSubject.setSubjectName("Champions");
-        testSubject.setSubjectTag("CHMP");
+        testSubject.setSubjectName("Franzoesisch");
+        testSubject.setSubjectTag("FRA");
 
         //repo interface provides save method
         Subject savedSubject = subjectRepo.save(testSubject);

@@ -1,5 +1,8 @@
 package ch.diedreifragezeichen.exama.config;
 
+
+import ch.diedreifragezeichen.exama.subject.Subject;
+import ch.diedreifragezeichen.exama.subject.SubjectRepository;
 import ch.diedreifragezeichen.exama.userAdministration.*;
 
 import java.util.List;
@@ -23,6 +26,17 @@ public class AppController {
     @Autowired
     private RoleRepository roleRepo;
 
+
+    @Autowired 
+    private SubjectRepository subjectRepo;
+
+
+    // //Get the subject by tag. If Spring gets this this mapping, it will carry out the method getSubjectByName from DB
+    // @GetMapping("subjects/show")
+    // public Subject getSubjectByName(Long id) {
+    //     return "index";
+    // }
+
     @GetMapping("")
     public String viewHomePage() {
         return "index";
@@ -41,6 +55,7 @@ public class AppController {
         return mav;
     }
 
+    //AppController receives "/users/saved" command from editUser.html
 	@PostMapping("/users/saved")
     public String processRegistration(User user) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -49,22 +64,23 @@ public class AppController {
         user.setEnabled(true);
         user.setLocked(false);
         userRepo.save(user);
+        //returns new mapping command on userSaved.html
         return "/adminTemplates/userSaved";
     }
 
     // TODO: Edit without unique-Email-Error and without set new password mandatory
-    // @GetMapping("/users/edit/{id}")
-    // public ModelAndView editUser(@PathVariable(name = "id") Long id) {
-    //     User user = userRepo.getUserByID(id);
-    //     ModelAndView mav = new ModelAndView("adminTemplates/editUser");
-    //     mav.addObject("user", user);
+    @GetMapping("/users/edit/{id}")
+    public ModelAndView editUser(@PathVariable(name = "id") Long id) {
+        User user = userRepo.getUserByID(id);
+        ModelAndView mav = new ModelAndView("adminTemplates/editUser");
+        mav.addObject("user", user);
          
-    //     List<Role> roles = (List<Role>) roleRepo.findAll();
+        List<Role> roles = (List<Role>) roleRepo.findAll();
          
-    //     mav.addObject("allRoles", roles);
+        mav.addObject("allRoles", roles);
          
-    //     return mav;
-    // }
+        return mav;
+    }
     
     @GetMapping("/users/delete/{id}")
     public String deleteUser(@PathVariable(name = "id") Long id) throws UsernameNotFoundException{
