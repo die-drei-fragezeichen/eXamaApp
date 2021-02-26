@@ -108,7 +108,6 @@ public class AppController {
         subjectRepo.save(subject);
         return "redirect:/subjects/show";
     }
-
     @GetMapping("/subjects/edit/{id}")
     public ModelAndView editSubject(@PathVariable(name = "id") Long id) {
         Subject subject = subjectRepo.getSubjectByID(id);
@@ -121,9 +120,6 @@ public class AppController {
         subjectRepo.editSubjectById(id);
         return "redirect:/subjects/show";
     }
-
-
-
     @GetMapping("/subjects/delete/{id}")
     public String deleteSubject(@PathVariable(name = "id") Long id) throws NotFoundException {
         Subject subject = subjectRepo.getSubjectByID(id);
