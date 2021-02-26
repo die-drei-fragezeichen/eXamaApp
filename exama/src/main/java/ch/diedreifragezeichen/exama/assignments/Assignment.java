@@ -110,7 +110,6 @@ public class Assignment {
         if (prepareTime == -1 || prepareTime > this.getNumberOfDays()) {
             prepareTime = this.getNumberOfDays();
         }
-
         double m;
         int dayNumberInProcess = (int) TimeUnit.DAYS.convert(Math.abs(date.getTime() - this.startDate.getTime()),
                 TimeUnit.MILLISECONDS);

@@ -1,6 +1,10 @@
 package ch.diedreifragezeichen.exama.subject;
 
+import javax.persistence.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javassist.NotFoundException;
 
 //with the @Service annotation, Spring framework will create an instance of 
 //this class as a managed bean in the application context.
@@ -11,9 +15,34 @@ public class SubjectService {
     // currently "fake" but useable SubjectRepository instance into this
     // SubjectService class
     @Autowired
-    @SuppressWarnings("unused")
     private SubjectRepository subjectRepo;
 
+    @PersistenceContext
+    EntityManager em;
+
+    public Subject loadByID(Long id) throws NotFoundException {
+        Subject subject = subjectRepo.getSubjectByID(id);
+        if (subject == null) {
+            throw new NotFoundException("Subject not found");
+        }
+        return subject;
+    }
+
+    public Subject loadByName(String name) throws NotFoundException {
+        Subject subject = subjectRepo.getSubjectByName(name);
+        if (subject == null) {
+            throw new NotFoundException("Subject not found");
+        }
+        return subject;
+    }
+
+    public Subject loadByTag(String tag) throws NotFoundException {
+        Subject subject = subjectRepo.getSubjectByTag(tag);
+        if (subject == null) {
+            throw new NotFoundException("Subject not found");
+        }
+        return subject;
+    }
 }
 
 // For further inspiration:

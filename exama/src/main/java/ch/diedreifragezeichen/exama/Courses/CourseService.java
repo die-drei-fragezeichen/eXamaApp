@@ -1,18 +1,18 @@
-package ch.diedreifragezeichen.exama.subject;
+package ch.diedreifragezeichen.exama.courses;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 //with the @Service annotation, Spring framework will create an instance of 
 //this class as a managed bean in the application context.
 //@Service("subjectService")
-public class SubjectService {
+public class CourseService {
 
     // With the @Autowired annotation Spring Data JPA will automatically inject a
     // currently "fake" but useable SubjectRepository instance into this
     // SubjectService class
     @Autowired
     @SuppressWarnings("unused")
-    private SubjectRepository subjectRepo;
+    private CourseRepository courseRepo;
 
 }
 

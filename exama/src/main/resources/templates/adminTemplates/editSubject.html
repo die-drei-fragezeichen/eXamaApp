@@ -33,47 +33,22 @@
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
             <h1>User bearbeiten | Neuen Nutzer erstellen</h1>
-            <a href="/users/show">> alle User anzeigen</a><br><br><br>
+            <a href="/subjects/show">> alle Fächer anzeigen</a><br><br><br>
 
-            <form th:action="@{/users/saved}" th:object="${user}" method="post">
+            <form th:action="@{/subjects/saved}" th:object="${subject}" method="post">
                 <div>
-                    <label>Email (Username): </label>
+                    <label>Subject name: </label>
                     <div>
-                        <input type="email" th:field="*{email}" class="form-control" required />
+                        <input type="text" th:field="*{name}" class="form-control" required minlength="1" maxlength="20" />
                     </div>
                 </div>
                 <br>
                 <div>
-                    <label>Passwort: </label>
+                    <label>Subject tag: </label>
                     <div>
-                        <input type="password" th:field="*{password}" class="form-control" required minlength="6"
-                            maxlength="20" />
+                        <input type="text" th:field="*{tag}" class="form-control" required minlength="1" maxlength="4" />
                     </div>
                 </div>
-                <br>
-                <div>
-                    <label>Vorname: </label>
-                    <div>
-                        <input type="text" th:field="*{firstName}" class="form-control" required minlength="2"
-                            maxlength="20" />
-                    </div>
-                </div>
-                <br>
-                <div>
-                    <label>Nachname: </label>
-                    <div>
-                        <input type="text" th:field="*{lastName}" class="form-control" required minlength="2"
-                            maxlength="20" />
-                    </div>
-                </div>
-                <br>
-                <div>
-                    <label>Nutzerrechte:
-                        <input type="checkbox" name="roles" style="margin:0 0.5em 0 1.5em" th:each="role : ${allRoles}"
-                            th:text="${role.name}" th:value="${role.id}" th:field="*{roles}" />
-                    </label>
-                </div>
-                <br>
                 <div>
                     <button type="submit" class="login-button">Speichern</button>
                 </div>

@@ -27,15 +27,15 @@ public class SubjectRepositoryTests {
     @Test
     public void testCreateSubject(){
         Subject testSubject = new Subject();
-        testSubject.setSubjectName("Musik");
-        testSubject.setSubjectTag("MUS");
+        testSubject.setName("Musik");
+        testSubject.setTag("MUS");
 
         //repo interface provides save method
         Subject savedSubject = subjectRepo.save(testSubject);
 
         Subject existSubject = entityManager.find(Subject.class, savedSubject.getId());
 
-        assertThat(existSubject.getSubjectName().equals(testSubject.getSubjectName()));
+        assertThat(existSubject.getName().equals(testSubject.getName()));
 
     }
 

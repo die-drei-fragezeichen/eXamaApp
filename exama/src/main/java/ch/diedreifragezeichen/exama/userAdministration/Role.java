@@ -6,31 +6,31 @@ import javax.persistence.*;
 @Table(name = "roles")
 public class Role {
 
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long roleID;
-	
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "role_name")
-	private String roleName;
+    private String name;
 
     @Override
-    public String toString(){
-        return this.roleName;
+    public String toString() {
+        return this.name;
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(this == obj){
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
-        if(obj == null){
+        if (obj == null) {
             return false;
         }
         Role role = (Role) obj;
-        if(this.roleID == role.getRoleID()){
+        if (this.id == role.getId()) {
             return true;
-        } else{
+        } else {
             return false;
         }
     }
@@ -39,24 +39,24 @@ public class Role {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.roleID == null) ? 0 : this.roleID.hashCode());
+        result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
         return result;
     }
 
-    public Long getRoleID() {
-        return roleID;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setRoleID(Long roleID) {
-        this.roleID = roleID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getName() {
+        return this.name;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setName(String name) {
+        this.name = name;
     }
-		
+
 }
