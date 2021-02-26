@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @SuppressWarnings("unused")
-public class Assignment {
+public abstract class Assignment {
     private long id;
     private long creator;
     private int course;
