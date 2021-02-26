@@ -15,7 +15,7 @@ public class MvcConfig implements WebMvcConfigurer {
 		registry.addViewController("/adminTemplates/userSaved").setViewName("users/saved");
 		registry.addViewController("/adminTemplates/showUsers").setViewName("users/show");
 		registry.addViewController("/adminTemplates/showSubjects").setViewName("subjects/show");
-		registry.addViewController("/adminTemplates/editSubject").setViewName("subjects/edit");
+		registry.addViewController("/adminTemplates/createSubject").setViewName("subjects/create");
 
 		registry.addViewController("/403").setViewName("403");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);

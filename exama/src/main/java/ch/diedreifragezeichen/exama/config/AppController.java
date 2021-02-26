@@ -40,7 +40,7 @@ public class AppController {
     public String listUsers(Model model) {
         List<User> listUsers = userRepo.findAll();
         model.addAttribute("listUsers", listUsers);
-        return "adminTemplates/showUsers";
+        return "/adminTemplates/showUsers";
     }
 
     @GetMapping("/users/edit")
@@ -54,7 +54,7 @@ public class AppController {
     }
 
     @PostMapping("/users/saved")
-    public ModelAndView processSaving(User user) {
+    public String processSaving(User user) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -62,7 +62,7 @@ public class AppController {
         user.setLocked(false);
         userRepo.save(user);
         // returns new mapping command on userSaved.html
-        return new ModelAndView("redirect:/users/show");
+        return "redirect:/users/show";
     }
 
     // TODO: Edit without unique-Email-Error and without set new password mandatory
@@ -82,8 +82,8 @@ public class AppController {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        // TODO: Delete-Part
-        return "index";
+        userRepo.deleteUserById(id);
+        return "redirect:/users/show";
     }
 
     /**
@@ -96,12 +96,17 @@ public class AppController {
         return "adminTemplates/showSubjects";
     }
 
-    @GetMapping("/subjects/edit")
+    @GetMapping("/subjects/create")
     public ModelAndView newSubject() {
         Subject subject = new Subject();
-        ModelAndView mav = new ModelAndView("adminTemplates/editSubject");
+        ModelAndView mav = new ModelAndView("adminTemplates/createSubject");
         mav.addObject("subject", subject);
         return mav;
+    }
+    @PostMapping("/subjects/created")
+    public String processSaving(Subject subject) {
+        subjectRepo.save(subject);
+        return "redirect:/subjects/show";
     }
 
     @GetMapping("/subjects/edit/{id}")
@@ -111,21 +116,22 @@ public class AppController {
         mav.addObject("subject", subject);
         return mav;
     }
-
-    @PostMapping("/subjects/saved")
-    public ModelAndView processSaving(Subject subject) {
-        subjectRepo.save(subject);
-        return new ModelAndView("redirect:/subjects/show");
+    @PostMapping("/subjects/edited")
+    public String editSubject(long id) {
+        subjectRepo.editSubjectById(id);
+        return "redirect:/subjects/show";
     }
 
+
+
     @GetMapping("/subjects/delete/{id}")
-    public ModelAndView deleteSubject(@PathVariable(name = "id") Long id) throws NotFoundException {
+    public String deleteSubject(@PathVariable(name = "id") Long id) throws NotFoundException {
         Subject subject = subjectRepo.getSubjectByID(id);
         if (subject == null) {
             throw new NotFoundException("Subject not found");
         }
-        subjectRepo.delete(subject);
-        return new ModelAndView("redirect:/subjects/show");
+        subjectRepo.deleteSubjectById(id);
+        return "redirect:/subjects/show";
     }
 
     /**

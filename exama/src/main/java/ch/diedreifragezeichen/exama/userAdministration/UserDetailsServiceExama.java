@@ -32,13 +32,4 @@ public class UserDetailsServiceExama implements UserDetailsService {
         }
         return new UserDetailsExama(user);
     }
-
-    public void deleteUserByID(Long id) throws UsernameNotFoundException {
-        User user = userRepo.getUserByID(id);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        em.createNativeQuery("DELETE FROM users_roles WHERE users_roles.user_id = " + id).executeUpdate();
-        em.createNativeQuery("DELETE FROM users WHERE users.id = " + id).executeUpdate();
-    }
 }
