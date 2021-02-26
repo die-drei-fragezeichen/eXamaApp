@@ -1,100 +1,93 @@
 package ch.diedreifragezeichen.exama.courses;
-// package ch.diedreifragezeichen.exama.courses;
 
-// import java.util.HashSet;
-// import java.util.Set;
+import java.util.HashSet;
+import java.util.Set;
 
-// import javax.persistence.*;
+import javax.persistence.*;
 
-// import ch.diedreifragezeichen.exama.userAdministration.User;
+import ch.diedreifragezeichen.exama.userAdministration.User;
 
-// @Entity
-// @Table(name = "courses")
-// public class Course {
+@Entity
+@Table(name = "courses")
+public class Course {
 
-//     @Id
-//     @Column(name = "id", unique = true, nullable = false)
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     private Long id;
+    @Id
+    @Column(name = "course_id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-//     @Column(name = "course_name", unique = true, nullable = false, length = 20)
-//     private String courseName;
+    //Dies ist der KlassenName zum Beispiel "L4a" oder "2018E"
+    @Column(name = "course_name", unique = true, nullable = false, length = 5)
+    private String courseName;
 
-//     @Column(name = "course_tag", unique = true, nullable = false, length = 4)
-//     private String courseTag;
+    @Column(name = "is_enabled", nullable = false, length = 1)
+    private boolean isEnabled;
 
-//     @Column(name = "is_enabled", nullable = false, length = 1)
-//     private boolean isEnabled;
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "course_teachers",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private Set<User> courseTeachers = new HashSet<>();
 
-//     @Column(name = "is_locked", nullable = false, length = 1)
-//     private boolean isLocked;
 
-//     // When we want to create
-//     // multiple join columns we can use the @JoinColumns annotation: foreign keys
-//     // pointing to ... ???
-//     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//     @JoinTable(name = "users", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "courses"))
-//     private Set<User> teachers = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "course_students",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private Set<User> courseStudents = new HashSet<>();
 
-//     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//     @JoinTable(name = "usesrs", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "courses"))
-//     private Set<User> students = new HashSet<>();
 
-//     public Long getId() {
-//         return id;
-//     }
+    // @Lob
+	// @Column(name = "workloads", columnDefinition="BLOB", nullable = true)
+	// //@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	// //@JoinTable(name = "courses", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	// private Set<Workload> workloads = new HashSet<>();
 
-//     public void setId(Long id) {
-//         this.id = id;
-//     }
 
-//     public String getCourseName() {
-//         return courseName;
-//     }
+    public Long getId() {
+        return id;
+    }
 
-//     public void setCourseName(String courseName) {
-//         this.courseName = courseName;
-//     }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-//     public String getCourseTag() {
-//         return courseTag;
-//     }
+    public String getCourseName() {
+        return courseName;
+    }
 
-//     public void setCourseTag(String courseTag) {
-//         this.courseTag = courseTag;
-//     }
+    public void setCourseTag(String courseName) {
+        this.courseName = courseName;
+    }
 
-//     public boolean isEnabled() {
-//         return isEnabled;
-//     }
+    public boolean isEnabled() {
+        return isEnabled;
+    }
 
-//     public void setEnabled(boolean isEnabled) {
-//         this.isEnabled = isEnabled;
-//     }
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
 
-//     public boolean isLocked() {
-//         return isLocked;
-//     }
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
 
-//     public void setLocked(boolean isLocked) {
-//         this.isLocked = isLocked;
-//     }
+	public Set<User> getCourseTeachers() {
+		return courseTeachers;
+	}
 
-//     public Set<User> getTeachers() {
-//         return teachers;
-//     }
+	public void setCourseTeachers(Set<User> courseTeachers) {
+		this.courseTeachers = courseTeachers;
+	}
 
-//     public void setTeachers(Set<User> teachers) {
-//         this.teachers = teachers;
-//     }
+	public Set<User> getCourseStudents() {
+		return courseStudents;
+	}
 
-//     public Set<User> getStudents() {
-//         return students;
-//     }
+	public void setCourseStudents(Set<User> courseStudents) {
+		this.courseStudents = courseStudents;
+	}
 
-//     public void setStudents(Set<User> students) {
-//         this.students = students;
-//     }
-
-    
-// }
+	}

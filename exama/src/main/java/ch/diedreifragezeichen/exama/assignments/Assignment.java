@@ -12,21 +12,19 @@ import java.util.Date;
 @SuppressWarnings("unused")
 public class Assignment {
     private long id;
-    private long user;
+    private long creator;
     private int course;
-    private List<Long> students;
     private int subject;
     private Date editDate;
     private Date startDate;
     private Date dueDate;
     private Workload workload;
 
-    public Assignment(long id, long user, int course, List<Long> students, int subject, Date editDate, Date startDate,
-            Date dueDate, Workload workload) {
+    public Assignment(long id, long user, int course, int subject, Date editDate, Date startDate, Date dueDate,
+            Workload workload) {
         this.id = id;
-        this.user = user;
+        this.creator = user;
         this.course = course;
-        this.students = students;
         this.subject = subject;
         this.editDate = editDate;
         this.startDate = startDate;
@@ -39,11 +37,11 @@ public class Assignment {
     }
 
     public long getUser() {
-        return user;
+        return creator;
     }
 
     public void setUser(long user) {
-        this.user = user;
+        this.creator = user;
     }
 
     public int getCourse() {
@@ -52,14 +50,6 @@ public class Assignment {
 
     public void setCourse(int course) {
         this.course = course;
-    }
-
-    public List<Long> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<Long> students) {
-        this.students = students;
     }
 
     public int getSubject() {

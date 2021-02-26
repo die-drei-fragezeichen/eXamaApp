@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import ch.diedreifragezeichen.exama.courses.Course;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -31,7 +33,14 @@ public class User {
 
 	@Column(name = "is_locked", nullable = false, length = 1)
 	private boolean isLocked;
-
+	
+	@Lob
+	@Column(name = "courses", columnDefinition="BLOB", nullable = true)
+	//@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	//@JoinTable(name = "courses", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	private Set<Course> courses = new HashSet<>();
+	
+	
 	// TODO
 	// @Column(name = "logged_in", nullable = false, length = 1)
 	// private boolean logged_in;
@@ -43,11 +52,6 @@ public class User {
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
-
-	// @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	// @JoinTable(name = "courses", joinColumns = @JoinColumn(name = "user_id"),
-	// inverseJoinColumns = @JoinColumn(name = "course_id"))
-	// private Set<Role> courses = new HashSet<>();
 
 	public Long getId() {
 		return id;
