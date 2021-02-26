@@ -101,48 +101,50 @@ public class Assignment {
     public void setWorkload(Workload workload) {
         this.workload = workload;
     }
-    
 
-    public long getNumberOfDays(){
+    public long getNumberOfDays() {
         long diff = Math.abs(this.dueDate.getTime() - this.startDate.getTime());
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
-    public double getWorkloadValue(Date date){
+    public double getWorkloadValue(Date date) {
         // not yet started
-        if(this.startDate.after(date)){
+        if (this.startDate.after(date)) {
             return 0;
         }
 
         double workingTime = this.workload.getWorkingTime();
         WorkloadDistribution dist = this.workload.getDistribution();
-        
+
         double prepareTime = this.workload.getPrepareTime();
-        if(prepareTime == -1 || prepareTime>this.getNumberOfDays()){
+        if (prepareTime == -1 || prepareTime > this.getNumberOfDays()) {
             prepareTime = this.getNumberOfDays();
         }
-
         double m;
-        int dayNumberInProcess = (int)TimeUnit.DAYS.convert(Math.abs(date.getTime() - this.startDate.getTime()), TimeUnit.MILLISECONDS);
+        int dayNumberInProcess = (int) TimeUnit.DAYS.convert(Math.abs(date.getTime() - this.startDate.getTime()),
+                TimeUnit.MILLISECONDS);
 
-        switch(dist){
+        switch (dist) {
             case CONSTANT:
-                 return workingTime/prepareTime;
-            
+                return workingTime / prepareTime;
+
             case EXPONENTIAL:
-                double faktor = 1.1; //10% more per day (faktor a)
-                // function f(x)=a^x+b -> Integral from 0 to prepareTime t is a^t/ln(a)+b*t-1/ln(a)
-                // Integral from 0 to prepareTime must be workingTime w -> solve -> b= -(a^t-ln(a)*w-1)/(ln(a)*t)
-                double workloadDayOne = -(Math.pow(faktor,prepareTime)-Math.log(faktor)*workingTime-1)/(Math.log(faktor)*prepareTime);
-                return Math.pow(faktor,dayNumberInProcess)+workloadDayOne;
+                double faktor = 1.1; // 10% more per day (faktor a)
+                // function f(x)=a^x+b -> Integral from 0 to prepareTime t is
+                // a^t/ln(a)+b*t-1/ln(a)
+                // Integral from 0 to prepareTime must be workingTime w -> solve -> b=
+                // -(a^t-ln(a)*w-1)/(ln(a)*t)
+                double workloadDayOne = -(Math.pow(faktor, prepareTime) - Math.log(faktor) * workingTime - 1)
+                        / (Math.log(faktor) * prepareTime);
+                return Math.pow(faktor, dayNumberInProcess) + workloadDayOne;
 
             case LINEAR:
-                m = 2*workingTime / Math.pow(prepareTime,2);
-                return m*dayNumberInProcess;
+                m = 2 * workingTime / Math.pow(prepareTime, 2);
+                return m * dayNumberInProcess;
 
             default: // LINEAR
-                m = 2*workingTime / Math.pow(prepareTime,2);
-                return m*dayNumberInProcess;
+                m = 2 * workingTime / Math.pow(prepareTime, 2);
+                return m * dayNumberInProcess;
         }
     }
 }

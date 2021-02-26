@@ -31,36 +31,29 @@
             <!-- content displayed in the center of the window -->
             <div id="content-wrapper">
                 <h1>Alle Subjets von Exama</h1>
-                {% comment %} <a href="/users/edit">> neuen User hinzufügen</a><br><br>
+                <a href="/subjects/edit">> neues Fach hinzufügen</a><br><br>
                 
                 <table>
                     <thead>
                         <tr>
-                            <th>User ID</th>
-                            <th>E-mail</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Rechte</th>
-                            <th>Aktiv</th>
-                            <th>Blockiert</th>
+                            <th>Subject ID</th>
+                            <th>Subject Name</th>
+                            <th>Subject Tag</th>
+                            <th></th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="user: ${listUsers}">
-                                <td th:text="${user.id}"></td>
-                                <td th:text="${user.email}"></td>
-                                <td th:text="${user.firstName}"></td>
-                                <td th:text="${user.lastName}"></td>
-                                <td th:text="${user.roles}"></td>
-                                <td th:text="${user.isEnabled}"></td>
-                                <td th:text="${user.isLocked}"></td>
-                                <td><a th:href="@{/users/edit/{id}(id=${user.id})}">bearbeiten</a></td>
+                        <tr th:each="subject: ${listSubjects}">
+                                <td th:text="${subject.id}"></td>
+                                <td th:text="${subject.name}"></td>
+                                <td th:text="${subject.tag}"></td>
+                                <td><a th:href="@{/subjects/edit/{id}(id=${subject.id})}">bearbeiten</a></td>
+                                <td><a th:href="@{/subjects/delete/{id}(id=${subject.id})}">löschen</a></td>
                             </a>
                         </tr>
                     </tbody>
-                </table> {% endcomment %}
-
+                </table>
             </div>
 
             <!-- footer with navigation (only mobile) -->

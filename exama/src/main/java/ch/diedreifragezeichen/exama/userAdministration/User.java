@@ -45,7 +45,8 @@ public class User {
 	private Set<Role> roles = new HashSet<>();
 
 	// @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	// @JoinTable(name = "courses", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	// @JoinTable(name = "courses", joinColumns = @JoinColumn(name = "user_id"),
+	// inverseJoinColumns = @JoinColumn(name = "course_id"))
 	// private Set<Role> courses = new HashSet<>();
 
 	public Long getId() {

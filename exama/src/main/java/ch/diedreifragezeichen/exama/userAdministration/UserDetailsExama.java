@@ -23,7 +23,7 @@ public class UserDetailsExama implements UserDetails {
         Set<Role> userRoles = user.getRoles();
         List<SimpleGrantedAuthority> userAuthorities = new ArrayList<>();
         for (Role role : userRoles) {
-            userAuthorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+            userAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
         return userAuthorities;
     }

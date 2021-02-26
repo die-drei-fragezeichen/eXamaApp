@@ -44,6 +44,7 @@
                             <th>Aktiv</th>
                             <th>Blockiert</th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,6 +57,7 @@
                                 <td th:text="${user.isEnabled}"></td>
                                 <td th:text="${user.isLocked}"></td>
                                 <td><a th:href="@{/users/edit/{id}(id=${user.id})}">bearbeiten</a></td>
+                                <td><a th:href="@{/users/delete/{id}(id=${user.id})}">löschen</a></td>
                             </a>
                         </tr>
                     </tbody>
