@@ -27,7 +27,7 @@ public class CourseRepositoryTests {
     @Test
     public void testCreateCourse(){
         Course testCourse = new Course();
-        testCourse.setCourseName("1998f");
+        testCourse.setName("1998f");
         testCourse.setEnabled(true);
 
         //repo interface provides save method
@@ -35,7 +35,7 @@ public class CourseRepositoryTests {
 
         Course existCourse = entityManager.find(Course.class, savedCourse.getId());
 
-        assertThat(existCourse.getCourseName().equals(testCourse.getCourseName()));
+        assertThat(existCourse.getName().equals(testCourse.getName()));
 
     }
 

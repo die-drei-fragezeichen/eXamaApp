@@ -16,7 +16,7 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
     //By default, the query definition uses JPQL.
     //Then we create REST APIs(GET, POST, PUT, DELETE)
     //Careful: "Course" here refers not to the table but to a Course object u
-    @Query("SELECT u FROM Course u WHERE u.id = ?1")
+    @Query("SELECT c FROM Course c WHERE c.id = ?1")
     public Course getCourseByID(Long id);
 }
     
