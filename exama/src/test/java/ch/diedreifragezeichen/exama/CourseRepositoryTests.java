@@ -23,10 +23,11 @@ public class CourseRepositoryTests {
     @Autowired
     private TestEntityManager entityManager;
 
+    //successful test
     @Test
     public void testCreateCourse(){
         Course testCourse = new Course();
-        testCourse.setCourseName("2020B");
+        testCourse.setCourseName("1998f");
         testCourse.setEnabled(true);
 
         //repo interface provides save method
