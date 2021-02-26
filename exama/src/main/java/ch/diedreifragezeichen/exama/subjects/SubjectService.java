@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.subject;
+package ch.diedreifragezeichen.exama.subjects;
 
 import javax.persistence.*;
 

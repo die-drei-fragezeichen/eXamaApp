@@ -23,17 +23,20 @@ public class Course {
     @Column(name = "is_enabled", nullable = false, length = 1)
     private boolean isEnabled;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "teachers_courses_subjects", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+    // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     // @JoinTable(name = "courses_subjects_teachers", joinColumns = {
     //     @JoinColumn(table="courses", name = "course_id", referencedColumnName = "id"),
     //     @JoinColumn(table ="subjects", name = "subject_id", referencedColumnName = "id")},
     //     inverseJoinColumns = @JoinColumn(table="users", name = "user_id", referencedColumnName = "id"))
-    private Set<User> courseTeachers = new HashSet<>();
+    // private Set<User> courseTeachers = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "students_courses", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
-    private Set<User> courseStudents = new HashSet<>();
+	@JoinTable(name = "courses_teachers_subjects", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	private Set<User> courseTeachers = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "courses_students", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	private Set<User> courseStudents = new HashSet<>();
 
     // @Lob
     // @Column(name = "workloads", columnDefinition="BLOB", nullable = true)
@@ -67,7 +70,7 @@ public class Course {
     }
 
     public Set<User> getCourseTeachers() {
-        return courseTeachers;
+        return this.courseTeachers;
     }
 
     public void setCourseTeachers(Set<User> courseTeachers) {
@@ -75,7 +78,7 @@ public class Course {
     }
 
     public Set<User> getCourseStudents() {
-        return courseStudents;
+        return this.courseStudents;
     }
 
     public void setCourseStudents(Set<User> courseStudents) {

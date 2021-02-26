@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.subject;
+package ch.diedreifragezeichen.exama.subjects;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

@@ -10,8 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
-import ch.diedreifragezeichen.exama.subject.Subject;
-import ch.diedreifragezeichen.exama.subject.SubjectRepository;
+import ch.diedreifragezeichen.exama.subjects.Subject;
+import ch.diedreifragezeichen.exama.subjects.SubjectRepository;
 
 
 @DataJpaTest
