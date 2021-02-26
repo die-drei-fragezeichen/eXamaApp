@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import ch.diedreifragezeichen.exama.userAdministration.User;
+import ch.diedreifragezeichen.exama.subjects.Subject;
 
 @Entity
 @Table(name = "courses")
@@ -31,7 +32,7 @@ public class Course {
     // private Set<User> courseTeachers = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "courses_teachers_subjects", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	@JoinTable(name = "courses_subjects_teachers", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> courseTeachers = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
