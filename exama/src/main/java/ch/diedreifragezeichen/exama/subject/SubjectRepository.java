@@ -3,7 +3,6 @@ package ch.diedreifragezeichen.exama.subject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
 
@@ -40,11 +39,6 @@ public interface SubjectRepository extends JpaRepository<Subject, Long>{
     @Modifying
     @Query("UPDATE Subject s SET s.name=TestHallo WHERE s.id = ?1")
     public void editSubjectById(long id);
-
-    // @Transactional
-    // @Modifying
-    // @Query("UPDATE s FROM Subject s SET s.name=?2, SET s.tag=?3 WHERE s.id = ?1")
-    // public void editSubjectById(Long id, String name, String tag);
 }
 
 // Note that in the SubjectRepository interface, we can declare findByXXX()
