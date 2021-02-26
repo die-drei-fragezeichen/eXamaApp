@@ -1,7 +1,6 @@
 package ch.diedreifragezeichen.exama.config;
 
 
-import ch.diedreifragezeichen.exama.subject.Subject;
 import ch.diedreifragezeichen.exama.subject.SubjectRepository;
 import ch.diedreifragezeichen.exama.userAdministration.*;
 

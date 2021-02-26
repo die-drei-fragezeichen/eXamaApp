@@ -12,21 +12,19 @@ import java.util.Date;
 @SuppressWarnings("unused")
 public class Assignment {
     private long id;
-    private long user;
+    private long creator;
     private int course;
-    private List<Long> students;
     private int subject;
     private Date editDate;
     private Date startDate;
     private Date dueDate;
     private Workload workload;
 
-    public Assignment(long id, long user, int course, List<Long> students, int subject, Date editDate, Date startDate,
-            Date dueDate, Workload workload) {
+    public Assignment(long id, long user, int course, int subject, Date editDate, Date startDate, Date dueDate,
+            Workload workload) {
         this.id = id;
-        this.user = user;
+        this.creator = user;
         this.course = course;
-        this.students = students;
         this.subject = subject;
         this.editDate = editDate;
         this.startDate = startDate;
@@ -39,11 +37,11 @@ public class Assignment {
     }
 
     public long getUser() {
-        return user;
+        return creator;
     }
 
     public void setUser(long user) {
-        this.user = user;
+        this.creator = user;
     }
 
     public int getCourse() {
@@ -52,14 +50,6 @@ public class Assignment {
 
     public void setCourse(int course) {
         this.course = course;
-    }
-
-    public List<Long> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<Long> students) {
-        this.students = students;
     }
 
     public int getSubject() {
@@ -101,48 +91,51 @@ public class Assignment {
     public void setWorkload(Workload workload) {
         this.workload = workload;
     }
-    
 
-    public long getNumberOfDays(){
+    public long getNumberOfDays() {
         long diff = Math.abs(this.dueDate.getTime() - this.startDate.getTime());
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
-    public double getWorkloadValue(Date date){
+    public double getWorkloadValue(Date date) {
         // not yet started
-        if(this.startDate.after(date)){
+        if (this.startDate.after(date)) {
             return 0;
         }
 
         double workingTime = this.workload.getWorkingTime();
         WorkloadDistribution dist = this.workload.getDistribution();
-        
+
         double prepareTime = this.workload.getPrepareTime();
-        if(prepareTime == -1 || prepareTime>this.getNumberOfDays()){
+        if (prepareTime == -1 || prepareTime > this.getNumberOfDays()) {
             prepareTime = this.getNumberOfDays();
         }
 
         double m;
-        int dayNumberInProcess = (int)TimeUnit.DAYS.convert(Math.abs(date.getTime() - this.startDate.getTime()), TimeUnit.MILLISECONDS);
+        int dayNumberInProcess = (int) TimeUnit.DAYS.convert(Math.abs(date.getTime() - this.startDate.getTime()),
+                TimeUnit.MILLISECONDS);
 
-        switch(dist){
+        switch (dist) {
             case CONSTANT:
-                 return workingTime/prepareTime;
-            
+                return workingTime / prepareTime;
+
             case EXPONENTIAL:
-                double faktor = 1.1; //10% more per day (faktor a)
-                // function f(x)=a^x+b -> Integral from 0 to prepareTime t is a^t/ln(a)+b*t-1/ln(a)
-                // Integral from 0 to prepareTime must be workingTime w -> solve -> b= -(a^t-ln(a)*w-1)/(ln(a)*t)
-                double workloadDayOne = -(Math.pow(faktor,prepareTime)-Math.log(faktor)*workingTime-1)/(Math.log(faktor)*prepareTime);
-                return Math.pow(faktor,dayNumberInProcess)+workloadDayOne;
+                double faktor = 1.1; // 10% more per day (faktor a)
+                // function f(x)=a^x+b -> Integral from 0 to prepareTime t is
+                // a^t/ln(a)+b*t-1/ln(a)
+                // Integral from 0 to prepareTime must be workingTime w -> solve -> b=
+                // -(a^t-ln(a)*w-1)/(ln(a)*t)
+                double workloadDayOne = -(Math.pow(faktor, prepareTime) - Math.log(faktor) * workingTime - 1)
+                        / (Math.log(faktor) * prepareTime);
+                return Math.pow(faktor, dayNumberInProcess) + workloadDayOne;
 
             case LINEAR:
-                m = 2*workingTime / Math.pow(prepareTime,2);
-                return m*dayNumberInProcess;
+                m = 2 * workingTime / Math.pow(prepareTime, 2);
+                return m * dayNumberInProcess;
 
             default: // LINEAR
-                m = 2*workingTime / Math.pow(prepareTime,2);
-                return m*dayNumberInProcess;
+                m = 2 * workingTime / Math.pow(prepareTime, 2);
+                return m * dayNumberInProcess;
         }
     }
 }
