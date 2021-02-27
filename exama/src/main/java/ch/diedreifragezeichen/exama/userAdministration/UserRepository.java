@@ -1,7 +1,5 @@
 package ch.diedreifragezeichen.exama.userAdministration;
 
-import java.util.Set;
-
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
