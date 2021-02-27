@@ -54,7 +54,7 @@ public class SubjectController {
         return mav;
     }
 
-    @GetMapping("/subjects/{id}/edited*")
+    @GetMapping("/subjects/{id}/edited")
     public String updateSubject(@PathVariable(name = "id") Long id, @RequestParam(name = "name") String name, @RequestParam(name = "tag") String tag) throws NotFoundException{
         Subject subject = subjectRepo.getSubjectByID(id);
         if (subject == null) {

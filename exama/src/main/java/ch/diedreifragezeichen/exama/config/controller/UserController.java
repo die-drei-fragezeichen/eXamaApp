@@ -1,6 +1,8 @@
 package ch.diedreifragezeichen.exama.config.controller;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -58,23 +60,45 @@ public class UserController {
     }
 
     // TODO: Edit without unique-Email-Error and without set new password mandatory
-    @GetMapping("/users/{id}/edit")
-    public ModelAndView editUser(@PathVariable(name = "id") Long id) {
-        User user = userRepo.getUserByID(id);
+    @GetMapping("/users/{email}/edit")
+    public ModelAndView editUser(@PathVariable(name = "email") String email) {
         ModelAndView mav = new ModelAndView("adminTemplates/userEdit");
-        mav.addObject("user", user);
-        List<Role> roles = (List<Role>) roleRepo.findAll();
-        mav.addObject("allRoles", roles);
-        return mav;
-    }
-
-    @GetMapping("/users/{id}/delete")
-    public String deleteUser(@PathVariable(name = "id") Long id) throws UsernameNotFoundException {
-        User user = userRepo.getUserByID(id);
+        User user = userRepo.getUserByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        userRepo.deleteUserById(id);
+        List<Role> roles = (List<Role>) roleRepo.findAll();
+        mav.addObject("user", user);
+        mav.addObject("allRoles", roles);
+        return mav;
+    }
+    
+    @GetMapping("/users/{email}/edited")
+    public String updateSubject(@PathVariable(name = "email") String email, @RequestParam(name = "password") String password, @RequestParam(name = "firstName") String firstName,  @RequestParam(name = "lastName") String lastName, @RequestParam(name = "isEnabled", required = false) boolean isEnabled, @RequestParam(name = "isLocked", required = false) boolean isLocked, @RequestParam(name = "roles", required = false) Set<Role> roles) throws UsernameNotFoundException{
+        User user = userRepo.getUserByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        if(password.isEmpty()){
+            userRepo.editUserByEmail(email, firstName, lastName, isEnabled, isLocked);
+        }else{
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String encodedPassword = encoder.encode(password);
+            userRepo.editUserByEmailPW(email, encodedPassword, firstName, lastName, isEnabled, isLocked);
+        }
+        user.setRoles(roles);
+        
+        return "redirect:/users/show";
+    }
+
+    @GetMapping("/users/{email}/delete")
+    public String deleteUser(@PathVariable(name = "email") String email) throws UsernameNotFoundException {
+        User user = userRepo.getUserByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        userRepo.deleteUserByEmail(email);
         return "redirect:/users/show";
     }
     

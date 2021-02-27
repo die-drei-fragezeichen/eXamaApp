@@ -62,7 +62,7 @@ public class UserDetailsExama implements UserDetails {
         return user.getFirstName() + " " + user.getLastName();
     }
 
-    public Set<Role> getRole() {
+    public Set<Role> getRoles() {
         return user.getRoles();
     }
 

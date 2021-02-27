@@ -56,8 +56,8 @@
                                 <td th:text="${user.roles}"></td>
                                 <td th:text="${user.isEnabled}"></td>
                                 <td th:text="${user.isLocked}"></td>
-                                <td><a th:href="@{/users/{id}/edit/(id=${user.id})}">bearbeiten</a></td>
-                                <td><a th:href="@{/users/{id}/delete/(id=${user.id})}">löschen</a></td>
+                                <td><a th:href="@{/users/{email}/edit/(email=${user.email})}">bearbeiten</a></td>
+                                <td><a th:href="@{/users/{email}/delete/(email=${user.email})}">löschen</a></td>
                             </a>
                         </tr>
                     </tbody>

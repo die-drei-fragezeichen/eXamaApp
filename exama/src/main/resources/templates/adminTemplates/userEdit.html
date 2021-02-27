@@ -35,11 +35,16 @@
             <h1>User bearbeiten | Neuen Nutzer erstellen</h1>
             <a href="/users/show">> alle User anzeigen</a><br><br><br>
 
-            <form th:action="@{/users/created}" th:object="${user}" method="post">
+            <!-- "@{/users/{email}/edited?password={password}&firstName={firstName}&lastName={lastName}&isEnabled={isEnabled}&isLocked={isLocked}&roles={roles}
+            (email=${user.email},password=${user.password}&firstName=${user.firstName}&lastName=${user.lastName}&isEnabled=${user.isEnabled}&isLocked=${user.isLocked}&roles=${user.roles})}" -->
+            <form th:action=
+                "@{/users/{email}/edited?password={password}&firstName={firstName}&lastName={lastName}&isEnabled={isEnabled}&isLocked={isLocked}&roles={roles}
+                (email=${user.email},password=${user.password},firstName=${user.firstName},lastName=${user.lastName},isEnabled=${user.isEnabled},isLocked=${user.isLocked},roles=${user.roles})}"
+                th:object="${user}" method="put">
                 <div>
                     <label>Email (Username): </label>
                     <div>
-                        <input type="email" th:field="*{email}" class="form-control" required />
+                        <input type="email" th:field="*{email}" class="form-control" required disabled />
                     </div>
                 </div>
                 <br>
@@ -64,6 +69,20 @@
                     <div>
                         <input type="text" th:field="*{lastName}" class="form-control" required minlength="2"
                             maxlength="20" />
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label>Aktiv: </label>
+                    <div>
+                        <input type="checkbox" th:name="isEnabled" th:checked="*{isEnabled}" class="form-control"/>
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label>Blockiert: </label>
+                    <div>
+                        <input type="checkbox" th:name="isLocked" th:checked="*{isLocked}" class="form-control"/>
                     </div>
                 </div>
                 <br>
