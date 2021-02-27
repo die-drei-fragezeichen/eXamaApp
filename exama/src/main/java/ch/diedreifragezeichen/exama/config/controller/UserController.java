@@ -86,6 +86,7 @@ public class UserController {
             String encodedPassword = encoder.encode(password);
             userRepo.editUserByEmailPW(email, encodedPassword, firstName, lastName, isEnabled, isLocked);
         }
+        //TODO: Rollenupdate funktioniert noch nicht
         user.setRoles(roles);
         
         return "redirect:/users/show";
