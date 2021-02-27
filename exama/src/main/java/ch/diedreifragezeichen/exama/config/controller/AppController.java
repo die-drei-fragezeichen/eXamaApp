@@ -26,8 +26,8 @@ public class AppController {
     @SuppressWarnings("unchecked")
     @GetMapping("")
     public String viewRolespecificLanding() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Collection<SimpleGrantedAuthority> roleList = (Collection<SimpleGrantedAuthority>) auth.getAuthorities();
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        Collection<SimpleGrantedAuthority> roleList = (Collection<SimpleGrantedAuthority>) authLoggedInUser.getAuthorities();
         List<String> roles = new ArrayList<String>();
         for(SimpleGrantedAuthority role : roleList){
             roles.add(role.getAuthority());

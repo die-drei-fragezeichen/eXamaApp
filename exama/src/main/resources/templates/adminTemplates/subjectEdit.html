@@ -35,7 +35,7 @@
             <h1>Fächer bearbeiten | Neues Fach erstellen</h1>
             <a href="/subjects/show">> alle Fächer anzeigen</a><br><br><br>
 
-            <form th:action="@{/subjects/{id}/edited?name={name}&tag={tag}(id=${subject.id},name=${subject.name},tag=${subject.tag})}" th:object="${subject}" method="post">
+            <form th:action="@{/subjects/{id}/edited?name={name}&tag={tag}(id=${subject.id},name=${subject.name},tag=${subject.tag})}" th:object="${subject}" method="put">
                 <div>
                     <label>Subject name: </label>
                     <div>
