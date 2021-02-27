@@ -79,7 +79,6 @@ public class UserController {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-
         if(password.isEmpty()){
             userRepo.editUserByEmail(email, firstName, lastName, isEnabled, isLocked);
         }else{
