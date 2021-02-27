@@ -5,8 +5,6 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import ch.diedreifragezeichen.exama.courses.Course;
-
 @Entity
 @Table(name = "users")
 public class User {

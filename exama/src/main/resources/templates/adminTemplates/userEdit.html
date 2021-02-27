@@ -1,0 +1,95 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="/css/style-main.css" type="text/css" media="screen" />
+
+        <title>Exama | Create User</title>
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <!-- header with navigation (only desktop and tablet), title and logout-button -->
+            <div id="header">
+                <div id="navigation-header">
+                    <div class="navigation-header-item nav-burgermenu"></div>
+                    <a href="/"><div class="navigation-header-item nav-home"></div></a>
+                    <div class="navigation-header-item nav-calendar"></div>
+                    <div class="navigation-header-item nav-notifications"></div>
+                    <div class="navigation-header-item nav-settings"></div>
+                </div>
+                <div id="title">eXama</div>
+                <div id="logout">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="navigation-header-item nav-logout" />
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>User bearbeiten | Neuen Nutzer erstellen</h1>
+            <a href="/users/show">> alle User anzeigen</a><br><br><br>
+
+            <form th:action="@{/users/created}" th:object="${user}" method="post">
+                <div>
+                    <label>Email (Username): </label>
+                    <div>
+                        <input type="email" th:field="*{email}" class="form-control" required />
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label>Passwort: </label>
+                    <div>
+                        <input type="password" th:field="*{password}" class="form-control" minlength="6"
+                            maxlength="20" />
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label>Vorname: </label>
+                    <div>
+                        <input type="text" th:field="*{firstName}" class="form-control" required minlength="2"
+                            maxlength="20" />
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label>Nachname: </label>
+                    <div>
+                        <input type="text" th:field="*{lastName}" class="form-control" required minlength="2"
+                            maxlength="20" />
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label>Nutzerrechte:
+                        <input type="checkbox" name="roles" style="margin:0 0.5em 0 1.5em" th:each="role : ${allRoles}"
+                            th:text="${role.name}" th:value="${role.id}" th:field="*{roles}" />
+                    </label>
+                </div>
+                <br>
+                <div>
+                    <button type="submit" class="login-button">Speichern</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- footer with navigation (only mobile) -->
+        <div id="footer">
+            <div id="navigation-footer">
+                <div class="navigation-footer-item nav2-home"></div>
+                <div class="navigation-footer-item nav2-calendar"></div>
+                <div class="navigation-footer-item nav2-notifications"></div>
+                <div class="navigation-footer-item nav2-settings"></div>
+            </div>
+        </div>
+        </div>
+    </body>
+
+</html>

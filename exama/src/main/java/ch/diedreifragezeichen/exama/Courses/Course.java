@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.persistence.*;
 
 import ch.diedreifragezeichen.exama.userAdministration.User;
-import ch.diedreifragezeichen.exama.subjects.Subject;
 
 @Entity
 @Table(name = "courses")

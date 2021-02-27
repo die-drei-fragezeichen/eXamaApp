@@ -37,8 +37,8 @@ public interface SubjectRepository extends JpaRepository<Subject, Long>{
 
     @Transactional
     @Modifying
-    @Query("UPDATE Subject s SET s.name=TestHallo WHERE s.id = ?1")
-    public void editSubjectById(long id);
+    @Query("UPDATE Subject s SET s.name=?2, s.tag=?3 WHERE s.id = ?1")
+    public void editSubjectById(long id, String name, String tag);
 }
 
 // Note that in the SubjectRepository interface, we can declare findByXXX()
