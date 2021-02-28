@@ -54,14 +54,13 @@ public class AvailablePrepTimesController {
     }
 
     @GetMapping("preptimes/{id}/edited")
-    public String updatePrepTime(@PathVariable(name = "id") Long id, 
-            @RequestParam(name = "name") String name, @RequestParam(name = "days") int days)
-            throws NotFoundException {
+    public String updatePrepTime(@PathVariable(name = "id") Long id, @RequestParam(name = "name") String name,
+            @RequestParam(name = "days") int days) throws NotFoundException {
         AvailablePrepTime prepTime = prepTimeRepo.getPrepTimeByID(id);
         if (prepTime == null) {
             throw new NotFoundException("PrepTime not found");
         }
-        if(id==1){
+        if (id == 1) {
             return "redirect:/preptimes/show";
         }
         prepTimeRepo.editPrepTimeById(id, name, (int) days);

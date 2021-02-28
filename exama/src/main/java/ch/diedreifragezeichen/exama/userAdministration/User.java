@@ -34,14 +34,14 @@ public class User {
 
 	@Column(name = "is_locked", nullable = false, length = 1)
 	private boolean isLocked;
-	
+
 	// @Lob
 	// @Column(name = "courses", columnDefinition="BLOB", nullable = true)
 	// //@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	// //@JoinTable(name = "courses", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	// //@JoinTable(name = "courses", joinColumns = @JoinColumn(name = "user_id"),
+	// inverseJoinColumns = @JoinColumn(name = "course_id"))
 	// private Set<Course> courses = new HashSet<>();
-	
-	
+
 	// TODO
 	// @Column(name = "logged_in", nullable = false, length = 1)
 	// private boolean logged_in;

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 
-public interface ExamTypeRepository extends JpaRepository<ExamType, Long>{
+public interface ExamTypeRepository extends JpaRepository<ExamType, Long> {
 
     @Query("SELECT et FROM ExamType et WHERE et.id = ?1")
     public ExamType getExamTypeByID(Long id);

@@ -30,5 +30,5 @@ public class Exam extends Assignment {
     public void setType(ExamType type) {
         this.type = type;
     }
-    
+
 }

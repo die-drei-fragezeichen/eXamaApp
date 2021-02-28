@@ -1,4 +1,5 @@
 package ch.diedreifragezeichen.exama.courses;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -10,14 +11,12 @@ import org.springframework.data.jpa.repository.Query;
 //The CrudRepository interface defines common operations like save(), findAll(), findById(), delete(), count(), 
 //you don't need to code any implementations!At runtime, Spring Data JPA takes care all the details.
 
-public interface CourseRepository extends JpaRepository<Course, Long>{
-    
-    //declare query method
-    //By default, the query definition uses JPQL.
-    //Then we create REST APIs(GET, POST, PUT, DELETE)
-    //Careful: "Course" here refers not to the table but to a Course object u
+public interface CourseRepository extends JpaRepository<Course, Long> {
+
+    // declare query method
+    // By default, the query definition uses JPQL.
+    // Then we create REST APIs(GET, POST, PUT, DELETE)
+    // Careful: "Course" here refers not to the table but to a Course object u
     @Query("SELECT c FROM Course c WHERE c.id = ?1")
     public Course getCourseByID(Long id);
 }
-    
-

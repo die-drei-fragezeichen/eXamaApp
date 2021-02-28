@@ -25,18 +25,21 @@ public class Course {
 
     // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     // @JoinTable(name = "courses_subjects_teachers", joinColumns = {
-    //     @JoinColumn(table="courses", name = "course_id", referencedColumnName = "id"),
-    //     @JoinColumn(table ="subjects", name = "subject_id", referencedColumnName = "id")},
-    //     inverseJoinColumns = @JoinColumn(table="users", name = "user_id", referencedColumnName = "id"))
+    // @JoinColumn(table="courses", name = "course_id", referencedColumnName =
+    // "id"),
+    // @JoinColumn(table ="subjects", name = "subject_id", referencedColumnName =
+    // "id")},
+    // inverseJoinColumns = @JoinColumn(table="users", name = "user_id",
+    // referencedColumnName = "id"))
     // private Set<User> courseTeachers = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "courses_subjects_teachers", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-	private Set<User> courseTeachers = new HashSet<>();
+    @JoinTable(name = "courses_subjects_teachers", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> courseTeachers = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "courses_students", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-	private Set<User> courseStudents = new HashSet<>();
+    @JoinTable(name = "courses_students", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> courseStudents = new HashSet<>();
 
     // @Lob
     // @Column(name = "workloads", columnDefinition="BLOB", nullable = true)

@@ -20,7 +20,7 @@ public class ExamType {
     @Column(name = "type_name", unique = true, nullable = false, length = 50)
     private String name;
 
-    @Column(name ="type_timevalue", unique = false, nullable = false)
+    @Column(name = "type_timevalue", unique = false, nullable = false)
     private double timeValue;
 
     @Override

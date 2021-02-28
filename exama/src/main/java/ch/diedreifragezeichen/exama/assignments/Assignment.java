@@ -9,7 +9,6 @@ import ch.diedreifragezeichen.exama.courses.Course;
 
 public abstract class Assignment implements AssignmentInterface {
 
-
     private long id;
     private long creator;
     private Set<Course> courses;
@@ -119,10 +118,10 @@ public abstract class Assignment implements AssignmentInterface {
         if (this.startDate.after(date)) {
             return 0;
         }
-        //TODO: store this constant in the Database to be changable
-        //specifice the number of workload hours for 100%
+        // TODO: store this constant in the Database to be changable
+        // specifice the number of workload hours for 100%
         double hundredPercent = 3.5;
-        double hundredPercentMinutes = hundredPercent*60;
+        double hundredPercentMinutes = hundredPercent * 60;
 
         double workloadMinutes = this.workload.getWorkloadMinutesOnDayX(this.getRealStartDate(), date, this.dueDate);
 
@@ -131,12 +130,13 @@ public abstract class Assignment implements AssignmentInterface {
 
     @Override
     public Date getRealStartDate() {
-        int diffDays = (int) TimeUnit.DAYS.convert(Math.abs(this.dueDate.getTime() - this.startDate.getTime()), TimeUnit.MILLISECONDS);
-        if(availableTime.getDays()==-1 || diffDays<availableTime.getDays()){
+        int diffDays = (int) TimeUnit.DAYS.convert(Math.abs(this.dueDate.getTime() - this.startDate.getTime()),
+                TimeUnit.MILLISECONDS);
+        if (availableTime.getDays() == -1 || availableTime.getName().equals("All Time")
+                || diffDays < availableTime.getDays()) {
             return this.startDate;
-        }
-        else{
-            return new Date(this.dueDate.getTime()-availableTime.getDays()*24*60*60*1000);
+        } else {
+            return new Date(this.dueDate.getTime() - availableTime.getDays() * 24 * 60 * 60 * 1000);
         }
     }
 }

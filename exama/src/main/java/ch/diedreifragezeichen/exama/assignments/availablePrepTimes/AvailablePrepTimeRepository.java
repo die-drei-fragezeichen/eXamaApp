@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 
-public interface AvailablePrepTimeRepository extends JpaRepository<AvailablePrepTime, Long>{
+public interface AvailablePrepTimeRepository extends JpaRepository<AvailablePrepTime, Long> {
 
     @Query("SELECT pt FROM AvailablePrepTime pt WHERE pt.id = ?1")
     public AvailablePrepTime getPrepTimeByID(Long id);

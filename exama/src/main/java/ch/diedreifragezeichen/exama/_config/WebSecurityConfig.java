@@ -1,4 +1,5 @@
 package ch.diedreifragezeichen.exama._config;
+
 import ch.diedreifragezeichen.exama.userAdministration.*;
 
 import javax.sql.DataSource;
@@ -20,25 +21,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @SuppressWarnings("unused")
     @Autowired
     private DataSource dataSource;
-    
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceExama();
     }
-    
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
-         
+
         return authProvider;
     }
- 
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
@@ -46,47 +48,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-            .anonymous()
-                .and()
+        http.anonymous().and()
 
-            .authorizeRequests()
-                .antMatchers("/css/**", "/images/**", "/js/**", "/install")
-                .permitAll()
-                .and()
-            
-            .authorizeRequests()
-                .antMatchers("/").hasAnyAuthority("SYSTEMADMIN", "ADMIN", "TEACHER", "REFERENCESTUDENT", "STUDENT")
-                .antMatchers("/fragments/**").hasAnyAuthority("SYSTEMADMIN", "ADMIN", "TEACHER", "REFERENCESTUDENT", "STUDENT")
+                .authorizeRequests().antMatchers("/css/**", "/images/**", "/js/**", "/install").permitAll().and()
+
+                .authorizeRequests().antMatchers("/")
+                .hasAnyAuthority("SYSTEMADMIN", "ADMIN", "TEACHER", "REFERENCESTUDENT", "STUDENT")
+                .antMatchers("/fragments/**")
+                .hasAnyAuthority("SYSTEMADMIN", "ADMIN", "TEACHER", "REFERENCESTUDENT", "STUDENT")
                 .antMatchers("/systemadminTemplates/**").hasAnyAuthority("SYSTEMADMIN")
                 .antMatchers("/adminTemplates/**").hasAnyAuthority("SYSTEMADMIN", "ADMIN")
                 .antMatchers("/teacherTemplates/**").hasAnyAuthority("SYSTEMADMIN", "TEACHER")
                 .antMatchers("/rstudentTemplates/**").hasAnyAuthority("SYSTEMADMIN", "REFERENCESTUDENT")
-                .antMatchers("/studentTemplates/**").hasAnyAuthority("SYSTEMADMIN", "STUDENT")
-                .and()
-            
-            .authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
+                .antMatchers("/studentTemplates/**").hasAnyAuthority("SYSTEMADMIN", "STUDENT").and()
 
-            .formLogin()
-                .loginPage("/login")
-                .usernameParameter("email")
-                .permitAll()
-                .and()
+                .authorizeRequests().anyRequest().authenticated().and()
 
-            .logout()
-                .logoutSuccessUrl("/login")
-                .permitAll()
-                .and()
+                .formLogin().loginPage("/login").usernameParameter("email").permitAll().and()
 
-            .exceptionHandling()
-                .accessDeniedPage("/403")
-                .and()
+                .logout().logoutSuccessUrl("/login").permitAll().and()
 
-            .httpBasic()
-            ;
+                .exceptionHandling().accessDeniedPage("/403").and()
+
+                .httpBasic();
     }
-    
+
 }
