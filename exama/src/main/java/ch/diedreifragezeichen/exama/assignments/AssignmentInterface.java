@@ -3,11 +3,6 @@ package ch.diedreifragezeichen.exama.assignments;
 import java.util.Date;
 
 public interface AssignmentInterface {
-    
-    /**
-     * Specifies, how much days in total to work on the assignment will be included in the calculation. E.g. ALLTIME, SEVENDAYS, FOURTEENDAYS
-     */
-    public enum availablePrepTime{};
 
     /**
      * @param date should be the day for which the workload value will be returned

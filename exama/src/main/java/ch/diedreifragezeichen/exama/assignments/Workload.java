@@ -5,23 +5,17 @@ import java.util.concurrent.TimeUnit;
 
 public class Workload implements WorkloadInterface {
 
-    public enum WorkloadDistribution{
-        CONSTANT,
-        LINEAR,
-        EXPONENTIAL
-    }
-
     private double workloadMinutesTotal;
     private WorkloadDistribution distribution;
 
     public Workload(double workloadMinutesTotal, WorkloadDistribution distribution){
         this.workloadMinutesTotal = workloadMinutesTotal;
-        this.distribution = distribution;
+        this.setDistribution(distribution);
     }
 
     public Workload(double workloadMinutesTotal){
         this.workloadMinutesTotal = workloadMinutesTotal;
-        this.distribution = WorkloadDistribution.LINEAR;
+        this.setDistribution(distribution);
     }
 
     @Override
@@ -52,21 +46,21 @@ public class Workload implements WorkloadInterface {
         int dayNumberInProcess = (int) TimeUnit.DAYS.convert(Math.abs(dueDate.getTime() - startDate.getTime()),
         TimeUnit.MILLISECONDS);
 
-        switch(this.distribution){
-            case CONSTANT:
+        switch(this.distribution.getName()){
+            case "LINEAR":
+                m = 2 * workloadMinutesTotal / Math.pow(diffDays, 2);
+                return m * dayNumberInProcess;
+
+            case "CONSTANT":
                 return workloadMinutesTotal/diffDays;
 
-            case EXPONENTIAL:
+            case "EXPONENTIAL":
                 double faktor = 1.1; // 10% more per day (faktor a)
                 // function f(x)=a^x+b -> Integral from 0 to diffDays t is
                 // a^t/ln(a)+b*t-1/ln(a)
                 // Integral from 0 to diffDays must be workloadMinutesTotal w -> solve -> b=-(a^t-ln(a)*w-1)/(ln(a)*t)
                 double workloadDayOne = -(Math.pow(faktor, diffDays) - Math.log(faktor) * workloadMinutesTotal - 1) / (Math.log(faktor) * diffDays);
                 return Math.pow(faktor, dayNumberInProcess) + workloadDayOne;
-
-            case LINEAR:
-                m = 2 * workloadMinutesTotal / Math.pow(diffDays, 2);
-                return m * dayNumberInProcess;
 
             default: //LINEAR
                 m = 2 * workloadMinutesTotal / Math.pow(diffDays, 2);

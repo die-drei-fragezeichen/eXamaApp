@@ -4,13 +4,11 @@ import java.util.Date;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTime;
 import ch.diedreifragezeichen.exama.courses.Course;
 
 public abstract class Assignment implements AssignmentInterface {
 
-    public enum availablePrepTime {
-        ALLTIME, SEVENDAYS, FOURTEENDAYS
-    }
 
     private long id;
     private long creator;
@@ -19,7 +17,7 @@ public abstract class Assignment implements AssignmentInterface {
     private Date editDate;
     private Date startDate;
     private Date dueDate;
-    private availablePrepTime availableTime;
+    private AvailablePrepTime availableTime;
     private String description;
     private Workload workload;
 
@@ -79,11 +77,11 @@ public abstract class Assignment implements AssignmentInterface {
         this.dueDate = dueDate;
     }
 
-    public availablePrepTime getAvailableTime() {
+    public AvailablePrepTime getAvailableTime() {
         return availableTime;
     }
 
-    public void setAvailableTime(availablePrepTime availableTime) {
+    public void setAvailableTime(AvailablePrepTime availableTime) {
         this.availableTime = availableTime;
     }
 
@@ -134,21 +132,11 @@ public abstract class Assignment implements AssignmentInterface {
     @Override
     public Date getRealStartDate() {
         int diffDays = (int) TimeUnit.DAYS.convert(Math.abs(this.dueDate.getTime() - this.startDate.getTime()), TimeUnit.MILLISECONDS);
-        switch(availableTime){
-            case ALLTIME:
-                return this.startDate;
-            case SEVENDAYS:
-                if(diffDays<7){
-                    return this.startDate;
-                }
-                return new Date(this.dueDate.getTime()-7*24*60*60*1000);
-            case FOURTEENDAYS:
-                if(diffDays<14){
-                    return this.startDate;
-                }
-                return new Date(this.dueDate.getTime()-14*24*60*60*1000);
-            default:
-                return this.startDate;
+        if(availableTime.getDays()==-1 || diffDays<availableTime.getDays()){
+            return this.startDate;
+        }
+        else{
+            return new Date(this.dueDate.getTime()-availableTime.getDays()*24*60*60*1000);
         }
     }
 }

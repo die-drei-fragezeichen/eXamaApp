@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.config.controller;
+package ch.diedreifragezeichen.exama._config.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,20 +27,21 @@ public class AppController {
     @GetMapping("")
     public String viewRolespecificLanding() {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        Collection<SimpleGrantedAuthority> roleList = (Collection<SimpleGrantedAuthority>) authLoggedInUser.getAuthorities();
+        Collection<SimpleGrantedAuthority> roleList = (Collection<SimpleGrantedAuthority>) authLoggedInUser
+                .getAuthorities();
         List<String> roles = new ArrayList<String>();
-        for(SimpleGrantedAuthority role : roleList){
+        for (SimpleGrantedAuthority role : roleList) {
             roles.add(role.getAuthority());
         }
-        if(roles.contains("SYSTEMADMIN")){
+        if (roles.contains("SYSTEMADMIN")) {
             return "systemadminTemplates/index";
-        } else if(roles.contains("ADMIN")){
+        } else if (roles.contains("ADMIN")) {
             return "adminTemplates/index";
-        } else if(roles.contains("TEACHER")){
+        } else if (roles.contains("TEACHER")) {
             return "teacherTemplates/index";
-        } else if(roles.contains("REFERENCESTUDENT")){
+        } else if (roles.contains("REFERENCESTUDENT")) {
             return "rstudentTemplates/index";
-        } else if(roles.contains("STUDENT")){
+        } else if (roles.contains("STUDENT")) {
             return "studentTemplates/index";
         } else {
             return "index";
@@ -61,6 +62,14 @@ public class AppController {
     @GetMapping("/error")
     public String handleErrorString() {
         return "403";
+    }
+
+    /**
+     * Installation commands
+     */
+    @GetMapping("/install")
+    public String install() {
+        return "redirect:/login";
     }
 
 }

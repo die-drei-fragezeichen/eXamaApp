@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.config.controller;
+package ch.diedreifragezeichen.exama._config.controller;
 
 import java.util.List;
 import java.util.Set;
@@ -15,7 +15,6 @@ import ch.diedreifragezeichen.exama.userAdministration.Role;
 import ch.diedreifragezeichen.exama.userAdministration.RoleRepository;
 import ch.diedreifragezeichen.exama.userAdministration.User;
 import ch.diedreifragezeichen.exama.userAdministration.UserRepository;
-
 
 @Controller
 public class UserController {
@@ -71,23 +70,28 @@ public class UserController {
         mav.addObject("allRoles", roles);
         return mav;
     }
-    
+
     @GetMapping("/users/{email}/edited")
-    public String updateSubject(@PathVariable(name = "email") String email, @RequestParam(name = "password") String password, @RequestParam(name = "firstName") String firstName,  @RequestParam(name = "lastName") String lastName, @RequestParam(name = "isEnabled", required = false) boolean isEnabled, @RequestParam(name = "isLocked", required = false) boolean isLocked, @RequestParam(name = "roles", required = false) Set<Role> roles) throws UsernameNotFoundException{
+    public String updateSubject(@PathVariable(name = "email") String email,
+            @RequestParam(name = "password") String password, @RequestParam(name = "firstName") String firstName,
+            @RequestParam(name = "lastName") String lastName,
+            @RequestParam(name = "isEnabled", required = false) boolean isEnabled,
+            @RequestParam(name = "isLocked", required = false) boolean isLocked,
+            @RequestParam(name = "roles", required = false) Set<Role> roles) throws UsernameNotFoundException {
         User user = userRepo.getUserByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             userRepo.editUserByEmail(email, firstName, lastName, isEnabled, isLocked);
-        }else{
+        } else {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             String encodedPassword = encoder.encode(password);
             userRepo.editUserByEmailPW(email, encodedPassword, firstName, lastName, isEnabled, isLocked);
         }
-        //TODO: Rollenupdate funktioniert noch nicht
+        // TODO: Rollenupdate funktioniert noch nicht
         user.setRoles(roles);
-        
+
         return "redirect:/users/show";
     }
 
@@ -100,5 +104,5 @@ public class UserController {
         userRepo.deleteUserByEmail(email);
         return "redirect:/users/show";
     }
-    
+
 }

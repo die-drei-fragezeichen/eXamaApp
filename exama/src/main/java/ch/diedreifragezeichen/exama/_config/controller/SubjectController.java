@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.config.controller;
+package ch.diedreifragezeichen.exama._config.controller;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class SubjectController {
     /**
      * Subject Mappings
      */
-    
+
     @GetMapping("/subjects/show")
     public String listSubjects(Model model) {
         List<Subject> listSubjects = subjectRepo.findAll();
@@ -55,7 +55,8 @@ public class SubjectController {
     }
 
     @GetMapping("/subjects/{id}/edited")
-    public String updateSubject(@PathVariable(name = "id") Long id, @RequestParam(name = "name") String name, @RequestParam(name = "tag") String tag) throws NotFoundException{
+    public String updateSubject(@PathVariable(name = "id") Long id, @RequestParam(name = "name") String name,
+            @RequestParam(name = "tag") String tag) throws NotFoundException {
         Subject subject = subjectRepo.getSubjectByID(id);
         if (subject == null) {
             throw new NotFoundException("Subject not found");
@@ -73,5 +74,5 @@ public class SubjectController {
         subjectRepo.deleteSubjectById(id);
         return "redirect:/subjects/show";
     }
-    
+
 }

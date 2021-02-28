@@ -1,0 +1,47 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="/fragments/head :: head"></head>
+
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="/fragments/header :: header"></div>
+
+        <div th:include="/fragments/coursenavigation :: coursenavigation"></div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>Prüfungstypen bearbeiten | Neuer Prüfungstyp erstellen</h1>
+            <a href="/examtypes/create">> neuer Prüfungstyp hinzufügen</a><br><br>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Examtype ID</th>
+                        <th>Examtype Tag</th>
+                        <th>Examtype Name</th>
+                        <th>Examtype Time Value (hours)</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="type: ${listTypes}">
+                        <td th:text="${type.id}"></td>
+                        <td th:text="${type.tag}"></td>
+                        <td th:text="${type.name}"></td>
+                        <td th:text="${type.timeValue}"></td>
+                        <td><a th:href="@{/examtypes/{id}/edit(id=${type.id})}">bearbeiten</a></td>
+                        <td><a th:href="@{/examtypes/{id}/delete(id=${type.id})}">löschen</a></td>
+                        </a>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="/fragments/footer :: footer"></div>
+</body>
+
+</html>

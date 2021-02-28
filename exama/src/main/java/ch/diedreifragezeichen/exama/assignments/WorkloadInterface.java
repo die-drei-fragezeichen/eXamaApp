@@ -3,10 +3,6 @@ package ch.diedreifragezeichen.exama.assignments;
 import java.util.Date;
 
 public interface WorkloadInterface {
-    /**
-     * Specifies, which workload distribution will be included in the calculation. E.g. CONSTANT, LINEAR, EXPONENTIAL
-     */
-    public enum WorkloadDistribution{};
 
     /**
      * @return the total workload in minutes

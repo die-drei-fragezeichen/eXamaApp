@@ -1,0 +1,45 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="/fragments/head :: head"></head>
+
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="/fragments/header :: header"></div>
+
+        <div th:include="/fragments/coursenavigation :: coursenavigation"></div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>Vorbereitungszeiten bearbeiten | Neue Vorbereitungszeit erstellen</h1>
+            <a href="/preptimes/create">> neue Vorbereitungszeit hinzufügen</a><br><br>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>PrepTime ID</th>
+                        <th>PrepTime Name</th>
+                        <th>PrepTime Days</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="preptime : ${listPrepTimes}" th:if="${preptime.id} &gt; 1">
+                        <td th:text="${preptime.id}"></td>
+                        <td th:text="${preptime.name}"></td>
+                        <td th:text="${preptime.days}"></td>
+                        <td><a th:href="@{/preptimes/{id}/edit(id=${preptime.id})}">bearbeiten</a></td>
+                        <td><a th:href="@{/preptimes/{id}/delete(id=${preptime.id})}">löschen</a></td>
+                        </a>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="/fragments/footer :: footer"></div>
+</body>
+
+</html>

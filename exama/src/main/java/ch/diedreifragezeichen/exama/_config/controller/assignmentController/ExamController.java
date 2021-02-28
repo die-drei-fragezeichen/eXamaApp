@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.config.controller;
+package ch.diedreifragezeichen.exama._config.controller.assignmentController;
 
 import org.springframework.stereotype.Controller;
 

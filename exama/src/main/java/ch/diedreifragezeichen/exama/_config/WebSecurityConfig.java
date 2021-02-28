@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.config;
+package ch.diedreifragezeichen.exama._config;
 import ch.diedreifragezeichen.exama.userAdministration.*;
 
 import javax.sql.DataSource;
@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
             .authorizeRequests()
-                .antMatchers("/css/**", "/images/**", "/js/**")
+                .antMatchers("/css/**", "/images/**", "/js/**", "/install")
                 .permitAll()
                 .and()
             

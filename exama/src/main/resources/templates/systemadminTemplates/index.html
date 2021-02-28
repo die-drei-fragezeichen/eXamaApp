@@ -30,6 +30,12 @@
             <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
                 <a href="subjects/show">> alle Fächer ansehen und bearbeiten</a>
             </div>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="examtypes/show">> alle Prüfungstypen ansehen und bearbeiten</a>
+            </div>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="preptimes/show">> alle Vorbereitungsintervalle ansehen und bearbeiten</a>
+            </div>
 
         </div>
 
