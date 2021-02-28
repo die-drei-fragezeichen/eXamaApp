@@ -1,71 +1,45 @@
-<html lang="DE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-        <link rel="stylesheet" href="/css/style-main.css" type="text/css" media="screen" />
+<head th:include="/fragments/head :: head"></head>
 
-        <title>Exama</title>
-    </head>
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="/fragments/header :: header"></div>
 
-    <body>
-        <div id="wrapper">
-            <!-- header with navigation (only desktop and tablet), title and logout-button -->
-            <div id="header">
-                <div id="navigation-header">
-                    <div class="navigation-header-item nav-burgermenu"></div>
-                    <a href="/"><div class="navigation-header-item nav-home"></div></a>
-                    <div class="navigation-header-item nav-calendar"></div>
-                    <div class="navigation-header-item nav-notifications"></div>
-                    <div class="navigation-header-item nav-settings"></div>
-                </div>
-                <div id="title">eXama</div>
-                <div id="logout">
-                    <form th:action="@{/logout}" method="post">
-                        <button type="submit" class="navigation-header-item nav-logout"/>
-                    </form>
-                </div>
-                </div>
-            </div>
+        <div th:include="/fragments/coursenavigation :: coursenavigation"></div>
 
-            <!-- content displayed in the center of the window -->
-            <div id="content-wrapper">
-                <h1>Fächer bearbeiten | Neues Fach erstellen</h1>
-                <a href="/subjects/create">> neues Fach hinzufügen</a><br><br>
-                
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Subject ID</th>
-                            <th>Subject Name</th>
-                            <th>Subject Tag</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="subject: ${listSubjects}">
-                                <td th:text="${subject.id}"></td>
-                                <td th:text="${subject.name}"></td>
-                                <td th:text="${subject.tag}"></td>
-                                <td><a th:href="@{/subjects/{id}/edit(id=${subject.id})}">bearbeiten</a></td>
-                                <td><a th:href="@{/subjects/{id}/delete(id=${subject.id})}">löschen</a></td>
-                            </a>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>Fächer bearbeiten | Neues Fach erstellen</h1>
+            <a href="/subjects/create">> neues Fach hinzufügen</a><br><br>
 
-            <!-- footer with navigation (only mobile) -->
-            <div id="footer">
-                <div id="navigation-footer">
-                    <div class="navigation-footer-item nav2-home"></div>
-                    <div class="navigation-footer-item nav2-calendar"></div>
-                    <div class="navigation-footer-item nav2-notifications"></div>
-                    <div class="navigation-footer-item nav2-settings"></div>
-                </div>
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject ID</th>
+                        <th>Subject Name</th>
+                        <th>Subject Tag</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="subject: ${listSubjects}">
+                        <td th:text="${subject.id}"></td>
+                        <td th:text="${subject.name}"></td>
+                        <td th:text="${subject.tag}"></td>
+                        <td><a th:href="@{/subjects/{id}/edit(id=${subject.id})}">bearbeiten</a></td>
+                        <td><a th:href="@{/subjects/{id}/delete(id=${subject.id})}">löschen</a></td>
+                        </a>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </body>
+
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="/fragments/footer :: footer"></div>
+</body>
 
 </html>

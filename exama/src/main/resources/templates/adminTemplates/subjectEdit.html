@@ -1,54 +1,39 @@
 <html lang="DE" xmlns:th="http://www.thymeleaf.org"
     xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head th:include="/fragments/head :: head"></head>
 
-        <link rel="stylesheet" href="/css/style-main.css" type="text/css" media="screen" />
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="/fragments/header :: header"></div>
 
-        <title>Exama | Create User</title>
-    </head>
-
-    <body>
-        <div id="wrapper">
-            <!-- header with navigation (only desktop and tablet), title and logout-button -->
-            <div id="header">
-                <div id="navigation-header">
-                    <div class="navigation-header-item nav-burgermenu"></div>
-                    <a href="/"><div class="navigation-header-item nav-home"></div></a>
-                    <div class="navigation-header-item nav-calendar"></div>
-                    <div class="navigation-header-item nav-notifications"></div>
-                    <div class="navigation-header-item nav-settings"></div>
-                </div>
-                <div id="title">eXama</div>
-                <div id="logout">
-                    <form th:action="@{/logout}" method="post">
-                        <button type="submit" class="navigation-header-item nav-logout" />
-                    </form>
-                </div>
-            </div>
-        </div>
+        <div th:include="/fragments/coursenavigation :: coursenavigation"></div>
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Fächer bearbeiten | Neues Fach erstellen</h1>
+            <h1>Fach bearbeiten</h1>
             <a href="/subjects/show">> alle Fächer anzeigen</a><br><br><br>
 
-            <form th:action="@{/subjects/{id}/edited?name={name}&tag={tag}(id=${subject.id},name=${subject.name},tag=${subject.tag})}" th:object="${subject}" method="put">
+            <form
+                th:action="@{/subjects/{id}/edited?name={name}&tag={tag}(id=${subject.id},name=${subject.name},tag=${subject.tag})}"
+                th:object="${subject}" method="put">
                 <div>
                     <label>Subject name: </label>
                     <div>
-                        <input type="text" th:field="*{name}" class="form-control" required minlength="1" maxlength="20" />
+                        <input type="text" th:field="*{name}" class="form-control" required minlength="1"
+                            maxlength="20" />
                     </div>
                 </div>
                 <br>
                 <div>
                     <label>Subject tag: </label>
                     <div>
-                        <input type="text" th:field="*{tag}" class="form-control" required minlength="1" maxlength="4" />
+                        <input type="text" th:field="*{tag}" class="form-control" required minlength="1"
+                            maxlength="4" />
                     </div>
                 </div>
+                <br>
                 <div>
                     <button type="submit" class="login-button">Speichern</button>
                 </div>
@@ -56,15 +41,7 @@
         </div>
 
         <!-- footer with navigation (only mobile) -->
-        <div id="footer">
-            <div id="navigation-footer">
-                <div class="navigation-footer-item nav2-home"></div>
-                <div class="navigation-footer-item nav2-calendar"></div>
-                <div class="navigation-footer-item nav2-notifications"></div>
-                <div class="navigation-footer-item nav2-settings"></div>
-            </div>
-        </div>
-        </div>
-    </body>
+        <div th:include="/fragments/footer :: footer"></div>
+</body>
 
 </html>

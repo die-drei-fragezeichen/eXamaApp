@@ -1,0 +1,22 @@
+<div th:fragment="header">
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div id="header">
+            <div id="navigation-header">
+                <div class="navigation-header-item nav-burgermenu"></div>
+                <a href="/">
+                    <div class="navigation-header-item nav-home"></div>
+                </a>
+                <div class="navigation-header-item nav-calendar"></div>
+                <div class="navigation-header-item nav-notifications"></div>
+                <div class="navigation-header-item nav-settings"></div>
+            </div>
+            <div id="title">eXama</div>
+            <div id="logout">
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="navigation-header-item nav-logout" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,74 +1,41 @@
-<html lang="DE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-        <link rel="stylesheet" href="css/style-main.css" type="text/css" media="screen" />
+<head th:include="/fragments/head :: head"></head>
 
-        <title>Exama | Home</title>
-    </head>
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="/fragments/header :: header"></div>
 
-    <body>
-        <div id="wrapper">
-            <!-- header with navigation (only desktop and tablet), title and logout-button -->
-            <div id="header">
-                <div id="navigation-header">
-                    <div class="navigation-header-item nav-burgermenu"></div>
-                    <a href="/"><div class="navigation-header-item nav-home"></div></a>
-                    <div class="navigation-header-item nav-calendar"></div>
-                    <div class="navigation-header-item nav-notifications"></div>
-                    <div class="navigation-header-item nav-settings"></div>
-                </div>
-                <div id="title">eXama</div>
-                <div id="logout">
-                    <form th:action="@{/logout}" method="post">
-                        <button type="submit" class="navigation-header-item nav-logout"/>
-                    </form>
-                </div>
-                </div>
+        <div th:include="/fragments/coursenavigation :: coursenavigation"></div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>SYSTEMADMIN-LANDING</h1>
+
+            Willkommen <b><span sec:authentication="name"></span></b>! Sie haben die folgenden Nutzungsrechte: <b><span
+                    sec:authentication="principal.authorities"></span></b>!
+
+            <h1>Ihre Funktionen</h1>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="users/create">> neuen User hinzufügen</a>
+            </div>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="users/show">> alle User ansehen und bearbeiten</a>
+            </div>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="subjects/create">> neues Fach hinzufügen</a>
+            </div>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="subjects/show">> alle Fächer ansehen und bearbeiten</a>
             </div>
 
-            <!-- course navigation (only desktop and tablet) on the left side -->
-            <div id="course-navigation">
-                <div class="course-navigation-item">1a</div>
-                <div class="course-navigation-item active">2a</div>
-                <div class="course-navigation-item">3c</div>
-                <div class="course-navigation-item">3d</div>
-                <div class="course-navigation-item">4a</div>
-            </div>
-
-            <!-- content displayed in the center of the window -->
-            <div id="content-wrapper">
-                <h1>SYSTEMADMIN-LANDING</h1>
-                
-                Willkommen <b><span sec:authentication="name"></span></b>! Sie haben die folgenden Nutzungsrechte: <b><span sec:authentication="principal.authorities"></span></b>!
-                
-                <h1>Ihre Funktionen</h1>
-                <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
-                    <a href="users/create">> neuen User hinzufügen</a>
-                </div>
-                <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
-                    <a href="users/show">> alle User ansehen und bearbeiten</a>
-                </div>
-                <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
-                    <a href="subjects/create">> neues Fach hinzufügen</a>
-                </div>
-                <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
-                    <a href="subjects/show">> alle Fächer ansehen und bearbeiten</a>
-                </div>
-            
-            </div>
-
-            <!-- footer with navigation (only mobile) -->
-            <div id="footer">
-                <div id="navigation-footer">
-                    <div class="navigation-footer-item nav2-home"></div>
-                    <div class="navigation-footer-item nav2-calendar"></div>
-                    <div class="navigation-footer-item nav2-notifications"></div>
-                    <div class="navigation-footer-item nav2-settings"></div>
-                </div>
-            </div>
         </div>
-    </body>
+
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="/fragments/footer :: footer">
+        </div>
+</body>
 
 </html>
