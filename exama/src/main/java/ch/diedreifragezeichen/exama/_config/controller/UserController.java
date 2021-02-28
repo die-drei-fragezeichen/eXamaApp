@@ -32,7 +32,7 @@ public class UserController {
     public String listUsers(Model model) {
         List<User> listUsers = userRepo.findAll();
         model.addAttribute("listUsers", listUsers);
-        return "/adminTemplates/usersShow";
+        return "adminTemplates/usersShow";
     }
 
     @GetMapping("/users/create")

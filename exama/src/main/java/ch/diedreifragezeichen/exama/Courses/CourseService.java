@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.courses;
+/* package ch.diedreifragezeichen.exama.courses;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,3 +36,4 @@ public class CourseService {
 // // Count number of subjects
 // long countSubjects = subjectRepo.count();
 // System.out.println("Number of customers: " + countSubjects);
+ */

@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama;
+/* package ch.diedreifragezeichen.exama;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,3 +41,4 @@ public class SubjectRepositoryTests {
 
 
 }
+ */

@@ -16,7 +16,7 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Dies ist der KlassenName zum Beispiel "L4a" oder "2018E"
+   /*  // Dies ist der KlassenName zum Beispiel "L4a" oder "2018E"
     @Column(name = "course_name", unique = true, nullable = false, length = 5)
     private String name;
 
@@ -46,7 +46,7 @@ public class Course {
     // //@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     // //@JoinTable(name = "courses", joinColumns = @JoinColumn(name = "user_id"),
     // inverseJoinColumns = @JoinColumn(name = "course_id"))
-    // private Set<Workload> workloads = new HashSet<>();
+    // private Set<Workload> workloads = new HashSet<>(); */
 
     public Long getId() {
         return id;
@@ -55,7 +55,7 @@ public class Course {
     public void setId(Long id) {
         this.id = id;
     }
-
+/* 
     public String getName() {
         return this.name;
     }
@@ -87,5 +87,5 @@ public class Course {
     public void setCourseStudents(Set<User> courseStudents) {
         this.courseStudents = courseStudents;
     }
-
+ */
 }

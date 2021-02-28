@@ -1,19 +1,19 @@
 <html lang="DE" xmlns:th="http://www.thymeleaf.org"
     xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-<head th:include="/fragments/head :: head"></head>
+<head th:include="fragments/head :: head"></head>
 
 <body>
     <div id="wrapper">
         <!-- header with navigation (only desktop and tablet), title and logout-button -->
-        <div th:include="/fragments/header :: header"></div>
+        <div th:include="fragments/header :: header"></div>
 
-        <div th:include="/fragments/coursenavigation :: coursenavigation"></div>
+        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
             <h1>Users bearbeitn</h1>
-            <a href="/users/edit">> neuen User hinzufügen</a><br><br>
+            <a href="/users/create">> neuen User hinzufügen</a><br><br>
 
             <table>
                 <thead>
@@ -38,8 +38,8 @@
                         <td th:text="${user.roles}"></td>
                         <td th:text="${user.isEnabled}"></td>
                         <td th:text="${user.isLocked}"></td>
-                        <td><a th:href="@{/users/edit/{id}(id=${user.id})}">bearbeiten</a></td>
-                        <td><a th:href="@{/users/delete/{id}(id=${user.id})}">löschen</a></td>
+                        <td><a th:href="@{/users/{email}/edit/(email=${user.email})}">bearbeiten</a></td>
+                        <td><a th:href="@{/users/{email}/delete(email=${user.email})}">löschen</a></td>
                         </a>
                     </tr>
                 </tbody>
@@ -48,7 +48,7 @@
         </div>
 
         <!-- footer with navigation (only mobile) -->
-        <div th:include="/fragments/footer :: footer"></div>
+        <div th:include="fragments/footer :: footer"></div>
 </body>
 
 </html>

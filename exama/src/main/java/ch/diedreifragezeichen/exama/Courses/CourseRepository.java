@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.courses;
+/* package ch.diedreifragezeichen.exama.courses;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,3 +20,4 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("SELECT c FROM Course c WHERE c.id = ?1")
     public Course getCourseByID(Long id);
 }
+ */

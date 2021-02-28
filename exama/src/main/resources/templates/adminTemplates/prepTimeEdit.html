@@ -1,14 +1,14 @@
 <html lang="DE" xmlns:th="http://www.thymeleaf.org"
     xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-<head th:include="/fragments/head :: head"></head>
+<head th:include="fragments/head :: head"></head>
 
 <body>
     <div id="wrapper">
         <!-- header with navigation (only desktop and tablet), title and logout-button -->
-        <div th:include="/fragments/header :: header"></div>
+        <div th:include="fragments/header :: header"></div>
 
-        <div th:include="/fragments/coursenavigation :: coursenavigation"></div>
+        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
@@ -40,7 +40,7 @@
         </div>
 
         <!-- footer with navigation (only mobile) -->
-        <div th:include="/fragments/footer :: footer"></div>
+        <div th:include="fragments/footer :: footer"></div>
 </body>
 
 </html>
