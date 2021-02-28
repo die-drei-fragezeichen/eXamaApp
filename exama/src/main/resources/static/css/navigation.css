@@ -57,6 +57,9 @@
     background-size: contain;
     background-repeat: no-repeat;
 }
+.navigation-header-item:hover{
+    cursor: pointer;
+}
 
 
 .nav-home{
@@ -96,6 +99,7 @@
 }
 .nav-logout:hover{
     background-image:url(img/logout_r2.svg);
+    cursor: pointer;
 }
 
 .nav-burgermenu{
@@ -107,6 +111,7 @@
 }
 .nav-burgermenu:hover{
     background-image:url(img/burger_r2.svg);
+    cursor: pointer;
 }
 
 
@@ -175,27 +180,42 @@
     background-size: contain;
     background-repeat: no-repeat;
 }
-.navigation-footer-item:first-child{
-    margin-left: 1.5em;
+.navigation-footer-item:hover{
+    cursor: pointer;
 }
-.navigation-footer-item:last-child{
+.navigation-footer-item:first-of-type{
+    margin-left: 1.5em ;
+}
+.navigation-footer-item:last-of-type{
     margin-right: 1.5em;
 }
 
 .nav2-home{
     background-image:url(img/home_r2.svg);
 }
+.nav2-home:hover{
+    background-image:url(img/home_r.svg);
+}
 
 .nav2-calendar{
+    background-image:url(img/calendar_r2.svg);
+}
+.nav2-calendar:hover{
     background-image:url(img/calendar_r.svg);
 }
 
 .nav2-notifications{
     background-image:url(img/notification_r2.svg);
 }
+.nav2-notifications:hover{
+    background-image:url(img/notification_r.svg);
+}
 
 .nav2-settings{
     background-image:url(img/settings_r2.svg);
+}
+.nav2-settings:hover{
+    background-image:url(img/settings_r.svg);
 }
 
 
