@@ -1,68 +1,76 @@
 package ch.diedreifragezeichen.exama.assignments;
 
-public class Workload {
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+public class Workload implements WorkloadInterface {
+
     public enum WorkloadDistribution{
         CONSTANT,
         LINEAR,
         EXPONENTIAL
     }
 
-    public enum PrepareTime{
-        ALLTIME,
-        SEVENDAYS,
-        FOURTEENDAYS
-    }
-
-    private double workingTime;
+    private double workloadMinutesTotal;
     private WorkloadDistribution distribution;
-    private PrepareTime prepareTime;
 
-    public Workload(double totalTime, WorkloadDistribution distribution, PrepareTime prepareTime){
-        this.workingTime = totalTime;
+    public Workload(double workloadMinutesTotal, WorkloadDistribution distribution){
+        this.workloadMinutesTotal = workloadMinutesTotal;
         this.distribution = distribution;
-        this.prepareTime = prepareTime;
-    }
-    public Workload(double totalTime, PrepareTime prepareTime){
-        this.workingTime = totalTime;
-        this.distribution = WorkloadDistribution.LINEAR;
-        this.prepareTime = prepareTime;
-    }
-    public Workload(double totalTime){
-        this.workingTime = totalTime;
-        this.distribution = WorkloadDistribution.LINEAR;
-        this.prepareTime = PrepareTime.SEVENDAYS;
     }
 
-    public double getWorkingTime() {
-        return workingTime;
+    public Workload(double workloadMinutesTotal){
+        this.workloadMinutesTotal = workloadMinutesTotal;
+        this.distribution = WorkloadDistribution.LINEAR;
     }
 
-    public void setWorkingTime(double workingTime) {
-        this.workingTime = workingTime;
+    @Override
+    public double getWorkloadMinutesTotal() {
+        return this.workloadMinutesTotal;
+    }
+
+    public void setWorkloadMinutesTotal(double workloadMinutesTotal) {
+        this.workloadMinutesTotal = workloadMinutesTotal;
     }
 
     public WorkloadDistribution getDistribution() {
-        return distribution;
+        return this.distribution;
     }
 
     public void setDistribution(WorkloadDistribution distribution) {
         this.distribution = distribution;
     }
 
-    public int getPrepareTime() {
-        switch(this.prepareTime){
-            case ALLTIME:
-                return -1;
-            case SEVENDAYS:
-                return 7;
-            case FOURTEENDAYS:
-                return 14;
-            default:
-                return -1;
+    @Override
+    public double getWorkloadMinutesOnDayX(Date startDate, Date dayX, Date dueDate) {
+        if(startDate.after(dayX)){
+            return 0;
         }
-    }
+        double m;
+        int diffDays = (int) TimeUnit.DAYS.convert(Math.abs(dueDate.getTime() - startDate.getTime()),
+        TimeUnit.MILLISECONDS);
+        int dayNumberInProcess = (int) TimeUnit.DAYS.convert(Math.abs(dueDate.getTime() - startDate.getTime()),
+        TimeUnit.MILLISECONDS);
 
-    public void setPrepareTime(PrepareTime prepareTime) {
-        this.prepareTime = prepareTime;
+        switch(this.distribution){
+            case CONSTANT:
+                return workloadMinutesTotal/diffDays;
+
+            case EXPONENTIAL:
+                double faktor = 1.1; // 10% more per day (faktor a)
+                // function f(x)=a^x+b -> Integral from 0 to diffDays t is
+                // a^t/ln(a)+b*t-1/ln(a)
+                // Integral from 0 to diffDays must be workloadMinutesTotal w -> solve -> b=-(a^t-ln(a)*w-1)/(ln(a)*t)
+                double workloadDayOne = -(Math.pow(faktor, diffDays) - Math.log(faktor) * workloadMinutesTotal - 1) / (Math.log(faktor) * diffDays);
+                return Math.pow(faktor, dayNumberInProcess) + workloadDayOne;
+
+            case LINEAR:
+                m = 2 * workloadMinutesTotal / Math.pow(diffDays, 2);
+                return m * dayNumberInProcess;
+
+            default: //LINEAR
+                m = 2 * workloadMinutesTotal / Math.pow(diffDays, 2);
+                return m * dayNumberInProcess;
+        }
     }
 }

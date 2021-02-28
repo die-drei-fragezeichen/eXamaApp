@@ -1,55 +1,50 @@
 package ch.diedreifragezeichen.exama.assignments;
 
-import java.util.List;
+import java.util.Date;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import ch.diedreifragezeichen.exama.assignments.Workload.PrepareTime;
-import ch.diedreifragezeichen.exama.assignments.Workload.WorkloadDistribution;
+import ch.diedreifragezeichen.exama.courses.Course;
 
-import java.util.ArrayList;
-import java.util.Date;
+public abstract class Assignment implements AssignmentInterface {
 
-@SuppressWarnings("unused")
-public abstract class Assignment {
+    public enum availablePrepTime {
+        ALLTIME, SEVENDAYS, FOURTEENDAYS
+    }
+
     private long id;
     private long creator;
-    private int course;
+    private Set<Course> courses;
     private int subject;
     private Date editDate;
     private Date startDate;
     private Date dueDate;
+    private availablePrepTime availableTime;
+    private String description;
     private Workload workload;
-
-    public Assignment(long id, long user, int course, int subject, Date editDate, Date startDate, Date dueDate,
-            Workload workload) {
-        this.id = id;
-        this.creator = user;
-        this.course = course;
-        this.subject = subject;
-        this.editDate = editDate;
-        this.startDate = startDate;
-        this.dueDate = dueDate;
-        this.workload = workload;
-    }
 
     public long getId() {
         return id;
     }
 
-    public long getUser() {
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getCreator() {
         return creator;
     }
 
-    public void setUser(long user) {
-        this.creator = user;
+    public void setCreator(long creator) {
+        this.creator = creator;
     }
 
-    public int getCourse() {
-        return course;
+    public Set<Course> getCourses() {
+        return courses;
     }
 
-    public void setCourse(int course) {
-        this.course = course;
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 
     public int getSubject() {
@@ -84,6 +79,22 @@ public abstract class Assignment {
         this.dueDate = dueDate;
     }
 
+    public availablePrepTime getAvailableTime() {
+        return availableTime;
+    }
+
+    public void setAvailableTime(availablePrepTime availableTime) {
+        this.availableTime = availableTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Workload getWorkload() {
         return workload;
     }
@@ -92,49 +103,52 @@ public abstract class Assignment {
         this.workload = workload;
     }
 
-    public long getNumberOfDays() {
-        long diff = Math.abs(this.dueDate.getTime() - this.startDate.getTime());
-        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+    @Override
+    public int getAvailableDaysToGo(Date date) {
+        long diff = Math.abs(this.dueDate.getTime() - date.getTime());
+        return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
+    @Override
+    public int getAvailableDaysTotal() {
+        long diff = Math.abs(this.dueDate.getTime() - this.startDate.getTime());
+        return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
     public double getWorkloadValue(Date date) {
         // not yet started
         if (this.startDate.after(date)) {
             return 0;
         }
+        //TODO: store this constant in the Database to be changable
+        //specifice the number of workload hours for 100%
+        double hundredPercent = 3.5;
+        double hundredPercentMinutes = hundredPercent*60;
 
-        double workingTime = this.workload.getWorkingTime();
-        WorkloadDistribution dist = this.workload.getDistribution();
+        double workloadMinutes = this.workload.getWorkloadMinutesOnDayX(this.getRealStartDate(), date, this.dueDate);
 
-        double prepareTime = this.workload.getPrepareTime();
-        if (prepareTime == -1 || prepareTime > this.getNumberOfDays()) {
-            prepareTime = this.getNumberOfDays();
-        }
-        double m;
-        int dayNumberInProcess = (int) TimeUnit.DAYS.convert(Math.abs(date.getTime() - this.startDate.getTime()),
-                TimeUnit.MILLISECONDS);
+        return workloadMinutes / hundredPercentMinutes;
+    }
 
-        switch (dist) {
-            case CONSTANT:
-                return workingTime / prepareTime;
-
-            case EXPONENTIAL:
-                double faktor = 1.1; // 10% more per day (faktor a)
-                // function f(x)=a^x+b -> Integral from 0 to prepareTime t is
-                // a^t/ln(a)+b*t-1/ln(a)
-                // Integral from 0 to prepareTime must be workingTime w -> solve -> b=
-                // -(a^t-ln(a)*w-1)/(ln(a)*t)
-                double workloadDayOne = -(Math.pow(faktor, prepareTime) - Math.log(faktor) * workingTime - 1)
-                        / (Math.log(faktor) * prepareTime);
-                return Math.pow(faktor, dayNumberInProcess) + workloadDayOne;
-
-            case LINEAR:
-                m = 2 * workingTime / Math.pow(prepareTime, 2);
-                return m * dayNumberInProcess;
-
-            default: // LINEAR
-                m = 2 * workingTime / Math.pow(prepareTime, 2);
-                return m * dayNumberInProcess;
+    @Override
+    public Date getRealStartDate() {
+        int diffDays = (int) TimeUnit.DAYS.convert(Math.abs(this.dueDate.getTime() - this.startDate.getTime()), TimeUnit.MILLISECONDS);
+        switch(availableTime){
+            case ALLTIME:
+                return this.startDate;
+            case SEVENDAYS:
+                if(diffDays<7){
+                    return this.startDate;
+                }
+                return new Date(this.dueDate.getTime()-7*24*60*60*1000);
+            case FOURTEENDAYS:
+                if(diffDays<14){
+                    return this.startDate;
+                }
+                return new Date(this.dueDate.getTime()-14*24*60*60*1000);
+            default:
+                return this.startDate;
         }
     }
 }

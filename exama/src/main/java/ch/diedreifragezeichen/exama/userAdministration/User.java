@@ -5,7 +5,10 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 @Entity
+@DynamicUpdate
 @Table(name = "users")
 public class User {
 
