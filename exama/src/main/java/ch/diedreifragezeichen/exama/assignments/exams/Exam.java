@@ -9,6 +9,7 @@ import ch.diedreifragezeichen.exama.assignments.Workload;
 import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
 import ch.diedreifragezeichen.exama.courses.Course;
 
+@SuppressWarnings("unused")
 public class Exam extends Assignment {
 
     private long id;
