@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Workload implements WorkloadInterface {
-
+    private long id;
     private double workloadMinutesTotal;
     private WorkloadDistribution distribution;
 

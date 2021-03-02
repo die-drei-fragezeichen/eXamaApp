@@ -11,14 +11,14 @@ public abstract class Assignment implements AssignmentInterface {
 
     private long id;
     private long creator;
-    private Set<Course> courses;
+    private Set<Course> courses; // ManyToMany
     private int subject;
     private Date editDate;
     private Date startDate;
     private Date dueDate;
-    private AvailablePrepTime availableTime;
+    private AvailablePrepTime availableTime; // ManyToOne (Many assignments can have same PrepTime) ->  At AvailablePrepTime it will be OneToMany (One Preptime can have many Assignments)
     private String description;
-    private Workload workload;
+    private Workload workload; // OneToOne (One Assignment has one Workload an vice versa)
 
     public long getId() {
         return id;
