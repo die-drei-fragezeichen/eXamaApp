@@ -34,6 +34,10 @@ public class Workload implements WorkloadInterface {
     // this.setDistribution(distribution);
     // }
 
+    public Long getId(){
+        return this.id;
+    }
+
     @Override
     public double getWorkloadMinutesTotal() {
         return this.workloadMinutesTotal;

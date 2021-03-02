@@ -23,8 +23,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import ch.diedreifragezeichen.exama.exams.Exam;
-import ch.diedreifragezeichen.exama.exams.ExamRepository;
+import ch.diedreifragezeichen.exama.TESTKLASSEN.exams.Exam;
+import ch.diedreifragezeichen.exama.TESTKLASSEN.exams.ExamRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)

@@ -5,7 +5,6 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ch.diedreifragezeichen.exama.exams.ExamRepository;
 import javassist.NotFoundException;
 
 public class WorkloadService {

@@ -5,8 +5,8 @@ import java.util.Set;
 
 import ch.diedreifragezeichen.exama.assignments.Assignment;
 import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTime;
-import ch.diedreifragezeichen.exama.assignments.Workload;
 import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
+import ch.diedreifragezeichen.exama.assignments.workload.Workload;
 import ch.diedreifragezeichen.exama.courses.Course;
 
 @SuppressWarnings("unused")

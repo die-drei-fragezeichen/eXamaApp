@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.exams;
+package ch.diedreifragezeichen.exama.TESTKLASSEN.exams;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

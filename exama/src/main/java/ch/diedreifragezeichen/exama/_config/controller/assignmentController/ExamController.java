@@ -10,8 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.diedreifragezeichen.exama.exams.ExamRepository;
-import ch.diedreifragezeichen.exama.exams.Exam;
+import ch.diedreifragezeichen.exama.TESTKLASSEN.exams.ExamRepository;
+import ch.diedreifragezeichen.exama.TESTKLASSEN.exams.Exam;
 
 @Controller
 public class ExamController {
