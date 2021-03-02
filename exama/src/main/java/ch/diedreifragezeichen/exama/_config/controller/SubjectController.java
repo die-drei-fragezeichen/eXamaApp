@@ -45,7 +45,7 @@ public class SubjectController {
 
     @GetMapping("/subjects/{id}/edit")
     public ModelAndView editSubject(@PathVariable(name = "id") Long id) throws NotFoundException {
-        Subject subject = subjectRepo.getSubjectByID(id);
+        Subject subject = subjectRepo.findSubjectById(id);
         if (subject == null) {
             throw new NotFoundException("Subject not found");
         }
@@ -57,7 +57,7 @@ public class SubjectController {
     @GetMapping("/subjects/{id}/edited")
     public String updateSubject(@PathVariable(name = "id") Long id, @RequestParam(name = "name") String name,
             @RequestParam(name = "tag") String tag) throws NotFoundException {
-        Subject subject = subjectRepo.getSubjectByID(id);
+        Subject subject = subjectRepo.findSubjectById(id);
         if (subject == null) {
             throw new NotFoundException("Subject not found");
         }
@@ -67,7 +67,7 @@ public class SubjectController {
 
     @GetMapping("/subjects/{id}/delete")
     public String deleteSubject(@PathVariable(name = "id") Long id) throws NotFoundException {
-        Subject subject = subjectRepo.getSubjectByID(id);
+        Subject subject = subjectRepo.findSubjectById(id);
         if (subject == null) {
             throw new NotFoundException("Subject not found");
         }

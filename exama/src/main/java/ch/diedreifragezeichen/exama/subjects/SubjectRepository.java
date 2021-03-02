@@ -21,8 +21,9 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
     // Then we create REST APIs(GET, POST, PUT, DELETE)
     // Careful: "Course" here refers not to the table but to a Course object u
 
-    @Query("SELECT s FROM Subject s WHERE s.id = ?1")
-    public Subject getSubjectByID(Long id);
+    
+    
+    public Subject findSubjectById(Long id);
 
     @Query("SELECT s FROM Subject s WHERE s.name = ?1")
     public Subject getSubjectByName(String name);

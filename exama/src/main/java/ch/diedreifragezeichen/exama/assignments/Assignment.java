@@ -5,14 +5,18 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTime;
+import ch.diedreifragezeichen.exama.assignments.workload.Workload;
 import ch.diedreifragezeichen.exama.courses.Course;
-
+import ch.diedreifragezeichen.exama.subjects.Subject;
+import ch.diedreifragezeichen.exama.userAdministration.User;
+//this is an abstract class
+//no objects can be instatiated
 public abstract class Assignment implements AssignmentInterface {
 
     private long id;
-    private long creator;
+    private User creator;
     private Set<Course> courses;
-    private int subject;
+    private Subject subject;
     private Date editDate;
     private Date startDate;
     private Date dueDate;
@@ -28,11 +32,11 @@ public abstract class Assignment implements AssignmentInterface {
         this.id = id;
     }
 
-    public long getCreator() {
+    public User getCreator() {
         return creator;
     }
 
-    public void setCreator(long creator) {
+    public void setCreator(User creator) {
         this.creator = creator;
     }
 
@@ -44,11 +48,11 @@ public abstract class Assignment implements AssignmentInterface {
         this.courses = courses;
     }
 
-    public int getSubject() {
+    public Subject getSubject() {
         return subject;
     }
 
-    public void setSubject(int subject) {
+    public void setSubject(Subject subject) {
         this.subject = subject;
     }
 

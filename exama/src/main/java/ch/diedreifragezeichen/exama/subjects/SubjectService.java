@@ -21,7 +21,7 @@ public class SubjectService {
     EntityManager em;
 
     public Subject loadByID(Long id) throws NotFoundException {
-        Subject subject = subjectRepo.getSubjectByID(id);
+        Subject subject = subjectRepo.findSubjectById(id);
         if (subject == null) {
             throw new NotFoundException("Subject not found");
         }
