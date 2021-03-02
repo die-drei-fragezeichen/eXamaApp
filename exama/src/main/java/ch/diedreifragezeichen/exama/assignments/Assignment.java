@@ -14,15 +14,21 @@ import ch.diedreifragezeichen.exama.userAdministration.User;
 public abstract class Assignment implements AssignmentInterface {
 
     private long id;
+<<<<<<< HEAD
     private User creator;
     private Set<Course> courses;
     private Subject subject;
+=======
+    private long creator;
+    private Set<Course> courses; // ManyToMany
+    private int subject;
+>>>>>>> cd5fab8fb5969438cd8417ebe493b6777c78bc1a
     private Date editDate;
     private Date startDate;
     private Date dueDate;
-    private AvailablePrepTime availableTime;
+    private AvailablePrepTime availableTime; // ManyToOne (Many assignments can have same PrepTime) ->  At AvailablePrepTime it will be OneToMany (One Preptime can have many Assignments)
     private String description;
-    private Workload workload;
+    private Workload workload; // OneToOne (One Assignment has one Workload an vice versa)
 
     public long getId() {
         return id;

@@ -72,7 +72,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{email}/edited")
-    public String updateSubject(@PathVariable(name = "email") String email,
+    public String updateUser(@PathVariable(name = "email") String email,
             @RequestParam(name = "password") String password, @RequestParam(name = "firstName") String firstName,
             @RequestParam(name = "lastName") String lastName,
             @RequestParam(name = "isEnabled", required = false) boolean isEnabled,
