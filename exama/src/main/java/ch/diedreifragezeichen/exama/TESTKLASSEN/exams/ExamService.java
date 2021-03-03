@@ -35,13 +35,13 @@ public class ExamService {
         return exam;
     }
 
-    public List<Exam> loadByDate(Date date) throws NotFoundException {
-        List<Exam> dailyExams = examRepo.findAllByExamDate(date);
-        if (dailyExams == null) {
-            throw new NotFoundException("Exam not found");
-        }
-        return dailyExams;
-    }
+    // public List<Exam> loadByDate(Date date) throws NotFoundException {
+    //     List<Exam> dailyExams = examRepo.findAllByExamDate(date);
+    //     if (dailyExams == null) {
+    //         throw new NotFoundException("Exam not found");
+    //     }
+    //     return dailyExams;
+    // }
 
 
     public static Date getFirstDayOfWeek(Date date) {
@@ -67,17 +67,17 @@ public class ExamService {
         return calendar.getTime();
       }
 
-    public List<Exam> loadExamWeekByDate(Date date) throws NotFoundException {
+    // public List<Exam> loadExamWeekByDate(Date date) throws NotFoundException {
             
-        //DateFormat df = new SimpleDateFormat("EEE dd/MM/yyyy");
+    //     //DateFormat df = new SimpleDateFormat("EEE dd/MM/yyyy");
         
         
-        Date Monday = getFirstDayOfWeek(date);
-        Date Sunday = getLastDayOfWeek(date);
+    //     Date Monday = getFirstDayOfWeek(date);
+    //     Date Sunday = getLastDayOfWeek(date);
         
-        List<Exam> allExamsOfWeek = examRepo.findAllByExamDateBetween(Monday, Sunday);
-        return allExamsOfWeek;
-    }
+    //     List<Exam> allExamsOfWeek = examRepo.findAllByExamDateBetween(Monday, Sunday);
+    //     return allExamsOfWeek;
+    // }
 }
 
 // For further inspiration:

@@ -23,16 +23,18 @@ public class ExamController {
      */
 
     @GetMapping("/exams/show")
-    public String listExams(Model model) {
-        List<Exam> listExams = examRepo.findAll();
-        model.addAttribute("listExams", listExams);
+    public String showWorkloads(Model model){
+        List<Exam> listWorkloads = examRepo.findAll();
+        model.addAttribute("liste", listWorkloads);
         return "adminTemplates/examsShow";
     }
 
+
+
     @GetMapping("/exams/create")
-    public ModelAndView newexam() {
+    public ModelAndView newExam() {
         Exam exam = new Exam();
-        ModelAndView mav = new ModelAndView("adminTemplates/examCreate");
+        ModelAndView mav = new ModelAndView("adminTemplates/examsCreate");
         mav.addObject("exam", exam);
         return mav;
     }

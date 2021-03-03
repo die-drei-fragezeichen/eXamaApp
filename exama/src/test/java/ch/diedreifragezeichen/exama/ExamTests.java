@@ -1,19 +1,16 @@
 package ch.diedreifragezeichen.exama;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+// import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+// import java.io.ByteArrayOutputStream;
+// import java.io.PrintStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.assertj.core.api.Assert;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -46,8 +43,8 @@ public class ExamTests {
     public void testCreateExam() throws ParseException {
         Exam testExam = new Exam();
         testExam.setName("Shakespeare's fiddle");
-        testExam.setCountingFactor(4.0);
-        testExam.setExamDate(new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-15"));
+        // testExam.setCountingFactor(4.0);
+        // testExam.setExamDate(new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-15"));
 
         Exam savedExam = examRepo.save(testExam);
 

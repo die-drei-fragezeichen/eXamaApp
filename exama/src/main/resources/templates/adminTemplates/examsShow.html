@@ -1,0 +1,46 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/head :: head"></head>
+
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="fragments/header :: header"></div>
+
+        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>Prüfungen anzeigen</h1>
+            <a href="/exams/create">> neue Prüfung hinzufügen</a><br><br>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Exam ID</th>
+                        <th>Exam Name</th>
+                        <th>Exam Date</th>
+                        <!-- <th></th>
+                        <th></th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="exam : ${liste}">
+                        <td th:text="${exam.Id}"></td>
+                        <td th:text="${exam.name}"></td>
+<!--                        <td th:text="${exam.examDate}"></td> -->
+                        
+                        <!-- <td><a th:href="@{/workloads/{id}/edit(id=${workload.id})}">bearbeiten</a></td>
+                        <td><a th:href="@{/workloads/{id}/delete(id=${workload.id})}">löschen</a></td> -->
+                        <!-- </a> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="fragments/footer :: footer"></div>
+</body>
+
+</html>

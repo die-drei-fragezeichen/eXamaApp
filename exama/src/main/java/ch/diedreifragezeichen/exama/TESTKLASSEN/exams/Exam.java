@@ -15,21 +15,21 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @DynamicUpdate
 public class Exam {
-    // The @Id and @GeneratedValue annotations map the field id to the primary key
+    //The @Id and @GeneratedValue annotations map the field id to the primary key
     // column of the table.
     @Id
     @Column(name = "id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "exam_name", unique = true, nullable = false, length = 20)
+    @Column(name = "name", unique = true, nullable = true, length = 20)
     private String name;
 
-    @Temporal(TemporalType.DATE)
-    private Date examDate;
+    // @Temporal(TemporalType.DATE)
+    // private Date examDate;
 
-    @Column(name = "counting_factor", nullable = false)
-    private double countingFactor;
+    // @Column(name = "counting_factor")
+    // private double countingFactor;
 
     public Long getId() {
         return id;
@@ -47,21 +47,21 @@ public class Exam {
         this.name = name;
     }
 
-    public Date getExamDate() {
-        return examDate;
-    }
+    // public Date getExamDate() {
+    //     return examDate;
+    // }
 
-    public void setExamDate(Date examDate) {
-        this.examDate = examDate;
-    }
+    // public void setExamDate(Date examDate) {
+    //     this.examDate = examDate;
+    // }
 
-    public double getCountingFactor() {
-        return countingFactor;
-    }
+    // public double getCountingFactor() {
+    //     return countingFactor;
+    // }
 
-    public void setCountingFactor(double countingFactor) {
-        this.countingFactor = countingFactor;
-    }
+    // public void setCountingFactor(double countingFactor) {
+    //     this.countingFactor = countingFactor;
+    // }
 
     
 }

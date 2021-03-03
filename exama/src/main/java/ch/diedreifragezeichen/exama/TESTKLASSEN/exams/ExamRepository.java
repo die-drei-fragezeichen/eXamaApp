@@ -11,13 +11,13 @@ public interface ExamRepository extends JpaRepository<Exam, Long>{
 
     public Exam findExamById(Long id);
 
-    public List<Exam> findAllByExamDate(Date examDate);
+    // public List<Exam> findAllByExamDate(Date examDate);
     
     public long deleteByName(String examName);
 
-    public List<Exam> findAllByExamDateBetween(
-        Date Monday,
-        Date Sunday);
+    // public List<Exam> findAllByExamDateBetween(
+    //     Date Monday,
+    //     Date Sunday);
 
     
 }
