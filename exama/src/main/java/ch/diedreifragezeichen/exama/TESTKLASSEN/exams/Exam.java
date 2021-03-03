@@ -1,6 +1,6 @@
 package ch.diedreifragezeichen.exama.TESTKLASSEN.exams;
 
-import java.util.Date;
+import java.time.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,10 +26,10 @@ public class Exam {
     private String name;
 
     // @Temporal(TemporalType.DATE)
-    // private Date examDate;
+    private LocalDate examDate;
 
-    // @Column(name = "counting_factor")
-    // private double countingFactor;
+    @Column(name = "counting_factor")
+    private double countingFactor;
 
     public Long getId() {
         return id;
@@ -47,21 +47,21 @@ public class Exam {
         this.name = name;
     }
 
-    // public Date getExamDate() {
-    //     return examDate;
-    // }
+    public LocalDate getExamDate() {
+        return examDate;
+    }
 
-    // public void setExamDate(Date examDate) {
-    //     this.examDate = examDate;
-    // }
+    public void setExamDate(LocalDate examDate) {
+        this.examDate = examDate;
+    }
 
-    // public double getCountingFactor() {
-    //     return countingFactor;
-    // }
+    public double getCountingFactor() {
+        return countingFactor;
+    }
 
-    // public void setCountingFactor(double countingFactor) {
-    //     this.countingFactor = countingFactor;
-    // }
+    public void setCountingFactor(double countingFactor) {
+        this.countingFactor = countingFactor;
+    }
 
     
 }

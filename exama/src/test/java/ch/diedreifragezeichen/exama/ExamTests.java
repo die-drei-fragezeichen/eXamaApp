@@ -58,7 +58,7 @@ public class ExamTests {
      * this test creates a result list of exams collects all the exams from db
      * beetween given dates this test passes successfully
      */
-     @Test
+    /* @Test
     public void createExamList() throws ParseException {
 
         Date testMonday = new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-15");
@@ -69,6 +69,7 @@ public class ExamTests {
 
         assertTrue(result.stream().count() == 4);
     }
+    */
 
     /*
      * this test deletes exams by name The test passes successfully

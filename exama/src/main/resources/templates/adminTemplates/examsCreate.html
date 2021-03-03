@@ -15,25 +15,24 @@
             <h1>Neue Prüfung erstellen</h1>
             <a href="/exams/show">> alle Prüfungen anzeigen</a><br><br><br>
 
-            <form th:action="@{/exams/created}" th:object="${newExam}" method="post">
+            <form th:action="@{/exams/created}" th:object="${exam}" method="post">
                 <div>
                     <label>Prüfungsname: </label>
 
-                <!--<div>
+                <div>
                     <input type="text" th:field="*{name}" class="form-control" />
-                </div>-->
+                </div>
                     <div>
                      <label>Prüfungsdatum: </label>
                      </div>
-                    <!--<div>
-                        <input type="date" th:field="*{examDate}" class="form-control" />
-                    </div>-->
+                        <input type="date" th:field="*{examDate}" class="form-control" value="2021-02-21" min="2021-01-01" max="2021-07-21" />
+                    </div>
                     <div>
                      <label>Prüfungsfaktor: </label>
                      </div>
-                    <!--<div>
+                    <div>
                         <input type="number" th:field="*{countingFactor}" class="form-control" min="0.5" max="3.0" step = "0.5" value = "1.0" />
-                </div>  -->
+                </div>
                 <br>
                 <div>
                     <button type="submit" class="login-button">Prüfung erstellen</button>

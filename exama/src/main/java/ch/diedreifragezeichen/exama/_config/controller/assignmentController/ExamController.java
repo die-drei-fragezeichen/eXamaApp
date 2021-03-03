@@ -18,6 +18,7 @@ public class ExamController {
     @Autowired
     private ExamRepository examRepo;
 
+
     /**
      * Exam Mappings
      */
@@ -36,6 +37,9 @@ public class ExamController {
         Exam exam = new Exam();
         ModelAndView mav = new ModelAndView("adminTemplates/examsCreate");
         mav.addObject("exam", exam);
+        //mav.addAttribute("standardDate", new LocalDate());
+
+
         return mav;
     }
 

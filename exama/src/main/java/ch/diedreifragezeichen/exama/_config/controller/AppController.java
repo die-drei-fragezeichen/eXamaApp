@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AppController {
 
+    
+
     // //Get the subject by tag. If Spring gets this this mapping, it will carry out
     // the method getSubjectByName from DB
     // @GetMapping("subjects/show")
