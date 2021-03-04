@@ -25,6 +25,13 @@
                     <div>
                      <label>Prüfungsdatum: </label>
                      </div>
+
+
+
+   <!-- Values for th:object attributes in form tags must be variable expressions (${...}) specifying only the name of a model attribute, without property navigation. This means that an expression like ${seedStarter} is valid, but ${seedStarter.data} would not be.
+
+    Once inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
+
                         <input type="date" th:field="*{examDate}" class="form-control" value="2021-02-21" min="2021-01-01" max="2021-07-21" />
                     </div>
                     <div>

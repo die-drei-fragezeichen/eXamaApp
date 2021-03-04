@@ -6,18 +6,18 @@
 </head>
 <body>
 
-<h2>Format ISO</h2>
+<h2>Format ISO - Anzeige von verschiedenen Fromaten </h2>
 <p th:text="${#dates.formatISO(date)}"></p>
 <p th:text="${#temporals.formatISO(localDate)}"></p>
 <p th:text="${#temporals.formatISO(localDateTime)}"></p>
 <p th:text="${#temporals.formatISO(java8Instant)}"></p>
 
-<h1>Format dates</h1>
+<h2>Datum Formate z.B. "${#dates.format(date, 'dd.MM.yyyy')}"</h2>
 <p th:text="${#dates.format(date, 'dd.MM.yyyy')}"></p>
 <p th:text="${#temporals.format(java8Instant, 'dd-MM-yyyy HH:mm:ss')}"></p>
 <p th:text="${#temporals.format(localDateTime, 'dd-MMMM-yyyy', new java.util.Locale('de', 'DE'))}">
 
-<h2>Get date fields</h2>
+<h2>Get date fields - z.B. th:text="${#temporals.monthName(localDateTime)}"</h2>
 <table style="width:300px">
     <tr>
         <td>Date</td>

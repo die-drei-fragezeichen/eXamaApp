@@ -12,7 +12,7 @@ import java.util.Date;
 @Controller
 public class DatesController {
 
-    @GetMapping("/")
+    @GetMapping("/dates")
     public String dates(Model model) {
         model.addAttribute("date", new Date());
         model.addAttribute("localDateTime", LocalDateTime.now());
