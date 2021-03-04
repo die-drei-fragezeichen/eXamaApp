@@ -11,6 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @DynamicUpdate
@@ -22,13 +23,14 @@ public class Exam {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", unique = true, nullable = true, length = 20)
+    @Column(name = "name", unique = true, nullable = false, length = 20)
     private String name;
 
-    // @Temporal(TemporalType.DATE)
-    private LocalDate examDate;
+    //@DateTimeFormat(pattern = "dd.MM.yyyy") --> geht dann nicht mehr mit dem HTML erstellen
+    @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
+    private LocalDate date;
 
-    @Column(name = "counting_factor")
+    @Column(name = "counting_factor", nullable = true)
     private double countingFactor;
 
     public Long getId() {
@@ -47,12 +49,12 @@ public class Exam {
         this.name = name;
     }
 
-    public LocalDate getExamDate() {
-        return examDate;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setExamDate(LocalDate examDate) {
-        this.examDate = examDate;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public double getCountingFactor() {

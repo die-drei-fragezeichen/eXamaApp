@@ -18,18 +18,21 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Exam ID</th>
-                        <th>Exam Name</th>
-                        <th>Exam Date</th>
-                        <!-- <th></th>
-                        <th></th> -->
+                        <th>Prüfungs ID</th>
+                        <th>Name der Prüfung</th>
+                        <th>Prüfungsdatum / Deaadline</th>
+                        <th>Faktor</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="exam : ${liste}">
                         <td th:text="${exam.Id}"></td>
                         <td th:text="${exam.name}"></td>
-<!--                        <td th:text="${exam.examDate}"></td> -->
+                        <td th:text="${exam.date}"></td>
+                        <td th:text="${exam.countingFactor}"></td>
+
+
                         
                         <!-- <td><a th:href="@{/workloads/{id}/edit(id=${workload.id})}">bearbeiten</a></td>
                         <td><a th:href="@{/workloads/{id}/delete(id=${workload.id})}">löschen</a></td> -->
