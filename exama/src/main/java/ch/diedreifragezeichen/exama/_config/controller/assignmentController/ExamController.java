@@ -1,5 +1,6 @@
 package ch.diedreifragezeichen.exama._config.controller.assignmentController;
 
+import java.time.LocalDate;
 import java.util.List;
 
 //import javassist.NotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.TESTKLASSEN.exams.ExamRepository;
+import ch.diedreifragezeichen.exama.TESTKLASSEN.exams.ExamService;
 import ch.diedreifragezeichen.exama.TESTKLASSEN.exams.Exam;
 
 @Controller
@@ -18,13 +20,27 @@ public class ExamController {
     @Autowired
     private ExamRepository examRepo;
 
+     /**
+     * Fetches All exams during a certain period - depending on set date
+     */
+    @GetMapping("/examBar/show")
+    public String showExamBars(Model model){
+        LocalDate fakeDate = LocalDate.parse("2021-03-15");
+        ExamService helper = new ExamService();
+        LocalDate Monday = helper.getFirstDayOfWeek(fakeDate);
+        LocalDate Sunday = helper.getLastDayOfWeek(fakeDate);
 
+
+        List<Exam> listExams = examRepo.findAllByDateBetween(Monday, Sunday);
+        model.addAttribute("liste", listExams);
+        return "studentTemplates/examBarShow";
+    }
     /**
      * Exam Mappings
      */
 
     @GetMapping("/exams/show")
-    public String showWorkloads(Model model){
+    public String showExams(Model model){
         List<Exam> listWorkloads = examRepo.findAll();
         model.addAttribute("liste", listWorkloads);
         return "adminTemplates/examsShow";
