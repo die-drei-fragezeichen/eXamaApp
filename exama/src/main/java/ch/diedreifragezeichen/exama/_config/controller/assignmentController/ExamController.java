@@ -56,7 +56,7 @@ public class ExamController {
     /**
      * Fetches All exams based on the selected Datum object
      */
-    @GetMapping("/examBar/show")
+    @RequestMapping("/examBar/show")
     public String showExamBarForSavedDate(Model model) {
         Datum selectedDatum = datumRepo.findAll().get(0);
         datumRepo.deleteAll();
@@ -67,18 +67,54 @@ public class ExamController {
 
         List<Exam> listExams = examRepo.findAllByDateBetween(Monday, Sunday);
         model.addAttribute("liste", listExams);
+
+        calculateNumberOfExams(model, listExams);
+        calculateExamFactor(model, listExams);
+
+
+
         return "studentTemplates/examBarShow";
+
+    }
+
+    /**
+     * Hilfsmethode 1
+     */
+
+    public Model calculateNumberOfExams(Model model, List<Exam> listExams){
+        // NOTE: Thymeleaf isn't Velocity or Freemarker and doesn't replace expressions
+        // blindly. You need the expression in an appropriate tag attribute, such as
+        // <h1 data-th-text="${data}" />
+
+        model.addAttribute("msg", "Anzahl Leistungsmessungen diese Woche: ");
+        long anzahlExamen = listExams.stream().count();
+        model.addAttribute("anzpr", anzahlExamen);
+        //Schreibe im html: <h1 data-th-text="${anzpr}" />
+        return model;
+    }
+
+    /**
+     * Hilfsmethode 2
+     */
+
+    public Model calculateExamFactor(Model model, List<Exam> listExams){
+
+        model.addAttribute("msg2", "Insgesamt zählt das mit einem Belastungsfaktor von: ");
+        double ExamFactor = listExams.stream().mapToDouble(exam -> exam.getCountingFactor()).sum();
+        model.addAttribute("xFactor", ExamFactor);
+        //Schreibe im html: <h1 data-th-text="${anzpr}" />
+        return model;
     }
 
     /**
      * The following methods handle the examCreation
      */
 
-
     /**
-     * user arriving at this path is enabled to create a new exam. When arriving at the path
-     * a ModelAndView is created and the HTML link injected. New Exam "template"
-     * is added to the ModelAndView and returned to the "HTML" to be "filled"
+     * user arriving at this path is enabled to create a new exam. When arriving at
+     * the path a ModelAndView is created and the HTML link injected. New Exam
+     * "template" is added to the ModelAndView and returned to the "HTML" to be
+     * "filled"
      */
 
     @GetMapping("/exams/create")
@@ -92,10 +128,10 @@ public class ExamController {
     }
 
     /**
-     * When clicking the submit button, the User sends an Exam object.
-     * The examRepo saves this object into the db
-     * note that the link here is different than in the get method, but the user never really sees it
-     * user is redirected to the "show" page immediately
+     * When clicking the submit button, the User sends an Exam object. The examRepo
+     * saves this object into the db note that the link here is different than in
+     * the get method, but the user never really sees it user is redirected to the
+     * "show" page immediately
      */
 
     @PostMapping("/exams/created")
@@ -103,7 +139,6 @@ public class ExamController {
         examRepo.save(exam);
         return "redirect:/exams/show";
     }
-
 
     /**
      * user arrives at exams/show and sees a list of all the exams in DB.
