@@ -5,34 +5,33 @@ import java.util.concurrent.TimeUnit;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import ch.diedreifragezeichen.exama.assignments.WorkloadDistribution;
 import ch.diedreifragezeichen.exama.assignments.WorkloadInterface;
 
 @Entity
 @DynamicUpdate
+@Table(name = "workloads")
 public class Workload implements WorkloadInterface {
     @Id
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "workload_id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "worload_minutes_total", nullable = false)
+    @Column(name = "workload_minutestotal", nullable = false)
     private double workloadMinutesTotal;
 
-    // private WorkloadDistribution distribution;
-
-    // ______________
-
-    // public Workload(double workloadMinutesTotal) {
-    // this.workloadMinutesTotal = workloadMinutesTotal;
-    // this.setDistribution(distribution);
-    // }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "workloaddistribution_id")
+    private WorkloadDistribution distribution;
 
     public Long getId(){
         return this.id;
@@ -53,13 +52,13 @@ public class Workload implements WorkloadInterface {
         return 0;
     }
 
-    // public WorkloadDistribution getDistribution() {
-    //     return this.distribution;
-    // }
+    public WorkloadDistribution getDistribution() {
+         return this.distribution;
+    }
 
-    // public void setDistribution(WorkloadDistribution distribution) {
-    //     this.distribution = distribution;
-    // }
+    public void setDistribution(WorkloadDistribution distribution) {
+        this.distribution = distribution;
+    }
 
     // @Override
     // public double getWorkloadMinutesOnDayX(Date startDate, Date dayX, Date dueDate) {

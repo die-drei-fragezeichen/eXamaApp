@@ -16,16 +16,8 @@
             <a href="/examtypes/show">> alle Prüfungstypen anzeigen</a><br><br><br>
 
             <form
-                th:action="@{/examtypes/{id}/edited?tag={tag}name={name}&timeValue={timeValue}(id=${type.id},tag=${type.tag},name=${type.name},timeValue=${type.timeValue})}"
+                th:action="@{/examtypes/{id}/edited?name={name}&timeValue={timeValue}(id=${type.id},name=${type.name},timeValue=${type.timeValue})}"
                 th:object="${type}" method="put">
-                <div>
-                    <label>ExamType Tag: </label>
-                    <div>
-                        <input type="text" th:field="*{tag}" class="form-control" required minlength="1"
-                            maxlength="10" />
-                    </div>
-                </div>
-                <br>
                 <div>
                     <label>ExamType Name: </label>
                     <div>

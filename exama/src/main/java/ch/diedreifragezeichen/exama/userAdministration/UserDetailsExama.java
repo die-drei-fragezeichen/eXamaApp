@@ -44,15 +44,15 @@ public class UserDetailsExama implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return !user.isLocked();
-    }
-
-    @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    
     @Override
     public boolean isEnabled() {
         return user.isEnabled();

@@ -17,7 +17,7 @@
 
             <form
                 th:action="@{/users/{email}/edited?password={password}&firstName={firstName}&lastName={lastName}&isEnabled={isEnabled}&isLocked={isLocked}&roles={roles}
-                (email=${user.email},password=${user.password},firstName=${user.firstName},lastName=${user.lastName},isEnabled=${user.isEnabled},isLocked=${user.isLocked},roles=${user.roles})}"
+                (email=${user.email},password=${user.password},firstName=${user.firstName},lastName=${user.lastName},isEnabled=${user.isEnabled},roles=${user.roles})}"
                 th:object="${user}" method="put">
                 <div>
                     <label>Email (Username): </label>
@@ -54,13 +54,6 @@
                     <label>Aktiv: </label>
                     <div>
                         <input type="checkbox" th:name="isEnabled" th:checked="*{isEnabled}" class="form-control" />
-                    </div>
-                </div>
-                <br>
-                <div>
-                    <label>Blockiert: </label>
-                    <div>
-                        <input type="checkbox" th:name="isLocked" th:checked="*{isLocked}" class="form-control" />
                     </div>
                 </div>
                 <br>

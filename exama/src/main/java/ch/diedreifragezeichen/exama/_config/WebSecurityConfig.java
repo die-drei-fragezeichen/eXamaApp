@@ -50,8 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.anonymous().and()
         
-                .authorizeRequests().antMatchers("/css/**", "/images/**", "/js/**", "/install").permitAll().and()
-
+                .authorizeRequests().antMatchers("/css/**", "/images/**", "/js/**", "/install", "/adminTemplates/**").permitAll().and()
                 .authorizeRequests().antMatchers("/")
                 .hasAnyAuthority("SYSTEMADMIN", "ADMIN", "TEACHER", "REFERENCESTUDENT", "STUDENT")
                 .antMatchers("/fragments/**")
@@ -65,8 +64,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().anyRequest().authenticated().and()
 
                 .formLogin().loginPage("/login").usernameParameter("email").permitAll().and()
-
-                .logout().logoutSuccessUrl("/login").permitAll().and()
 
                 .exceptionHandling().accessDeniedPage("/403").and()
 

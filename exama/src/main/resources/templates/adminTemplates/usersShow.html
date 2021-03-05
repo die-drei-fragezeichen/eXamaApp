@@ -24,7 +24,6 @@
                         <th>Last Name</th>
                         <th>Rechte</th>
                         <th>Aktiv</th>
-                        <th>Blockiert</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -37,7 +36,6 @@
                         <td th:text="${user.lastName}"></td>
                         <td th:text="${user.roles}"></td>
                         <td th:text="${user.isEnabled}"></td>
-                        <td th:text="${user.isLocked}"></td>
                         <td><a th:href="@{/users/{email}/edit/(email=${user.email})}">bearbeiten</a></td>
                         <td><a th:href="@{/users/{email}/delete(email=${user.email})}">löschen</a></td>
                         </a>

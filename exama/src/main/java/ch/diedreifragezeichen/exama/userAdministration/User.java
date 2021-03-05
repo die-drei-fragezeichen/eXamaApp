@@ -1,11 +1,13 @@
 package ch.diedreifragezeichen.exama.userAdministration;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @DynamicUpdate
@@ -13,45 +15,38 @@ import org.hibernate.annotations.DynamicUpdate;
 public class User {
 
 	@Id
-	@Column(name = "id", unique = true, nullable = false)
+	@Column(name = "user_id", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "email", unique = true, nullable = false, length = 45)
+	@Column(name = "user_email", unique = true, nullable = false, length = 45)
 	private String email;
 
-	@Column(name = "password", nullable = false, length = 255)
+	@Column(name = "user_password", nullable = false, length = 255)
 	private String password;
 
-	@Column(name = "first_name", nullable = false, length = 20)
+	@Column(name = "user_firstname", nullable = false, length = 20)
 	private String firstName;
 
-	@Column(name = "last_name", nullable = false, length = 20)
+	@Column(name = "user_lastname", nullable = false, length = 20)
 	private String lastName;
 
-	@Column(name = "is_enabled", nullable = false, length = 1)
+	@Column(name = "user_enabled", nullable = false, length = 1)
 	private boolean isEnabled;
 
-	@Column(name = "is_locked", nullable = false, length = 1)
-	private boolean isLocked;
+	@Column(name = "user_loggedin", nullable = false, length = 1)
+	private boolean loggedIn;
 
-	// @Lob
-	// @Column(name = "courses", columnDefinition="BLOB", nullable = true)
-	// //@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	// //@JoinTable(name = "courses", joinColumns = @JoinColumn(name = "user_id"),
-	// inverseJoinColumns = @JoinColumn(name = "course_id"))
-	// private Set<Course> courses = new HashSet<>();
+	@Column(name = "user_lastlogin", nullable = true)
+	@DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
+	private LocalDate lastLogin;
 
-	// TODO
-	// @Column(name = "logged_in", nullable = false, length = 1)
-	// private boolean logged_in;
-
-	// TODO
-	// @Column(name = "last_login", nullable = false, length = ?)
-	// private Date last_login;
+	@Column(name = "user_createdon", nullable = false)
+	@DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
+	private LocalDate createdOn;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	@JoinTable(name = "map_users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
 	public Long getId() {
@@ -63,7 +58,7 @@ public class User {
 	}
 
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	public void setEmail(String email) {
@@ -71,7 +66,7 @@ public class User {
 	}
 
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	public void setPassword(String password) {
@@ -79,7 +74,7 @@ public class User {
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return this.firstName;
 	}
 
 	public void setFirstName(String firstName) {
@@ -87,7 +82,7 @@ public class User {
 	}
 
 	public String getLastName() {
-		return lastName;
+		return this.lastName;
 	}
 
 	public void setLastName(String lastName) {
@@ -95,26 +90,42 @@ public class User {
 	}
 
 	public boolean isEnabled() {
-		return isEnabled;
+		return this.isEnabled;
 	}
 
 	public void setEnabled(boolean enabled) {
 		this.isEnabled = enabled;
 	}
 
-	public boolean isLocked() {
-		return isLocked;
-	}
-
-	public void setLocked(boolean isLocked) {
-		this.isLocked = isLocked;
-	}
-
 	public Set<Role> getRoles() {
-		return roles;
+		return this.roles;
 	}
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public boolean isLoggedIn() {
+		return this.loggedIn;
+	}
+
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
+	}
+
+	public LocalDate getLastLogin() {
+		return this.lastLogin;
+	}
+
+	public void setLastLogin(LocalDate lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public LocalDate getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(LocalDate createdOn) {
+		this.createdOn = createdOn;
 	}
 }

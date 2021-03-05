@@ -10,17 +10,14 @@ import org.hibernate.annotations.DynamicUpdate;
 public class ExamType {
 
     @Id
-    @Column(name = "type_id", unique = true, nullable = false)
+    @Column(name = "examtype_id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "type_tag", unique = true, nullable = false, length = 10)
-    private String tag;
-
-    @Column(name = "type_name", unique = true, nullable = false, length = 50)
+    @Column(name = "examtype_name", unique = true, nullable = false, length = 50)
     private String name;
 
-    @Column(name = "type_timevalue", unique = false, nullable = false)
+    @Column(name = "examtype_timevalue", unique = false, nullable = false)
     private double timeValue;
 
     @Override
@@ -48,23 +45,15 @@ public class ExamType {
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -72,7 +61,7 @@ public class ExamType {
     }
 
     public double getTimeValue() {
-        return timeValue;
+        return this.timeValue;
     }
 
     public void setTimeValue(double timeValue) {

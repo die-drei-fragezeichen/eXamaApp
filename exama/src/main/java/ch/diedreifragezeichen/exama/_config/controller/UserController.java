@@ -1,5 +1,6 @@
 package ch.diedreifragezeichen.exama._config.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -51,13 +52,13 @@ public class UserController {
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         user.setEnabled(true);
-        user.setLocked(false);
+        user.setLoggedIn(false);
+        user.setCreatedOn(LocalDate.now());
         userRepo.save(user);
         // returns new mapping command on userSaved.html
         return "redirect:/users/show";
     }
 
-    // TODO: Edit without unique-Email-Error and without set new password mandatory
     @GetMapping("/users/{email}/edit")
     public ModelAndView editUser(@PathVariable(name = "email") String email) {
         ModelAndView mav = new ModelAndView("adminTemplates/userEdit");
@@ -76,18 +77,17 @@ public class UserController {
             @RequestParam(name = "password") String password, @RequestParam(name = "firstName") String firstName,
             @RequestParam(name = "lastName") String lastName,
             @RequestParam(name = "isEnabled", required = false) boolean isEnabled,
-            @RequestParam(name = "isLocked", required = false) boolean isLocked,
             @RequestParam(name = "roles", required = false) Set<Role> roles) throws UsernameNotFoundException {
         User user = userRepo.getUserByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
         if (password.isEmpty()) {
-            userRepo.editUserByEmail(email, firstName, lastName, isEnabled, isLocked);
+            userRepo.editUserByEmail(email, firstName, lastName, isEnabled);
         } else {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             String encodedPassword = encoder.encode(password);
-            userRepo.editUserByEmailPW(email, encodedPassword, firstName, lastName, isEnabled, isLocked);
+            userRepo.editUserByEmailPW(email, encodedPassword, firstName, lastName, isEnabled);
         }
         // TODO: Rollenupdate funktioniert noch nicht
         user.setRoles(roles);

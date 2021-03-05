@@ -21,14 +21,6 @@ public class ExamTypeService {
         return type;
     }
 
-    public ExamType loadByTag(String tag) throws NotFoundException {
-        ExamType type = examTypeRepo.getExamTypeByTag(tag);
-        if (type == null) {
-            throw new NotFoundException("ExamType not found");
-        }
-        return type;
-    }
-
     public ExamType loadByName(String name) throws NotFoundException {
         ExamType type = examTypeRepo.getExamTypeByName(name);
         if (type == null) {

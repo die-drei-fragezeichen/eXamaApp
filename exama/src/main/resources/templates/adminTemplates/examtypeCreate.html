@@ -17,14 +17,6 @@
 
             <form th:action="@{/examtypes/created}" th:object="${type}" method="post">
                 <div>
-                    <label>ExamType Tag: </label>
-                    <div>
-                        <input type="text" th:field="*{tag}" class="form-control" required minlength="1"
-                            maxlength="10" />
-                    </div>
-                </div>
-                <br>
-                <div>
                     <label>ExamType Name: </label>
                     <div>
                         <input type="text" th:field="*{name}" class="form-control" required minlength="1"

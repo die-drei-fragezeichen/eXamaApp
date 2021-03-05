@@ -14,6 +14,7 @@ import ch.diedreifragezeichen.exama.userAdministration.User;
 public abstract class Assignment implements AssignmentInterface {
 
     private long id;
+    private String name;
     private User creator;
     private Set<Course> courses;
     private Subject subject;
@@ -30,6 +31,14 @@ public abstract class Assignment implements AssignmentInterface {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public User getCreator() {

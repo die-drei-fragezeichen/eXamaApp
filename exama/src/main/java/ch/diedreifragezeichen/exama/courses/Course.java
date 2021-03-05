@@ -16,11 +16,15 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   /*  // Dies ist der KlassenName zum Beispiel "L4a" oder "2018E"
     @Column(name = "course_name", unique = true, nullable = false, length = 5)
     private String name;
-    @Column(name = "is_enabled", nullable = false, length = 1)
+
+    @Column(name = "course_enabled", nullable = false, length = 1)
     private boolean isEnabled;
+
+   /*  // Dies ist der KlassenName zum Beispiel "L4a" oder "2018E"
+    
+    
     // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     // @JoinTable(name = "courses_subjects_teachers", joinColumns = {
     // @JoinColumn(table="courses", name = "course_id", referencedColumnName =
@@ -50,7 +54,7 @@ public class Course {
     public void setId(Long id) {
         this.id = id;
     }
-/* 
+
     public String getName() {
         return this.name;
     }
@@ -63,6 +67,8 @@ public class Course {
     public void setEnabled(boolean isEnabled) {
         this.isEnabled = isEnabled;
     }
+
+    /*
     public Set<User> getCourseTeachers() {
         return this.courseTeachers;
     }

@@ -20,17 +20,18 @@
                     <tr>
                         <th>Workload ID</th>
                         <th>Workload minutes total</th>
-                        <!-- <th></th>
-                        <th></th> -->
+                        <th>Workload Distribution</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="workload : ${liste}">
                         <td th:text="${workload.id}"></td>
                         <td th:text="${workload.workloadMinutesTotal}"></td>
-                        <!-- <td><a th:href="@{/workloads/{id}/edit(id=${workload.id})}">bearbeiten</a></td>
-                        <td><a th:href="@{/workloads/{id}/delete(id=${workload.id})}">löschen</a></td> -->
-                        <!-- </a> -->
+                        <td th:text="${workload.distribution}"></td>
+                        <td><a th:href="@{/workloads/{id}/edit(id=${workload.id})}">bearbeiten</a></td>
+                        <td><a th:href="@{/workloads/{id}/delete(id=${workload.id})}">löschen</a></td>
                     </tr>
                 </tbody>
             </table>

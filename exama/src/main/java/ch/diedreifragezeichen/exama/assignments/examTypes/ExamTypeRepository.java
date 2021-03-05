@@ -11,20 +11,17 @@ public interface ExamTypeRepository extends JpaRepository<ExamType, Long> {
     @Query("SELECT et FROM ExamType et WHERE et.id = ?1")
     public ExamType getExamTypeByID(Long id);
 
-    @Query("SELECT et FROM ExamType et WHERE et.tag = ?1")
-    public ExamType getExamTypeByTag(String tag);
-
     @Query("SELECT et FROM ExamType et WHERE et.name = ?1")
     public ExamType getExamTypeByName(String name);
 
     @Transactional
     @Modifying
     @Query("DELETE ExamType et WHERE et.id = ?1")
-    public void deleteTypeById(long id);
+    public void deleteExamTypeById(long id);
 
     @Transactional
     @Modifying
-    @Query("UPDATE ExamType et SET et.tag=?2, et.name=?3, et.timeValue=?4 WHERE et.id = ?1")
-    public void editExamTypeById(long id, String tag, String name, double timeValue);
+    @Query("UPDATE ExamType et SET et.name=?2, et.timeValue=?3 WHERE et.id = ?1")
+    public void editExamTypeById(long id, String name, double timeValue);
 
 }

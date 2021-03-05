@@ -54,14 +54,14 @@ public class ExamTypeController {
     }
 
     @GetMapping("examtypes/{id}/edited")
-    public String updateExamType(@PathVariable(name = "id") Long id, @RequestParam(name = "tag") String tag,
+    public String updateExamType(@PathVariable(name = "id") Long id,
             @RequestParam(name = "name") String name, @RequestParam(name = "timeValue") double timeValue)
             throws NotFoundException {
         ExamType type = examTypeRepo.getExamTypeByID(id);
         if (type == null) {
             throw new NotFoundException("ExamType not found");
         }
-        examTypeRepo.editExamTypeById(id, tag, name, timeValue);
+        examTypeRepo.editExamTypeById(id, name, timeValue);
         return "redirect:/examtypes/show";
     }
 
@@ -71,7 +71,7 @@ public class ExamTypeController {
         if (type == null) {
             throw new NotFoundException("ExamType not found");
         }
-        examTypeRepo.deleteTypeById(id);
+        examTypeRepo.deleteExamTypeById(id);
         return "redirect:/examtypes/show";
     }
 

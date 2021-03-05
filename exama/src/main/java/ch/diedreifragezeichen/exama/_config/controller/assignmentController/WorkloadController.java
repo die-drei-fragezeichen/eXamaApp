@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.workload.Workload;
+import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistribution;
+import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistributionRepository;
 import ch.diedreifragezeichen.exama.assignments.workload.WorkloadRepository;
 
 
@@ -18,6 +20,8 @@ public class WorkloadController {
     
     @Autowired
     private WorkloadRepository workloadRepo;
+    @Autowired
+    private WorkloadDistributionRepository distributionRepo;
     
     @GetMapping("/workloads/show")
     public String showWorkloads(Model model){
@@ -31,6 +35,8 @@ public class WorkloadController {
         Workload workload = new Workload();
         ModelAndView mav = new ModelAndView("adminTemplates/workloadCreate");
         mav.addObject("newWorkload", workload);
+        List<WorkloadDistribution> listDist = distributionRepo.findAll();
+        mav.addObject("allDist", listDist);
         return mav;
     }
 

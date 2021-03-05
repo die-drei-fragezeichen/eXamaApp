@@ -10,14 +10,14 @@ import org.hibernate.annotations.DynamicUpdate;
 public class AvailablePrepTime {
 
     @Id
-    @Column(name = "preptime_id", unique = true, nullable = false)
+    @Column(name = "availablepreptime_id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "preptime_name", unique = true, nullable = false, length = 20)
+    @Column(name = "availablepreptime_name", unique = true, nullable = false, length = 20)
     private String name;
 
-    @Column(name = "preptime_days", unique = true, nullable = false)
+    @Column(name = "availablepreptime_days", unique = true, nullable = false)
     private int days;
 
     @Override

@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.assignments;
+package ch.diedreifragezeichen.exama.assignments.workload;
 
 import javax.persistence.*;
 
@@ -10,12 +10,17 @@ import org.hibernate.annotations.DynamicUpdate;
 public class WorkloadDistribution {
 
     @Id
-    @Column(name = "distribution_id", unique = true, nullable = false)
+    @Column(name = "workloaddistribution_id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "distribution_name", unique = true, nullable = false, length = 20)
+    @Column(name = "workloaddistribution_name", unique = true, nullable = false, length = 20)
     private String name;
+
+    @Override
+    public String toString(){
+        return this.name;
+    }
 
     @Override
     public boolean equals(Object obj) {
