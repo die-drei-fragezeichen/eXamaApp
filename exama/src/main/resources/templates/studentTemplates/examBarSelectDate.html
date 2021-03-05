@@ -1,0 +1,37 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/head :: head"></head>
+
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="fragments/header :: header"></div>
+
+        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>ExamBar Datum Wählen</h1>
+            <br><br>
+
+                        <form th:action="@{/examBar/DateSelected/}" th:object="${datum}" method="post">
+ 
+                    <div>
+                     <label>Wähle ein Datum: </label>
+                     </div>
+                     <div>
+                        <input type="date" th:field="*{selectedDate}" class="form-control" value="2021-02-21" min="2021-01-01" max="2021-07-21"/>
+                        <!--<input type="date" th:field="*{examDate}" class="form-control" value="2021-02-21" min="2021-01-01" max="2021-07-21" />-->
+                    </div>
+                <br>
+                <div>
+                    <button type="submit" class="login-button">Dieses Datum auswählen</button>
+                </div>
+            </form>
+
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="fragments/footer :: footer"></div>
+</body>
+
+</html>
