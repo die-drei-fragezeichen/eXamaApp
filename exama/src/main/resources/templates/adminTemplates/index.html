@@ -18,6 +18,7 @@
                     sec:authentication="principal.authorities"></span></b>!
 
             <h1>Ihre Funktionen</h1>
+
             <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
                 <a href="exams/show">> alle Prüfungen ansehen und bearbeiten</a>
             </div>
