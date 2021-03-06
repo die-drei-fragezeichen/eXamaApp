@@ -54,9 +54,8 @@ public class ExamTypeController {
     }
 
     @GetMapping("examtypes/{id}/edited")
-    public String updateExamType(@PathVariable(name = "id") Long id,
-            @RequestParam(name = "name") String name, @RequestParam(name = "timeValue") double timeValue)
-            throws NotFoundException {
+    public String updateExamType(@PathVariable(name = "id") Long id, @RequestParam(name = "name") String name,
+            @RequestParam(name = "timeValue") double timeValue) throws NotFoundException {
         ExamType type = examTypeRepo.getExamTypeByID(id);
         if (type == null) {
             throw new NotFoundException("ExamType not found");

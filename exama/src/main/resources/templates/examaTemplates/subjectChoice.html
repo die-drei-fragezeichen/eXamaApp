@@ -12,33 +12,36 @@
                     <form name="f" th:action="@{/login}" method="post">
                         <fieldset>
                             <!-- <label for="email">Email</label> -->
-                              <input list="courses" name="course" id="courseName" placeholder="Meine Kurse" class="login-field">
-                                <datalist id="courses">
-                                    <option value="2021a">
-                                    <option value="2021b">
-                                    <option value="2021c">
-                                    <option value="EF PP">
-                                    <option value="EF GG">
-                                </datalist>
-                                
-                              <input list="courses" name="course" id="courseName" placeholder="Meine Kurse" class="login-field">
-                                <datalist id="courses">
-                                    <option value="2021a">
-                                    <option value="2021b">
-                                    <option value="2021c">
-                                    <option value="EF PP">
-                                    <option value="EF GG">
-                                </datalist>
-                                
-                                  <input list="courses" name="course" id="courseName" placeholder="Meine Kurse" class="login-field">
-                                <datalist id="courses">
-                                    <option value="2021a">
-                                    <option value="2021b">
-                                    <option value="2021c">
-                                    <option value="EF PP">
-                                    <option value="EF GG">
-                                </datalist>
-                    
+                            <input list="courses" name="course" id="courseName" placeholder="Meine Kurse"
+                                class="login-field">
+                            <datalist id="courses">
+                                <option value="2021a">
+                                <option value="2021b">
+                                <option value="2021c">
+                                <option value="EF PP">
+                                <option value="EF GG">
+                            </datalist>
+
+                            <input list="courses" name="course" id="courseName" placeholder="Meine Kurse"
+                                class="login-field">
+                            <datalist id="courses">
+                                <option value="2021a">
+                                <option value="2021b">
+                                <option value="2021c">
+                                <option value="EF PP">
+                                <option value="EF GG">
+                            </datalist>
+
+                            <input list="courses" name="course" id="courseName" placeholder="Meine Kurse"
+                                class="login-field">
+                            <datalist id="courses">
+                                <option value="2021a">
+                                <option value="2021b">
+                                <option value="2021c">
+                                <option value="EF PP">
+                                <option value="EF GG">
+                            </datalist>
+
                             <div class="form-actions">
                                 <button type="submit" class="login-button">Auswählen</button>
                             </div>
@@ -51,33 +54,27 @@
                         </fieldset>
                     </form>
 
-                    <input type="text" placeholder="Choose a fruit"
-
-                    class="flexdatalist form-control"
-                    data-min-length="1"
-                    data-searchContain="true"
-                    multiple="multiple"
-
-                    list="fruit" name="my-fruit">
+                    <input type="text" placeholder="Choose a fruit" class="flexdatalist form-control"
+                        data-min-length="1" data-searchContain="true" multiple="multiple" list="fruit" name="my-fruit">
                     <datalist id="fruit">
-                    <option value="Apples">Apples</option>
-                    <option value="Bananas">Bananas</option>
-                    <option value="Cherries">Cherries</option>
-                    <option value="Kiwi">Kiwi</option>
-                    <option value="Pineapple">Pineapple</option>
-                    <option value="Zucchini">Zucchini</option>
+                        <option value="Apples">Apples</option>
+                        <option value="Bananas">Bananas</option>
+                        <option value="Cherries">Cherries</option>
+                        <option value="Kiwi">Kiwi</option>
+                        <option value="Pineapple">Pineapple</option>
+                        <option value="Zucchini">Zucchini</option>
                     </datalist>
 
                     <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
                     <script src="jquery.flexdatalist.min.js"></script>
                     <script>
-                    $('.flexdatalist-json').flexdatalist({
-                        searchContain: false,
-                        valueProperty: 'iso2',
-                        minLength: 1,
-                        focusFirstResult: true,
-                        selectionRequired: true,
-                    });
+                        $('.flexdatalist-json').flexdatalist({
+                            searchContain: false,
+                            valueProperty: 'iso2',
+                            minLength: 1,
+                            focusFirstResult: true,
+                            selectionRequired: true,
+                        });
                     </script>
 
                 </div>

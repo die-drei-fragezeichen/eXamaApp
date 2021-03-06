@@ -18,7 +18,7 @@ public class WorkloadDistribution {
     private String name;
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.name;
     }
 

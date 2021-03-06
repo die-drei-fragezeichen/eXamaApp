@@ -19,14 +19,14 @@
                 <div>
                     <label>Workload Minutes Total: </label>
                     <div>
-                        <input type="text" th:field="*{workloadMinutesTotal}" class="form-control" required minlength="1"
-                            maxlength="4" />
+                        <input type="text" th:field="*{workloadMinutesTotal}" class="form-control" required
+                            minlength="1" maxlength="4" />
                     </div>
                     <br>
                     <div>
                         <label>Workload Distribution:
                             <select th:field="*{distribution}" class="form-control" required>
-                                <option th:each="dist : ${allDist}" th:text="${dist.name}" th:value="${dist.id}"/>
+                                <option th:each="dist : ${allDist}" th:text="${dist.name}" th:value="${dist.id}" />
                             </select>
                         </label>
                     </div>

@@ -41,15 +41,15 @@ public class ExamNew extends Assignment {
     private String name;
 
     @Column(name = "exam_editdate", nullable = false)
-    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate editDate;
-    
+
     @Column(name = "exam_startdate", nullable = true)
-    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDate;
 
     @Column(name = "exam_duedate", nullable = false)
-    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dueDate;
 
     @Column(name = "exam_description", nullable = true, length = 255)
@@ -96,23 +96,5 @@ public class ExamNew extends Assignment {
 
     public void setCountingFactor(double countingFactor) {
         this.countingFactor = countingFactor;
-    }
-
-    @Override
-    public double getWorkloadValue(LocalDate date) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int getAvailableDaysToGo(LocalDate date) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public LocalDate getRealStartDate() {
-        // TODO Auto-generated method stub
-        return null;
     }
 }

@@ -9,6 +9,7 @@ import ch.diedreifragezeichen.exama.assignments.workload.Workload;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.subjects.Subject;
 import ch.diedreifragezeichen.exama.userAdministration.User;
+
 //this is an abstract class
 //no objects can be instatiated
 public abstract class Assignment implements AssignmentInterface {
@@ -21,7 +22,9 @@ public abstract class Assignment implements AssignmentInterface {
     private LocalDate editDate;
     private LocalDate startDate;
     private LocalDate dueDate;
-    private AvailablePrepTime availablePrepTime; // ManyToOne (Many assignments can have same PrepTime) ->  At AvailablePrepTime it will be OneToMany (One Preptime can have many Assignments)
+    private AvailablePrepTime availablePrepTime; // ManyToOne (Many assignments can have same PrepTime) -> At
+                                                 // AvailablePrepTime it will be OneToMany (One Preptime can have many
+                                                 // Assignments)
     private String description;
     private Workload workload; // OneToOne (One Assignment has one Workload an vice versa)
 
@@ -116,7 +119,7 @@ public abstract class Assignment implements AssignmentInterface {
     @Override
     public int getAvailableDaysToGo(LocalDate date) {
         long daysToGo = ChronoUnit.DAYS.between(date, this.dueDate);
-        if(daysToGo<0){
+        if (daysToGo < 0) {
             return -1;
         }
         return (int) daysToGo;
@@ -125,10 +128,9 @@ public abstract class Assignment implements AssignmentInterface {
     @Override
     public int getAvailableDaysTotal() {
         LocalDate startDate;
-        if(this.startDate == null){
+        if (this.startDate == null) {
             startDate = this.editDate;
-        }
-        else{
+        } else {
             startDate = this.startDate;
         }
         return (int) ChronoUnit.DAYS.between(startDate, this.dueDate);
@@ -153,10 +155,9 @@ public abstract class Assignment implements AssignmentInterface {
     @Override
     public LocalDate getRealStartDate() {
         LocalDate startDate;
-        if(this.startDate == null){
+        if (this.startDate == null) {
             startDate = this.editDate;
-        }
-        else{
+        } else {
             startDate = this.startDate;
         }
         int diffDays = (int) ChronoUnit.DAYS.between(startDate, this.dueDate);

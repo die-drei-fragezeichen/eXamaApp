@@ -23,12 +23,4 @@ public class MvcConfig implements WebMvcConfigurer {
 		registry.addViewController("/403").setViewName("403");
 		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 	}
-
-	// private ISpringTemplateEngine templateEngine(ITemplateResolver templateResolver) {
-	// 	SpringTemplateEngine engine = new SpringTemplateEngine();
-	// 	engine.addDialect(new Java8TimeDialect());
-	// 	engine.setTemplateResolver(templateResolver);
-	// 	return engine;
-	// }
-
 }

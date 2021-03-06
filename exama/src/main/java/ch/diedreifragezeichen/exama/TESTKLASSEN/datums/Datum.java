@@ -9,7 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Datum {
     @Id
     @Column(name = "selcted_Date", nullable = true)
-    @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate selectedDate;
 
     public LocalDate getSelectedDate() {
@@ -20,5 +20,4 @@ public class Datum {
         this.selectedDate = selectedDate;
     }
 
-    
 }

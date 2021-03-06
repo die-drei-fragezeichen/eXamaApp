@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+//import javax.persistence.Temporal;
+//import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,7 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @DynamicUpdate
 public class Exam {
-    //The @Id and @GeneratedValue annotations map the field id to the primary key
+    // The @Id and @GeneratedValue annotations map the field id to the primary key
     // column of the table.
     @Id
     @Column(name = "id", unique = true, nullable = false)
@@ -26,8 +26,9 @@ public class Exam {
     @Column(name = "name", unique = true, nullable = false, length = 20)
     private String name;
 
-    //@DateTimeFormat(pattern = "dd.MM.yyyy") --> geht dann nicht mehr mit dem HTML erstellen
-    @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
+    // @DateTimeFormat(pattern = "dd.MM.yyyy") --> geht dann nicht mehr mit dem HTML
+    // erstellen
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
 
     @Column(name = "counting_factor", nullable = true)
@@ -65,5 +66,4 @@ public class Exam {
         this.countingFactor = countingFactor;
     }
 
-    
 }

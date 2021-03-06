@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,10 +27,13 @@ import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.courses.CourseRepository;
 import ch.diedreifragezeichen.exama.subjects.Subject;
 import ch.diedreifragezeichen.exama.subjects.SubjectRepository;
-
+import ch.diedreifragezeichen.exama.userAdministration.User;
+import ch.diedreifragezeichen.exama.userAdministration.UserRepository;
 
 @Controller
 public class ExamNewController {
+    @Autowired
+    private UserRepository userRepo;
     @Autowired
     private ExamNewRepository examRepo;
     @Autowired
@@ -43,16 +49,15 @@ public class ExamNewController {
     @Autowired
     private SubjectRepository subjectRepo;
 
-    
     @GetMapping("/examsNew/show")
-    public String showExams(Model model){
+    public String showExams(Model model) {
         List<ExamNew> listExams = examRepo.findAll();
         model.addAttribute("listExams", listExams);
         return "adminTemplates/examsNewShow";
     }
 
     @GetMapping("/examsNew/create")
-    public ModelAndView newExam(){
+    public ModelAndView newExam() {
         ModelAndView mav = new ModelAndView("adminTemplates/examNewCreate");
         ExamNew exam = new ExamNew();
         mav.addObject("newExam", exam);
@@ -72,12 +77,18 @@ public class ExamNewController {
     }
 
     @PostMapping("/examsNew/created")
-    public String processSaving(Workload workload, ExamNew exam){
+    public String processSaving(Workload workload, ExamNew exam) {
         workloadRepo.save(workload);
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authLoggedInUser instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authLoggedInUser.getName();
+            User user = userRepo.getUserByEmail(currentUserName);
+            exam.setCreator(user);
+        }
         exam.setWorkload(workload);
         exam.setEditDate(LocalDate.now());
         examRepo.save(exam);
         return "redirect:/examsNew/show";
     }
-    
+
 }

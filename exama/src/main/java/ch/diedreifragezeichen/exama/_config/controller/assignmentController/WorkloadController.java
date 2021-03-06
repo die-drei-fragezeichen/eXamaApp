@@ -14,24 +14,23 @@ import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistribution;
 import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistributionRepository;
 import ch.diedreifragezeichen.exama.assignments.workload.WorkloadRepository;
 
-
 @Controller
 public class WorkloadController {
-    
+
     @Autowired
     private WorkloadRepository workloadRepo;
     @Autowired
     private WorkloadDistributionRepository distributionRepo;
-    
+
     @GetMapping("/workloads/show")
-    public String showWorkloads(Model model){
+    public String showWorkloads(Model model) {
         List<Workload> listWorkloads = workloadRepo.findAll();
         model.addAttribute("liste", listWorkloads);
         return "adminTemplates/workloadsShow";
     }
 
     @GetMapping("/workloads/create")
-    public ModelAndView newWorkload(){
+    public ModelAndView newWorkload() {
         Workload workload = new Workload();
         ModelAndView mav = new ModelAndView("adminTemplates/workloadCreate");
         mav.addObject("newWorkload", workload);
@@ -41,9 +40,9 @@ public class WorkloadController {
     }
 
     @PostMapping("/workloads/created")
-    public String processSaving(Workload workload){
+    public String processSaving(Workload workload) {
         workloadRepo.save(workload);
         return "redirect:/workloads/show";
     }
-    
+
 }

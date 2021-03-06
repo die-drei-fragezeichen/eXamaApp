@@ -52,7 +52,7 @@ public class UserDetailsExama implements UserDetails {
     public boolean isAccountNonLocked() {
         return true;
     }
-    
+
     @Override
     public boolean isEnabled() {
         return user.isEnabled();

@@ -27,6 +27,7 @@ public class AppController {
     // }
     @Autowired
     UserRepository userRepo;
+
     /**
      * Index Mappings
      */
@@ -41,7 +42,7 @@ public class AppController {
             user.setLastLogin(LocalDate.now());
             userRepo.save(user);
         }
-        
+
         Collection<SimpleGrantedAuthority> roleList = (Collection<SimpleGrantedAuthority>) authLoggedInUser
                 .getAuthorities();
         List<String> roles = new ArrayList<String>();

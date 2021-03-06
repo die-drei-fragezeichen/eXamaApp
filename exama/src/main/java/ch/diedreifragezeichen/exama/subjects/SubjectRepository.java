@@ -21,8 +21,6 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
     // Then we create REST APIs(GET, POST, PUT, DELETE)
     // Careful: "Course" here refers not to the table but to a Course object u
 
-    
-    
     public Subject findSubjectById(Long id);
 
     @Query("SELECT s FROM Subject s WHERE s.name = ?1")
@@ -44,5 +42,5 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
 // Note that in the SubjectRepository interface, we can declare findByXXX()
 // methods
-// (XXX is the name of a field in the domain model class), and Spring Data JPA
+// (XX is the name of a field in the domain model class), and Spring Data JPA
 // will generate the appropriate code:

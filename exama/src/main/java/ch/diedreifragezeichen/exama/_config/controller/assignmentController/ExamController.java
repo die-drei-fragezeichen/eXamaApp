@@ -71,8 +71,6 @@ public class ExamController {
         calculateNumberOfExams(model, listExams);
         calculateExamFactor(model, listExams);
 
-
-
         return "studentTemplates/examBarShow";
 
     }
@@ -81,7 +79,7 @@ public class ExamController {
      * Hilfsmethode 1
      */
 
-    public Model calculateNumberOfExams(Model model, List<Exam> listExams){
+    public Model calculateNumberOfExams(Model model, List<Exam> listExams) {
         // NOTE: Thymeleaf isn't Velocity or Freemarker and doesn't replace expressions
         // blindly. You need the expression in an appropriate tag attribute, such as
         // <h1 data-th-text="${data}" />
@@ -89,7 +87,7 @@ public class ExamController {
         model.addAttribute("msg", "Anzahl Leistungsmessungen diese Woche: ");
         long anzahlExamen = listExams.stream().count();
         model.addAttribute("anzpr", anzahlExamen);
-        //Schreibe im html: <h1 data-th-text="${anzpr}" />
+        // Schreibe im html: <h1 data-th-text="${anzpr}" />
         return model;
     }
 
@@ -97,12 +95,12 @@ public class ExamController {
      * Hilfsmethode 2
      */
 
-    public Model calculateExamFactor(Model model, List<Exam> listExams){
+    public Model calculateExamFactor(Model model, List<Exam> listExams) {
 
         model.addAttribute("msg2", "Insgesamt zählt das mit einem Belastungsfaktor von: ");
         double ExamFactor = listExams.stream().mapToDouble(exam -> exam.getCountingFactor()).sum();
         model.addAttribute("xFactor", ExamFactor);
-        //Schreibe im html: <h1 data-th-text="${anzpr}" />
+        // Schreibe im html: <h1 data-th-text="${anzpr}" />
         return model;
     }
 

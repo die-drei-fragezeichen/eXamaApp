@@ -38,11 +38,11 @@ public class User {
 	private boolean loggedIn;
 
 	@Column(name = "user_lastlogin", nullable = true)
-	@DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate lastLogin;
 
 	@Column(name = "user_createdon", nullable = false)
-	@DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate createdOn;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

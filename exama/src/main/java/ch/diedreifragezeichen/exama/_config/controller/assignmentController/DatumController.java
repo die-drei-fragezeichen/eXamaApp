@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class DatumController {
-    
+
     @GetMapping("/datenAnzeige")
     public String dates(Model model) {
         model.addAttribute("date", new Date());
