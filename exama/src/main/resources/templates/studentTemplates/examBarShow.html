@@ -41,14 +41,62 @@
                 </tbody>
             </table>
 
-            <h1 data-th-text="${msg}" />
-            <h1 data-th-text="${anzpr}" />
-             <h1 data-th-text="${msg2}" />
-             <h1 data-th-text="${xFactor}" />
-        </div>
+            <h3 data-th-text="${msg}" />
+            <h3 data-th-text="${anzpr}" />
+             <h3 data-th-text="${msg2}" />
+             <h3 data-th-text="${xFactor}" />
+
+<script>
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	theme: "light2", //"light1", "dark1", "dark2"
+	title:{
+        text: "Du hast " + "[[${Datum}]]" + " gewählt, und dies ist dein ExamBar"             
+	},
+	axisY:{
+		interval: 25,
+		suffix: "%"
+	},
+	toolTip:{
+		shared: true
+	},
+	data:[{
+		type: "stackedBar100",
+		toolTipContent: "{label}<br><b>{name}:</b> {y} (#percent%)",
+		showInLegend: true, 
+		name: "Besetzt",
+		dataPoints: [
+			{ y: [[${xFactor}]], label: "Deine Woche, Socke!" }
+		]
+		},
+		
+		{
+			type: "stackedBar100",
+			toolTipContent: "<b>{name}:</b> {y} (#percent%)",
+			showInLegend: true, 
+			name: "Frei",
+			dataPoints: [
+				{ y: 10-[[${xFactor}]], label: "Woche ab: " + "[[${Montag}]]" }
+
+			]
+	}]
+});
+chart.render();
+
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 300px; max-width: 920px; margin: 0px auto;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
         <!-- footer with navigation (only mobile) -->
         <div th:include="fragments/footer :: footer"></div>
+
+</div>
+        
 </body>
 
 </html>

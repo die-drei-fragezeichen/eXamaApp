@@ -61,9 +61,14 @@ public class ExamController {
         Datum selectedDatum = datumRepo.findAll().get(0);
         datumRepo.deleteAll();
         LocalDate selectedDate = selectedDatum.getSelectedDate();
+        model.addAttribute("Datum", selectedDate);
+
         ExamService helper = new ExamService();
         LocalDate Monday = helper.getFirstDayOfWeek(selectedDate);
+        model.addAttribute("Montag", Monday);
+
         LocalDate Sunday = helper.getLastDayOfWeek(selectedDate);
+        model.addAttribute("Sonntag", Sunday);
 
         List<Exam> listExams = examRepo.findAllByDateBetween(Monday, Sunday);
         model.addAttribute("liste", listExams);
