@@ -1,15 +1,20 @@
 package ch.diedreifragezeichen.exama._config.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import ch.diedreifragezeichen.exama.userAdministration.User;
+import ch.diedreifragezeichen.exama.userAdministration.UserRepository;
 
 @Controller
 public class AppController {
@@ -20,7 +25,8 @@ public class AppController {
     // public Subject getSubjectByName(Long id) {
     // return "index";
     // }
-
+    @Autowired
+    UserRepository userRepo;
     /**
      * Index Mappings
      */
@@ -28,10 +34,14 @@ public class AppController {
     @GetMapping("")
     public String viewRolespecificLanding() {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        /* if (!(authLoggedInUser instanceof AnonymousAuthenticationToken)) {
+        if (!(authLoggedInUser instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authLoggedInUser.getName();
-            System.out.println(currentUserName);
-        } */
+            User user = userRepo.getUserByEmail(currentUserName);
+            user.setLoggedIn(true);
+            user.setLastLogin(LocalDate.now());
+            userRepo.save(user);
+        }
+        
         Collection<SimpleGrantedAuthority> roleList = (Collection<SimpleGrantedAuthority>) authLoggedInUser
                 .getAuthorities();
         List<String> roles = new ArrayList<String>();

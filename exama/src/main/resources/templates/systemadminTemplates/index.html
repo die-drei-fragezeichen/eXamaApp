@@ -22,6 +22,9 @@
                 <a href="examBar/selectDate">> Hier gehts ab zum ExamBar</a>
             </div>
             <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="examsNew/create">> Neue Prüfung hinzufügen (funktioniert noch nicht)</a>
+            </div>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
                 <a href="users/create">> neuen User hinzufügen</a>
             </div>
             <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
