@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AppController {
-
-    
 
     // //Get the subject by tag. If Spring gets this this mapping, it will carry out
     // the method getSubjectByName from DB
@@ -29,6 +28,10 @@ public class AppController {
     @GetMapping("")
     public String viewRolespecificLanding() {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        /* if (!(authLoggedInUser instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authLoggedInUser.getName();
+            System.out.println(currentUserName);
+        } */
         Collection<SimpleGrantedAuthority> roleList = (Collection<SimpleGrantedAuthority>) authLoggedInUser
                 .getAuthorities();
         List<String> roles = new ArrayList<String>();

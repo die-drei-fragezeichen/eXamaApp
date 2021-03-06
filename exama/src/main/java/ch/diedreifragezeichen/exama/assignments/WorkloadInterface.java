@@ -1,6 +1,6 @@
 package ch.diedreifragezeichen.exama.assignments;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public interface WorkloadInterface {
 
@@ -15,5 +15,5 @@ public interface WorkloadInterface {
      * @param dueDate   is the end date included in the calculation
      * @return the number of workload minutes on dayX
      */
-    public double getWorkloadMinutesOnDayX(Date startDate, Date dayX, Date dueDate);
+    public double getWorkloadMinutesOnDayX(LocalDate startDate, LocalDate dayX, LocalDate dueDate);
 }

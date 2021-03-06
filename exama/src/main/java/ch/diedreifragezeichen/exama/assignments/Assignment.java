@@ -1,8 +1,8 @@
 package ch.diedreifragezeichen.exama.assignments;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import java.time.temporal.ChronoUnit;
 
 import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTime;
 import ch.diedreifragezeichen.exama.assignments.workload.Workload;
@@ -18,15 +18,15 @@ public abstract class Assignment implements AssignmentInterface {
     private User creator;
     private Set<Course> courses;
     private Subject subject;
-    private Date editDate;
-    private Date startDate;
-    private Date dueDate;
-    private AvailablePrepTime availableTime; // ManyToOne (Many assignments can have same PrepTime) ->  At AvailablePrepTime it will be OneToMany (One Preptime can have many Assignments)
+    private LocalDate editDate;
+    private LocalDate startDate;
+    private LocalDate dueDate;
+    private AvailablePrepTime availablePrepTime; // ManyToOne (Many assignments can have same PrepTime) ->  At AvailablePrepTime it will be OneToMany (One Preptime can have many Assignments)
     private String description;
     private Workload workload; // OneToOne (One Assignment has one Workload an vice versa)
 
     public long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(long id) {
@@ -42,7 +42,7 @@ public abstract class Assignment implements AssignmentInterface {
     }
 
     public User getCreator() {
-        return creator;
+        return this.creator;
     }
 
     public void setCreator(User creator) {
@@ -50,7 +50,7 @@ public abstract class Assignment implements AssignmentInterface {
     }
 
     public Set<Course> getCourses() {
-        return courses;
+        return this.courses;
     }
 
     public void setCourses(Set<Course> courses) {
@@ -58,47 +58,47 @@ public abstract class Assignment implements AssignmentInterface {
     }
 
     public Subject getSubject() {
-        return subject;
+        return this.subject;
     }
 
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
 
-    public Date getEditDate() {
-        return editDate;
+    public LocalDate getEditDate() {
+        return this.editDate;
     }
 
-    public void setEditDate(Date editDate) {
+    public void setEditDate(LocalDate editDate) {
         this.editDate = editDate;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public LocalDate getStartDate() {
+        return this.startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public LocalDate getDueDate() {
+        return this.dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
-    public AvailablePrepTime getAvailableTime() {
-        return availableTime;
+    public AvailablePrepTime getAvailablePrepTime() {
+        return this.availablePrepTime;
     }
 
-    public void setAvailableTime(AvailablePrepTime availableTime) {
-        this.availableTime = availableTime;
+    public void setAvailablePrepTime(AvailablePrepTime availablePrepTime) {
+        this.availablePrepTime = availablePrepTime;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setDescription(String description) {
@@ -106,7 +106,7 @@ public abstract class Assignment implements AssignmentInterface {
     }
 
     public Workload getWorkload() {
-        return workload;
+        return this.workload;
     }
 
     public void setWorkload(Workload workload) {
@@ -114,21 +114,30 @@ public abstract class Assignment implements AssignmentInterface {
     }
 
     @Override
-    public int getAvailableDaysToGo(Date date) {
-        long diff = Math.abs(this.dueDate.getTime() - date.getTime());
-        return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+    public int getAvailableDaysToGo(LocalDate date) {
+        long daysToGo = ChronoUnit.DAYS.between(date, this.dueDate);
+        if(daysToGo<0){
+            return -1;
+        }
+        return (int) daysToGo;
     }
 
     @Override
     public int getAvailableDaysTotal() {
-        long diff = Math.abs(this.dueDate.getTime() - this.startDate.getTime());
-        return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        LocalDate startDate;
+        if(this.startDate == null){
+            startDate = this.editDate;
+        }
+        else{
+            startDate = this.startDate;
+        }
+        return (int) ChronoUnit.DAYS.between(startDate, this.dueDate);
     }
 
     @Override
-    public double getWorkloadValue(Date date) {
+    public double getWorkloadValue(LocalDate date) {
         // not yet started
-        if (this.startDate.after(date)) {
+        if (this.startDate.isAfter(date)) {
             return 0;
         }
         // TODO: store this constant in the Database to be changable
@@ -142,14 +151,21 @@ public abstract class Assignment implements AssignmentInterface {
     }
 
     @Override
-    public Date getRealStartDate() {
-        int diffDays = (int) TimeUnit.DAYS.convert(Math.abs(this.dueDate.getTime() - this.startDate.getTime()),
-                TimeUnit.MILLISECONDS);
-        if (availableTime.getDays() == -1 || availableTime.getName().equals("All Time")
-                || diffDays < availableTime.getDays()) {
-            return this.startDate;
+    public LocalDate getRealStartDate() {
+        LocalDate startDate;
+        if(this.startDate == null){
+            startDate = this.editDate;
+        }
+        else{
+            startDate = this.startDate;
+        }
+        int diffDays = (int) ChronoUnit.DAYS.between(startDate, this.dueDate);
+        if (availablePrepTime.getDays() == -1 || availablePrepTime.getName().equals("All Time")
+                || diffDays < availablePrepTime.getDays()) {
+            return startDate;
         } else {
-            return new Date(this.dueDate.getTime() - availableTime.getDays() * 24 * 60 * 60 * 1000);
+            startDate = this.dueDate.minusDays(this.availablePrepTime.getDays());
+            return startDate;
         }
     }
 }

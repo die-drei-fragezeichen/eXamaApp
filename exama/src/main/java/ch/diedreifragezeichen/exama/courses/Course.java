@@ -1,11 +1,7 @@
 package ch.diedreifragezeichen.exama.courses;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.*;
 
-import ch.diedreifragezeichen.exama.userAdministration.User;
 
 @Entity
 @Table(name = "courses")

@@ -1,8 +1,9 @@
-/* package ch.diedreifragezeichen.exama.assignments.exams;
+package ch.diedreifragezeichen.exama.assignments.exams;
 
 import java.time.LocalDate;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,7 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
@@ -35,51 +39,80 @@ public class ExamNew extends Assignment {
 
     @Column(name = "exam_name", nullable = false, length = 20)
     private String name;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User creator;
-    
-    private Set<Course> courses;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subject_id", nullable = false)
-    private Subject subject;
-
-    @Column(name = "exam_editDate", nullable = false)
+    @Column(name = "exam_editdate", nullable = false)
     @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     private LocalDate editDate;
     
-    @Column(name = "exam_startDate", nullable = true)
+    @Column(name = "exam_startdate", nullable = true)
     @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     private LocalDate startDate;
 
-    @Column(name = "exam_dueDate", nullable = false)
+    @Column(name = "exam_duedate", nullable = false)
     @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     private LocalDate dueDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "availablepreptime_id")
-    private AvailablePrepTime availableTime;
-
-    @Column(name = "exam_description", nullable = true)
+    @Column(name = "exam_description", nullable = true, length = 255)
     private String description;
 
+    @Column(name = "exam_countingfactor", nullable = false)
+    private double countingFactor;
+
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "availablepreptime_id", nullable = false)
+    private AvailablePrepTime availablePrepTime;
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "workload_id", nullable = false)
     private Workload workload;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "examtype_id", nullable = false)
-    private ExamType type;
+    private ExamType examType;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id", nullable = false)
+    private Subject subject;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User creator;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "map_exams_courses", joinColumns = @JoinColumn(name = "exam_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private Set<Course> courses;
 
     public ExamType getExamType() {
-        return type;
+        return examType;
     }
 
     public void setType(ExamType type) {
-        this.type = type;
+        this.examType = type;
+    }
+
+    public double getCountingFactor() {
+        return countingFactor;
+    }
+
+    public void setCountingFactor(double countingFactor) {
+        this.countingFactor = countingFactor;
+    }
+
+    @Override
+    public double getWorkloadValue(LocalDate date) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getAvailableDaysToGo(LocalDate date) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public LocalDate getRealStartDate() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
- */
