@@ -1,6 +1,11 @@
 package ch.diedreifragezeichen.exama.courses;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
+
+import ch.diedreifragezeichen.exama.userAdministration.User;
 
 @Entity
 @Table(name = "courses")
@@ -17,35 +22,9 @@ public class Course {
     @Column(name = "course_enabled", nullable = false, length = 1)
     private boolean isEnabled;
 
-    /*
-     * // Dies ist der KlassenName zum Beispiel "L4a" oder "2018E"
-     * 
-     * 
-     * // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-     * // @JoinTable(name = "courses_subjects_teachers", joinColumns = {
-     * // @JoinColumn(table="courses", name = "course_id", referencedColumnName = //
-     * "id"), // @JoinColumn(table ="subjects", name = "subject_id",
-     * referencedColumnName = // "id")}, // inverseJoinColumns
-     * = @JoinColumn(table="users", name = "user_id", // referencedColumnName =
-     * "id")) // private Set<User> courseTeachers = new HashSet<>();
-     * 
-     * @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-     * 
-     * @JoinTable(name = "courses_subjects_teachers", joinColumns = @JoinColumn(name
-     * = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id")) private
-     * Set<User> courseTeachers = new HashSet<>();
-     * 
-     * @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-     * 
-     * @JoinTable(name = "courses_students", joinColumns = @JoinColumn(name =
-     * "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id")) private
-     * Set<User> courseStudents = new HashSet<>(); // @Lob // @Column(name =
-     * "workloads", columnDefinition="BLOB", nullable = true) //
-     * //@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER) //
-     * //@JoinTable(name = "courses", joinColumns = @JoinColumn(name = "user_id"),
-     * // inverseJoinColumns = @JoinColumn(name = "course_id")) // private
-     * Set<Workload> workloads = new HashSet<>();
-     */
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "map_courses_students", joinColumns = @JoinColumn(name ="course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> courseStudents = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -71,11 +50,11 @@ public class Course {
         this.isEnabled = isEnabled;
     }
 
-    /*
-     * public Set<User> getCourseTeachers() { return this.courseTeachers; } public
-     * void setCourseTeachers(Set<User> courseTeachers) { this.courseTeachers =
-     * courseTeachers; } public Set<User> getCourseStudents() { return
-     * this.courseStudents; } public void setCourseStudents(Set<User>
-     * courseStudents) { this.courseStudents = courseStudents; }
-     */
+    public Set<User> getCourseStudents() {
+        return courseStudents;
+    }
+
+    public void setCourseStudents(Set<User> courseStudents) {
+        this.courseStudents = courseStudents;
+    }
 }
