@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.TESTKLASSEN.homework;
+package ch.diedreifragezeichen.exama.assignments.homework;
 
 import java.time.LocalDate;
 import java.util.List;
