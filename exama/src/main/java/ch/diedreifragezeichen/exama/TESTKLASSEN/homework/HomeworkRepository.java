@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.TESTKLASSEN.homework;
+/* package ch.diedreifragezeichen.exama.TESTKLASSEN.homework;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,4 +16,4 @@ public interface HomeworkRepository extends JpaRepository<Homework, Long> {
     public long deleteByID(Long homeworkID);
 
     public List<Homework> findAllByDateBetween(LocalDate Monday, LocalDate Sunday);
-}
+} */

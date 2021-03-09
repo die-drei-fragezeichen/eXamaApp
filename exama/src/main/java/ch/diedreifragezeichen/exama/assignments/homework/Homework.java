@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.assignments.homework;
+/* package ch.diedreifragezeichen.exama.assignments.homework;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -78,4 +78,4 @@ public class Homework extends Assignment{
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "map_homework_courses", joinColumns = @JoinColumn(name = "homework_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
     private Set<Course> courses;
-}
+} */

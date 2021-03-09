@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.TESTKLASSEN.homework;
+/* package ch.diedreifragezeichen.exama.TESTKLASSEN.homework;
 
 //import java.text.DateFormat;
 //import java.text.SimpleDateFormat;
@@ -36,3 +36,4 @@ public class HomeworkService {
         return homework;
     }
 }
+ */
