@@ -20,7 +20,8 @@
                     <tr>
                         <th>Prüfungs ID</th>
                         <th>Name der Prüfung</th>
-                        <th>Prüfungsdatum / Deaadline</th>
+                        <th>editDate</th>
+                        <th>startDate</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,6 +29,8 @@
                         <td th:text="${mime.Id}"></td>
                         <td th:text="${mime.name}"></td>
                         <td th:text="${mime.editDate}"></td>
+                        <td th:text="${mime.startDate}"></td>
+
                     </tr>
                 </tbody>
             </table>

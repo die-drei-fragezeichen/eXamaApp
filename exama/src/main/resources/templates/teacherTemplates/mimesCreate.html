@@ -13,30 +13,33 @@
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
             <h1>Neues Mime erstellen</h1>
-
+        
+        <!-- Values for th:object attributes in form tags must be variable expressions (${...}). It specifies the NAME OF THE MODEL ATTRIBUTE!! So: ${mime.editDate} would not be. -->
+        <!-- Once you are working inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
+            
+            
             <form th:action="@{/mimes/created}" th:object="${verpacktesObjekt}" method="post">
                 <div>
                     <label>Prüfungsname: </label>
-
-                    <div>
+                </div>
+                <div>
                         <input type="text" th:field="*{name}" class="form-control" />
-                    </div>
-                    <div>
-                        <label>Prüfungsdatum: </label>
-                    </div>
-
-
-
-                    <!-- Values for th:object attributes in form tags must be variable expressions (${...}) specifying only the name of a model attribute, without property navigation. This means that an expression like ${seedStarter} is valid, but ${seedStarter.data} would not be.
-
-    Once inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
-
+                </div>
+                <div>
+                        <label>Mime editDatum: </label>
+                </div>
+                <div>
                     <input type="date" th:field="*{editDate}" class="form-control" value="2021-02-21" min="2021-01-01"
                         max="2021-07-21" />
-                    <!--<input type="date" th:field="*{examDate}" th:field spricht das konkrete Objektfeld an! mit date funktioniert es schon mal />-->
                 </div>
 
-                <br>
+                <div>
+                        <label>Mime startDatum: </label>
+                </div>
+                <div>
+                    <input type="date" th:field="*{startDate}" class="form-control" value="2021-02-21" min="2021-01-01"
+                        max="2021-07-21" />
+                </div>
                 <div>
                     <button type="submit" class="login-button">Deinen Mime erstellen</button>
                 </div>

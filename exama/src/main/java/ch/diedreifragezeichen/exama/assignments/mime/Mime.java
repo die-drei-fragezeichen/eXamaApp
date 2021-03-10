@@ -44,6 +44,9 @@ public class Mime extends Assignment {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate editDate;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate startDate;
+
     public Long getId(){
         return id;
 
@@ -67,6 +70,14 @@ public class Mime extends Assignment {
 
     public void setEditDate(LocalDate editDate) {
         this.editDate = editDate;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
 
