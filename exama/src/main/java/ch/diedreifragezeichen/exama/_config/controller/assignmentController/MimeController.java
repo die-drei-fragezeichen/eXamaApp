@@ -11,7 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-
+import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
+import ch.diedreifragezeichen.exama.assignments.examTypes.ExamTypeRepository;
 import ch.diedreifragezeichen.exama.assignments.mime.Mime;
 import ch.diedreifragezeichen.exama.assignments.mime.MimeRepository;
 import ch.diedreifragezeichen.exama.TESTKLASSEN.datums.Datum;
@@ -24,6 +25,9 @@ public class MimeController {
 
     @Autowired
     private DatumRepository datumRepo;
+
+    @Autowired
+    private ExamTypeRepository examtypeRepo;
 
    
     /**
@@ -44,6 +48,8 @@ public class MimeController {
         mav.addObject("verpacktesObjekt", mime);
         // NOTE: "verpacktesObjekt" is the so-called "NAME OF THE MODEL ATTRIBUTE"
         // mav.addAttribute("standardDate", new LocalDate());
+        List<ExamType> listTypes = examtypeRepo.findAll();
+        mav.addObject("holmirdietypenverpackung", listTypes);
 
         return mav;
     }

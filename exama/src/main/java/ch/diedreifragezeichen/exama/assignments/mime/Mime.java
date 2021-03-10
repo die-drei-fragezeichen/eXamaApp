@@ -55,6 +55,13 @@ public class Mime extends Assignment {
     @Column(name = "mime_description", nullable = true, length = 255)
     private String description;
 
+    @Column(name = "exam_countingfactor", nullable = false)
+    private double countingFactor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "examtype_id", nullable = false)
+    private ExamType examType;
+
     public Long getId(){
         return id;
 
@@ -104,15 +111,23 @@ public class Mime extends Assignment {
         this.description = description;
     }
 
+    public double getCountingFactor() {
+        return countingFactor;
+    }
+
+    public void setCountingFactor(double countingFactor) {
+        this.countingFactor = countingFactor;
+    }
+
+    public ExamType getExamType() {
+        return examType;
+    }
+
+    public void setExamType(ExamType examType) {
+        this.examType = examType;
+    }
 
 
-    
-
-    // @Column(name = "exam_description", nullable = true, length = 255)
-    // private String description;
-
-    // @Column(name = "exam_countingfactor", nullable = false)
-    // private double countingFactor;
 
     // @ManyToOne(fetch = FetchType.LAZY)
     // @JoinColumn(name = "availablepreptime_id", nullable = false)
