@@ -37,15 +37,23 @@ public class Mime extends Assignment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @Column(name = "exam_name", nullable = false, length = 20)
+    @Column(name = "mime_name", nullable = false, length = 20)
     private String name;
 
-    // @Column(name = "exam_editdate", nullable = false)
+    @Column(name = "mime_editDate", nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate editDate;
 
+    @Column(name = "mime_startDate", nullable = true)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDate;
+    
+    @Column(name = "mime_duedate", nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate dueDate;
+
+    @Column(name = "mime_description", nullable = true, length = 255)
+    private String description;
 
     public Long getId(){
         return id;
@@ -80,17 +88,25 @@ public class Mime extends Assignment {
         this.startDate = startDate;
     }
 
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 
-    // @Column(name = "exam_startdate", nullable = true)
-    // @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    // private LocalDate startdate;
 
-
-
-    // @Column(name = "exam_duedate", nullable = false)
-    // @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    // private LocalDate dueDate;
+    
 
     // @Column(name = "exam_description", nullable = true, length = 255)
     // private String description;
