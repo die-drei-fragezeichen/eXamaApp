@@ -14,7 +14,7 @@ import ch.diedreifragezeichen.exama.userAdministration.User;
 //no objects can be instatiated
 public abstract class Assignment implements AssignmentInterface {
 
-    private long id;
+    private Long id;
     private String name;
     private User creator;
     private Set<Course> courses;
@@ -28,7 +28,7 @@ public abstract class Assignment implements AssignmentInterface {
     private String description;
     private Workload workload; // OneToOne (One Assignment has one Workload an vice versa)
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
