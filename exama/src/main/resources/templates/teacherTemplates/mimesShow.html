@@ -12,13 +12,13 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Prüfungen anzeigen</h1>
+            <h1>Mimes anzeigen</h1>
             <a href="/mimes/create">> neue Prüfung hinzufügen</a><br><br>
 
             <table>
                 <thead>
                     <tr>
-                        <th>Prüfungs ID</th>
+                        <th>Mime ID</th>
                         <th>Name der Prüfung</th>
                         <th>editDate</th>
                         <th>startDate</th>
@@ -26,6 +26,7 @@
                         <th>Beschreibung</th>
                         <th>Faktor</th>
                         <th>Pruefungstyp (nur ID)</th>
+                        <th>PrePtime (nur ID)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,6 +39,7 @@
                         <td th:text="${mime.description}"></td>
                         <td th:text="${mime.countingFactor}"></td>
                         <td th:text="${mime.examType.id}"></td>
+                        <td th:text="${mime.availablePrepTime.id}"></td>
 
 
                     </tr>

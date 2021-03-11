@@ -70,10 +70,15 @@
                             th:value="${examType.id}" />
                         </select>
                     </div>
+                     <br>
+                    <div>
+                        <label>Voraussichtliche Vorbereitungszeit: </label>
+                         <select th:field="*{availablePrepTime}" class="form-control" required />
+                        <option th:each="preptime : ${bringmirdiepreptimes}" th:text="${preptime.name}"
+                            th:value="${preptime.id}" />
+                        </select>
+                    </div>
                     <br>
-
-
-
 
 
 
