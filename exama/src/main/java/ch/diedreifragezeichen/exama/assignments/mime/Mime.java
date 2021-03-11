@@ -70,6 +70,14 @@ public class Mime extends Assignment {
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
 
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "course_id", nullable = false)
+    // private Course course;
+
+    // @OneToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "workload_id", nullable = false)
+    // private Workload workload;
+
 /*
 * Getter and Setter Methosds 
 */
@@ -156,16 +164,17 @@ public class Mime extends Assignment {
         this.subject = subject;
     }
 
+    // public Course getCourse() {
+    //     return course;
+    // }
+
+    // public void setCourse(Course course) {
+    //     this.course = course;
+    // }
+
 // to do
 
-    // @OneToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "workload_id", nullable = false)
-    // private Workload workload;
-
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "subject_id", nullable = false)
-    // private Subject subject;
-
+    //Roman: has tried, failed, does not entirely understand what this is supposed to do - careful -connection with "assignment.java"
     // @ManyToOne(fetch = FetchType.LAZY)
     // @JoinColumn(name = "user_id", nullable = false)
     // private User creator;

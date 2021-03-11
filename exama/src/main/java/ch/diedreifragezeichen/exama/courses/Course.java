@@ -22,9 +22,9 @@ public class Course {
     @Column(name = "course_enabled", nullable = false, length = 1)
     private boolean isEnabled;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "map_courses_students", joinColumns = @JoinColumn(name ="course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> courseStudents = new HashSet<>();
+    // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // @JoinTable(name = "map_courses_students", joinColumns = @JoinColumn(name ="course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    // private Set<User> courseStudents = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -50,11 +50,11 @@ public class Course {
         this.isEnabled = isEnabled;
     }
 
-    public Set<User> getCourseStudents() {
-        return courseStudents;
-    }
+//     public Set<User> getCourseStudents() {
+//         return courseStudents;
+//     }
 
-    public void setCourseStudents(Set<User> courseStudents) {
-        this.courseStudents = courseStudents;
-    }
+//     public void setCourseStudents(Set<User> courseStudents) {
+//         this.courseStudents = courseStudents;
+//     }
 }

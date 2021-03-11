@@ -57,11 +57,19 @@
                         </select>   
                     </div>
                     <br>
+                    <br>
+                    <div>
+                        <label>Klasse: </label>
+                        <select th:field="*{courses}" class="form-control" required />
+                        <option th:each="course : ${holmirmaldiearmenschafe}" th:text="${course.name}" th:value="${course.id}" />
+                        </select>
+                    </div>
+                    <br>
 
                     <div>
                         <label>Beschreibung: </label>
                       <!--  <input type="text" th:field="*{description}" class="form-control" />-->
-                        <textarea  rows = "2" cols =     "30" th:field = "*{description}" maxlength="255" >... </textarea>
+                        <textarea  rows = "2" cols = "30" th:field = "*{description}" maxlength="255" >... </textarea>
                     </div>
                     <br>
 

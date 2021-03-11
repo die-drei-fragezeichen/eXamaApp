@@ -24,6 +24,7 @@
                         <th>startDate</th>
                         <th>dueDate</th>
                         <th>Fach (nur id)</th>
+                        <th>Klasse (nur ID)</th>
                         <th>Beschreibung</th>
                         <th>Faktor</th>
                         <th>Pruefungstyp (nur ID)</th>
@@ -38,6 +39,8 @@
                         <td th:text="${mime.startDate}"></td>
                         <td th:text="${mime.dueDate}"></td>
                         <td th:text="${mime.subject.id}"></td>
+                        <td></td>
+                        <!--<td th:text="${mime.course.id}"></td>-->
                         <td th:text="${mime.description}"></td>
                         <td th:text="${mime.countingFactor}"></td>
                         <td th:text="${mime.examType.id}"></td>

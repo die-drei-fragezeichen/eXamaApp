@@ -1,0 +1,41 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/head :: head"></head>
+
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="fragments/header :: header"></div>
+
+        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>Klasse bearbeiten | Neue Klasse erstellen</h1>
+            <a href="/courses/create">> neue Klasse hinzufügen</a><br><br>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Klassen ID</th>
+                        <th>Klassenname</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="course: ${listCourses}">
+                        <td th:text="${course.id}"></td>
+                        <td th:text="${course.name}"></td>
+                        <td><a th:href="@{/courses/{id}/edit(id=${subject.id})}">bearbeiten</a></td>
+                        <td><a th:href="@{/courses/{id}/delete(id=${subject.id})}">löschen</a></td>
+                        </a>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="fragments/footer :: footer"></div>
+</body>
+
+</html>
