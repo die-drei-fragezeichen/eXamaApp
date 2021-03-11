@@ -48,6 +48,16 @@
                         max="2021-07-21" />
                 </div>
                 <br>
+
+                 <br>
+                    <div>
+                        <label>Fach: </label>
+                        <select th:field="*{subject}" class="form-control" required />
+                        <option th:each="subject : ${welchefaecherhabenwir}" th:text="${subject.name}" th:value="${subject.id}" />
+                        </select>   
+                    </div>
+                    <br>
+
                     <div>
                         <label>Beschreibung: </label>
                       <!--  <input type="text" th:field="*{description}" class="form-control" />-->

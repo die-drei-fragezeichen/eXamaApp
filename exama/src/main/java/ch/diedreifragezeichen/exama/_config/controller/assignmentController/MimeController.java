@@ -17,6 +17,8 @@ import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
 import ch.diedreifragezeichen.exama.assignments.examTypes.ExamTypeRepository;
 import ch.diedreifragezeichen.exama.assignments.mime.Mime;
 import ch.diedreifragezeichen.exama.assignments.mime.MimeRepository;
+import ch.diedreifragezeichen.exama.subjects.Subject;
+import ch.diedreifragezeichen.exama.subjects.SubjectRepository;
 
 @Controller
 public class MimeController {
@@ -28,6 +30,9 @@ public class MimeController {
 
     @Autowired
     private AvailablePrepTimeRepository availablePrepTimeRepo;
+
+    @Autowired
+    private SubjectRepository subjectRepo;
 
    
     /**
@@ -52,6 +57,10 @@ public class MimeController {
         mav.addObject("holmirdietypenverpackung", listTypes);
         List<AvailablePrepTime> listPrepTimes = availablePrepTimeRepo.findAll();
         mav.addObject("bringmirdiepreptimes", listPrepTimes);
+        List<Subject> listSubjects = subjectRepo.findAll();
+        mav.addObject("welchefaecherhabenwir", listSubjects);
+
+
 
         return mav;
     }

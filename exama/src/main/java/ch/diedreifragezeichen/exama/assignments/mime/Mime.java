@@ -66,6 +66,10 @@ public class Mime extends Assignment {
     @JoinColumn(name = "availablepreptime_id", nullable = false)
     private AvailablePrepTime availablePrepTime;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id", nullable = false)
+    private Subject subject;
+
 /*
 * Getter and Setter Methosds 
 */
@@ -144,19 +148,19 @@ public class Mime extends Assignment {
         this.availablePrepTime = availablePrepTime;
     }
 
-// to do
+    public Subject getSubject() {
+        return subject;
+    }
 
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "availablepreptime_id", nullable = false)
-    // private AvailablePrepTime availablePrepTime;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+// to do
 
     // @OneToOne(fetch = FetchType.LAZY)
     // @JoinColumn(name = "workload_id", nullable = false)
     // private Workload workload;
-
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "examtype_id", nullable = false)
-    // private ExamType examType;
 
     // @ManyToOne(fetch = FetchType.LAZY)
     // @JoinColumn(name = "subject_id", nullable = false)
