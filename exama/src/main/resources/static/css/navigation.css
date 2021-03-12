@@ -9,12 +9,10 @@
 /* ---------- variables ---------- */
 /* ------------------------------- */
 
-/*
 :root {
-    ... 
+    --headerSize: 3em;
+    --naviHeight: 2em;
 }
-*/
-
 
 
 /* ---------------------------- */
@@ -29,7 +27,7 @@
     z-index: 999;
 
     width:100%;
-    height:4em;
+    height: var(--headerSize);
 
     background-color: var(--red);
 }
@@ -37,11 +35,10 @@
 
 #navigation-header {
     position: absolute;
-    top: 0.75em;
-    left: 0.75em;
-
+    top: calc((var(--headerSize) - var(--naviHeight)) / 2);
+    left: calc((var(--headerSize) - var(--naviHeight)) / 2);
     width:auto;
-    height: 2.5em;
+    height: var(--naviHeight);
 }
 
 
@@ -50,9 +47,9 @@
     float: left;
     clear: none;
 
-    width:2.5em;
-    height:2.5em;
-    margin:0 2.5em 0 0;
+    width: var(--naviHeight);
+    height: var(--naviHeight);
+    margin: 0 var(--naviHeight) 0 0;
 
     background-size: contain;
     background-repeat: no-repeat;
@@ -91,11 +88,11 @@
 }
 
 .nav-logout{
-    width:2em;
-    height:2em;
-    margin:0;
-
+    width:100%;
+    height:100%;
     background-image:url(img/logout_w.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 .nav-logout:hover{
     background-image:url(img/logout_r2.svg);
@@ -104,10 +101,11 @@
 
 .nav-burgermenu{
     display: none;
-
-    margin-top:0.5em;
-
+    width: calc(var(--naviHeight) * 1.5);
+    height: var(--naviHeight);
     background-image:url(img/burger_w.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 .nav-burgermenu:hover{
     background-image:url(img/burger_r2.svg);
@@ -118,15 +116,15 @@
 #title {
     position: absolute;
     left: 50%;
-    top: 0.25em;
-    -webkit-transform: translate(-50%, 0.25em);
+    top: 0;
+    margin: 0 0 0 0;
+    -webkit-transform: translate(-50%, 0);
     transform: translate(-50%, 0.25em);
 
     width: auto;
-    height: 1.66em;
-
-    font-size: 1.5em;
-    line-height: 1.66em;
+    height: calc(var(--naviHeight) * 0.75);
+    font-size: calc(var(--naviHeight) * 0.75);
+    line-height: calc(var(--naviHeight) * 0.75);
     color: var(--white);
     text-align: center;
 }
@@ -134,11 +132,10 @@
 
 #logout {
     position: absolute;
-    top: 1em;
-    right: 0.75em;
-
-    width:auto;
-    height: 2em;
+    right: calc((var(--headerSize) - var(--naviHeight)) / 2);
+    top: calc((var(--headerSize) - var(--naviHeight)) / 2);
+    width: var(--naviHeight);
+    height: var(--naviHeight);
 }
 
 
@@ -152,30 +149,28 @@
     z-index: 999;
 
     width:100%;
-    height:4em;
-
+    height: var(--headerSize);
     background-color: var(--lightGray);
 }
 
 
 #navigation-footer {
     position: absolute;
-    top: 0.75em;
-    left: 0.75em;
+    top: calc((var(--headerSize) - var(--naviHeight)) / 2);
+    left: calc((var(--headerSize) - var(--naviHeight)) / 2);
 
-    width:calc(100% - 1.5em);
-    height: 2.5em;
+    width: calc(100% - (var(--headerSize) - var(--naviHeight)));
+    height: var(--naviHeight);
 }
-
 
 .navigation-footer-item{
     position: relative;
     float: left;
     clear: none;
 
-    width:2.5em;
-    height:2.5em;
-    margin-right: calc((100% - 3em - var(--numMenuItems) * 2.5em) / (var(--numMenuItems) - 1));
+    width:var(--naviHeight);
+    height:var(--naviHeight);
+    margin-right: calc((100% - var(--naviHeight) - var(--numMenuItems) * var(--naviHeight)) / (var(--numMenuItems) - 1));
 
     background-size: contain;
     background-repeat: no-repeat;
@@ -184,10 +179,10 @@
     cursor: pointer;
 }
 .navigation-footer-item:first-of-type{
-    margin-left: 1.5em ;
+    margin-left: calc(var(--naviHeight) / 2) ;
 }
 .navigation-footer-item:last-of-type{
-    margin-right: 1.5em;
+    margin-right: calc(var(--naviHeight) / 2);
 }
 
 .nav2-home{
