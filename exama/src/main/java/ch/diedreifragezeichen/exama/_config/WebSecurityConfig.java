@@ -62,10 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.anonymous().and()
 
                 .authorizeRequests().antMatchers("/css/**", "/images/**", "/js/**", "/install", "/error").permitAll()
-                .and().authorizeRequests().antMatchers("/")
-                .hasAnyAuthority("SYSTEMADMIN", "ADMIN", "TEACHER", "REFERENCESTUDENT", "STUDENT")
-                .antMatchers("/fragments/**")
-                .hasAnyAuthority("SYSTEMADMIN", "ADMIN", "TEACHER", "REFERENCESTUDENT", "STUDENT")
+                .and().authorizeRequests().antMatchers("/", "/fragments/**", "/generalTemplates/**").hasAnyAuthority("SYSTEMADMIN", "ADMIN", "TEACHER", "REFERENCESTUDENT", "STUDENT")
                 .antMatchers("/systemadminTemplates/**").hasAnyAuthority("SYSTEMADMIN")
                 .antMatchers("/adminTemplates/**").hasAnyAuthority("SYSTEMADMIN", "ADMIN")
                 .antMatchers("/teacherTemplates/**").hasAnyAuthority("SYSTEMADMIN", "TEACHER")

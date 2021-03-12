@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -103,6 +106,42 @@ public class UserController {
         }
         userRepo.deleteUserByEmail(email);
         return "redirect:/users/show";
+    }
+
+    @GetMapping("/users/changepassword")
+    public ModelAndView changePassword() {
+        ModelAndView mav = new ModelAndView("generalTemplates/changePassword");
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authLoggedInUser.getName();
+        User user = userRepo.getUserByEmail(currentUserName);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        mav.addObject("user", user);
+        return mav;
+    }
+
+    @GetMapping("/users/changepassword/changed")
+    public String updateUser(@RequestParam(name = "password") String password) throws UsernameNotFoundException {
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authLoggedInUser.getName();
+        User user = userRepo.getUserByEmail(currentUserName);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        if(password.isEmpty()) {
+            return "redirect:/settings";
+        } else {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String encodedPassword = encoder.encode(password);
+            userRepo.changeUserPassword(currentUserName, encodedPassword);
+        }
+        return "redirect:/changepassword/success";
+    }
+
+    @GetMapping("/changepassword/success")
+    public String settings() {
+        return "generalTemplates/passwordChanged";
     }
 
 }
