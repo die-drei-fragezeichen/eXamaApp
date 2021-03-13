@@ -32,7 +32,7 @@ public class AppController {
      * Index Mappings
      */
     @SuppressWarnings("unchecked")
-    @GetMapping("")
+    @GetMapping("/")
     public String viewRolespecificLanding() {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         if (!(authLoggedInUser instanceof AnonymousAuthenticationToken)) {
@@ -86,6 +86,14 @@ public class AppController {
     @GetMapping("/install")
     public String install() {
         return "redirect:/login";
+    }
+
+    /**
+     * Settings commands
+     */
+    @GetMapping("/settings")
+    public String settings() {
+        return "generalTemplates/settings";
     }
 
 }
