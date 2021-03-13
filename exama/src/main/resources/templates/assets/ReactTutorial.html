@@ -1,0 +1,40 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/head :: head"></head>
+
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="fragments/header :: header"></div>
+
+        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>Tutorial for like button with react</h1>
+  
+      <div id = "container" style = "width: 550px; height: 400px; margin: 0 auto">
+      
+      
+      <!--Add an empty <div> tag to mark the spot where you want to display something with React.
+      You can place a “container” <div> like this anywhere inside the <body> tag. You may have as 
+      many independent DOM containers on one page as you need. 
+      They are usually empty — React will replace any existing content inside DOM containers.-->
+      <div id="like_button_container"></div>
+
+      <!-- Load React. The first two tags load React. The third one will load your component code. -->
+      <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>  
+      <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+      <!-- Load our React component. -->
+      <script src="like_button.js"></script>
+      <!--Now create a file called like_button.js next to your HTML page. you could also write this code directly into the html
+
+      At the end oj .js file, these two lines must be added. The first finds the <div> we added to our HTML above, 
+      and the second displays our “Like” button React component inside of it. Finished!
+      const domContainer = document.querySelector('#like_button_container');
+      ReactDOM.render(e(LikeButton), domContainer); -->
+</script>
+</div>
+   </body>
+</html>
