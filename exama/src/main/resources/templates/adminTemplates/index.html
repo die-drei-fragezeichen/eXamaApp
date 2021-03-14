@@ -16,6 +16,36 @@
 
             Willkommen <b><span sec:authentication="name"></span></b>! Sie haben die folgenden Nutzungsrechte: <b><span
                     sec:authentication="principal.authorities"></span></b>!
+<<<<<<< HEAD
+
+            <h1>Ihre Funktionen</h1>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="examBar/selectDate">> Hier gehts ab zum ExamBar</a>
+            </div>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="exams/show">> alle Prüfungen ansehen und bearbeiten</a>
+            </div>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="users/create">> neuen User hinzufügen</a>
+            </div>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="users/show">> alle User ansehen und bearbeiten</a>
+            </div>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="subjects/create">> neues Fach hinzufügen</a>
+            </div>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="subjects/show">> alle Fächer ansehen und bearbeiten</a>
+            </div>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="examtypes/show">> alle Prüfungstypen ansehen und bearbeiten</a>
+            </div>
+            <div sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')">
+                <a href="preptimes/show">> alle Vorbereitungsintervalle ansehen und bearbeiten</a>
+            </div>
+
+=======
+>>>>>>> 81c18207ed0cfc8433cb0cd54a98215a6a7c1d46
         </div>
 
         <!-- footer with navigation (only mobile) -->

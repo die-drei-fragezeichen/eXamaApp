@@ -1,28 +1,34 @@
 <html lang="DE" xmlns:th="http://www.thymeleaf.org"
     xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-<head th:include="fragments/head :: head"></head>
+<head th:include="fragments/head :: head">
+
+</head>
 
 <body>
+
+    <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button> 
     <div id="wrapper">
         <!-- header with navigation (only desktop and tablet), title and logout-button -->
         <div th:include="fragments/header :: header"></div>
-
+        
         <div th:include="fragments/coursenavigation :: coursenavigation"></div>
-
+        
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
+        <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
             <h1>Das sind deine Prüfungen in der gewählten Woche</h1>
             <a href="/examBar/selectDate">> neues Datum auswählen</a><br><br>
-
-            <table>
+            
+            
+            <table class="scrollableTable">
                 <thead>
                     <tr>
                         <th>Prüfungs ID</th>
                         <th>Name der Prüfung</th>
                         <th>Prüfungsdatum / Deaadline</th>
                         <th>Faktor</th>
-                        <th></th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -31,15 +37,11 @@
                         <td th:text="${exam.name}"></td>
                         <td th:text="${exam.date}"></td>
                         <td th:text="${exam.countingFactor}"></td>
-
-
-                        
-                        <!-- <td><a th:href="@{/workloads/{id}/edit(id=${workload.id})}">bearbeiten</a></td>
-                        <td><a th:href="@{/workloads/{id}/delete(id=${workload.id})}">löschen</a></td> -->
-                        <!-- </a> -->
                     </tr>
                 </tbody>
             </table>
+            <br />
+             <input type="text" placeholder="Suche nach Prüfungsamen">
 
             <h3 data-th-text="${msg}" />
             <h3 data-th-text="${anzpr}" />
@@ -92,11 +94,33 @@ chart.render();
 <div id="chartContainer" style="height: 300px; max-width: 920px; margin: 0px auto;"></div>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
+<script>
+//Get the button
+var mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10 || document.getElementById("").scrollTop > 10) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
+
+
         <!-- footer with navigation (only mobile) -->
         <div th:include="fragments/footer :: footer"></div>
 
 </div>
-        
 </body>
 
 </html>
