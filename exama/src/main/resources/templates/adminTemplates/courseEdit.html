@@ -16,13 +16,20 @@
             <a href="/courses/show">> alle Fächer anzeigen</a><br><br><br>
 
             <form
-                th:action="@{/courses/{id}/edited?name={name}(id=${course.id},name=${course.name})}"
+                th:action="@{/courses/{id}/edited?name={name}&enabled={enabled}(id=${course.id},name=${course.name},enabled=${course.enabled})}"
                 th:object="${course}" method="put">
                 <div>
                     <label>Klassenname: </label>
                     <div>
                         <input type="text" th:field="*{name}" class="form-control" required minlength="1"
                             maxlength="20" />
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label>Aktiv: </label>
+                    <div>
+                        <input type="checkbox" th:name="enabled" th:checked="*{enabled}" class="form-control" />
                     </div>
                 </div>
                 <br>

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException.NotFound;
 import org.springframework.web.servlet.ModelAndView;
 import ch.diedreifragezeichen.exama.courses.*;
 
@@ -30,6 +31,7 @@ public class CourseController {
 
     @PostMapping("/courses/created")
     public String processSaving(Course course) {
+        course.setEnabled(true);
         courseRepo.save(course);
         return "redirect:/courses/show";
     }
@@ -48,46 +50,17 @@ public class CourseController {
             throw new NotFoundException("Die Klasse existiert leider noch nicht");
         }
         ModelAndView mav = new ModelAndView("adminTemplates/courseEdit");
-        mav.addObject("Course", Course);
+        mav.addObject("course", Course);
         return mav;
     }
-    /*
-     * unimplemented parts
-     */
 
-    // @GetMapping("/Courses/{id}/edit")
-    // public ModelAndView editCourse(@PathVariable(name = "id") Long id) throws
-    // NotFoundException {
-    // Course Course = courseRepo.findCourseById(id);
-    // if (Course == null) {
-    // throw new NotFoundException("Course not found");
-    // }
-    // ModelAndView mav = new ModelAndView("adminTemplates/CourseEdit");
-    // mav.addObject("Course", Course);
-    // return mav;
-    // }
-
-    // @GetMapping("/Courses/{id}/edited")
-    // public String updateCourse(@PathVariable(name = "id") Long id,
-    // @RequestParam(name = "name") String name,
-    // @RequestParam(name = "tag") String tag) throws NotFoundException {
-    // Course Course = courseRepo.findCourseById(id);
-    // if (Course == null) {
-    // throw new NotFoundException("Course not found");
-    // }
-    // courseRepo.editCourseById(id, name, tag);
-    // return "redirect:/Courses/show";
-    // }
-
-    // @GetMapping("/Courses/{id}/delete")
-    // public String deleteCourse(@PathVariable(name = "id") Long id) throws
-    // NotFoundException {
-    // Course Course = courseRepo.findCourseById(id);
-    // if (Course == null) {
-    // throw new NotFoundException("Course not found");
-    // }
-    // courseRepo.deleteCourseById(id);
-    // return "redirect:/Courses/show";
-    // }
-
+    @GetMapping("/course/{id}/edited")
+    public String updateUser(@PathVariable(name = "id") long id,
+            @RequestParam(name = "name") String name, @RequestParam(name = "enabled", required = false) boolean enabled) throws NotFoundException {
+        Course course = courseRepo.findCourseById(id);
+        if (course == null) {
+            throw new NotFoundException("Course not found");
+        }
+        return "redirect:/courses/show";
+    }
 }
