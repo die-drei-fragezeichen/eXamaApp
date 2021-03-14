@@ -19,10 +19,8 @@ import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
 import ch.diedreifragezeichen.exama.assignments.examTypes.ExamTypeRepository;
 import ch.diedreifragezeichen.exama.assignments.exams.ExamNew;
 import ch.diedreifragezeichen.exama.assignments.exams.ExamNewRepository;
-import ch.diedreifragezeichen.exama.assignments.workload.Workload;
 import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistribution;
 import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistributionRepository;
-import ch.diedreifragezeichen.exama.assignments.workload.WorkloadRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.courses.CourseRepository;
 import ch.diedreifragezeichen.exama.subjects.Subject;
@@ -36,8 +34,6 @@ public class ExamNewController {
     private UserRepository userRepo;
     @Autowired
     private ExamNewRepository examRepo;
-    @Autowired
-    private WorkloadRepository workloadRepo;
     @Autowired
     private WorkloadDistributionRepository distributionRepo;
     @Autowired
@@ -61,8 +57,6 @@ public class ExamNewController {
         ModelAndView mav = new ModelAndView("adminTemplates/examNewCreate");
         ExamNew exam = new ExamNew();
         mav.addObject("newExam", exam);
-        Workload workload = new Workload();
-        mav.addObject("newWorkload", workload);
         List<WorkloadDistribution> listDist = distributionRepo.findAll();
         mav.addObject("allDist", listDist);
         List<Course> listCourses = courseRepo.findAll();
@@ -77,15 +71,13 @@ public class ExamNewController {
     }
 
     @PostMapping("/examsNew/created")
-    public String processSaving(Workload workload, ExamNew exam) {
-        workloadRepo.save(workload);
+    public String processSaving(ExamNew exam) {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         if (!(authLoggedInUser instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authLoggedInUser.getName();
             User user = userRepo.getUserByEmail(currentUserName);
             exam.setCreator(user);
         }
-        exam.setWorkload(workload);
         exam.setEditDate(LocalDate.now());
         examRepo.save(exam);
         return "redirect:/examsNew/show";

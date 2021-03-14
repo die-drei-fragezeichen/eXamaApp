@@ -1,32 +1,74 @@
 package ch.diedreifragezeichen.exama.assignments;
 
 import java.time.LocalDate;
-import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+
 import java.time.temporal.ChronoUnit;
+import java.util.Set;
 
 import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTime;
-import ch.diedreifragezeichen.exama.assignments.workload.Workload;
+import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistribution;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.subjects.Subject;
 import ch.diedreifragezeichen.exama.userAdministration.User;
 
 //this is an abstract class
 //no objects can be instatiated
-public abstract class Assignment implements AssignmentInterface {
-
+@MappedSuperclass
+public abstract class Assignment {
+    @Id
+    @Column(unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 20)
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     private User creator;
-    private Set<Course> courses;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     private Subject subject;
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private Set<Course> courses;
+
+    @Column(nullable = false)
     private LocalDate editDate;
+
+    @Column(nullable = true)
     private LocalDate startDate;
+
+    @Column(nullable = false)
     private LocalDate dueDate;
-    private AvailablePrepTime availablePrepTime; // ManyToOne (Many assignments can have same PrepTime) -> At
-                                                 // AvailablePrepTime it will be OneToMany (One Preptime can have many
-                                                 // Assignments)
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    private AvailablePrepTime availablePrepTime;
+
+    @Column(nullable = true, length = 4095)
     private String description;
-    private Workload workload; // OneToOne (One Assignment has one Workload an vice versa)
+
+    @Column(nullable = false)
+    private double workloadMinutesTotal;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    private WorkloadDistribution distribution;
 
     public Long getId() {
         return this.id;
@@ -50,14 +92,6 @@ public abstract class Assignment implements AssignmentInterface {
 
     public void setCreator(User creator) {
         this.creator = creator;
-    }
-
-    public Set<Course> getCourses() {
-        return this.courses;
-    }
-
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
     }
 
     public Subject getSubject() {
@@ -108,15 +142,22 @@ public abstract class Assignment implements AssignmentInterface {
         this.description = description;
     }
 
-    public Workload getWorkload() {
-        return this.workload;
+    public double getWorkloadMinutesTotal() {
+        return this.workloadMinutesTotal;
     }
 
-    public void setWorkload(Workload workload) {
-        this.workload = workload;
+    public void setWorkloadMinutesTotal(double workloadMinutesTotal) {
+        this.workloadMinutesTotal = workloadMinutesTotal;
     }
 
-    @Override
+    public WorkloadDistribution getDistribution() {
+        return this.distribution;
+    }
+
+    public void setDistribution(WorkloadDistribution distribution) {
+        this.distribution = distribution;
+    }
+
     public int getAvailableDaysToGo(LocalDate date) {
         long daysToGo = ChronoUnit.DAYS.between(date, this.dueDate);
         if (daysToGo < 0) {
@@ -125,7 +166,6 @@ public abstract class Assignment implements AssignmentInterface {
         return (int) daysToGo;
     }
 
-    @Override
     public int getAvailableDaysTotal() {
         LocalDate startDate;
         if (this.startDate == null) {
@@ -136,7 +176,6 @@ public abstract class Assignment implements AssignmentInterface {
         return (int) ChronoUnit.DAYS.between(startDate, this.dueDate);
     }
 
-    @Override
     public double getWorkloadValue(LocalDate date) {
         // not yet started
         if (this.startDate.isAfter(date)) {
@@ -147,12 +186,11 @@ public abstract class Assignment implements AssignmentInterface {
         double hundredPercent = 3.5;
         double hundredPercentMinutes = hundredPercent * 60;
 
-        double workloadMinutes = this.workload.getWorkloadMinutesOnDayX(this.getRealStartDate(), date, this.dueDate);
+        double workloadMinutes = this.getWorkloadMinutesOnDayX(this.getRealStartDate(), date, this.dueDate);
 
         return workloadMinutes / hundredPercentMinutes;
     }
 
-    @Override
     public LocalDate getRealStartDate() {
         LocalDate startDate;
         if (this.startDate == null) {
@@ -167,6 +205,38 @@ public abstract class Assignment implements AssignmentInterface {
         } else {
             startDate = this.dueDate.minusDays(this.availablePrepTime.getDays());
             return startDate;
+        }
+    }
+
+    public double getWorkloadMinutesOnDayX(LocalDate startDate, LocalDate dayX, LocalDate dueDate) {
+        if (startDate.isAfter(dayX)) {
+            return 0;
+        }
+        double m;
+        int diffDays = (int) ChronoUnit.DAYS.between(startDate, dueDate);
+        int dayNumberInProcess = (int) ChronoUnit.DAYS.between(startDate, dayX);
+
+        switch (this.distribution.getName()) {
+        case "LINEAR":
+            m = 2 * workloadMinutesTotal / Math.pow(diffDays, 2);
+            return m * dayNumberInProcess;
+
+        case "CONSTANT":
+            return workloadMinutesTotal / diffDays;
+
+        case "EXPONENTIAL":
+            double faktor = 1.1; // 10% more per day (faktor a)
+            // function f(x)=a^x+b -> Integral from 0 to diffDays t is
+            // a^t/ln(a)+b*t-1/ln(a)
+            // Integral from 0 to diffDays must be workloadMinutesTotal w -> solve ->
+            // b=-(a^t-ln(a)*w-1)/(ln(a)*t)
+            double workloadDayOne = -(Math.pow(faktor, diffDays) - Math.log(faktor) * workloadMinutesTotal - 1)
+                    / (Math.log(faktor) * diffDays);
+            return Math.pow(faktor, dayNumberInProcess) + workloadDayOne;
+
+        default: // LINEAR
+            m = 2 * workloadMinutesTotal / Math.pow(diffDays, 2);
+            return m * dayNumberInProcess;
         }
     }
 }
