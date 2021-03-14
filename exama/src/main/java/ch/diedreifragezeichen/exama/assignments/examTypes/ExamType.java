@@ -1,25 +1,37 @@
 package ch.diedreifragezeichen.exama.assignments.examTypes;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
+
+import ch.diedreifragezeichen.exama.assignments.exams.Exam;
 
 @Entity
 @DynamicUpdate
 @Table(name = "examtypes")
 public class ExamType {
-
+    /**
+     * Fields
+     */
     @Id
-    @Column(name = "examtype_id", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "examtype_name", unique = true, nullable = false, length = 50)
+    @Column(unique = true, nullable = false, length = 50)
     private String name;
 
-    @Column(name = "examtype_timevalue", unique = false, nullable = false)
-    private double timeValue;
+    /**
+     * OneToMany mappings
+     */
+    @OneToMany(mappedBy = "examType")
+    private List<Exam> exams;
 
+    /**
+     * Methods
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -63,13 +75,5 @@ public class ExamType {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public double getTimeValue() {
-        return this.timeValue;
-    }
-
-    public void setTimeValue(double timeValue) {
-        this.timeValue = timeValue;
     }
 }

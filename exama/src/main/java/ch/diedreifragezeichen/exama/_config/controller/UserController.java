@@ -55,6 +55,9 @@ public class UserController {
         user.setPassword(encodedPassword);
         user.setEnabled(true);
         user.setLoggedIn(false);
+        if(user.getAbbreviation().equals("")){
+            user.setAbbreviation(null);
+        }
         user.setCreatedOn(LocalDate.now());
         userRepo.save(user);
         // returns new mapping command on userSaved.html

@@ -1,22 +1,37 @@
 package ch.diedreifragezeichen.exama.assignments.workload;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
+
+import ch.diedreifragezeichen.exama.assignments.exams.Exam;
 
 @Entity
 @DynamicUpdate
 @Table(name = "workloaddistributions")
 public class WorkloadDistribution {
-
+    /**
+     * Fields
+     */
     @Id
-    @Column(name = "workloaddistribution_id", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "workloaddistribution_name", unique = true, nullable = false, length = 20)
+    @Column(unique = true, nullable = false, length = 20)
     private String name;
 
+	/**
+	 * OneToMany mappings
+	 */
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "workloadDistribution")
+	private List<Exam> exams;
+
+	/**
+	 * Methods
+	 */
     @Override
     public String toString() {
         return this.name;

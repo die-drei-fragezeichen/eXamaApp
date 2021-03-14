@@ -6,26 +6,40 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import ch.diedreifragezeichen.exama.assignments.Assignment;
 import ch.diedreifragezeichen.exama.assignments.exams.Exam;
 
 @Entity
 @DynamicUpdate
 @Table(name = "courses")
 public class Course {
-    
+    /**
+     * Fields
+     */
     @Id
-    @Column(name="course_id", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, nullable = false, length = 20)
     private String name;
 
-    //TODO: List<Assignment> not working because its not an entity. -> make list of superclass working!
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
-    private List<Exam> assignments;
+    @Column(nullable = false)
+    private boolean enabled;
 
+    /**
+     * OneToMany mappings
+     */
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
+    private List<Exam> exams;
+
+    /*
+     * @OneToMany(cascade = CascadeType.ALL, mappedBy = "course") private
+     * List<Homework> homeworks;
+     */
+
+    /**
+     * Methods
+     */
     public Long getId() {
         return id;
     }
@@ -38,18 +52,24 @@ public class Course {
         this.name = name;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public List<Exam> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<Exam> exams) {
+        this.exams = exams;
+    }
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.name;
     }
-    // public List<Assignment> getAssignments() {
-    //     return assignments;
-    // }
-
-    // public void setAssignments(List<Assignment> assignments) {
-    //     this.assignments = assignments;
-    // }
-
-    
 }

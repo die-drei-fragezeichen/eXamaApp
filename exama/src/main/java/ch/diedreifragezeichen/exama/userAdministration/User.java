@@ -2,6 +2,7 @@ package ch.diedreifragezeichen.exama.userAdministration;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -9,57 +10,69 @@ import javax.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import ch.diedreifragezeichen.exama.assignments.exams.Exam;
+
 @Entity
 @DynamicUpdate
 @Table(name = "users")
 public class User {
-
+	/**
+	 * Fields
+	 */
 	@Id
-	@Column(name = "user_id", unique = true, nullable = false)
+	@Column(unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "user_email", unique = true, nullable = false, length = 45)
+	@Column(unique = true, nullable = false, length = 45)
 	private String email;
 
-	@Column(name = "user_password", nullable = false, length = 255)
+	@Column(nullable = false, length = 255)
 	private String password;
 
-	@Column(name = "user_firstname", nullable = false, length = 20)
+	@Column(nullable = false, length = 20)
 	private String firstName;
 
-	@Column(name = "user_lastname", nullable = false, length = 20)
+	@Column(nullable = false, length = 20)
 	private String lastName;
 
 	@Column(nullable = true, length = 3, unique = true)
 	private String abbreviation;
 
-	@Column(name = "user_enabled", nullable = false, length = 1)
-	private boolean isEnabled;
+	@Column(nullable = false)
+	private boolean enabled;
 
-	@Column(name = "user_loggedin", nullable = false, length = 1)
+	@Column(nullable = false)
 	private boolean loggedIn;
 
-	@Column(name = "user_lastlogin", nullable = true)
+	@Column(nullable = true)
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate lastLogin;
 
-	@Column(name = "user_createdon", nullable = false)
+	@Column(nullable = false)
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate createdOn;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "map_users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JoinTable(joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
+	/**
+	 * OneToMany mappings
+	 */
+	@OneToMany(mappedBy = "creator")
+	private List<Exam> exams;
 
+	/**
+	 * Methods
+	 */
 	@Override
-    public String toString(){
-		if(this.abbreviation!=null){
+	public String toString() {
+		if (this.abbreviation != null) {
 			return this.abbreviation;
 		}
-        return this.firstName+" "+this.lastName;
-    }
+		return this.firstName + " " + this.lastName;
+	}
 
 	public Long getId() {
 		return id;
@@ -110,11 +123,11 @@ public class User {
 	}
 
 	public boolean isEnabled() {
-		return this.isEnabled;
+		return this.enabled;
 	}
 
 	public void setEnabled(boolean enabled) {
-		this.isEnabled = enabled;
+		this.enabled = enabled;
 	}
 
 	public Set<Role> getRoles() {

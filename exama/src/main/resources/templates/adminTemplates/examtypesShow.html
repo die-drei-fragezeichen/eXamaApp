@@ -20,7 +20,6 @@
                     <tr>
                         <th>Examtype ID</th>
                         <th>Examtype Name</th>
-                        <th>Examtype Time Value (hours)</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -29,7 +28,6 @@
                     <tr th:each="type: ${listTypes}">
                         <td th:text="${type.id}"></td>
                         <td th:text="${type.name}"></td>
-                        <td th:text="${type.timeValue}"></td>
                         <td><a th:href="@{/examtypes/{id}/edit(id=${type.id})}">bearbeiten</a></td>
                         <td><a th:href="@{/examtypes/{id}/delete(id=${type.id})}">löschen</a></td>
                         </a>

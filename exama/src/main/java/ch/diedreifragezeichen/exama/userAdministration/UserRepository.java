@@ -27,14 +27,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // unique identifier)
     @Transactional
     @Modifying
-    @Query("UPDATE User u SET u.password=?2, u.firstName=?3, u.lastName=?4, u.isEnabled=?5 WHERE u.email=?1")
+    @Query("UPDATE User u SET u.password=?2, u.firstName=?3, u.lastName=?4, u.enabled=?5 WHERE u.email=?1")
     public void editUserByEmailPW(String email, String password, String firstName, String lastName, boolean isEnabled);
 
     // Update User including password (email cannot be changed, because it's the
     // unique identifier)
     @Transactional
     @Modifying
-    @Query("UPDATE User u SET u.firstName=?2, u.lastName=?3, u.isEnabled=?4 WHERE u.email=?1")
+    @Query("UPDATE User u SET u.firstName=?2, u.lastName=?3, u.enabled=?4 WHERE u.email=?1")
     public void editUserByEmail(String email, String firstName, String lastName, boolean isEnabled);
     
     @Transactional

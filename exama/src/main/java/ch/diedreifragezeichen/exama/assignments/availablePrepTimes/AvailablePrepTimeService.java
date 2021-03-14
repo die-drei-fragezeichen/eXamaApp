@@ -14,27 +14,20 @@ public class AvailablePrepTimeService {
     EntityManager em;
 
     public AvailablePrepTime loadById(long id) throws NotFoundException {
-        AvailablePrepTime prepTime = prepTimeRepo.getPrepTimeByID(id);
-        if (prepTime == null) {
+        AvailablePrepTime preptime = prepTimeRepo.getPrepTimeByID(id);
+        if (preptime == null) {
             throw new NotFoundException("PrepTime not found");
         }
-        return prepTime;
+        return preptime;
     }
 
-    public AvailablePrepTime loadByName(String name) throws NotFoundException {
-        AvailablePrepTime prepTime = prepTimeRepo.getPrepTimeByName(name);
-        if (prepTime == null) {
-            throw new NotFoundException("PrepTime not found");
-        }
-        return prepTime;
+    public void save(AvailablePrepTime preptime){
+        prepTimeRepo.save(preptime);
     }
 
-    public AvailablePrepTime loadByDays(int days) throws NotFoundException {
-        AvailablePrepTime prepTime = prepTimeRepo.getPrepTimeByDays(days);
-        if (prepTime == null) {
-            throw new NotFoundException("PrepTime not found");
-        }
-        return prepTime;
+    public void update(AvailablePrepTime preptime){
+        em.merge(preptime);
     }
 
+    
 }

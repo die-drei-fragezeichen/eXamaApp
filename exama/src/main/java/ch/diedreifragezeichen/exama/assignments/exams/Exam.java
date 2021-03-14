@@ -1,11 +1,6 @@
 package ch.diedreifragezeichen.exama.assignments.exams;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -16,7 +11,9 @@ import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
 @DynamicUpdate
 @Table(name = "exams")
 public class Exam extends Assignment {
-
+    /**
+     * Fields
+     */
     @Column(nullable = false)
     private double countingFactor;
 
@@ -24,6 +21,9 @@ public class Exam extends Assignment {
     @JoinColumn(nullable = false)
     private ExamType examType;
 
+    /**
+     * Methods
+     */
     public ExamType getExamType() {
         return examType;
     }

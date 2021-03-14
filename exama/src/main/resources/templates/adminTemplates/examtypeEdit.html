@@ -16,7 +16,7 @@
             <a href="/examtypes/show">> alle Prüfungstypen anzeigen</a><br><br><br>
 
             <form
-                th:action="@{/examtypes/{id}/edited?name={name}&timeValue={timeValue}(id=${type.id},name=${type.name},timeValue=${type.timeValue})}"
+                th:action="@{/examtypes/{id}/edited?name={name}&timeValue={timeValue}(id=${type.id},name=${type.name})}"
                 th:object="${type}" method="put">
                 <div>
                     <label>ExamType Name: </label>
@@ -26,13 +26,6 @@
                     </div>
                 </div>
                 <br>
-                <div>
-                    <label>ExamType TimeValue (hours): </label>
-                    <div>
-                        <input type="text" th:field="*{timeValue}" class="form-control" required minlength="1"
-                            maxlength="4" />
-                    </div>
-                </div>
                 <div>
                     <button type="submit" class="login-button">Speichern</button>
                 </div>

@@ -23,7 +23,7 @@ public interface ExamTypeRepository extends JpaRepository<ExamType, Long> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE ExamType et SET et.name=?2, et.timeValue=?3 WHERE et.id = ?1")
-    public void editExamTypeById(long id, String name, double timeValue);
+    @Query("UPDATE ExamType et SET et.name=?2 WHERE et.id = ?1")
+    public void editExamTypeById(long id, String name);
 
 }

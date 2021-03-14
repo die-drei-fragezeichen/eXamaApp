@@ -1,25 +1,40 @@
 package ch.diedreifragezeichen.exama.assignments.availablePrepTimes;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
+
+import ch.diedreifragezeichen.exama.assignments.exams.Exam;
 
 @Entity
 @DynamicUpdate
 @Table(name = "availablepreptimes")
 public class AvailablePrepTime {
-
+    /**
+     * Fields
+     */
     @Id
-    @Column(name = "availablepreptime_id", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "availablepreptime_name", unique = true, nullable = false, length = 20)
+    @Column(unique = true, nullable = false, length = 20)
     private String name;
 
-    @Column(name = "availablepreptime_days", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private int days;
 
+    /**
+     * OneToMany mappings
+     */
+    @OneToMany(mappedBy = "availablePrepTime")
+    private List<Exam> exams;
+
+    /**
+     * Methods
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -45,7 +60,7 @@ public class AvailablePrepTime {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.name;
     }
 
@@ -72,5 +87,4 @@ public class AvailablePrepTime {
     public void setDays(int days) {
         this.days = days;
     }
-
 }

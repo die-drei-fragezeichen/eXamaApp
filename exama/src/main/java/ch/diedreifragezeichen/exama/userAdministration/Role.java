@@ -1,19 +1,33 @@
 package ch.diedreifragezeichen.exama.userAdministration;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "roles")
 public class Role {
-
+    /**
+     * Fields
+     */
     @Id
-    @Column(name = "role_id")
+    @Column(unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "role_name")
+    @Column(unique = true, nullable = false)
     private String name;
 
+    /**
+     * ManyToMany Mapping with user
+     */
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "roles")
+	private Set<User> users = new HashSet<>();
+
+    /**
+     * Methods
+     */
     @Override
     public String toString() {
         return this.name;

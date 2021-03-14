@@ -3,34 +3,24 @@ package ch.diedreifragezeichen.exama.assignments.workload;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
-
-import ch.diedreifragezeichen.exama.assignments.WorkloadInterface;
 
 @Entity
 @DynamicUpdate
 @Table(name = "workloads")
-public class Workload implements WorkloadInterface {
+public class Workload {
     @Id
-    @Column(name = "workload_id", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "workload_minutestotal", nullable = false)
+    @Column(nullable = false)
     private double workloadMinutesTotal;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "workloaddistribution_id")
+    @JoinColumn
     private WorkloadDistribution distribution;
 
     public Long getId() {
@@ -53,7 +43,6 @@ public class Workload implements WorkloadInterface {
         this.distribution = distribution;
     }
 
-    @Override
     public double getWorkloadMinutesOnDayX(LocalDate startDate, LocalDate dayX, LocalDate dueDate) {
         if (startDate.isAfter(dayX)) {
             return 0;
