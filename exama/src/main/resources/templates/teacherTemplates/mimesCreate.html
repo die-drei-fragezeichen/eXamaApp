@@ -13,102 +13,93 @@
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
             <h1>Neues Mime erstellen</h1>
-        
-        <!-- Values for th:object attributes in form tags must be variable expressions (${...}). It specifies the NAME OF THE MODEL ATTRIBUTE!! So: ${mime.editDate} would not be. -->
-        <!-- Once you are working inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
-            
-            
-            <form th:action="@{/mimes/created}" th:object="${verpacktesObjekt}" method="post">
-                <div>
-                    <label>Prüfungsname: </label>
-                </div>
-                <div>
-                        <input type="text" th:field="*{name}" class="form-control" />
-                </div>
-                <div>
-                        <label>Mime editDatum: </label>
-                </div>
-                <div>
-                    <input type="date" th:field="*{editDate}" class="form-control" value="2021-02-21" min="2021-01-01"
-                        max="2021-07-21" />
-                </div>
 
-                <div>
-                        <label>Mime startDatum: </label>
-                </div>
-                <div>
-                    <input type="date" th:field="*{startDate}" class="form-control" value="2021-02-21" min="2021-01-01"
-                        max="2021-07-21" />
-                </div>
-                <div>
-                        <label>Mime dueDatum: </label>
-                </div>
-                <div>
-                    <input type="date" th:field="*{dueDate}" class="form-control" value="2021-02-21" min="2021-01-01"
-                        max="2021-07-21" />
-                </div>
-                <br>
+            <!-- Values for th:object attributes in form tags must be variable expressions (${...}). It specifies the NAME OF THE MODEL ATTRIBUTE!! So: ${mime.editDate} would not be. -->
+            <!-- Once you are working inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
 
-                 <br>
+
+                <form th:action="@{/exams/created}" th:object="${newExam}" method="post">
                     <div>
-                        <label>Fach: </label>
-                        <select th:field="*{subject}" class="form-control" required />
-                        <option th:each="subject : ${welchefaecherhabenwir}" th:text="${subject.name}" th:value="${subject.id}" />
-                        </select>   
+                        <div>
+                            <label>Prüfungsname: </label>
+                            <input type="text" th:field="*{name}" class="form-control" maxlength="20"
+                                required />
+                        </div>
+                        <br>
+                        <div>
+                            <label>Beschreibung: </label>
+                            <textarea th:field="*{description}" class="form-control"
+                                maxlength="255" />
+                        </div>
+                        <!-- <br>
+                        <div>
+                            <label>Prüfungsdatum / Abgabedatum: </label>
+                            <input type="date" th:field="*{dueDate}" class="form-control" required/>
+                        </div>
+                        <br>
+                        <div>
+                            <label>Startdatum: </label>
+                            <input type="date" th:field="*{startDate}" class="form-control"/>
+                        </div> -->
+                        <br>
+                        <div>
+                            <label>Voraussichtliche Vorbereitungszeit: </label>
+                            <select th:field="*{availablePrepTime}" class="form-control" required />
+                            <option th:each="preptime : ${bringmirdiepreptimes}" th:text="${preptime.name}"
+                                th:value="${preptime.id}" />
+                            </select>
+                        </div>
+                        <br>
+                        <div>
+                            <label>Prüfungstyp: </label>
+                            <select th:field="*{examType}" class="form-control" required />
+                            <option th:each="type : ${holmirdietypenverpackung}" th:text="${type.name + ' (' + type.timeValue + 'h)'}"
+                                th:value="${type.id}" />
+                            </select>
+                        </div>
+                        <br>
+                        <div>
+                            <label>Fach: </label>
+                            <select th:field="*{subject}" class="form-control" required />
+                            <option th:each="subject : ${welchefaecherhabenwir}" th:text="${subject.name}" th:value="${subject.id}" />
+                            </select>
+                        </div>
+                        <br>
+                        <div>
+                            <label>Klasse: </label>
+                            <select th:field="*{course}" class="form-control" required />
+                            <option th:each="course : ${holmirmaldiearmenschafe}" th:text="${course.name}" th:value="${course.id}" />
+                            </select>
+                        </div>
+                        <br>
+                        <div>
+                            <label>Workload Minutes Total: </label>
+                            <input type="text" th:field="*{workloadMinutesTotal}"
+                                class="form-control" minlength="1" maxlength="4" />
+                        </div>
+                        <br>
+                        <div>
+                            <label>Workload Distribution:
+                                <select th:field="*{workloadDistribution}" class="form-control" required>
+                                    <option th:each="dist : ${allWorkloadDistributions}" th:text="${dist.name}" th:value="${dist.id}" />
+                                </select>
+                            </label>
+                        </div>
+                        <br>
+                        <div>
+                            <label>Prüfungsfaktor: </label>
+                        </div>
+                        <br>
+                        <div>
+                            <input type="number"  th:field="*{countingFactor}" class="form-control"
+                                min="0.5" max="3.0" step="0.5" value="1.0" required />
+                        </div>
+                        <br>
+                        <div>
+                            <button type="submit" class="login-button">Prüfung erstellen</button>
+                        </div>
                     </div>
-                    <br>
-                    <br>
-                    <div>
-                        <label>Klasse: </label>
-                        <select th:field="*{courses}" class="form-control" required />
-                        <option th:each="course : ${holmirmaldiearmenschafe}" th:text="${course.name}" th:value="${course.id}" />
-                        </select>
-                    </div>
-                    <br>
-
-                    <div>
-                        <label>Beschreibung: </label>
-                      <!--  <input type="text" th:field="*{description}" class="form-control" />-->
-                        <textarea  rows = "2" cols = "30" th:field = "*{description}" maxlength="255" >... </textarea>
-                    </div>
-                    <br>
-
-                    <br>
-                    <div>
-                        <input type="number" th:field="*{countingFactor}" class="form-control"
-                            value="1.0" min="0.5" max="3.0" step="0.5"  required />
-                    </div>
-                    <br>
-
-                     <br>
-                    <div>
-                        <label>Prüfungstyp: </label>
-                        <select th:field="*{examType}" class="form-control" required />
-                        <option th:each="examType : ${holmirdietypenverpackung}" th:text="${examType.name + ' (' + examType.timeValue + 'h)'}"
-                            th:value="${examType.id}" />
-                        </select>
-                    </div>
-                     <br>
-                    <div>
-                        <label>Voraussichtliche Vorbereitungszeit: </label>
-                         <select th:field="*{availablePrepTime}" class="form-control" required />
-                        <option th:each="preptime : ${bringmirdiepreptimes}" th:text="${preptime.name}"
-                            th:value="${preptime.id}" />
-                        </select>
-                    </div>
-                    <br>
-
-
-
-
-                <div>
-                    <button type="submit" class="login-button">Deinen Mime erstellen</button>
-                </div>
-
-
-
-
-            </form>
+                </form>
         </div>
 
         <!-- footer with navigation (only mobile) -->

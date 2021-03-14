@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
@@ -26,7 +27,7 @@ import ch.diedreifragezeichen.exama.userAdministration.User;
 //this is an abstract class
 //no objects can be instatiated
 @MappedSuperclass
-public abstract class Assignment {
+public class Assignment {
     @Id
     @Column(unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,9 +44,9 @@ public abstract class Assignment {
     @JoinColumn(nullable = false)
     private Subject subject;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
-    private Set<Course> courses;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Course course;
 
     @Column(nullable = false)
     private LocalDate editDate;
@@ -63,12 +64,12 @@ public abstract class Assignment {
     @Column(nullable = true, length = 4095)
     private String description;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private double workloadMinutesTotal;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private WorkloadDistribution distribution;
+    private WorkloadDistribution workloadDistribution;
 
     public Long getId() {
         return this.id;
@@ -100,6 +101,14 @@ public abstract class Assignment {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public LocalDate getEditDate() {
@@ -150,12 +159,12 @@ public abstract class Assignment {
         this.workloadMinutesTotal = workloadMinutesTotal;
     }
 
-    public WorkloadDistribution getDistribution() {
-        return this.distribution;
+    public WorkloadDistribution getWorkloadDistribution() {
+        return this.workloadDistribution;
     }
 
-    public void setDistribution(WorkloadDistribution distribution) {
-        this.distribution = distribution;
+    public void setWorkloadDistribution(WorkloadDistribution distribution) {
+        this.workloadDistribution = distribution;
     }
 
     public int getAvailableDaysToGo(LocalDate date) {
@@ -216,7 +225,7 @@ public abstract class Assignment {
         int diffDays = (int) ChronoUnit.DAYS.between(startDate, dueDate);
         int dayNumberInProcess = (int) ChronoUnit.DAYS.between(startDate, dayX);
 
-        switch (this.distribution.getName()) {
+        switch (this.workloadDistribution.getName()) {
         case "LINEAR":
             m = 2 * workloadMinutesTotal / Math.pow(diffDays, 2);
             return m * dayNumberInProcess;

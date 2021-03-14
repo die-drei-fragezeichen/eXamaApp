@@ -48,6 +48,14 @@
                 </div>
                 <br>
                 <div>
+                    <label>Kürzel: </label>
+                    <div>
+                        <input type="text" th:field="*{abbreviation}" class="form-control" required minlength="2"
+                            maxlength="3" />
+                    </div>
+                </div>
+                <br>
+                <div>
                     <label>Nutzerrechte:
                         <input type="checkbox" name="roles" style="margin:0 0.5em 0 1.5em" th:each="role : ${allRoles}"
                             th:text="${role.name}" th:value="${role.id}" th:field="*{roles}" />

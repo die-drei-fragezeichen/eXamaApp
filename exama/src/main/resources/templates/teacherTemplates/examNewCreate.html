@@ -15,70 +15,70 @@
             <h1>Neue Prüfung erstellen</h1>
             <a href="/examsNew/show">> alle Prüfungen anzeigen</a><br><br><br>
 
-            <form th:action="@{/examsNew/created}" method="post">
+            <form th:action="@{/examsNew/created}" th:object="${newExam}" method="post">
                 <div>
                     <div>
                         <label>Prüfungsname: </label>
-                        <input type="text" th:object="${newExam}" th:field="*{name}" class="form-control" maxlength="20"
+                        <input type="text" th:field="*{name}" class="form-control" maxlength="20"
                             required />
                     </div>
                     <br>
                     <div>
                         <label>Beschreibung: </label>
-                        <textarea th:object="${newExam}" th:field="*{description}" class="form-control"
+                        <textarea th:field="*{description}" class="form-control"
                             maxlength="255" />
                     </div>
-                    <br>
+                    <!-- <br>
                     <div>
                         <label>Prüfungsdatum / Abgabedatum: </label>
-                        <input type="date" th:object="${newExam}" th:field="*{dueDate}" class="form-control" required />
+                        <input type="date" th:field="*{dueDate}" class="form-control" required/>
                     </div>
                     <br>
                     <div>
                         <label>Startdatum: </label>
-                        <input type="date" th:object="${newExam}" th:field="*{startDate}" class="form-control" />
-                    </div>
+                        <input type="date" th:field="*{startDate}" class="form-control"/>
+                    </div> -->
                     <br>
                     <div>
                         <label>Voraussichtliche Vorbereitungszeit: </label>
-                        <select th:object="${newExam}" th:field="*{availablePrepTime}" class="form-control" required />
-                        <option th:each="preptime : ${allPreptimes}" th:text="${preptime.name}"
+                        <select th:field="*{availablePrepTime}" class="form-control" required />
+                        <option th:each="preptime : ${allAvailablePreptimes}" th:text="${preptime.name}"
                             th:value="${preptime.id}" />
                         </select>
                     </div>
                     <br>
                     <div>
                         <label>Prüfungstyp: </label>
-                        <select th:object="${newExam}" th:field="*{examType}" class="form-control" required />
-                        <option th:each="type : ${allTypes}" th:text="${type.name + ' (' + type.timeValue + 'h)'}"
+                        <select th:field="*{examType}" class="form-control" required />
+                        <option th:each="type : ${allExamTypes}" th:text="${type.name + ' (' + type.timeValue + 'h)'}"
                             th:value="${type.id}" />
                         </select>
                     </div>
                     <br>
                     <div>
                         <label>Fach: </label>
-                        <select th:object="${newExam}" th:field="*{subject}" class="form-control" required />
+                        <select th:field="*{subject}" class="form-control" required />
                         <option th:each="subject : ${allSubjects}" th:text="${subject.name}" th:value="${subject.id}" />
                         </select>
                     </div>
                     <br>
                     <div>
                         <label>Klasse: </label>
-                        <select th:object="${newExam}" th:field="*{courses}" class="form-control" required />
+                        <select th:field="*{courses}" class="form-control" required />
                         <option th:each="course : ${allCourses}" th:text="${course.name}" th:value="${course.id}" />
                         </select>
                     </div>
                     <br>
                     <div>
                         <label>Workload Minutes Total: </label>
-                        <input type="text" th:object="${newWorkload}" th:field="*{workloadMinutesTotal}"
-                            class="form-control" required minlength="1" maxlength="4" />
+                        <input type="text" th:field="*{workloadMinutesTotal}"
+                            class="form-control" minlength="1" maxlength="4" />
                     </div>
                     <br>
                     <div>
                         <label>Workload Distribution:
-                            <select th:object="${newWorkload}" th:field="*{distribution}" class="form-control" required>
-                                <option th:each="dist : ${allDist}" th:text="${dist.name}" th:value="${dist.id}" />
+                            <select th:field="*{workloadDistribution}" class="form-control" required>
+                                <option th:each="dist : ${allWorkloadDistributions}" th:text="${dist.name}" th:value="${dist.id}" />
                             </select>
                         </label>
                     </div>
@@ -88,7 +88,7 @@
                     </div>
                     <br>
                     <div>
-                        <input type="number" th:object="${newExam}" th:field="*{countingFactor}" class="form-control"
+                        <input type="number"  th:field="*{countingFactor}" class="form-control"
                             min="0.5" max="3.0" step="0.5" value="1.0" required />
                     </div>
                     <br>

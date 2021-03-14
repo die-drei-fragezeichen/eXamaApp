@@ -8,6 +8,8 @@ import javax.transaction.Transactional;
 
 public interface ExamTypeRepository extends JpaRepository<ExamType, Long> {
 
+    public ExamType findExamTypeById(long id);
+
     @Query("SELECT et FROM ExamType et WHERE et.id = ?1")
     public ExamType getExamTypeByID(Long id);
 

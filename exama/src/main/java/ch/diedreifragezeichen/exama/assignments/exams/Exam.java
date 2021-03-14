@@ -15,7 +15,7 @@ import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
 @Entity
 @DynamicUpdate
 @Table(name = "exams")
-public class ExamNew extends Assignment {
+public class Exam extends Assignment {
 
     @Column(nullable = false)
     private double countingFactor;

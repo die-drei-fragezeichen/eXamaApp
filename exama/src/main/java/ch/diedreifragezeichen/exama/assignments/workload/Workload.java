@@ -37,7 +37,6 @@ public class Workload implements WorkloadInterface {
         return this.id;
     }
 
-    @Override
     public double getWorkloadMinutesTotal() {
         return this.workloadMinutesTotal;
     }

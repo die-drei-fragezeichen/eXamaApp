@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ExamNewRepository extends JpaRepository<ExamNew, Long> {
-    public ExamNew findExamNewById(Long id);
+public interface ExamRepository extends JpaRepository<Exam, Long> {
+    public Exam findExamNewById(Long id);
 
     public void deleteById(Long id);
 
-    public List<ExamNew> findAllByDueDateBetween(LocalDate Monday, LocalDate Sunday);
+    public List<Exam> findAllByDueDateBetween(LocalDate Monday, LocalDate Sunday);
 }

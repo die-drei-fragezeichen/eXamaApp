@@ -22,6 +22,7 @@
                         <th>E-mail</th>
                         <th>First Name</th>
                         <th>Last Name</th>
+                        <th>Kürzel</th>
                         <th>Rechte</th>
                         <th>Aktiv</th>
                         <th></th>
@@ -34,6 +35,7 @@
                         <td th:text="${user.email}"></td>
                         <td th:text="${user.firstName}"></td>
                         <td th:text="${user.lastName}"></td>
+                        <td th:text="${user.abbreviation}"></td>
                         <td th:text="${user.roles}"></td>
                         <td th:text="${user.isEnabled}"></td>
                         <td><a th:href="@{/users/{email}/edit/(email=${user.email})}">bearbeiten</a></td>

@@ -20,8 +20,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import ch.diedreifragezeichen.exama.TESTKLASSEN.exams.Exam;
-import ch.diedreifragezeichen.exama.TESTKLASSEN.exams.ExamRepository;
+import ch.diedreifragezeichen.exama.assignments.exams.Exam;
+import ch.diedreifragezeichen.exama.assignments.exams.ExamRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -72,10 +72,10 @@ public class ExamTests {
     /*
      * this test deletes exams by name The test passes successfully
      */
-    @Test
+    /* @Test
     @Transactional
     public void deleteExamByName() {
         long deletedRecords = examRepo.deleteByName("3. Weltkrieg");
         assertThat(deletedRecords).isEqualTo(1);
-    }
+    } */
 }

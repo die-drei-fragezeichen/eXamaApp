@@ -44,6 +44,11 @@ public class ExamType {
         return result;
     }
 
+    @Override
+    public String toString(){
+        return this.name;
+    }
+
     public Long getId() {
         return this.id;
     }

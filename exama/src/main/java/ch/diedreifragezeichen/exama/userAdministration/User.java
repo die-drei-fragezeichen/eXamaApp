@@ -31,6 +31,9 @@ public class User {
 	@Column(name = "user_lastname", nullable = false, length = 20)
 	private String lastName;
 
+	@Column(nullable = true, length = 3, unique = true)
+	private String abbreviation;
+
 	@Column(name = "user_enabled", nullable = false, length = 1)
 	private boolean isEnabled;
 
@@ -48,6 +51,15 @@ public class User {
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "map_users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
+
+
+	@Override
+    public String toString(){
+		if(this.abbreviation!=null){
+			return this.abbreviation;
+		}
+        return this.firstName+" "+this.lastName;
+    }
 
 	public Long getId() {
 		return id;
@@ -87,6 +99,14 @@ public class User {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public String getAbbreviation() {
+		return abbreviation;
+	}
+
+	public void setAbbreviation(String abbreviation) {
+		this.abbreviation = abbreviation;
 	}
 
 	public boolean isEnabled() {

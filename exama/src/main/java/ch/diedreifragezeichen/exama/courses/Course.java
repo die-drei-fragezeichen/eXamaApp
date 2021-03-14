@@ -1,60 +1,55 @@
 package ch.diedreifragezeichen.exama.courses;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.*;
 
-import ch.diedreifragezeichen.exama.userAdministration.User;
+import org.hibernate.annotations.DynamicUpdate;
+
+import ch.diedreifragezeichen.exama.assignments.Assignment;
+import ch.diedreifragezeichen.exama.assignments.exams.Exam;
 
 @Entity
+@DynamicUpdate
 @Table(name = "courses")
 public class Course {
-
+    
     @Id
-    @Column(name = "course_id", unique = true, nullable = false)
+    @Column(name="course_id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "course_name", unique = true, nullable = false, length = 5)
+    @Column(unique = true, nullable = false, length = 20)
     private String name;
 
-    @Column(name = "course_enabled", nullable = false, length = 1)
-    private boolean isEnabled;
-
-    // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // @JoinTable(name = "map_courses_students", joinColumns = @JoinColumn(name ="course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    // private Set<User> courseStudents = new HashSet<>();
+    //TODO: List<Assignment> not working because its not an entity. -> make list of superclass working!
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
+    private List<Exam> assignments;
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public boolean isEnabled() {
-        return this.isEnabled;
+
+    @Override
+    public String toString(){
+        return this.name;
     }
+    // public List<Assignment> getAssignments() {
+    //     return assignments;
+    // }
 
-    public void setEnabled(boolean isEnabled) {
-        this.isEnabled = isEnabled;
-    }
+    // public void setAssignments(List<Assignment> assignments) {
+    //     this.assignments = assignments;
+    // }
 
-//     public Set<User> getCourseStudents() {
-//         return courseStudents;
-//     }
-
-//     public void setCourseStudents(Set<User> courseStudents) {
-//         this.courseStudents = courseStudents;
-//     }
+    
 }

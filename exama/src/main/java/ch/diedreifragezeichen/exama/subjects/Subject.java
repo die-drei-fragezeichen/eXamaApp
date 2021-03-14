@@ -48,6 +48,11 @@ public class Subject {
         return result;
     }
 
+    @Override
+    public String toString(){
+        return this.name;
+    }
+
     public Long getId() {
         return id;
     }
