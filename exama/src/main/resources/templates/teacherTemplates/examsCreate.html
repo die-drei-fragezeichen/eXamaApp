@@ -53,7 +53,7 @@
                         <div>
                             <label>Prüfungstyp: </label>
                             <select th:field="*{examType}" class="form-control" required />
-                            <option th:each="type : ${holmirdietypenverpackung}" th:text="${type.name + '(h)'}"
+                            <option th:each="type : ${holmirdietypenverpackung}" th:text="${type.name + ' (' + type.timeValue + ' h)'}"
                                 th:value="${type.id}" />
                             </select>
                         </div>

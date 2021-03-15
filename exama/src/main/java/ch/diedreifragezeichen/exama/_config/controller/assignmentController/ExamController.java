@@ -65,7 +65,7 @@ public class ExamController {
     @GetMapping("/exams/create")
     public ModelAndView newExam() {
         Exam exam = new Exam();
-        ModelAndView mav = new ModelAndView("teacherTemplates/mimesCreate");
+        ModelAndView mav = new ModelAndView("teacherTemplates/examsCreate");
         mav.addObject("newExam", exam);
         // NOTE: "verpacktesObjekt" is the so-called "NAME OF THE MODEL ATTRIBUTE"
         // mav.addAttribute("standardDate", new LocalDate());
@@ -110,9 +110,9 @@ public class ExamController {
      */
 
     @GetMapping("/exams/show")
-    public String showMimes(Model model) {
+    public String showExams(Model model) {
         List<Exam> listExams = examRepo.findAll();
         model.addAttribute("allExams", listExams);
-        return "teacherTemplates/mimesShow";
+        return "teacherTemplates/examsShow";
     }
 }

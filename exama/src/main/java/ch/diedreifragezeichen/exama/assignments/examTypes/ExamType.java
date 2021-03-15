@@ -79,4 +79,20 @@ public class ExamType {
     public void setName(String name) {
         this.name = name;
     }
+
+    public long getTimeValue() {
+        return timeValue;
+    }
+
+    public void setTimeValue(long timeValue) {
+        this.timeValue = timeValue;
+    }
+
+    public List<Exam> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<Exam> exams) {
+        this.exams = exams;
+    }
 }
