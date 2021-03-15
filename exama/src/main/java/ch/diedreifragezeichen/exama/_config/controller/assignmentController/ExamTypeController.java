@@ -21,13 +21,6 @@ public class ExamTypeController {
      * ExamType Mappings
      */
 
-    @GetMapping("/examtypes/show")
-    public String listTypes(Model model) {
-        List<ExamType> listTypes = examTypeRepo.findAll();
-        model.addAttribute("listTypes", listTypes);
-        return "adminTemplates/examtypesShow";
-    }
-
     @GetMapping("/examtypes/create")
     public ModelAndView newExamType() {
         ExamType type = new ExamType();
@@ -42,35 +35,42 @@ public class ExamTypeController {
         return "redirect:/examtypes/show";
     }
 
-    @GetMapping("/examtypes/{id}/edit")
-    public ModelAndView editExamType(@PathVariable(name = "id") Long id) throws NotFoundException {
-        ExamType type = examTypeRepo.getExamTypeByID(id);
-        if (type == null) {
-            throw new NotFoundException("ExamType not found");
-        }
-        ModelAndView mav = new ModelAndView("adminTemplates/examtypeEdit");
-        mav.addObject("type", type);
-        return mav;
+    @GetMapping("/examtypes/show")
+    public String listTypes(Model model) {
+        List<ExamType> listTypes = examTypeRepo.findAll();
+        model.addAttribute("listTypes", listTypes);
+        return "adminTemplates/examtypesShow";
     }
 
-    @GetMapping("examtypes/{id}/edited")
-    public String updateExamType(@PathVariable(name = "id") Long id, @RequestParam(name = "name") String name) throws NotFoundException {
-        ExamType type = examTypeRepo.getExamTypeByID(id);
-        if (type == null) {
-            throw new NotFoundException("ExamType not found");
-        }
-        examTypeRepo.editExamTypeById(id, name);
-        return "redirect:/examtypes/show";
-    }
+    // @GetMapping("/examtypes/{id}/edit")
+    // public ModelAndView editExamType(@PathVariable(name = "id") Long id) throws NotFoundException {
+    //     ExamType type = examTypeRepo.getExamTypeByID(id);
+    //     if (type == null) {
+    //         throw new NotFoundException("ExamType not found");
+    //     }
+    //     ModelAndView mav = new ModelAndView("adminTemplates/examtypeEdit");
+    //     mav.addObject("type", type);
+    //     return mav;
+    // }
 
-    @GetMapping("examtypes/{id}/delete")
-    public String deleteExamType(@PathVariable(name = "id") Long id) throws NotFoundException {
-        ExamType type = examTypeRepo.getExamTypeByID(id);
-        if (type == null) {
-            throw new NotFoundException("ExamType not found");
-        }
-        examTypeRepo.deleteExamTypeById(id);
-        return "redirect:/examtypes/show";
-    }
+    // @GetMapping("examtypes/{id}/edited")
+    // public String updateExamType(@PathVariable(name = "id") Long id, @RequestParam(name = "name") String name) throws NotFoundException {
+    //     ExamType type = examTypeRepo.getExamTypeByID(id);
+    //     if (type == null) {
+    //         throw new NotFoundException("ExamType not found");
+    //     }
+    //     examTypeRepo.editExamTypeById(id, name);
+    //     return "redirect:/examtypes/show";
+    // }
+
+    // @GetMapping("examtypes/{id}/delete")
+    // public String deleteExamType(@PathVariable(name = "id") Long id) throws NotFoundException {
+    //     ExamType type = examTypeRepo.getExamTypeByID(id);
+    //     if (type == null) {
+    //         throw new NotFoundException("ExamType not found");
+    //     }
+    //     examTypeRepo.deleteExamTypeById(id);
+    //     return "redirect:/examtypes/show";
+    // }
 
 }

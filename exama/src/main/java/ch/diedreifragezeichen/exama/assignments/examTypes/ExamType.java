@@ -23,6 +23,9 @@ public class ExamType {
     @Column(unique = true, nullable = false, length = 50)
     private String name;
 
+    @Column(nullable = false)
+    private long timeValue;
+
     /**
      * OneToMany mappings
      */

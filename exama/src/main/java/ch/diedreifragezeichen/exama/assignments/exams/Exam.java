@@ -24,13 +24,6 @@ public class Exam extends Assignment {
     /**
      * Methods
      */
-    public ExamType getExamType() {
-        return examType;
-    }
-
-    public void setType(ExamType type) {
-        this.examType = type;
-    }
 
     public double getCountingFactor() {
         return countingFactor;
@@ -38,5 +31,13 @@ public class Exam extends Assignment {
 
     public void setCountingFactor(double countingFactor) {
         this.countingFactor = countingFactor;
+    }
+
+    public ExamType getExamType() {
+        return examType;
+    }
+
+    public void setExamType(ExamType examType) {
+        this.examType = examType;
     }
 }
