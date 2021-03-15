@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import javax.persistence.*;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.temporal.ChronoUnit;
 
 import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTime;
@@ -43,9 +45,11 @@ public class Assignment {
     private LocalDate editDate;
 
     @Column(nullable = true)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDate;
 
     @Column(nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dueDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

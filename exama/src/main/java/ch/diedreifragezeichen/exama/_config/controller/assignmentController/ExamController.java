@@ -100,8 +100,6 @@ public class ExamController {
         User user = userRepo.getUserByEmail(authLoggedInUser.getName());
         exam.setCreator(user);
         exam.setEditDate(LocalDate.now());
-        exam.setStartDate(LocalDate.now());
-        exam.setDueDate(LocalDate.now());
         exam.setExamType(examtypeRepo.findExamTypeById(1l));
         examRepo.save(exam);
         return "redirect:/exams/show";
