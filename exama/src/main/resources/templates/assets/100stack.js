@@ -20,7 +20,7 @@ const Bar = ({ data }) => {
 };
 
 const stack100 = () => {
-    const data = [{ color: '#d41414', percent: 80 }, { color: '#14d444', percent: 20 }];
+    const data = [{ color: '#d41414', percent: 10 }, { color: '#14d444', percent: 90 }];
     // third coulour could be added: , { color: '#ebb860', percent: 19 }
     return /*#__PURE__*/ (
         React.createElement("div", { className: "stack100" }, /*#__PURE__*/

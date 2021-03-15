@@ -35,20 +35,32 @@
                     <tr th:each="exam : ${liste}">
                         <td th:text="${exam.Id}"></td>
                         <td th:text="${exam.name}"></td>
-                        <td th:text="${exam.date}"></td>
+                        <td th:text="${exam.dueDate}"></td>
                         <td th:text="${exam.countingFactor}"></td>
                     </tr>
                 </tbody>
             </table>
             <br />
-             <input type="text" placeholder="Suche nach Prüfungsamen">
+             <input type="text" placeholder="Suche nach Prüfungsamen - hier passiert noch nichts">
 
             <h3 data-th-text="${msg}" />
             <h3 data-th-text="${anzpr}" />
              <h3 data-th-text="${msg2}" />
              <h3 data-th-text="${xFactor}" />
 
+
 <script>
+//TODO:
+//Hier kommt der neue 100stak.js code!!!!
+
+</script>
+
+
+
+
+<script>
+
+// Dies ist der "alte" CanvasJS.Chart Exambar - wird gelöscht werden!
 window.onload = function () {
 
 var chart = new CanvasJS.Chart("chartContainer", {
