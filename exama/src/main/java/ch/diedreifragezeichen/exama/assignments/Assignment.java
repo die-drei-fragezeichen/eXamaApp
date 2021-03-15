@@ -28,7 +28,7 @@ public class Assignment {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn
     private User creator;
 
     @ManyToOne(fetch = FetchType.LAZY)

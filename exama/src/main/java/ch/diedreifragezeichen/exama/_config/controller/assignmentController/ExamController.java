@@ -52,7 +52,7 @@ public class ExamController {
     private WorkloadDistributionRepository distributionRepo;
 
     /**
-     * The following methods handle the mime Creation
+     * The following methods handle the exam Creation
      */
 
     /**
@@ -102,7 +102,7 @@ public class ExamController {
         exam.setEditDate(LocalDate.now());
         exam.setStartDate(LocalDate.now());
         exam.setDueDate(LocalDate.now());
-        exam.setType(examtypeRepo.findExamTypeById(1l));
+        exam.setExamType(examtypeRepo.findExamTypeById(1l));
         examRepo.save(exam);
         return "redirect:/exams/show";
     }
