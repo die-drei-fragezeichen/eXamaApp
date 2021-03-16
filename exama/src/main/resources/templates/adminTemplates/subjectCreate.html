@@ -34,8 +34,7 @@
                 <br>
                 <div>
                     <label>Welche Klassen haben das Fach?
-                    <select th:field="*
-                    {courses}" class="form-control" required>   
+                    <select th:field="*{courses}" class="form-control" required>   
                        <option th:each="course : ${allCourses}" th:text="${course.name}" th:value="${course.id}" />
                         </select>
                        

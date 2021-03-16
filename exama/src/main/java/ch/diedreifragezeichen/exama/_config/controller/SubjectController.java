@@ -33,8 +33,8 @@ public class SubjectController {
         ModelAndView mav = new ModelAndView("adminTemplates/subjectCreate");
         Subject subject = new Subject();
         mav.addObject("subject", subject);
-        List<Course> courses = courseRepo.findAll();
-        //Set<Course> courses = Set.copyOf(courseRepo.findAll());
+        //List<Course> courses = courseRepo.findAll();
+        Set<Course> courses = Set.copyOf(courseRepo.findAll());
         mav.addObject("allCourses", courses);
         return mav;
     }
