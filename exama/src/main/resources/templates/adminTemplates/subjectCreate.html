@@ -28,9 +28,21 @@
                     <label>Subject tag: </label>
                     <div>
                         <input type="text" th:field="*{tag}" class="form-control" required minlength="1"
-                            maxlength="4" />
+                            maxlength="6" />
                     </div>
                 </div>
+                <br>
+                <div>
+                    <label>Welche Klassen haben das Fach?
+                    <select th:field="*{courses}" class="form-control" required>   
+                       <option th:each="course : ${allCourses}" th:text="${course.name}" th:value="${course.id}" />
+                        </select>
+                       
+
+                       
+                    </label>
+                </div>
+                <br>
                 <div>
                     <button type="submit" class="login-button">Speichern</button>
                 </div>

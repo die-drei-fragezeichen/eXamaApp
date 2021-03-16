@@ -1,6 +1,6 @@
 package ch.diedreifragezeichen.exama._config.controller;
 
-import java.util.List;
+import java.util.*;
 
 import javassist.NotFoundException;
 
@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import ch.diedreifragezeichen.exama.courses.Course;
+import ch.diedreifragezeichen.exama.courses.CourseRepository;
 import ch.diedreifragezeichen.exama.subjects.Subject;
 import ch.diedreifragezeichen.exama.subjects.SubjectRepository;
 
@@ -18,22 +20,22 @@ public class SubjectController {
     @Autowired
     private SubjectRepository subjectRepo;
 
+    @Autowired
+    private CourseRepository courseRepo;
+
     /**
      * Subject Mappings
      */
 
-    @GetMapping("/subjects/show")
-    public String listSubjects(Model model) {
-        List<Subject> listSubjects = subjectRepo.findAll();
-        model.addAttribute("listSubjects", listSubjects);
-        return "adminTemplates/subjectsShow";
-    }
-
     @GetMapping("/subjects/create")
     public ModelAndView newSubject() {
-        Subject subject = new Subject();
+        
         ModelAndView mav = new ModelAndView("adminTemplates/subjectCreate");
+        Subject subject = new Subject();
         mav.addObject("subject", subject);
+        //List<Course> courses = courseRepo.findAll();
+        Set<Course> courses = Set.copyOf(courseRepo.findAll());
+        mav.addObject("allCourses", courses);
         return mav;
     }
 
@@ -41,6 +43,13 @@ public class SubjectController {
     public String processSaving(Subject subject) {
         subjectRepo.save(subject);
         return "redirect:/subjects/show";
+    }
+
+    @GetMapping("/subjects/show")
+    public String listSubjects(Model model) {
+        List<Subject> listSubjects = subjectRepo.findAll();
+        model.addAttribute("listSubjects", listSubjects);
+        return "adminTemplates/subjectsShow";
     }
 
     @GetMapping("/subjects/{id}/edit")

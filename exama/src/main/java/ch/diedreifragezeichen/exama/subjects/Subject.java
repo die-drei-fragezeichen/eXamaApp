@@ -1,12 +1,12 @@
 package ch.diedreifragezeichen.exama.subjects;
 
-import java.util.List;
-
+import java.util.*;
 import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
 
 import ch.diedreifragezeichen.exama.assignments.exams.Exam;
+import ch.diedreifragezeichen.exama.courses.Course;
 
 //the following code maps with the corresponding subject table (not yet created) in the database.
 //then we create a new interface named UserRepository to act as a Spring Data JPA repository with the following simple code
@@ -28,8 +28,12 @@ public class Subject {
     @Column(unique = true, nullable = false, length = 20)
     private String name;
 
-    @Column(unique = true, nullable = false, length = 4)
+    @Column(unique = true, nullable = false, length = 6)
     private String tag;
+
+    @ManyToMany(mappedBy = "subjects")
+    //in manytomany relationships it is recommended to use set
+    private Set<Course> courses;
 
     /**
      * OneToMany mappings
@@ -91,5 +95,21 @@ public class Subject {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
+    }
+
+    public List<Exam> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<Exam> exams) {
+        this.exams = exams;
     }
 }

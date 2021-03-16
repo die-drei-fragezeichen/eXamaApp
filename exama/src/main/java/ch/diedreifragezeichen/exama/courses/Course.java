@@ -1,12 +1,13 @@
 package ch.diedreifragezeichen.exama.courses;
 
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
 
 import ch.diedreifragezeichen.exama.assignments.exams.Exam;
+import ch.diedreifragezeichen.exama.subjects.Subject;
 
 @Entity
 @DynamicUpdate
@@ -26,22 +27,22 @@ public class Course {
     @Column(nullable = false)
     private boolean enabled;
 
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "map_courses_subjects", joinColumns = { @JoinColumn(name = "courseid")   }, inverseJoinColumns = {@JoinColumn(name = "subjectid") })
+    private Set<Subject> subjects = new HashSet<Subject>(0);
+
     /**
      * OneToMany mappings
      */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
     private List<Exam> exams;
 
-    /*
-     * @OneToMany(cascade = CascadeType.ALL, mappedBy = "course") private
-     * List<Homework> homeworks;
-     */
-
-    /**
-     * Methods
-     */
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -60,6 +61,14 @@ public class Course {
         this.enabled = enabled;
     }
 
+    public Set<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(Set<Subject> subjects) {
+        this.subjects = subjects;
+    }
+
     public List<Exam> getExams() {
         return exams;
     }
@@ -68,8 +77,13 @@ public class Course {
         this.exams = exams;
     }
 
-    @Override
-    public String toString() {
-        return this.name;
-    }
+    /*
+     * @OneToMany(cascade = CascadeType.ALL, mappedBy = "course") private
+     * List<Homework> homeworks;
+     */
+
+    /**
+     * Methods
+     */
+
 }
