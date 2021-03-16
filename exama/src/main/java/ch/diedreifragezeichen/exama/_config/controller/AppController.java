@@ -97,6 +97,9 @@ public class AppController {
         return "generalTemplates/settings";
     }
     
+    /**
+     * Go to own profile page
+     */
     @GetMapping("/profile")
     public String settings2(Model model) {
     	Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
