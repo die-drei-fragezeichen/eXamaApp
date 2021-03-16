@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import ch.diedreifragezeichen.exama.userAdministration.User;
@@ -94,6 +95,14 @@ public class AppController {
     @GetMapping("/settings")
     public String settings() {
         return "generalTemplates/settings";
+    }
+    
+    @GetMapping("/profile")
+    public String settings2(Model model) {
+    	Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepo.getUserByEmail(authLoggedInUser.getName());
+        model.addAttribute("user", user);
+    	return "adminTemplates/profile";
     }
 
 }
