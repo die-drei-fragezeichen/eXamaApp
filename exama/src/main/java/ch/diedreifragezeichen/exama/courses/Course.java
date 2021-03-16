@@ -37,16 +37,12 @@ public class Course {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
     private List<Exam> exams;
 
-    /*
-     * @OneToMany(cascade = CascadeType.ALL, mappedBy = "course") private
-     * List<Homework> homeworks;
-     */
-
-    /**
-     * Methods
-     */
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -65,6 +61,14 @@ public class Course {
         this.enabled = enabled;
     }
 
+    public Set<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(Set<Subject> subjects) {
+        this.subjects = subjects;
+    }
+
     public List<Exam> getExams() {
         return exams;
     }
@@ -73,20 +77,13 @@ public class Course {
         this.exams = exams;
     }
 
-    @Override
-    public String toString() {
-        return this.name;
-    }
+    /*
+     * @OneToMany(cascade = CascadeType.ALL, mappedBy = "course") private
+     * List<Homework> homeworks;
+     */
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    /**
+     * Methods
+     */
 
-    public Set<Subject> getSubjects() {
-        return subjects;
-    }
-
-    public void setSubjects(Set<Subject> subjects) {
-        this.subjects = subjects;
-    }
 }

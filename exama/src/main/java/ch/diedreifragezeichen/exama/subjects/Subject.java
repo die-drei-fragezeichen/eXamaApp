@@ -28,7 +28,7 @@ public class Subject {
     @Column(unique = true, nullable = false, length = 20)
     private String name;
 
-    @Column(unique = true, nullable = false, length = 4)
+    @Column(unique = true, nullable = false, length = 6)
     private String tag;
 
     @ManyToMany(mappedBy = "subjects")
