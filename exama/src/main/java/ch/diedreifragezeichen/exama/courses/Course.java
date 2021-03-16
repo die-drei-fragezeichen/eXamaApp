@@ -1,12 +1,13 @@
 package ch.diedreifragezeichen.exama.courses;
 
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
 
 import ch.diedreifragezeichen.exama.assignments.exams.Exam;
+import ch.diedreifragezeichen.exama.subjects.Subject;
 
 @Entity
 @DynamicUpdate
@@ -25,6 +26,10 @@ public class Course {
 
     @Column(nullable = false)
     private boolean enabled;
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "map_courses_subjects", joinColumns = { @JoinColumn(name = "courseid")   }, inverseJoinColumns = {@JoinColumn(name = "subjectid") })
+    private Set<Subject> subjects = new HashSet<Subject>(0);
 
     /**
      * OneToMany mappings
@@ -71,5 +76,17 @@ public class Course {
     @Override
     public String toString() {
         return this.name;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Set<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(Set<Subject> subjects) {
+        this.subjects = subjects;
     }
 }
