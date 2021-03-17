@@ -10,11 +10,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ch.diedreifragezeichen.exama.courses.*;
+import ch.diedreifragezeichen.exama.subjects.Subject;
+import ch.diedreifragezeichen.exama.subjects.SubjectRepository;
 
 @Controller
 public class CourseController {
     @Autowired
     private CourseRepository courseRepo;
+
+    @Autowired
+    private SubjectRepository subjectRepo;
 
     /**
      * Course Mappings
@@ -25,6 +30,8 @@ public class CourseController {
         Course course = new Course();
         ModelAndView mav = new ModelAndView("adminTemplates/courseCreate");
         mav.addObject("course", course);
+        List<Subject> subjectList = subjectRepo.findAll();
+        mav.addObject("allSubjects", subjectList);
         return mav;
     }
 

@@ -7,7 +7,9 @@ import javax.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import ch.diedreifragezeichen.exama.assignments.exams.Exam;
+import ch.diedreifragezeichen.exama.subjectTeacher.SubjectTeacher;
 import ch.diedreifragezeichen.exama.subjects.Subject;
+import ch.diedreifragezeichen.exama.userAdministration.User;
 
 @Entity
 @DynamicUpdate
@@ -27,9 +29,13 @@ public class Course {
     @Column(nullable = false)
     private boolean enabled;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "map_courses_subjects", joinColumns = { @JoinColumn(name = "courseid")   }, inverseJoinColumns = {@JoinColumn(name = "subjectid") })
-    private Set<Subject> subjects = new HashSet<Subject>(0);
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JoinTable(name="courses_subjects", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "subject_id"))
+	private Set<Subject> subjects = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JoinTable(name="courses_subjects_teachers", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "subjectteacher_id"))
+	private Set<SubjectTeacher> subjectTeachers = new HashSet<>();
 
     /**
      * OneToMany mappings

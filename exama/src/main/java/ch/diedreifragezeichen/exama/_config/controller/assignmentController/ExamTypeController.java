@@ -10,7 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
 import ch.diedreifragezeichen.exama.assignments.examTypes.ExamTypeRepository;
-import javassist.NotFoundException;
 
 @Controller
 public class ExamTypeController {

@@ -11,6 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import ch.diedreifragezeichen.exama.assignments.exams.Exam;
+import ch.diedreifragezeichen.exama.subjectTeacher.SubjectTeacher;
 
 @Entity
 @DynamicUpdate
@@ -62,6 +63,9 @@ public class User {
 	 */
 	@OneToMany(mappedBy = "creator")
 	private List<Exam> exams;
+
+	@OneToMany(mappedBy = "teacher")
+    private List<SubjectTeacher> subjectTeachers;
 
 	/**
 	 * Methods

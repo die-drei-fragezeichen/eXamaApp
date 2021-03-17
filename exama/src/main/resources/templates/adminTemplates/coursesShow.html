@@ -21,6 +21,7 @@
                         <th>Klassen ID</th>
                         <th>Klassenname</th>
                         <th>Aktiv</th>
+                        <th>Fächer</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -30,6 +31,7 @@
                         <td th:text="${course.id}"></td>
                         <td th:text="${course.name}"></td>
                         <td th:text="${course.enabled}"></td>
+                        <td th:text="${course.subjects}"></td>
                         <td><a th:href="@{/courses/{id}/edit(id=${course.id})}">bearbeiten</a></td>
                         <td><a th:href="@{/courses/{id}/delete(id=${course.id})}">löschen</a></td>
                     </tr>

@@ -32,6 +32,14 @@
                 </div>
                 <br>
                 <div>
+                    <label>Fächer: </label>
+                    <select th:field="*{subjects}" class="form-control" required multiple/>
+                    <option th:each="subject : ${allSubjects}" th:text="${subject.name}"
+                        th:value="${subject.id}" />
+                    </select>
+                </div>
+                <br>
+                <div>
                     <button type="submit" class="login-button">Speichern</button>
                 </div>
             </form>
