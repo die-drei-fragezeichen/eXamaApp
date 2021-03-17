@@ -89,5 +89,10 @@ public class Semester {
     public void setHolidays(List<Holiday> holidays) {
         this.holidays = holidays;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
     
 }

@@ -88,4 +88,10 @@ public class Holiday {
         this.semester = semester;
     }
 
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }

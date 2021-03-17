@@ -12,8 +12,8 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Alle Prüfungen</h1>
-            <a href="/exams/create">> neue Prüfung hinzufügen</a><br><br>
+            <h1>Alle Semester</h1>
+            <a href="/semesters/create">> neues Semester hinzufügen</a><br><br>
 
             <table>
                 <thead>
@@ -29,14 +29,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="semester: ${allSemesters}">
+                    <th:block th:each="semester: ${allSemesters}">
+                    <tr>
                         <td th:text="${semester.id}"></td>
                         <td th:text="${semester.name}"></td>
                         <td th:text="${semester.startDate}"></td>
                         <td th:text="${semester.endDate}"></td>
                         <td th:text="${semester.maxNumberOfExams}"></td>
-                        <td></td>
-                        <!--<td th:text="${exam.startDate}"></td>-->
+                    </th:block>
+                    <th:block th:each ="holiday: ${allHolidays}">
+                        <td th:text="${holiday.name}"></td>
+                    </th:block>
                         <td>bearbeiten</td>
                         <td>löschen</td>
                     </tr>
