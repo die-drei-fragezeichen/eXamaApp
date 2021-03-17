@@ -56,7 +56,7 @@ public class ExamController {
     private DatumRepository datumRepo;
 
     /**
-     * The following methods handle the exam Creation
+     * The following methods handle the examBar creation
      */
 
     /**
@@ -202,4 +202,50 @@ public class ExamController {
         // Schreibe im html: <h1 data-th-text="${anzpr}" />
         return model;
     }
+
+    // /**
+    //  * The following methods handle the Semester view creation
+    //  */
+    
+    // public ModelAndView selectExamBarDate() {
+
+    //     Datum datum = new Datum();
+    //     ModelAndView mav = new ModelAndView("studentTemplates/examBarSelectDate");
+    //     mav.addObject("datum", datum);
+    //     return mav;
+    // }
+
+    // @GetMapping("/examView/show")
+    // public String showExamView() {
+    //     ModelAndView mav = new ModelAndView("studentTemplates/examTableShow");
+    //     List<Subject> allSubjects = subjectRepo.findAll();
+    //     mav.addObject("alleFaecher", allSubjects);
+        
+
+
+    //     Datum selectedDatum = datumRepo.findAll().get(0);
+    //     datumRepo.deleteAll();
+    //     LocalDate selectedDate = selectedDatum.getSelectedDate();
+    //     model.addAttribute("Datum", selectedDate);
+
+    //     ExamService helper = new ExamService();
+    //     LocalDate Monday = helper.getFirstDayOfWeek(selectedDate);
+    //     model.addAttribute("Montag", Monday);
+
+    //     LocalDate Sunday = helper.getLastDayOfWeek(selectedDate);
+    //     model.addAttribute("Sonntag", Sunday);
+
+    //     List<Exam> listExams = examRepo.findAllByDueDateBetween(Monday, Sunday);
+    //     model.addAttribute("liste", listExams);
+
+    //     calculateNumberOfExams(model, listExams);
+    //     calculateExamFactor(model, listExams);
+
+    //     return "studentTemplates/examBarShow";
+
+    // }
+
+
+
+
 }

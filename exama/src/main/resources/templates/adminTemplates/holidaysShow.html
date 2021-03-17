@@ -1,0 +1,48 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/head :: head"></head>
+
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="fragments/header :: header"></div>
+
+        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>Alle Ferienzeiten / Sonderwochen</h1>
+            <a href="/exams/create">> Weitere Ferienzeiten hinzufügen</a><br><br>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Holiday ID</th>
+                        <th>Name</th>
+                        <th>Semester</th>
+                        <th>startDate</th>
+                        <th>endDate</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="holiday : ${listHolidays}">
+                        <td th:text="${holiday.id}"></td>
+                        <td th:text="${holiday.name}"></td>
+                         <td th:text="${holiday.semester}"></td>
+                        <td th:text="${holiday.startDate}"></td>
+                        <td th:text="${holiday.endDate}"></td>
+                        <td>bearbeiten</td>
+                        <td>löschen</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="fragments/footer :: footer"></div>
+</body>
+
+</html>
