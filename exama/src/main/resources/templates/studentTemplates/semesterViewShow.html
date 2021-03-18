@@ -43,17 +43,14 @@
 <!--              <td th:each="subject: ${allSubjects}" th:text="${#lists.isEmpty(allExams)}" />-->
 <!--              <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).size} == 0 ? 'Yes' : 'No'"/>-->
 <!--              <td th:each="subject: ${allSubjects}" th:text="${#lists.size(allExams.get(iStat.index))}"/> -->
-<!--                  <td th:each="subject: ${allSubjects}" th:text="${#lists.contains(allExams.get(iStat.index), subject.name)}"/>-->
+                 <td th:each="subject: ${allSubjects}" th:text="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? ${subject.tag} : ' '" th:style="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? 'background-color:#FF0000;'"/>
 <!--              <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).stream().count()}"/> -->
 <!--              <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).stream().filter(c -> c.getCountingFactor() > 1).count()}"/>-->
 
-<!--<tr th:each="exam : ${allExams.get(iStat.index)}">
-    <td th:text="${instance.key}">keyvalue</td>
-    <td th:text="${instance.value.numOfData}">num</td>
-</tr>-->
                   </td>
                </tr>
             </table>
+
             <br />
             <br />
             <br />

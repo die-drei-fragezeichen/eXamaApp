@@ -279,7 +279,7 @@ public class ExamController {
             List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY));
             HashMap<String, Exam> map = new HashMap<>();
             for(Exam exam: examsByWeek){
-                map.put(exam.getSubject().getName(), exam);
+                map.put(exam.getSubject().getTag(), exam);
             }
             allExams.add(map);
             monday = monday.plusWeeks(1);
