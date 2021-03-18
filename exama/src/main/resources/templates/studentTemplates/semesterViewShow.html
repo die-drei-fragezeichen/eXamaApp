@@ -16,6 +16,9 @@
         <div id="content-wrapper">
             <h1 data-th-text="'Das ist deine Semesterübersicht für das ' + ${semester.name}"> </h1>
             <a href="/semesterView/choose">> neues Semester auswählen</a><br><br>
+
+            <h3 data-th-text="${examTotal}" />
+            <h3 data-th-text="${xExam}" />
             
             
             <table>
@@ -35,7 +38,11 @@
                     th:each="monday, iStat : ${allMondays}" th:style="${iStat.odd}? 'font-weight: bold;'" th:alt-title="${iStat.even}? 'even' : 'odd'">
                   <td th:text="${iStat.count}"> Semesterwoche</td>
                   <td><span th:text="${#temporals.dayOfWeekNameShort(monday)} + ', ' + ${monday}"> Wochenanfang </span></td>
-                  <td th:each="subject: ${allSubjects}" th:text="${iStat.index}">
+<!--              <td th:each="subject: ${allSubjects}" th:text="${#lists.isEmpty(allExams)}" />-->
+
+                  <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).size} == 0 ? 'Yes' : 'No'"/>
+
+
                   </td>
                </tr>
             </table>

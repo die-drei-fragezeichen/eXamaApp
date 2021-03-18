@@ -269,6 +269,7 @@ public class ExamController {
 
         // retrieve allExams, week by week, for the whole semester in a list of list of
         // exams from Monday to Sunday
+        monday = semesterStart;
         List<List<Exam>> allExams = new ArrayList<>();
         while (monday.isBefore(semesterEnd)) {
             List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY));
@@ -276,7 +277,9 @@ public class ExamController {
             monday = monday.plusWeeks(1);
         }
         mav.addObject("allExams", allExams);
-        //String xExam = allExams.get(0).get(0).getSubject().getName();
+        long xExam = allExams.stream().count();
+        mav.addObject("xExam", xExam);
+
         
         List<Subject> allSubjects = subjectRepo.findAll();
         mav.addObject("allSubjects", allSubjects);
