@@ -3,8 +3,11 @@ package ch.diedreifragezeichen.exama._config.controller.assignmentController;
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 //import javassist.NotFoundException;
 
@@ -270,22 +273,29 @@ public class ExamController {
         // retrieve allExams, week by week, for the whole semester in a list of list of
         // exams from Monday to Sunday
         monday = semesterStart;
-        List<List<Exam>> allExams = new ArrayList<>();
+        //List<List<Exam>> allExams = new ArrayList<>();
+        List<HashMap<String,Exam>> allExams = new ArrayList<>();
         while (monday.isBefore(semesterEnd)) {
             List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY));
-            allExams.add(examsByWeek);
+            HashMap<String, Exam> map = new HashMap<>();
+            for(Exam exam: examsByWeek){
+                map.put(exam.getSubject().getName(), exam);
+            }
+            allExams.add(map);
             monday = monday.plusWeeks(1);
         }
         mav.addObject("allExams", allExams);
         long xExam = allExams.stream().count();
         mav.addObject("xExam", xExam);
 
+        //List<Subject> subjects = allExams.get(0).stream().map(exam -> exam.getSubject()).collect(Collectors.toList());
         
         List<Subject> allSubjects = subjectRepo.findAll();
         mav.addObject("allSubjects", allSubjects);
         // count all the subjects, method returns "numberOfSubjects"
         calculateNumberOfSubjects(mav, allSubjects);
         return mav;
+        
     }
 
     /*
