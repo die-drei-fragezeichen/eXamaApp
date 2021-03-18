@@ -3,6 +3,7 @@ package ch.diedreifragezeichen.exama._config.controller.assignmentController;
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 //import javassist.NotFoundException;
@@ -211,6 +212,16 @@ public class ExamController {
     }
 
     /**
+     * Hilfsmethode 3
+     */
+
+    public ModelAndView calculateNumberOfSubjects(ModelAndView mav, List<Subject> allSubjects) {
+        long numberOfSubjects = allSubjects.stream().count();
+        mav.addObject("numberOfSubjects", numberOfSubjects);
+        return mav;
+    }
+
+    /**
      * The following methods handle the Semester view creation
      */
 
@@ -234,15 +245,19 @@ public class ExamController {
 
     @GetMapping("/semesterView/show")
     public ModelAndView showSemesterView() {
-        ModelAndView mav = new ModelAndView("studentTemplates/semesterView");
+        ModelAndView mav = new ModelAndView("studentTemplates/semesterViewShow");
         // retrieve selected semester
         Operator selected = operatorRepo.findAll().get(0);
         operatorRepo.deleteAll();
         Semester semester = selected.getSelectedSemester();
+        mav.addObject("semester", semester);
         // retrieve semester Information and first / last day of Semester
         LocalDate semesterStart = semester.getStartDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate monday = semesterStart;
         LocalDate semesterEnd = semester.getEndDate().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+        //count all the exams
+        Long examTotal = examRepo.findAllByDueDateBetween(semesterStart, semesterEnd).stream().count();
+        mav.addObject("examTotal", examTotal);
         // create a list of all Mondays
         List<LocalDate> mondays = new ArrayList<>();
         while (monday.isBefore(semesterEnd)) {
@@ -261,11 +276,27 @@ public class ExamController {
             monday = monday.plusWeeks(1);
         }
         mav.addObject("allExams", allExams);
-
+        
         List<Subject> allSubjects = subjectRepo.findAll();
         mav.addObject("allSubjects", allSubjects);
-
+        // count all the subjects, method returns "numberOfSubjects"
+        calculateNumberOfSubjects(mav, allSubjects);
         return mav;
+    }
+
+    /*
+     * Hilfsmethode 4
+     */
+    private int calculateNumberOfExams(List<List<Exam>> allExams) {
+        int sum = 0;
+        Iterator<List<Exam>> iter = allExams.iterator();
+        while (iter.hasNext()) {
+            Iterator<Exam> innerIter = iter.next().iterator();
+            while (innerIter.hasNext()) {
+                sum++;
+            }
+        }
+        return sum;
     }
 
     // @GetMapping("/examView/show")
