@@ -31,6 +31,9 @@ public class Semester {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate endDate;
 
+    @Column(nullable = false)
+    private boolean enabled;
+
     @Column(nullable = true)
     private int maxNumberOfExams;
 
@@ -94,5 +97,12 @@ public class Semester {
     public String toString() {
         return name;
     }
-    
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }   
 }

@@ -34,17 +34,21 @@
                 <tr th:if="${examTotal}==0">
                   <td colspan="100%"> Bislang wurden in diesem Semester noch keine Prüfungen erfasst </td>
                 </tr>
-                <tr th:unless="${examTotal}==0" 
-                    th:each="monday, iStat : ${allMondays}" th:style="${iStat.odd}? 'font-weight: bold;'" th:alt-title="${iStat.even}? 'even' : 'odd'">
+                <!--styleappend: if monday(iStat.index) in between some holiday in selected semester -> fill red -->
+                <tr th:unless="${examTotal}==0"
+                    th:each="monday, iStat : ${allMondays}" th:style="${iStat.odd} ? 'font-weight: bold;'" th:styleappend="'color: black;'" th:alt-title="${iStat.even}? 'even' : 'odd'">
                   <td th:text="${iStat.count}"> Semesterwoche</td>
-                  <td><span th:text="${#temporals.dayOfWeekNameShort(monday)} + ', ' + ${monday}"> Wochenanfang </span></td>
+                  <td><span th:text="${#temporals.dayOfWeekNameShort(monday)} + ', ' + ${#temporals.format(monday, 'dd.MM.yyyy')}"> Wochenanfang </span></td>
 
 <!--    Funktionierende Befehle für die Tabelle -->
 <!--              <td th:each="subject: ${allSubjects}" th:text="${#lists.isEmpty(allExams)}" />-->
 <!--              <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).size} == 0 ? 'Yes' : 'No'"/>-->
 <!--              <td th:each="subject: ${allSubjects}" th:text="${#lists.size(allExams.get(iStat.index))}"/> -->
-                 <td th:each="subject: ${allSubjects}" th:text="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? ${subject.tag} : ' '" th:style="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? 'background-color:#FF0000;'"/>
-<!--              <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).stream().count()}"/> -->
+                 <td th:each="subject: ${allSubjects}" th:text="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? ${subject.tag} : ' '"
+                 th:style="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? (${allExams.get(iStat.index).get(subject.tag).countingFactor} >= 1 ? 'background-color:var(--red);' : 'background-color:var(--orange);')"/>
+
+
+                 <!--              <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).stream().count()}"/> -->
 <!--              <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).stream().filter(c -> c.getCountingFactor() > 1).count()}"/>-->
 
                   </td>

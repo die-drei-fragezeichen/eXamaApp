@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 //import javassist.NotFoundException;
@@ -98,6 +99,15 @@ public class ExamController {
 
         List<WorkloadDistribution> listDist = distributionRepo.findAll();
         mav.addObject("allWorkloadDistributions", listDist);
+
+        List<Semester> semesterList = semesterRepo.findAll();
+        semesterList.stream().filter(s -> s.isEnabled()).collect(Collectors.toList());
+        mav.addObject("allSemesters", semesterList);
+
+        LocalDate firstDay = semesterList.get(0).getStartDate();
+        mav.addObject("firstDay", firstDay.toString());
+        LocalDate lastDay = semesterList.get(semesterList.size()-1).getEndDate();
+        mav.addObject("lastDay", lastDay.toString());
 
         return mav;
     }
