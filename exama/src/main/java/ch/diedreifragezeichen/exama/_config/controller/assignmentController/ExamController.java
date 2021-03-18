@@ -1,6 +1,8 @@
 package ch.diedreifragezeichen.exama._config.controller.assignmentController;
 
-import java.time.LocalDate;
+import java.time.*;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
 
 //import javassist.NotFoundException;
@@ -143,9 +145,8 @@ public class ExamController {
 
     /**
      * When User click submit button, this method is execuded. Te datum object is
-     * saved into db by operatorRepo
-    o note that this link is different from above, but
-     * it is never really shown, user is directly redirected.
+     * saved into db by operatorRepo o note that this link is different from above,
+     * but it is never really shown, user is directly redirected.
      */
     @PostMapping("/examBar/DateSelected")
     public String processSelectedDate(Operator datum) {
@@ -213,19 +214,17 @@ public class ExamController {
      * The following methods handle the Semester view creation
      */
 
-
     @GetMapping("/semesterView/choose")
     public ModelAndView selectSemester() {
         ModelAndView mav = new ModelAndView("studentTemplates/semesterViewChoose");
         List<Semester> allSemesters = semesterRepo.findAll();
         mav.addObject("allSemesters", allSemesters);
-        
+
         Operator semester = new Operator();
         mav.addObject("chosenSemster", semester);
 
         return mav;
     }
-
 
     @PostMapping("/semesterView/selected")
     public String processSelectedSemester(Operator semester) {
@@ -233,43 +232,67 @@ public class ExamController {
         return "redirect:/semesterView/show";
     }
 
-    // @GetMapping("/semesterView/show")
-    // public ModelAndView showSemesterView() {
+    @GetMapping("/semesterView/show")
+    public ModelAndView showSemesterView() {
+        ModelAndView mav = new ModelAndView("studentTemplates/semesterView");
+        // retrieve selected semester
+        Operator selected = operatorRepo.findAll().get(0);
+        operatorRepo.deleteAll();
+        Semester semester = selected.getSelectedSemester();
+        // retrieve semester Information and first / last day of Semester
+        LocalDate semesterStart = semester.getStartDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate monday = semesterStart;
+        LocalDate semesterEnd = semester.getEndDate().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+        // create a list of all Mondays
+        List<LocalDate> mondays = new ArrayList<>();
+        while (monday.isBefore(semesterEnd)) {
+            mondays.add(monday);
+            // Set up the loop.
+            monday = monday.plusWeeks(1);
+        }
+        mav.addObject("allMondays", mondays);
 
-    // List<Subject> allSubjects = subjectRepo.findAll();
+        // retrieve allExams, week by week, for the whole semester in a list of list of
+        // exams from Monday to Sunday
+        List<List<Exam>> allExams = new ArrayList<>();
+        while (monday.isBefore(semesterEnd)) {
+            List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY));
+            allExams.add(examsByWeek);
+            monday = monday.plusWeeks(1);
+        }
+        mav.addObject("allExams", allExams);
 
-    // ModelAndView mav = new ModelAndView("studentTemplates/semesterView");
-    // //     mav.addObject("datum", datum);
-    // return mav;
-    // // }
+        List<Subject> allSubjects = subjectRepo.findAll();
+        mav.addObject("allSubjects", allSubjects);
+
+        return mav;
+    }
 
     // @GetMapping("/examView/show")
     // public String showExamView() {
-    //     ModelAndView mav = new ModelAndView("studentTemplates/examTableShow");
-    //     List<Subject> allSubjects = subjectRepo.findAll();
-    //     mav.addObject("alleFaecher", allSubjects);
-        
+    // ModelAndView mav = new ModelAndView("studentTemplates/examTableShow");
+    // List<Subject> allSubjects = subjectRepo.findAll();
+    // mav.addObject("alleFaecher", allSubjects);
 
+    // Datum selectedDatum = operatorRepo.findAll().get(0);
+    // operatorRepo.deleteAll();
+    // LocalDate selectedDate = selectedDatum.getSelectedDate();
+    // model.addAttribute("Datum", selectedDate);
 
-    //     Datum selectedDatum = operatorRepo.findAll().get(0);
-    //     operatorRepo.deleteAll();
-    //     LocalDate selectedDate = selectedDatum.getSelectedDate();
-    //     model.addAttribute("Datum", selectedDate);
+    // ExamService helper = new ExamService();
+    // LocalDate Monday = helper.getFirstDayOfWeek(selectedDate);
+    // model.addAttribute("Montag", Monday);
 
-    //     ExamService helper = new ExamService();
-    //     LocalDate Monday = helper.getFirstDayOfWeek(selectedDate);
-    //     model.addAttribute("Montag", Monday);
+    // LocalDate Sunday = helper.getLastDayOfWeek(selectedDate);
+    // model.addAttribute("Sonntag", Sunday);
 
-    //     LocalDate Sunday = helper.getLastDayOfWeek(selectedDate);
-    //     model.addAttribute("Sonntag", Sunday);
+    // List<Exam> listExams = examRepo.findAllByDueDateBetween(Monday, Sunday);
+    // model.addAttribute("liste", listExams);
 
-    //     List<Exam> listExams = examRepo.findAllByDueDateBetween(Monday, Sunday);
-    //     model.addAttribute("liste", listExams);
+    // calculateNumberOfExams(model, listExams);
+    // calculateExamFactor(model, listExams);
 
-    //     calculateNumberOfExams(model, listExams);
-    //     calculateExamFactor(model, listExams);
-
-    //     return "studentTemplates/examBarShow";
+    // return "studentTemplates/examBarShow";
 
     // }
-    }
+}
