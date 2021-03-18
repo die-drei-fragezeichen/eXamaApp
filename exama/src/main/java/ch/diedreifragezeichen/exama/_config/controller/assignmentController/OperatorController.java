@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class DatumController {
+public class OperatorController {
 
     @GetMapping("/datenAnzeige")
     public String dates(Model model) {

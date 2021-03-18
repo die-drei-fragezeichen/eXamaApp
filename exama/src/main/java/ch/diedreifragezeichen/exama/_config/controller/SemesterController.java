@@ -12,7 +12,6 @@ import ch.diedreifragezeichen.exama.semesters.HolidayRepository;
 import ch.diedreifragezeichen.exama.semesters.Semester;
 import ch.diedreifragezeichen.exama.semesters.SemesterRepository;
 
-
 @Controller
 public class SemesterController {
     @Autowired
@@ -21,14 +20,13 @@ public class SemesterController {
     @Autowired
     private HolidayRepository holidayRepo;
 
-
     /**
      * Semester Mappings
      */
 
     @GetMapping("/semesters/create")
     public ModelAndView newSubject() {
-        
+
         ModelAndView mav = new ModelAndView("adminTemplates/semesterCreate");
         Semester semester = new Semester();
         mav.addObject("newSemester", semester);
@@ -45,45 +43,44 @@ public class SemesterController {
 
     @GetMapping("/semesters/show")
     public String listSemesters(Model model) {
-        // List<Holiday> allHolidays = holidayRepo.findAll();
-        // model.addAttribute("allHolidays", allHolidays);
-
         List<Semester> listSemesters = semesterRepo.findAll();
         model.addAttribute("allSemesters", listSemesters);
         return "adminTemplates/semestersShow";
     }
 
     // @GetMapping("/subjects/{id}/edit")
-    // public ModelAndView editSubject(@PathVariable(name = "id") Long id) throws NotFoundException {
-    //     Subject subject = subjectRepo.findSubjectById(id);
-    //     if (subject == null) {
-    //         throw new NotFoundException("Subject not found");
-    //     }
-    //     ModelAndView mav = new ModelAndView("adminTemplates/subjectEdit");
-    //     mav.addObject("subject", subject);
-    //     return mav;
+    // public ModelAndView editSubject(@PathVariable(name = "id") Long id) throws
+    // NotFoundException {
+    // Subject subject = subjectRepo.findSubjectById(id);
+    // if (subject == null) {
+    // throw new NotFoundException("Subject not found");
+    // }
+    // ModelAndView mav = new ModelAndView("adminTemplates/subjectEdit");
+    // mav.addObject("subject", subject);
+    // return mav;
     // }
 
     // @GetMapping("/subjects/{id}/edited")
-    // public String updateSubject(@PathVariable(name = "id") Long id, @RequestParam(name = "name") String name,
-    //         @RequestParam(name = "tag") String tag) throws NotFoundException {
-    //     Subject subject = subjectRepo.findSubjectById(id);
-    //     if (subject == null) {
-    //         throw new NotFoundException("Subject not found");
-    //     }
-    //     subjectRepo.editSubjectById(id, name, tag);
-    //     return "redirect:/subjects/show";
+    // public String updateSubject(@PathVariable(name = "id") Long id,
+    // @RequestParam(name = "name") String name,
+    // @RequestParam(name = "tag") String tag) throws NotFoundException {
+    // Subject subject = subjectRepo.findSubjectById(id);
+    // if (subject == null) {
+    // throw new NotFoundException("Subject not found");
+    // }
+    // subjectRepo.editSubjectById(id, name, tag);
+    // return "redirect:/subjects/show";
     // }
 
     // @GetMapping("/subjects/{id}/delete")
-    // public String deleteSubject(@PathVariable(name = "id") Long id) throws NotFoundException {
-    //     Subject subject = subjectRepo.findSubjectById(id);
-    //     if (subject == null) {
-    //         throw new NotFoundException("Subject not found");
-    //     }
-    //     subjectRepo.deleteSubjectById(id);
-    //     return "redirect:/subjects/show";
+    // public String deleteSubject(@PathVariable(name = "id") Long id) throws
+    // NotFoundException {
+    // Subject subject = subjectRepo.findSubjectById(id);
+    // if (subject == null) {
+    // throw new NotFoundException("Subject not found");
+    // }
+    // subjectRepo.deleteSubjectById(id);
+    // return "redirect:/subjects/show";
     // }
 
 }
-

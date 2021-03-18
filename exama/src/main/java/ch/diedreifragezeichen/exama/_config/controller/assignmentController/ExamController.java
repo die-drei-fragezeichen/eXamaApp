@@ -24,6 +24,8 @@ import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistribution;
 import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistributionRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.courses.CourseRepository;
+import ch.diedreifragezeichen.exama.semesters.Semester;
+import ch.diedreifragezeichen.exama.semesters.SemesterRepository;
 import ch.diedreifragezeichen.exama.subjects.Subject;
 import ch.diedreifragezeichen.exama.subjects.SubjectRepository;
 import ch.diedreifragezeichen.exama.userAdministration.User;
@@ -53,7 +55,10 @@ public class ExamController {
     private WorkloadDistributionRepository distributionRepo;
 
     @Autowired
-    private DatumRepository datumRepo;
+    private OperatorRepository operatorRepo;
+
+    @Autowired
+    SemesterRepository semesterRepo;
 
     /**
      * The following methods handle the examBar creation
@@ -130,7 +135,7 @@ public class ExamController {
     @GetMapping("/examBar/selectDate")
     public ModelAndView selectExamBarDate() {
 
-        Datum datum = new Datum();
+        Operator datum = new Operator();
         ModelAndView mav = new ModelAndView("studentTemplates/examBarSelectDate");
         mav.addObject("datum", datum);
         return mav;
@@ -138,12 +143,13 @@ public class ExamController {
 
     /**
      * When User click submit button, this method is execuded. Te datum object is
-     * saved into db by datumRepo note that this link is different from above, but
+     * saved into db by operatorRepo
+    o note that this link is different from above, but
      * it is never really shown, user is directly redirected.
      */
     @PostMapping("/examBar/DateSelected")
-    public String processSelectedDate(Datum datum) {
-        datumRepo.save(datum);
+    public String processSelectedDate(Operator datum) {
+        operatorRepo.save(datum);
         return "redirect:/examBar/show";
     }
 
@@ -152,8 +158,8 @@ public class ExamController {
      */
     @RequestMapping("/examBar/show")
     public String showExamBarForSavedDate(Model model) {
-        Datum selectedDatum = datumRepo.findAll().get(0);
-        datumRepo.deleteAll();
+        Operator selectedDatum = operatorRepo.findAll().get(0);
+        operatorRepo.deleteAll();
         LocalDate selectedDate = selectedDatum.getSelectedDate();
         model.addAttribute("Datum", selectedDate);
 
@@ -203,17 +209,39 @@ public class ExamController {
         return model;
     }
 
-    // /**
-    //  * The following methods handle the Semester view creation
-    //  */
-    
-    // public ModelAndView selectExamBarDate() {
+    /**
+     * The following methods handle the Semester view creation
+     */
 
-    //     Datum datum = new Datum();
-    //     ModelAndView mav = new ModelAndView("studentTemplates/examBarSelectDate");
-    //     mav.addObject("datum", datum);
-    //     return mav;
-    // }
+
+    @GetMapping("/semesterView/choose")
+    public ModelAndView selectSemester() {
+        ModelAndView mav = new ModelAndView("studentTemplates/semesterViewChoose");
+        List<Semester> allSemesters = semesterRepo.findAll();
+        mav.addObject("allSemesters", allSemesters);
+        
+        Operator semester = new Operator();
+        mav.addObject("chosenSemster", semester);
+
+        return mav;
+    }
+
+
+    @PostMapping("/semesterView/selected")
+    public String processSelectedSemester(Operator semester) {
+        operatorRepo.save(semester);
+        return "redirect:/semesterView/show";
+    }
+
+    // @GetMapping("/semesterView/show")
+    // public ModelAndView showSemesterView() {
+
+    // List<Subject> allSubjects = subjectRepo.findAll();
+
+    // ModelAndView mav = new ModelAndView("studentTemplates/semesterView");
+    // //     mav.addObject("datum", datum);
+    // return mav;
+    // // }
 
     // @GetMapping("/examView/show")
     // public String showExamView() {
@@ -223,8 +251,8 @@ public class ExamController {
         
 
 
-    //     Datum selectedDatum = datumRepo.findAll().get(0);
-    //     datumRepo.deleteAll();
+    //     Datum selectedDatum = operatorRepo.findAll().get(0);
+    //     operatorRepo.deleteAll();
     //     LocalDate selectedDate = selectedDatum.getSelectedDate();
     //     model.addAttribute("Datum", selectedDate);
 
@@ -244,8 +272,4 @@ public class ExamController {
     //     return "studentTemplates/examBarShow";
 
     // }
-
-
-
-
-}
+    }

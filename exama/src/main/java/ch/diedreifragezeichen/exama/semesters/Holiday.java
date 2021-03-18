@@ -91,7 +91,10 @@ public class Holiday {
 
     @Override
     public String toString() {
-        return name;
+        return name + " (Beginn: " + startDate + ", Ende: " + endDate + ")";
     }
+
+
+    
 
 }
