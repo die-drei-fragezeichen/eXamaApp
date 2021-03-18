@@ -276,6 +276,7 @@ public class ExamController {
             monday = monday.plusWeeks(1);
         }
         mav.addObject("allExams", allExams);
+        //String xExam = allExams.get(0).get(0).getSubject().getName();
         
         List<Subject> allSubjects = subjectRepo.findAll();
         mav.addObject("allSubjects", allSubjects);

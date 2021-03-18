@@ -29,21 +29,33 @@
                 
                 <tbody>
                 <tr th:if="${examTotal}==0">
-                  <td colspan="100%"> No exams have been set up for this semester </td>
+                  <td colspan="100%"> Bislang wurden in diesem Semester noch keine Prüfungen erfasst </td>
                 </tr>
-                <tr th:unless="${examTotal}==0" th:each="monday, iStat : ${allMondays}" th:style="${iStat.odd}? 'font-weight: bold;'" th:alt-title="${iStat.even}? 'even' : 'odd'">
-                  <td th:text="${iStat.count}"></td>
-                  <td><span th:text="${#temporals.dayOfWeekNameShort(monday)} + ', ' + ${monday}"> Monday </span></td>
-                  <td th:each="subject: ${allSubjects}"</td>
+                <tr th:unless="${examTotal}==0" 
+                    th:each="monday, iStat : ${allMondays}" th:style="${iStat.odd}? 'font-weight: bold;'" th:alt-title="${iStat.even}? 'even' : 'odd'">
+                  <td th:text="${iStat.count}"> Semesterwoche</td>
+                  <td><span th:text="${#temporals.dayOfWeekNameShort(monday)} + ', ' + ${monday}"> Wochenanfang </span></td>
+                  <td th:each="subject: ${allSubjects}" th:text="${iStat.index}">
+                  </td>
                </tr>
-                    <!--<tr th:each="exam : ${liste}">
-                        <td th:text="${exam.Id}"></td>
-                        <td th:text="${exam.name}"></td>
-                        <td th:text="${exam.dueDate}"></td>
-                        <td th:text="${exam.countingFactor}"></td>
-                    </tr>
-                </tbody>-->
             </table>
+            <br />
+            <br />
+            <br />
+
+        <!--<td th:each="subject: ${allSubjects}" th:each="exam: ${allExams}" th:if="subject == exam.subject">
+                <th:text="${#temporals.dayOfWeekNameShort(exam.dueDate)}"</td>
+            -->
+            <table>
+              <th:each="subject : ${allSubjects}">
+                <td>
+                   <tr th:each="exam: ${allExams.get(iStat.index)}"
+                      th:text="${exam.name}">
+                    </tr>
+                <td>
+                <td></td>
+            </table>
+
             <br />
             <!-- <input type="text" placeholder="Suche nach Prüfungsamen - hier passiert noch nichts">
 
