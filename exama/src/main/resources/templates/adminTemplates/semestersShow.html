@@ -36,10 +36,12 @@
                         <td th:text="${semester.startDate}"></td>
                         <td th:text="${semester.endDate}"></td>
                         <td th:text="${semester.maxNumberOfExams}"></td>
-                    </th:block>
+                        <td th:text="${semester.holidays}"></td>
+
+                    <!--</th:block>
                     <th:block th:each ="holiday: ${allHolidays}">
                         <td th:text="${holiday.name}"></td>
-                    </th:block>
+                    </th:block>-->
                         <td>bearbeiten</td>
                         <td>löschen</td>
                     </tr>

@@ -45,8 +45,8 @@ public class SemesterController {
 
     @GetMapping("/semesters/show")
     public String listSemesters(Model model) {
-        List<Holiday> allHolidays = holidayRepo.findAll();
-        model.addAttribute("allHolidays", allHolidays);
+        // List<Holiday> allHolidays = holidayRepo.findAll();
+        // model.addAttribute("allHolidays", allHolidays);
 
         List<Semester> listSemesters = semesterRepo.findAll();
         model.addAttribute("allSemesters", listSemesters);
