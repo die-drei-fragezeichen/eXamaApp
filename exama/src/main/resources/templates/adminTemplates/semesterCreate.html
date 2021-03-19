@@ -12,7 +12,7 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Neue Prüfung erstellen</h1>
+            <h1>Semester erfassen</h1>
 
             <!-- Values for th:object attributes in form tags must be variable expressions (${...}). It specifies the NAME OF THE MODEL ATTRIBUTE!! So: ${mime.editDate} would not be. -->
             <!-- Once you are working inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
@@ -21,25 +21,23 @@
                 <form th:action="@{/semesters/created}" th:object="${newSemester}" method="post">
                     <div>
                         <div>
-                            <label>Semsestername (1. oder 2. Semester): </label>
+                            <label>Semsestername (HS/FS SJ): </label>
                             <input type="text" th:field="*{name}" class="form-control" maxlength="30"
                                 required />
                         </div>
                         <br>
                         <div>
                             <label>Semesteranfang: </label>
-                            <input type="date" th:field="*{startDate}" class="form-control" required/>
+                            <input type="text" th:field="*{startDate}" id="fromDate" class="form-control" required>
+                            </label>Ferienende:</label> 
+                            <input type="text" th:field="*{endDate}" id="toDate" class="form-control" required>
                         </div>
-                        <br>
-                        <div>
-                            <label>Semesterende: </label>
-                            <input type="date" th:field="*{endDate}" class="form-control"/>
-                        </div>
+                        
                         <br>
                         <div>
                             <label>Maximale Anzahl Prüfungen pro Woche: </label>
                             <input type="number" th:field="*{maxNumberOfExams}" class="form-control" required
-                            minlength="1" maxlength="2" />
+                            minlength="1" maxlength="2"/>
                         </div>
                         <br>
                         <div>
@@ -60,6 +58,43 @@
 
         <!-- footer with navigation (only mobile) -->
         <div th:include="fragments/footer :: footer"></div>
+        <script>
+    $(function(){
+    $("#datepicker").datepicker();
+    //datepicker which is expecting two dates, the second cannot be chosen before the first
+    //creates the first date (id = from Date)
+    var from = $( "#fromDate" )
+      .datepicker({
+        dateFormat: "yy-mm-dd",
+        firstDay: 1,
+        changeMonth: true
+      })
+      .on( "change", function() {
+        to.datepicker( "option", "minDate", getDate( this ) );
+      }),
+    //creates the second date (id = toDate)
+    to = $( "#toDate" ).datepicker({
+      dateFormat: "yy-mm-dd",
+      firstDay: 1,
+      changeMonth: true
+    })
+    .on( "change", function() {
+      from.datepicker( "option", "maxDate", getDate( this ) );
+    });
+
+  function getDate( element ) {
+    var date;
+    var dateFormat = "yy-mm-dd";
+    try {
+      date = $.datepicker.parseDate( dateFormat, element.value );
+    } catch( error ) {
+      date = null;
+    }
+
+    return date;    
+  }
+    });
+    </script>
 </body>
 
 </html>
