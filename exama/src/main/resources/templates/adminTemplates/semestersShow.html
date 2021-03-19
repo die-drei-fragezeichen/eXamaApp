@@ -1,0 +1,51 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/head :: head"></head>
+
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="fragments/header :: header"></div>
+
+        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>Alle Prüfungen</h1>
+            <a href="/exams/create">> neue Prüfung hinzufügen</a><br><br>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Semester ID</th>
+                        <th>Name</th>
+                        <th>Semesterbeginn</th>
+                        <th>Semesterende</th>
+                        <th>Maximale Anzahl Prüfungen</th>
+                        <th>Ferien</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="semester: ${allSemesters}">
+                        <td th:text="${semester.id}"></td>
+                        <td th:text="${semester.name}"></td>
+                        <td th:text="${semester.startDate}"></td>
+                        <td th:text="${semester.endDate}"></td>
+                        <td th:text="${semester.maxNumberOfExams}"></td>
+                        <td></td>
+                        <!--<td th:text="${exam.startDate}"></td>-->
+                        <td>bearbeiten</td>
+                        <td>löschen</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="fragments/footer :: footer"></div>
+</body>
+
+</html> 

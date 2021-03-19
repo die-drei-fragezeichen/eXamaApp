@@ -2,15 +2,9 @@ package ch.diedreifragezeichen.exama._config.controller.assignmentController;
 
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
+import java.util.*;
 //import javassist.NotFoundException;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.core.Authentication;
@@ -101,8 +95,10 @@ public class ExamController {
         List<WorkloadDistribution> listDist = distributionRepo.findAll();
         mav.addObject("allWorkloadDistributions", listDist);
 
+        //create List of active semesters to enable lower and an upper bound Date selection for exams
         List<Semester> semesterList = semesterRepo.findAll();
         semesterList.stream().filter(s -> s.isEnabled()).collect(Collectors.toList());
+        semesterList.sort(Comparator.comparing(Semester::getStartDate));
         mav.addObject("allSemesters", semesterList);
 
         LocalDate firstDay = semesterList.get(0).getStartDate();
