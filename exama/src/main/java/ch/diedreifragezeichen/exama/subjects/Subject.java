@@ -5,9 +5,7 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import ch.diedreifragezeichen.exama.assignments.exams.Exam;
 import ch.diedreifragezeichen.exama.courses.Course;
-import ch.diedreifragezeichen.exama.subjectTeacher.SubjectTeacher;
 
 //the following code maps with the corresponding subject table (not yet created) in the database.
 //then we create a new interface named UserRepository to act as a Spring Data JPA repository with the following simple code
@@ -33,19 +31,10 @@ public class Subject {
     private String tag;
 
     /**
-     * ManyToMany mappings
-     */
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "subjects")
-	private Set<Course> courses = new HashSet<>();
-
-    /**
      * OneToMany mappings
      */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "subject")
-    private List<Exam> exams;
-
-    @OneToMany(mappedBy = "subject")
-    private List<SubjectTeacher> subjectTeachers;
+    private List<Course> coures;
 
     /**
      * Methods
@@ -79,6 +68,9 @@ public class Subject {
         return this.name;
     }
 
+    /**
+     * Getters and Setters only
+     */
     public Long getId() {
         return id;
     }
@@ -103,19 +95,11 @@ public class Subject {
         this.tag = tag;
     }
 
-    public Set<Course> getCourses() {
-        return courses;
+    public List<Course> getCoures() {
+        return coures;
     }
 
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
-    }
-
-    public List<Exam> getExams() {
-        return exams;
-    }
-
-    public void setExams(List<Exam> exams) {
-        this.exams = exams;
+    public void setCoures(List<Course> coures) {
+        this.coures = coures;
     }
 }

@@ -11,7 +11,8 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import ch.diedreifragezeichen.exama.assignments.exams.Exam;
-import ch.diedreifragezeichen.exama.subjectTeacher.SubjectTeacher;
+import ch.diedreifragezeichen.exama.courses.Course;
+import ch.diedreifragezeichen.exama.courses.CoreCourse;
 
 @Entity
 @DynamicUpdate
@@ -54,6 +55,14 @@ public class User {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate createdOn;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(nullable = true)
+	private CoreCourse coreCourse;
+
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JoinTable(joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	private Set<Course> courses = new HashSet<>();
+
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinTable(joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
@@ -64,8 +73,8 @@ public class User {
 	@OneToMany(mappedBy = "creator")
 	private List<Exam> exams;
 
-	@OneToMany(mappedBy = "teacher")
-    private List<SubjectTeacher> subjectTeachers;
+	@OneToMany(mappedBy = "classTeacher")
+	private List<CoreCourse> classTeacherCourses;
 
 	/**
 	 * Methods
@@ -78,6 +87,9 @@ public class User {
 		return this.firstName + " " + this.lastName;
 	}
 
+	/**
+	 * Getters and Setters only
+	 */
 	public Long getId() {
 		return id;
 	}
@@ -164,5 +176,37 @@ public class User {
 
 	public void setCreatedOn(LocalDate createdOn) {
 		this.createdOn = createdOn;
+	}
+
+	public CoreCourse getCoreCourse() {
+		return coreCourse;
+	}
+
+	public void setCoreCourse(CoreCourse coreCourse) {
+		this.coreCourse = coreCourse;
+	}
+
+	public Set<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Set<Course> courses) {
+		this.courses = courses;
+	}
+
+	public List<Exam> getExams() {
+		return exams;
+	}
+
+	public void setExams(List<Exam> exams) {
+		this.exams = exams;
+	}
+
+	public List<CoreCourse> getClassTeacherCourses() {
+		return classTeacherCourses;
+	}
+
+	public void setClassTeacherCourses(List<CoreCourse> classTeacherCourses) {
+		this.classTeacherCourses = classTeacherCourses;
 	}
 }

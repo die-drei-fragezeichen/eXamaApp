@@ -11,7 +11,6 @@ import java.time.temporal.ChronoUnit;
 import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTime;
 import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistribution;
 import ch.diedreifragezeichen.exama.courses.Course;
-import ch.diedreifragezeichen.exama.subjects.Subject;
 import ch.diedreifragezeichen.exama.userAdministration.User;
 
 // can not be abstract because of the ManyToOne-Mapping
@@ -32,10 +31,6 @@ public class Assignment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private User creator;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
-    private Subject subject;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
@@ -151,12 +146,19 @@ public class Assignment {
         }
     }
 
+    /**
+     * Getters and Setters only
+     */
     public Long getId() {
-        return this.id;
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String name) {
@@ -164,19 +166,11 @@ public class Assignment {
     }
 
     public User getCreator() {
-        return this.creator;
+        return creator;
     }
 
     public void setCreator(User creator) {
         this.creator = creator;
-    }
-
-    public Subject getSubject() {
-        return this.subject;
-    }
-
-    public void setSubject(Subject subject) {
-        this.subject = subject;
     }
 
     public Course getCourse() {
@@ -188,7 +182,7 @@ public class Assignment {
     }
 
     public LocalDate getEditDate() {
-        return this.editDate;
+        return editDate;
     }
 
     public void setEditDate(LocalDate editDate) {
@@ -196,7 +190,7 @@ public class Assignment {
     }
 
     public LocalDate getStartDate() {
-        return this.startDate;
+        return startDate;
     }
 
     public void setStartDate(LocalDate startDate) {
@@ -204,7 +198,7 @@ public class Assignment {
     }
 
     public LocalDate getDueDate() {
-        return this.dueDate;
+        return dueDate;
     }
 
     public void setDueDate(LocalDate dueDate) {
@@ -212,7 +206,7 @@ public class Assignment {
     }
 
     public AvailablePrepTime getAvailablePrepTime() {
-        return this.availablePrepTime;
+        return availablePrepTime;
     }
 
     public void setAvailablePrepTime(AvailablePrepTime availablePrepTime) {
@@ -220,7 +214,7 @@ public class Assignment {
     }
 
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     public void setDescription(String description) {
@@ -228,7 +222,7 @@ public class Assignment {
     }
 
     public double getWorkloadMinutesTotal() {
-        return this.workloadMinutesTotal;
+        return workloadMinutesTotal;
     }
 
     public void setWorkloadMinutesTotal(double workloadMinutesTotal) {
@@ -236,10 +230,10 @@ public class Assignment {
     }
 
     public WorkloadDistribution getWorkloadDistribution() {
-        return this.workloadDistribution;
+        return workloadDistribution;
     }
 
-    public void setWorkloadDistribution(WorkloadDistribution distribution) {
-        this.workloadDistribution = distribution;
+    public void setWorkloadDistribution(WorkloadDistribution workloadDistribution) {
+        this.workloadDistribution = workloadDistribution;
     }
 }

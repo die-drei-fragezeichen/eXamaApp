@@ -6,14 +6,12 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import ch.diedreifragezeichen.exama.assignments.exams.Exam;
-import ch.diedreifragezeichen.exama.subjects.Subject;
 import ch.diedreifragezeichen.exama.userAdministration.User;
 
 @Entity
 @DynamicUpdate
-@Table(name = "courses")
-public class Course {
+@Table(name = "coreCourses")
+public class CoreCourse {
     /**
      * Fields
      */
@@ -30,19 +28,13 @@ public class Course {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = true)
-    private Subject subject;
+    private User classTeacher;
 
     /**
      * OneToMany mappings
      */
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
-    private List<Exam> exams;
-
-    /**
-     * ManyToMany Mapping with user
-     */
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "courses")
-    private Set<User> users = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "coreCourse")
+    private List<User> students;
 
     /**
      * Methods
@@ -75,27 +67,19 @@ public class Course {
         this.enabled = enabled;
     }
 
-    public Subject getSubject() {
-        return subject;
+    public User getClassTeacher() {
+        return classTeacher;
     }
 
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    public void setClassTeacher(User classTeacher) {
+        this.classTeacher = classTeacher;
     }
 
-    public List<Exam> getExams() {
-        return exams;
+    public List<User> getStudents() {
+        return students;
     }
 
-    public void setExams(List<Exam> exams) {
-        this.exams = exams;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setStudents(List<User> students) {
+        this.students = students;
     }
 }
