@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    </head>
+    <body>
+    <h1>HOW to pick dates with jQuery</h1>
+    <h3>basic datepicker</h3> 
+    <p>Date: <input type="text" id="datepicker"></p>
+    <h3>basic datepicker - change format</h3>
+    <p>Date: <input type="text" id="datepicker2"></p>
+    <h3>basic datepicker - adds select option in calender view: month/year</h3>
+    <p>Date: <input type="text" id="datepicker3"></p>
+    <h3>basic datepicker - restict to a range of dates</h3>
+    <p>Date: <input type="text" id="datepicker4"></p>
+    <h3>basic datepicker - select two date but second date cannot be chosen before first</h3>
+    <p>Date: <input type="text" id="fromDate"> TO <input type="text" id="toDate"></p>   
+
+
+    <script>
+    $(function(){
+    $("#datepicker").datepicker();
+
+    $("#datepicker2").datepicker({
+        dateFormat: "yy-mm-dd"
+    });
+
+    $("#datepicker3").datepicker({
+        changeMonth: true,
+        changeYear: true
+    });
+    $("#datepicker4").datepicker({
+        //For today use minDate:0
+        minDate: 0,
+        maxDate: "+1M +5D"
+    });
+
+    //The following example shows how you can implement date range select functionality in the form input field. This code allows the user to select From Date and To Date, but it restricts the user to select a previous date as To Date.
+    var from = $( "#fromDate" )
+      .datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth: true
+      })
+      .on( "change", function() {
+        to.datepicker( "option", "minDate", getDate( this ) );
+      }),
+    to = $( "#toDate" ).datepicker({
+      dateFormat: "yy-mm-dd",
+      changeMonth: true
+    })
+    .on( "change", function() {
+      from.datepicker( "option", "maxDate", getDate( this ) );
+    });
+
+  function getDate( element ) {
+    var date;
+    var dateFormat = "yy-mm-dd";
+    try {
+      date = $.datepicker.parseDate( dateFormat, element.value );
+    } catch( error ) {
+      date = null;
+    }
+
+    return date;
+  }
+    });
+    </script>
+
+        
+    </body>
+</html>
