@@ -20,7 +20,7 @@
                 <div>
                     <label>Klassen name: </label>
                     <div>
-                        <input type="text" th:field="*{name}" class="form-control" required minlength="1"
+                        <input type="text" th:field="*{name}" class="form-control" minlength="1"
                             maxlength="20" />
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                 <br>
                 <div>
                     <label>Klassenlehrer: </label>
-                    <select th:field="*{classTeacher}" class="form-control" required/>
+                    <select th:field="*{classTeacher}" class="form-control"/>
                     <option th:each="teacher : ${allTeachers}" th:text="${teacher}"
                         th:value="${teacher.id}" />
                     </select>

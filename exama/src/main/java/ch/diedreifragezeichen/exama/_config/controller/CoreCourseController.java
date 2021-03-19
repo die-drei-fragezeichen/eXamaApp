@@ -5,9 +5,8 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import javassist.NotFoundException;
-
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +31,11 @@ public class CoreCourseController {
     @Autowired
     private RoleRepository roleRepo;
 
-    private Session session;
+    @Autowired
+    //@Qualifier("sessionFactory") - does not work
+    private SessionFactory sessionFactory;
+    public Session getSession() {
+    return sessionFactory.getCurrentSession();}
 
     /**
      * CoreCourse Mappings
@@ -45,8 +48,8 @@ public class CoreCourseController {
         CoreCourse newCoreCourse = new CoreCourse();
         mav.addObject("coreCourse", newCoreCourse);
 
-        List<User> userList = userRepo.findAll();
-        List<User> teacherList = userList.stream().filter(c -> c.getRoles().contains(roleRepo.findRoleByName("Teacher"))).collect(Collectors.toList());
+        //retrieve all users that entail the role "teacher" / for fun: ONLY teachers!
+        List<User> teacherList = userRepo.findAll().stream().filter(c -> c.getRoles().size() == 1).filter(c -> c.getRoles().contains(roleRepo.findRoleByName("Teacher"))).collect(Collectors.toList());
         mav.addObject("allTeachers", teacherList);
         return mav;
     }
@@ -65,9 +68,9 @@ public class CoreCourseController {
         CoreCourse coreCourse = coreCourseRepo.findCoreCourseById(id);
         
         mav.addObject("coreCourse", coreCourse);
-
-        List<User> userList = userRepo.findAll();
-        List<User> teacherList = userList;
+        
+        //retrieve all users that entail the role "teacher" / for fun: ONLY teachers!
+        List<User> teacherList = userRepo.findAll().stream().filter(c -> c.getRoles().size() == 1).filter(c -> c.getRoles().contains(roleRepo.findRoleByName("Teacher"))).collect(Collectors.toList());
         mav.addObject("allTeachers", teacherList);
 
         return mav;
@@ -76,7 +79,6 @@ public class CoreCourseController {
     @PostMapping("/coreCourses/modified")
     @Transactional
     public String modifyCoreCourse(CoreCourse coreCourse) {
-        //session.saveOrUpdate(coreCourse);
         coreCourseService.saveOrUpdateCoreCourse(coreCourse);
         return "redirect:/coreCourses/show";
     }
