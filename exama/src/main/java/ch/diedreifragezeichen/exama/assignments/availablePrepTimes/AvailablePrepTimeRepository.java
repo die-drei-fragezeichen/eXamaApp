@@ -6,4 +6,5 @@ public interface AvailablePrepTimeRepository extends JpaRepository<AvailablePrep
     public AvailablePrepTime findPrepTimeById(Long id);
     public AvailablePrepTime findPrepTimeByName(String name);
     public AvailablePrepTime findPrepTimeByDays(int days);
+    public void deletePrepTimeById(Long id);
 }

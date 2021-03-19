@@ -44,7 +44,7 @@ public class AvailablePrepTimesController {
 
     @GetMapping("/preptimes/{id}/edit")
     public ModelAndView editPrepTime(@PathVariable(name = "id") Long id) throws NotFoundException {
-        AvailablePrepTime prepTime = prepTimeRepo.getPrepTimeByID(id);
+        AvailablePrepTime prepTime = prepTimeRepo.findPrepTimeById(id);
         if (prepTime == null) {
             throw new NotFoundException("PrepTime not found");
         }
@@ -56,20 +56,20 @@ public class AvailablePrepTimesController {
     @GetMapping("preptimes/{id}/edited")
     public String updatePrepTime(@PathVariable(name = "id") Long id, @RequestParam(name = "name") String name,
             @RequestParam(name = "days") int days) throws NotFoundException {
-        AvailablePrepTime prepTime = prepTimeRepo.getPrepTimeByID(id);
+        AvailablePrepTime prepTime = prepTimeRepo.findPrepTimeById(id);
         if (prepTime == null) {
             throw new NotFoundException("PrepTime not found");
         }
         if (id == 1) {
             return "redirect:/preptimes/show";
         }
-        prepTimeRepo.editPrepTimeById(id, name, (int) days);
+        // prepTimeRepo.editPrepTimeById(id, name, (int) days);
         return "redirect:/preptimes/show";
     }
 
     @GetMapping("preptimes/{id}/delete")
     public String deletePrepTime(@PathVariable(name = "id") Long id) throws NotFoundException {
-        AvailablePrepTime prepTime = prepTimeRepo.getPrepTimeByID(id);
+        AvailablePrepTime prepTime = prepTimeRepo.findPrepTimeById(id);
         if (prepTime == null) {
             throw new NotFoundException("PrepTime not found");
         }

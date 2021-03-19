@@ -23,5 +23,18 @@ public class CoreCourseService{
             updatedCoreCourse.setEnabled(coreCourse.isEnabled());
             updatedCoreCourse.setClassTeacher(coreCourse.getClassTeacher());
         }
+
+
+    //     public CoreCourse saveOrUpdateCoreCourse(CoreCourse coreCourse){
+    //         if(coreCourse.getId()==null){
+    //             session.persist(coreCourse);
+    //             //upon closing the session, the coreCourse will receive a unique id. Right now, it is in "limbo"
+    //         } else{
+    //             session.evict(coreCourse);
+    //             //once evecited (=detached) from its context, pass the coreCourse into an HTML environment (or statically update a field in the backend)
+    //             //do this by creating an appropriate controller method
+    //             coreCourse = (CoreCourse) session.merge(coreCourse);
+    //         }
+    //         return coreCourse;
     }
 }

@@ -37,12 +37,6 @@ public class CoreCourseController {
     /**
      * CoreCourse Mappings
      */
-    @GetMapping("/coreCourses/show")
-    public String showCoreCourses(Model model) {
-        List<CoreCourse> listCoreCourses = coreCourseRepo.findAll();
-        model.addAttribute("allCoreCourses", listCoreCourses);
-        return "adminTemplates/coreCoursesShow";
-    }
 
     @GetMapping("/coreCourses/create")
     public ModelAndView newCoreCourse() {
@@ -55,6 +49,13 @@ public class CoreCourseController {
         List<User> teacherList = userList.stream().filter(c -> c.getRoles().contains(roleRepo.findRoleByName("Teacher"))).collect(Collectors.toList());
         mav.addObject("allTeachers", teacherList);
         return mav;
+    }
+
+    @GetMapping("/coreCourses/show")
+    public String showCoreCourses(Model model) {
+        List<CoreCourse> listCoreCourses = coreCourseRepo.findAll();
+        model.addAttribute("allCoreCourses", listCoreCourses);
+        return "adminTemplates/coreCoursesShow";
     }
 
     @GetMapping("/coreCourses/edit")
@@ -74,7 +75,7 @@ public class CoreCourseController {
 
     @PostMapping("/coreCourses/modified")
     @Transactional
-    public String modify(CoreCourse coreCourse) {
+    public String modifyCoreCourse(CoreCourse coreCourse) {
         //session.saveOrUpdate(coreCourse);
         coreCourseService.saveOrUpdateCoreCourse(coreCourse);
         return "redirect:/coreCourses/show";

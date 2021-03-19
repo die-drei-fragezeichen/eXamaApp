@@ -14,7 +14,7 @@ public class AvailablePrepTimeService {
     EntityManager em;
 
     public AvailablePrepTime loadById(long id) throws NotFoundException {
-        AvailablePrepTime preptime = prepTimeRepo.getPrepTimeByID(id);
+        AvailablePrepTime preptime = prepTimeRepo.findPrepTimeById(id);
         if (preptime == null) {
             throw new NotFoundException("PrepTime not found");
         }
