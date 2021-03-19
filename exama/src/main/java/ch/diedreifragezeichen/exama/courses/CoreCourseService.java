@@ -14,7 +14,8 @@ public class CoreCourseService {
     @Transactional
     public void saveOrUpdateCoreCourse(CoreCourse coreCourse) {
         em.unwrap(org.hibernate.Session.class).saveOrUpdate(coreCourse);
-        // .unwrap provides the current Session via JPA, this session then successfully
+        // .unwrap provides the current Session via JPA, as provided by the
+        // entityManager. this session then successfully
         // perform update or new entity when called.
     }
 }
