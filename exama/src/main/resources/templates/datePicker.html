@@ -21,8 +21,9 @@
     <h3>basic datepicker - restict to a range of dates</h3>
     <p>Date: <input type="text" id="datepicker4"></p>
     <h3>basic datepicker - select two date but second date cannot be chosen before first</h3>
-    <p>Date: <input type="text" id="fromDate"> TO <input type="text" id="toDate"></p>   
-
+    <p>Date: <input type="text" id="fromDate"> TO <input type="text" id="toDate"></p>       
+    <h3>basic datepicker - multiple range</h3>
+    <p>Date: <input type="text" id="datepicker5"></p>
 
     <script>
     $(function(){
@@ -70,6 +71,27 @@
 
     return date;
   }
+  //datepicker 5
+  //here are some static values
+var semesterStart = new Date(2021, 0, 11),
+    semesterEnd = new Date(2021, 2, 14);
+    holidayStart = new Date(2021, 1, 7),
+    holidayEnd = new Date(2021, 1, 14),
+    $("#datepicker5").datepicker({
+        //defines how many months are shown
+        numberOfMonths: 1,
+        beforeShowDay: function(date) {
+            return [(date >= semesterStart && date <= holidayStart || date >= holidayEnd
+     && date <= semesterEnd), ''];
+    },
+    //Upper & lower bounds
+    minDate: semesterStart,
+    maxDate: semesterEnd
+    });
+
+
+
+
     });
     </script>
 
