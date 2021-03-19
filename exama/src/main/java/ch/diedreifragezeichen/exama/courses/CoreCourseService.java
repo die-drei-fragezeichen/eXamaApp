@@ -16,7 +16,6 @@ public class CoreCourseService{
     @Transactional
     public void saveOrUpdateCoreCourse(CoreCourse coreCourse){
         Session session = em.unwrap(org.hibernate.Session.class);
-        session.evict(coreCourse);
         session.saveOrUpdate(coreCourse);
     }
 }
