@@ -57,20 +57,24 @@
         <!-- footer with navigation (only mobile) -->
         <div th:include="fragments/footer :: footer"></div>
 
-        <script>    
+    <script>
     $(function(){
     $("#datepicker").datepicker();
-
+    //datepicker which is expecting two dates, the second cannot be chosen before the first
+    //creates the first date (id = from Date)
     var from = $( "#fromDate" )
       .datepicker({
         dateFormat: "yy-mm-dd",
+        firstDay: 1,
         changeMonth: true
       })
       .on( "change", function() {
         to.datepicker( "option", "minDate", getDate( this ) );
       }),
+    //creates the second date (id = toDate)
     to = $( "#toDate" ).datepicker({
       dateFormat: "yy-mm-dd",
+      firstDay: 1,
       changeMonth: true
     })
     .on( "change", function() {
@@ -86,7 +90,7 @@
       date = null;
     }
 
-    return date;
+    return date;    
   }
     });
     </script>
