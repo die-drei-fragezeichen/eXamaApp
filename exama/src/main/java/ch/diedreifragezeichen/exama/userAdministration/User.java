@@ -81,10 +81,12 @@ public class User {
 	 */
 	@Override
 	public String toString() {
+		String toString = "";
 		if (this.abbreviation != null) {
-			return this.abbreviation;
+			toString += "("+this.abbreviation+") ";
 		}
-		return this.firstName + " " + this.lastName;
+		toString += this.firstName + " " + this.lastName;
+		return toString;
 	}
 
 	/**

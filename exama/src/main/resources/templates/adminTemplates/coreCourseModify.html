@@ -1,0 +1,52 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/head :: head"></head>
+
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="fragments/header :: header"></div>
+
+        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>Stammklasse erstellen/bearbeiten</h1>
+            <a href="/coreCourses/show">> alle Stammklassen anzeigen</a><br><br><br>
+
+            <form th:action="@{/coreCourses/modified}" th:object="${coreCourse}" method="post">
+                <div>
+                    <label>Klassen name: </label>
+                    <div>
+                        <input type="text" th:field="*{name}" class="form-control" required minlength="1"
+                            maxlength="20" />
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label>Aktiv: </label>
+                    <div>
+                        <input type="checkbox" th:checked="*{enabled}" class="form-control" />
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label>Klassenlehrer: </label>
+                    <select th:field="*{classTeacher}" class="form-control" required/>
+                    <option th:each="teacher : ${allTeachers}" th:text="${teacher}"
+                        th:value="${teacher.id}" />
+                    </select>
+                </div>
+                <br>
+                <div>
+                    <button type="submit" class="login-button">Speichern</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="fragments/footer :: footer"></div>
+</body>
+
+</html>

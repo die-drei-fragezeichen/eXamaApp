@@ -1,0 +1,46 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/head :: head"></head>
+
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="fragments/header :: header"></div>
+
+        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>Stammklassen</h1>
+            <a href="/coreCourses/create">> neue Stammklasse hinzufügen</a><br><br>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Klassen ID</th>
+                        <th>Klassenname</th>
+                        <th>Aktiv</th>
+                        <th>Klassenlehrer</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="coreCourse: ${allCoreCourses}">
+                        <td th:text="${coreCourse.id}"></td>
+                        <td th:text="${coreCourse.name}"></td>
+                        <td th:text="${coreCourse.enabled}"></td>
+                        <td th:text="${coreCourse.classTeacher}"></td>
+                        <td><a th:href="@{/coreCourses/edit?id={id}(id=${coreCourse.id})}">bearbeiten</a></td>
+                        <td><a th:href="@{/coreCourses/delete?id={id}(id=${coreCourse.id})}">löschen</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="fragments/footer :: footer"></div>
+</body>
+
+</html>
