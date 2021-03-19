@@ -4,36 +4,26 @@
 <head th:include="fragments/head :: head"></head>
 
 <body>
-
     <div id="wrapper">
         <!-- header with navigation (only desktop and tablet), title and logout-button -->
         <div th:include="fragments/header :: header"></div>
 
         <div th:include="fragments/coursenavigation :: coursenavigation"></div>
-
-
-
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
 
-
             <h1>Ferien erfassen</h1>
-
             <!-- Values for th:object attributes in form tags must be variable expressions (${...}). It specifies the NAME OF THE MODEL ATTRIBUTE!! So: ${mime.editDate} would not be. -->
             <!-- Once you are working inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
-            
-
-                <form th:action="@{/holidays/created}" th:object="${newHoliday}" method="post">
+                <form th:action="@{/holidays/modified}" th:object="${holiday}" method="post">
                     <div>
                         <div>
                             <label>Ferienname: </label>
-                            <input type="text" th:field="*{name}" class="form-control" maxlength="20"
-                                required />
+                             <input type="text" th:field="*{name}" class="form-control" minlength="1"
+                            maxlength="20" />
                         </div>
                         <br>
                         <div>
-                
-                            
                             <label>Ferienanfang:</label> 
                             <input type="text" th:field="*{startDate}" id="fromDate" class="form-control" required>
                             </label>Ferienende:</label> 
@@ -42,8 +32,8 @@
                         <br>
                         <div>
                             <label>Semester zuweisen:</label>
-                                <select th:field="*{semester}" class="form-control" required>
-                                    <option th:each="semester : ${allSemesters}" th:text="${semester.name}" th:value="${semester.id}" />
+                                <select th:field="*{semester}" class="form-control">
+                                    <option th:each="semester : ${allSemesters}" th:text="${semester.name}" th:value="${semester.id}"/>
                                 </select>
                         </div>
                         <br>
