@@ -37,6 +37,7 @@ import ch.diedreifragezeichen.exama.subjects.Subject;
 import ch.diedreifragezeichen.exama.subjects.SubjectRepository;
 import ch.diedreifragezeichen.exama.userAdministration.User;
 import ch.diedreifragezeichen.exama.userAdministration.UserRepository;
+import javassist.NotFoundException;
 
 @Controller
 public class ExamController {
@@ -106,7 +107,7 @@ public class ExamController {
 
         LocalDate firstDay = semesterList.get(0).getStartDate();
         mav.addObject("firstDay", firstDay.toString());
-        LocalDate lastDay = semesterList.get(semesterList.size()-1).getEndDate();
+        LocalDate lastDay = semesterList.get(semesterList.size() - 1).getEndDate();
         mav.addObject("lastDay", lastDay.toString());
 
         return mav;
@@ -250,25 +251,28 @@ public class ExamController {
         return mav;
     }
 
-    @PostMapping("/semesterView/selected")
-    public String processSelectedSemester(Operator semester) {
-        operatorRepo.save(semester);
-        return "redirect:/semesterView/show";
-    }
+    /*
+     * Not necessary anymore
+     * 
+     * @PostMapping("/semesterView/selected") public String
+     * processSelectedSemester(Operator semester) { operatorRepo.save(semester);
+     * return "redirect:/semesterView/show"; }
+     */
 
     @GetMapping("/semesterView/show")
-    public ModelAndView showSemesterView() {
+    public ModelAndView showSemesterView(@RequestParam(name = "selectedSemester") Long id) throws NotFoundException {
         ModelAndView mav = new ModelAndView("studentTemplates/semesterViewShow");
         // retrieve selected semester
-        Operator selected = operatorRepo.findAll().get(0);
-        operatorRepo.deleteAll();
-        Semester semester = selected.getSelectedSemester();
+        // Operator selected = operatorRepo.findAll().get(0);
+        // operatorRepo.deleteAll();
+        // Semester semester = selected.getSelectedSemester();
+        Semester semester = semesterRepo.findSemesterById(id);
         mav.addObject("semester", semester);
         // retrieve semester Information and first / last day of Semester
         LocalDate semesterStart = semester.getStartDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate monday = semesterStart;
         LocalDate semesterEnd = semester.getEndDate().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
-        //count all the exams
+        // count all the exams
         Long examTotal = examRepo.findAllByDueDateBetween(semesterStart, semesterEnd).stream().count();
         mav.addObject("examTotal", examTotal);
         // create a list of all Mondays
@@ -283,12 +287,12 @@ public class ExamController {
         // retrieve allExams, week by week, for the whole semester in a list of list of
         // exams from Monday to Sunday
         monday = semesterStart;
-        //List<List<Exam>> allExams = new ArrayList<>();
-        List<HashMap<String,Exam>> allExams = new ArrayList<>();
+        // List<List<Exam>> allExams = new ArrayList<>();
+        List<HashMap<String, Exam>> allExams = new ArrayList<>();
         while (monday.isBefore(semesterEnd)) {
             List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY));
             HashMap<String, Exam> map = new HashMap<>();
-            for(Exam exam: examsByWeek){
+            for (Exam exam : examsByWeek) {
                 map.put(exam.getSubject().getTag(), exam);
             }
             allExams.add(map);
@@ -298,14 +302,15 @@ public class ExamController {
         long xExam = allExams.stream().count();
         mav.addObject("xExam", xExam);
 
-        //List<Subject> subjects = allExams.get(0).stream().map(exam -> exam.getSubject()).collect(Collectors.toList());
-        
+        // List<Subject> subjects = allExams.get(0).stream().map(exam ->
+        // exam.getSubject()).collect(Collectors.toList());
+
         List<Subject> allSubjects = subjectRepo.findAll();
         mav.addObject("allSubjects", allSubjects);
         // count all the subjects, method returns "numberOfSubjects"
         calculateNumberOfSubjects(mav, allSubjects);
         return mav;
-        
+
     }
 
     /*

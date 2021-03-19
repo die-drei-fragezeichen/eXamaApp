@@ -12,37 +12,36 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Neue Prüfung erstellen</h1>
+            <h1>Semesterübersicht</h1>
 
             <!-- Values for th:object attributes in form tags must be variable expressions (${...}). It specifies the NAME OF THE MODEL ATTRIBUTE!! So: ${mime.editDate} would not be. -->
             <!-- Once you are working inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
 
 
-                <form th:action="@{/semesterView/selected}" th:object="${chosenSemster}" method="post">
- 
-                    <div>
-                     <label>Wähle ein Semester zur Ansicht: </label>
-                     </div>
-                        <div>
-                            <select th:field="*{selectedSemester}" class="form-control"/>
-                            <option th:each="semester : ${allSemesters}" th:text="${semester.name}"
-                                th:value="${semester.id}"/>
-                            </select>
-                        <!--</div>
+            <!-- <form th:action="@{/semesterView/selected}" th:object="${chosenSemster}" method="post"> -->
+            <form th:action="@{/semesterView/show}" th:object="${chosenSemster}" method="get">
+                <div>
+                    <label>Wähle ein Semester zur Ansicht: </label>
+                </div>
+                <div>
+                    <select th:field="*{selectedSemester}" class="form-control" />
+                    <option th:each="semester : ${allSemesters}" th:text="${semester.name}" th:value="${semester.id}" />
+                    </select>
+                    <!--</div>
                          <br>
                             <input type="date" th:field="*{selectedDate}" class="form-control" value="2021-02-21" min="2021-01-01" max="2021-07-21"/>
                         <input type="date" th:field="*{examDate}" class="form-control" value="2021-02-21" min="2021-01-01" max="2021-07-21" />-->
-                    </div>
+                </div>
                 <br>
-                        <div>
-                            <button type="submit" class="login-button">Semester auswählen</button>
-                        </div>
-                    </div>
-                </form>
+                <div>
+                    <button type="submit" class="login-button">Semester auswählen</button>
+                </div>
         </div>
+        </form>
+    </div>
 
-        <!-- footer with navigation (only mobile) -->
-        <div th:include="fragments/footer :: footer"></div>
+    <!-- footer with navigation (only mobile) -->
+    <div th:include="fragments/footer :: footer"></div>
 </body>
 
 </html>
