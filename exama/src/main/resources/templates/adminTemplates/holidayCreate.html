@@ -4,44 +4,47 @@
 <head th:include="fragments/head :: head"></head>
 
 <body>
+
     <div id="wrapper">
         <!-- header with navigation (only desktop and tablet), title and logout-button -->
         <div th:include="fragments/header :: header"></div>
 
         <div th:include="fragments/coursenavigation :: coursenavigation"></div>
 
+
+
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Neue Prüfung erstellen</h1>
+
+
+            <h1>Ferien erfassen</h1>
 
             <!-- Values for th:object attributes in form tags must be variable expressions (${...}). It specifies the NAME OF THE MODEL ATTRIBUTE!! So: ${mime.editDate} would not be. -->
             <!-- Once you are working inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
-
+            
 
                 <form th:action="@{/holidays/created}" th:object="${newHoliday}" method="post">
                     <div>
                         <div>
-                            <label>Ferienname / Sonderwochenname: </label>
+                            <label>Ferienname: </label>
                             <input type="text" th:field="*{name}" class="form-control" maxlength="20"
                                 required />
                         </div>
                         <br>
                         <div>
-                            <label>Anfang: </label>
-                            <input type="date" th:field="*{startDate}" class="form-control" required/>
+                
+                            
+                            <label>Ferienanfang:</label> 
+                            <input type="text" th:field="*{startDate}" id="fromDate" class="form-control" required>
+                            </label>Ferienende:</label> 
+                            <input type="text" th:field="*{endDate}" id="toDate" class="form-control" required>
                         </div>
                         <br>
                         <div>
-                            <label>Ende: </label>
-                            <input type="date" th:field="*{endDate}" class="form-control"/>
-                        </div>
-                        <br>
-                        <div>
-                            <label>Select Semester:
+                            <label>Semester zuweisen:</label>
                                 <select th:field="*{semester}" class="form-control" required>
                                     <option th:each="semester : ${allSemesters}" th:text="${semester.name}" th:value="${semester.id}" />
                                 </select>
-                            </label>
                         </div>
                         <br>
                         <div>
@@ -53,6 +56,40 @@
 
         <!-- footer with navigation (only mobile) -->
         <div th:include="fragments/footer :: footer"></div>
+
+        <script>    
+    $(function(){
+    $("#datepicker").datepicker();
+
+    var from = $( "#fromDate" )
+      .datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth: true
+      })
+      .on( "change", function() {
+        to.datepicker( "option", "minDate", getDate( this ) );
+      }),
+    to = $( "#toDate" ).datepicker({
+      dateFormat: "yy-mm-dd",
+      changeMonth: true
+    })
+    .on( "change", function() {
+      from.datepicker( "option", "maxDate", getDate( this ) );
+    });
+
+  function getDate( element ) {
+    var date;
+    var dateFormat = "yy-mm-dd";
+    try {
+      date = $.datepicker.parseDate( dateFormat, element.value );
+    } catch( error ) {
+      date = null;
+    }
+
+    return date;
+  }
+    });
+    </script>
 </body>
 
 </html>
