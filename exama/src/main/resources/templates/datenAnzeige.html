@@ -18,7 +18,7 @@
     <p th:text="${#dates.format(date, 'dd.MM.yyyy')}"></p>
     <p th:text="${#temporals.format(java8Instant, 'dd-MM-yyyy HH:mm:ss')}"></p>
     <p th:text="${#temporals.format(localDateTime, 'dd-MMMM-yyyy', new java.util.Locale('de', 'DE'))}">
-
+    <p th:text="${#temporals.format(localDateTime, 'dd-MM-yyyy')}">
     <h2>Get date fields - z.B. th:text="${#temporals.monthName(localDateTime)}"</h2>
     <table style="width:300px">
         <tr>

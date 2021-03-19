@@ -34,7 +34,7 @@
                         <br>
                         <div>
                             <label>Prüfungsdatum / Abgabedatum: </label>
-                            <input type="date" th:field="*{dueDate}" class="form-control" required th:attr="min=${firstDay}, max=${lastDay}" />
+                            <input type="date" th:field="*{dueDate}" class="form-control" th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, max=${lastDay}">
                         </div>
                         <br>
                         <div>
