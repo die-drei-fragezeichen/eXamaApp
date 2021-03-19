@@ -16,6 +16,7 @@
             <a href="/coreCourses/show">> alle Stammklassen anzeigen</a><br><br><br>
 
             <form th:action="@{/coreCourses/modified}" th:object="${coreCourse}" method="post">
+                <input type="hidden" th:field="*{id}" th:value="${coreCourse.id}"/>
                 <div>
                     <label>Klassen name: </label>
                     <div>

@@ -3,16 +3,17 @@ package ch.diedreifragezeichen.exama._config.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import javassist.NotFoundException;
 
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ch.diedreifragezeichen.exama.courses.*;
-import ch.diedreifragezeichen.exama.subjects.Subject;
-import ch.diedreifragezeichen.exama.subjects.SubjectRepository;
 import ch.diedreifragezeichen.exama.userAdministration.RoleRepository;
 import ch.diedreifragezeichen.exama.userAdministration.User;
 import ch.diedreifragezeichen.exama.userAdministration.UserRepository;
@@ -30,6 +31,8 @@ public class CoreCourseController {
 
     @Autowired
     private RoleRepository roleRepo;
+
+    private Session session;
 
     /**
      * CoreCourse Mappings
@@ -49,7 +52,7 @@ public class CoreCourseController {
         mav.addObject("coreCourse", newCoreCourse);
 
         List<User> userList = userRepo.findAll();
-        List<User> teacherList = userList.stream().filter(c -> c.getRoles().contains(roleRepo.getRoleByName("Teacher"))).collect(Collectors.toList());
+        List<User> teacherList = userList.stream().filter(c -> c.getRoles().contains(roleRepo.findRoleByName("Teacher"))).collect(Collectors.toList());
         mav.addObject("allTeachers", teacherList);
         return mav;
     }
@@ -70,7 +73,9 @@ public class CoreCourseController {
     }
 
     @PostMapping("/coreCourses/modified")
-    public String save(CoreCourse coreCourse) {
+    @Transactional
+    public String modify(CoreCourse coreCourse) {
+        //session.saveOrUpdate(coreCourse);
         coreCourseService.saveOrUpdateCoreCourse(coreCourse);
         return "redirect:/coreCourses/show";
     }
