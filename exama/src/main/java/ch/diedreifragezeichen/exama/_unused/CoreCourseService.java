@@ -1,9 +1,11 @@
-package ch.diedreifragezeichen.exama.courses;
+package ch.diedreifragezeichen.exama._unused;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
+
+import ch.diedreifragezeichen.exama.courses.CoreCourse;
 
 @Service("CoreCourseService")
 public class CoreCourseService {

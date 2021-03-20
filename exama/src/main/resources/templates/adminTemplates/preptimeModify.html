@@ -16,7 +16,7 @@
             <a href="/preptimes/show">> alle Vorbereitungszeiten anzeigen</a><br><br><br>
 
             <form th:action="@{/preptimes/modified}" th:object="${prepTime}" method="post">
-                <input type="hidden" th:field="*{id}" th:value="${prepTime.id}"/>
+                <input type="hidden" th:field="*{id}" th:value="${prepTime.id}" />
                 <div>
                     <label>PrepTime Name: </label>
                     <div>

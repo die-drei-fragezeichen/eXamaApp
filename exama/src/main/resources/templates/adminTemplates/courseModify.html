@@ -12,12 +12,13 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Neue Klasse erstellen</h1>
-            <a href="/courses/show">> alle Klassen anzeigen</a><br><br><br>
+            <h1>Kurs erstellen/bearbeiten</h1>
+            <a href="/courses/show">> alle Kurse anzeigen</a><br><br><br>
 
-            <form th:action="@{/courses/created}" th:object="${course}" method="post">
+            <form th:action="@{/courses/modified}" th:object="${course}" method="post">
+                <input type="hidden" th:field="*{id}" th:value="${course.id}"/>
                 <div>
-                    <label>Klassen name: </label>
+                    <label>Kurs Name: </label>
                     <div>
                         <input type="text" th:field="*{name}" class="form-control" required minlength="1"
                             maxlength="20" />
@@ -27,13 +28,13 @@
                 <div>
                     <label>Aktiv: </label>
                     <div>
-                        <input type="checkbox" th:checked="*{enabled}" class="form-control" />
+                        <input type="checkbox" th:field="*{enabled}" th:checked="*{enabled}" class="form-control" />
                     </div>
                 </div>
                 <br>
                 <div>
-                    <label>Fächer: </label>
-                    <select th:field="*{subjects}" class="form-control" required multiple/>
+                    <label>Fach: </label>
+                    <select th:field="*{subject}" class="form-control" required/>
                     <option th:each="subject : ${allSubjects}" th:text="${subject.name}"
                         th:value="${subject.id}" />
                     </select>

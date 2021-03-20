@@ -2,7 +2,8 @@ package ch.diedreifragezeichen.exama._config.controller;
 
 import java.util.List;
 
-import javassist.NotFoundException;
+import javax.persistence.*;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Controller;
@@ -10,8 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ch.diedreifragezeichen.exama.courses.*;
-import ch.diedreifragezeichen.exama.subjects.Subject;
-import ch.diedreifragezeichen.exama.subjects.SubjectRepository;
+import ch.diedreifragezeichen.exama.subjects.*;
 
 @Controller
 public class CourseController {
@@ -21,52 +21,50 @@ public class CourseController {
     @Autowired
     private SubjectRepository subjectRepo;
 
+    @PersistenceContext
+    private EntityManager em;
+
     /**
      * Course Mappings
      */
 
+    @GetMapping("/courses/show")
+    public String showCourses(Model model) {
+        List<Course> listCourses = courseRepo.findAll();
+        model.addAttribute("allCourses", listCourses);
+        return "adminTemplates/coursesShow";
+    }
+
     @GetMapping("/courses/create")
-    public ModelAndView newCourse() {
-        Course course = new Course();
-        ModelAndView mav = new ModelAndView("adminTemplates/courseCreate");
+    public ModelAndView newCoreCourse() {
+        ModelAndView mav = new ModelAndView("adminTemplates/courseModify");
+        Course newCourse = new Course();
+        mav.addObject("course", newCourse);
+        List<Subject> subjectList = subjectRepo.findAll();
+        mav.addObject("allSubjects", subjectList);
+        return mav;
+    }
+
+    @GetMapping("/courses/edit")
+    public ModelAndView updateCourse(@RequestParam(name = "id") Long id) {
+        ModelAndView mav = new ModelAndView("adminTemplates/courseModify");
+        Course course = courseRepo.findCourseById(id);
         mav.addObject("course", course);
         List<Subject> subjectList = subjectRepo.findAll();
         mav.addObject("allSubjects", subjectList);
         return mav;
     }
 
-    @PostMapping("/courses/created")
-    public String processSaving(Course course) {
-        course.setEnabled(true);
-        courseRepo.save(course);
+    @PostMapping("/courses/modified")
+    @Transactional
+    public String modify(Course course) {
+        em.unwrap(org.hibernate.Session.class).saveOrUpdate(course);
         return "redirect:/courses/show";
     }
 
-    @GetMapping("/courses/show")
-    public String showCourses(Model model) {
-        List<Course> listCourses = courseRepo.findAll();
-        model.addAttribute("listCourses", listCourses);
-        return "adminTemplates/coursesShow";
-    }
-
-    @GetMapping("/courses/{id}/edit")
-    public ModelAndView editCourse(@PathVariable(name = "id") Long id) throws NotFoundException {
-        Course Course = courseRepo.findCourseById(id);
-        if (Course == null) {
-            throw new NotFoundException("Die Klasse existiert leider noch nicht");
-        }
-        ModelAndView mav = new ModelAndView("adminTemplates/courseEdit");
-        mav.addObject("course", Course);
-        return mav;
-    }
-
-    @GetMapping("/course/{id}/edited")
-    public String updateUser(@PathVariable(name = "id") long id,
-            @RequestParam(name = "name") String name, @RequestParam(name = "enabled", required = false) boolean enabled) throws NotFoundException {
-        Course course = courseRepo.findCourseById(id);
-        if (course == null) {
-            throw new NotFoundException("Course not found");
-        }
+    @GetMapping("/courses/delete")
+    public String deleteCourse(@RequestParam(name = "id") Long id) {
+        courseRepo.deleteById(id);
         return "redirect:/courses/show";
     }
 }

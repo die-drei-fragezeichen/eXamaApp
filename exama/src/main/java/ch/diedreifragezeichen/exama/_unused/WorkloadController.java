@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama._config.controller.assignmentController;
+package ch.diedreifragezeichen.exama._unused;
 
 import java.util.List;
 

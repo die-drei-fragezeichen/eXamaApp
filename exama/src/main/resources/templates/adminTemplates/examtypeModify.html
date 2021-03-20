@@ -12,17 +12,23 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Prüfungstyp bearbeiten</h1>
+            <h1>Prüfungstyp erstellen/bearbeiten</h1>
             <a href="/examtypes/show">> alle Prüfungstypen anzeigen</a><br><br><br>
 
-            <form
-                th:action="@{/examtypes/{id}/edited?name={name}&timeValue={timeValue}(id=${type.id},name=${type.name})}"
-                th:object="${type}" method="put">
+            <form th:action="@{/examtypes/modified}" th:object="${examType}" method="post">
+                <input type="hidden" th:field="*{id}" th:value="${examType.id}"/>
                 <div>
                     <label>ExamType Name: </label>
                     <div>
                         <input type="text" th:field="*{name}" class="form-control" required minlength="1"
                             maxlength="50" />
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label>ExamType Vorbereiungszeit in h (Standard):</label>
+                    <div>
+                        <input type="text" th:field="*{timeValue}" class="form-control" required/>
                     </div>
                 </div>
                 <br>

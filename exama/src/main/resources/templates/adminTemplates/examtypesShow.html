@@ -12,24 +12,26 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Prüfungstypen bearbeiten | Neuer Prüfungstyp erstellen</h1>
-            <a href="/examtypes/create">> neuer Prüfungstyp hinzufügen</a><br><br>
+            <h1>Prüfungstypen</h1>
+            <a href="/examtypes/create">> neuen Prüfungstypen hinzufügen</a><br><br>
 
             <table>
                 <thead>
                     <tr>
                         <th>Examtype ID</th>
                         <th>Examtype Name</th>
+                        <th>Vorbereitungszeit in h (Standard)</th>
                         <th></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="type: ${listTypes}">
-                        <td th:text="${type.id}"></td>
-                        <td th:text="${type.name}"></td>
-                        <td><a th:href="@{/examtypes/{id}/edit(id=${type.id})}">bearbeiten</a></td>
-                        <td><a th:href="@{/examtypes/{id}/delete(id=${type.id})}">löschen</a></td>
+                    <tr th:each="examType: ${allExamTypes}">
+                        <td th:text="${examType.id}"></td>
+                        <td th:text="${examType.name}"></td>
+                        <td th:text="${examType.timeValue}"></td>
+                        <td><a th:href="@{/examtypes/edit?id={id}(id=${examType.id})}">bearbeiten</a></td>
+                        <td><a th:href="@{/examtypes/delete?id={id}(id=${examType.id})}">löschen</a></td>
                         </a>
                     </tr>
                 </tbody>

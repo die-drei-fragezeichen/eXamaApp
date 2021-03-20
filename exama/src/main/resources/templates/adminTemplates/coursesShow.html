@@ -12,28 +12,28 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Klasse bearbeiten | Neue Klasse erstellen</h1>
-            <a href="/courses/create">> neue Klasse hinzufügen</a><br><br>
+            <h1>Kurse</h1>
+            <a href="/courses/create">> neuen Kurs hinzufügen</a><br><br>
 
             <table>
                 <thead>
                     <tr>
-                        <th>Klassen ID</th>
-                        <th>Klassenname</th>
+                        <th>Kurs ID</th>
+                        <th>Kurs Name</th>
                         <th>Aktiv</th>
-                        <th>Fächer</th>
+                        <th>Fach</th>
                         <th></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="course: ${listCourses}">
+                    <tr th:each="course: ${allCourses}">
                         <td th:text="${course.id}"></td>
                         <td th:text="${course.name}"></td>
                         <td th:text="${course.enabled}"></td>
-                        <td th:text="${course.subjects}"></td>
-                        <td><a th:href="@{/courses/{id}/edit(id=${course.id})}">bearbeiten</a></td>
-                        <td><a th:href="@{/courses/{id}/delete(id=${course.id})}">löschen</a></td>
+                        <td th:text="${course.subject}"></td>
+                        <td><a th:href="@{/courses/edit?id={id}(id=${course.id})}">bearbeiten</a></td>
+                        <td><a th:href="@{/courses/delete?id={id}(id=${course.id})}">löschen</a></td>
                     </tr>
                 </tbody>
             </table>
