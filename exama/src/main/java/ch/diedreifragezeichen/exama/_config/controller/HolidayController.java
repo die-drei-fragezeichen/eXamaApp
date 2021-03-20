@@ -49,6 +49,8 @@ public class HolidayController {
     @GetMapping("/holidays/show")
     public String showHolidays(Model model) {
         List<Holiday> listHolidays = holidayRepo.findAll();
+        //Sort the list by StartDate for nice display
+        listHolidays.sort(Comparator.comparing(Holiday::getStartDate));
         model.addAttribute("listHolidays", listHolidays);
         return "adminTemplates/holidaysShow";
     }

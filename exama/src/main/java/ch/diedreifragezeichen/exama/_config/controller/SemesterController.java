@@ -43,13 +43,15 @@ public class SemesterController {
     @GetMapping("/semesters/show")
     public String listSemesters(Model model) {
         List<Semester> listSemesters = semesterRepo.findAll();
+        //Sort the list by StartDate for nice display
+        listSemesters.sort(Comparator.comparing(Semester::getStartDate));
         model.addAttribute("allSemesters", listSemesters);
         return "adminTemplates/semestersShow";
     }
 
     @GetMapping("/semesters/edit")
     public ModelAndView updateSemester(@RequestParam(name = "id") Long id) {
-        ModelAndView mav = new ModelAndView("adminTemplates/semestersModify");
+        ModelAndView mav = new ModelAndView("adminTemplates/semesterModify");
         // fetch the Semester you want to edit from Database
         Semester semester = semesterRepo.findSemesterById(id);
         mav.addObject("semester", semester);

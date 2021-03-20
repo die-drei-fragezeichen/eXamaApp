@@ -25,7 +25,8 @@
                         <th>Semesterbeginn</th>
                         <th>Semesterende</th>
                         <th>Maximale Anzahl Prüfungen</th>
-                        <th>Ferien</th>
+                        <th>Aktiv</th>
+                        <th>zugeteilte Ferien</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -37,7 +38,8 @@
                         <td th:text="${semester.startDate}"></td>
                         <td th:text="${semester.endDate}"></td>
                         <td th:text="${semester.maxNumberOfExams}"></td>
-                        <td></td>
+                        <td th:text="${semester.enabled}"></td>
+                        <td th:text="${semester.holidays}"</td>
                         <!--<td th:text="${exam.startDate}"></td>-->
                         <td><a th:href="@{/semesters/edit?id={id}(id=${semester.id})}">bearbeiten</a></td>
                         <td><a th:href="@{/semesters/delete?id={id}(id=${semester.id})}">löschen</a></td>

@@ -1,23 +1,20 @@
 <html lang="DE" xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head th:include="fragments/head :: head"></head>
 
 <body>
-    <div id="wrapper">
-        <!-- header with navigation (only desktop and tablet), title and logout-button -->
-        <div th:include="fragments/header :: header"></div>
+  <div id="wrapper">
+    <!-- header with navigation (only desktop and tablet), title and logout-button -->
+    <div th:include="fragments/header :: header"></div>
 
-        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+    <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+    <!-- content displayed in the center of the window -->
+    <div id="content-wrapper">
 
-        <!-- content displayed in the center of the window -->
-        <div id="content-wrapper">
-            <h1>Semester erfassen</h1>
-
+      <h1>Semester erfassen</h1>
             <!-- Values for th:object attributes in form tags must be variable expressions (${...}). It specifies the NAME OF THE MODEL ATTRIBUTE!! So: ${mime.editDate} would not be. -->
             <!-- Once you are working inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
-
-
                 <form th:action="@{/semesters/modified}" th:object="${semester}" method="post">
                   <input type="hidden" th:field="*{id}" th:value="${semester.id}" />
                     <div>
@@ -38,6 +35,14 @@
                             <label>Maximale Anzahl Prüfungen pro Woche: </label>
                             <input type="number" th:field="*{maxNumberOfExams}" class="form-control" required
                             minlength="1" maxlength="2"/>
+                        </div>
+                        <br>
+                        <br>
+                        <div>
+                            <label>Aktiv: </label>
+                        <div>
+                            <input type="checkbox" th:field="*{enabled}" th:checked="*{enabled}" class="form-control"/>
+                        </div>
                         </div>
                         <br>
                         <div>
