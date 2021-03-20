@@ -3,6 +3,8 @@ package ch.diedreifragezeichen.exama._config.controller;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.*;
@@ -14,18 +16,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.semesters.Holiday;
 import ch.diedreifragezeichen.exama.semesters.HolidayRepository;
-import ch.diedreifragezeichen.exama.semesters.HolidayService;
 import ch.diedreifragezeichen.exama.semesters.Semester;
 import ch.diedreifragezeichen.exama.semesters.SemesterRepository;
 
 @Controller
 public class HolidayController {
     @Autowired
-    private HolidayService holidayService;
-    @Autowired
     private HolidayRepository holidayRepo;
     @Autowired
     private SemesterRepository semesterRepo;
+
+    @PersistenceContext
+    private EntityManager em;
 
 
     /**
@@ -67,7 +69,7 @@ public class HolidayController {
     @PostMapping("/holidays/modified")
     @Transactional
     public String modifyHoliday(Holiday holiday) {
-        holidayService.saveOrUpdateHoliday(holiday);
+        em.unwrap(org.hibernate.Session.class).saveOrUpdate(holiday);
         return "redirect:/holidays/show";
     }
 
