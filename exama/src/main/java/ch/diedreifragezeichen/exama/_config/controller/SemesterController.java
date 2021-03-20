@@ -2,15 +2,16 @@ package ch.diedreifragezeichen.exama._config.controller;
 
 import java.util.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import ch.diedreifragezeichen.exama.semesters.Holiday;
-import ch.diedreifragezeichen.exama.semesters.HolidayRepository;
-import ch.diedreifragezeichen.exama.semesters.Semester;
-import ch.diedreifragezeichen.exama.semesters.SemesterRepository;
+import ch.diedreifragezeichen.exama.semesters.*;
 
 @Controller
 public class SemesterController {
@@ -20,6 +21,9 @@ public class SemesterController {
     @Autowired
     private HolidayRepository holidayRepo;
 
+    @PersistenceContext
+    private EntityManager em;
+
     /**
      * Semester Mappings
      */
@@ -27,18 +31,13 @@ public class SemesterController {
     @GetMapping("/semesters/create")
     public ModelAndView newSubject() {
 
-        ModelAndView mav = new ModelAndView("adminTemplates/semesterCreate");
+        ModelAndView mav = new ModelAndView("adminTemplates/semesterModify");
         Semester semester = new Semester();
-        mav.addObject("newSemester", semester);
+        mav.addObject("semester", semester);
+
         List<Holiday> allHolidays = holidayRepo.findAll();
         mav.addObject("allHolidays", allHolidays);
         return mav;
-    }
-
-    @PostMapping("/semesters/created")
-    public String processSaving(Semester semester) {
-        semesterRepo.save(semester);
-        return "redirect:/semesters/show";
     }
 
     @GetMapping("/semesters/show")
@@ -48,39 +47,29 @@ public class SemesterController {
         return "adminTemplates/semestersShow";
     }
 
-    // @GetMapping("/subjects/{id}/edit")
-    // public ModelAndView editSubject(@PathVariable(name = "id") Long id) throws
-    // NotFoundException {
-    // Subject subject = subjectRepo.findSubjectById(id);
-    // if (subject == null) {
-    // throw new NotFoundException("Subject not found");
-    // }
-    // ModelAndView mav = new ModelAndView("adminTemplates/subjectEdit");
-    // mav.addObject("subject", subject);
-    // return mav;
-    // }
+    @GetMapping("/semesters/edit")
+    public ModelAndView updateSemester(@RequestParam(name = "id") Long id) {
+        ModelAndView mav = new ModelAndView("adminTemplates/semestersModify");
+        // fetch the Semester you want to edit from Database
+        Semester semester = semesterRepo.findSemesterById(id);
+        mav.addObject("semester", semester);
+        List<Holiday> allHolidays = holidayRepo.findAll();
+        mav.addObject("allHolidays", allHolidays);
 
-    // @GetMapping("/subjects/{id}/edited")
-    // public String updateSubject(@PathVariable(name = "id") Long id,
-    // @RequestParam(name = "name") String name,
-    // @RequestParam(name = "tag") String tag) throws NotFoundException {
-    // Subject subject = subjectRepo.findSubjectById(id);
-    // if (subject == null) {
-    // throw new NotFoundException("Subject not found");
-    // }
-    // subjectRepo.editSubjectById(id, name, tag);
-    // return "redirect:/subjects/show";
-    // }
+        return mav;
+    }
 
-    // @GetMapping("/subjects/{id}/delete")
-    // public String deleteSubject(@PathVariable(name = "id") Long id) throws
-    // NotFoundException {
-    // Subject subject = subjectRepo.findSubjectById(id);
-    // if (subject == null) {
-    // throw new NotFoundException("Subject not found");
-    // }
-    // subjectRepo.deleteSubjectById(id);
-    // return "redirect:/subjects/show";
-    // }
+    @PostMapping("/semesters/modified")
+    @Transactional
+    public String modifySemester(Semester semester) {
+        em.unwrap(org.hibernate.Session.class).saveOrUpdate(semester);
+        return "redirect:/semesters/show";
+    }
+
+    @GetMapping("/semesters/delete")
+    public String deleteSemester(@RequestParam(name = "id") Long id) {
+        semesterRepo.deleteById(id);
+        return "redirect:/holidays/show";
+    }
 
 }

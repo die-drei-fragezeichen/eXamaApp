@@ -18,12 +18,12 @@
             <!-- Once you are working inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
 
 
-                <form th:action="@{/semesters/created}" th:object="${newSemester}" method="post">
+                <form th:action="@{/semesters/modified}" th:object="${semester}" method="post">
+                  <input type="hidden" th:field="*{id}" th:value="${semester.id}" />
                     <div>
                         <div>
                             <label>Semsestername (HS/FS SJ): </label>
-                            <input type="text" th:field="*{name}" class="form-control" maxlength="30"
-                                required />
+                            <input type="text" th:field="*{name}" class="form-control" maxlength="30"/>
                         </div>
                         <br>
                         <div>
@@ -62,38 +62,38 @@
     $('select[multiple]').multiselect();
     $(function(){
     $("#datepicker").datepicker();
-    //datepicker which is expecting two dates, the second cannot be chosen before the first
-    //creates the first date (id = from Date)
-    var from = $( "#fromDate" )
-      .datepicker({
-        dateFormat: "yy-mm-dd",
-        firstDay: 1,
-        changeMonth: true
-      })
-      .on( "change", function() {
-        to.datepicker( "option", "minDate", getDate( this ) );
-      }),
-    //creates the second date (id = toDate)
-    to = $( "#toDate" ).datepicker({
-      dateFormat: "yy-mm-dd",
-      firstDay: 1,
-      changeMonth: true
-    })
-    .on( "change", function() {
-      from.datepicker( "option", "maxDate", getDate( this ) );
-    });
+        //datepicker which is expecting two dates, the second cannot be chosen before the first
+        //creates the first date (id = from Date)
+        var from = $("#fromDate")
+          .datepicker({
+            dateFormat: "yy-mm-dd",
+            firstDay: 1,
+            changeMonth: true
+          })
+          .on("change", function () {
+            to.datepicker("option", "minDate", getDate(this));
+          }),
+          //creates the second date (id = toDate)
+          to = $("#toDate").datepicker({
+            dateFormat: "yy-mm-dd",
+            firstDay: 1,
+            changeMonth: true
+          })
+            .on("change", function () {
+              from.datepicker("option", "maxDate", getDate(this));
+            });
 
-  function getDate( element ) {
-    var date;
-    var dateFormat = "yy-mm-dd";
-    try {
-      date = $.datepicker.parseDate( dateFormat, element.value );
-    } catch( error ) {
-      date = null;
-    }
+        function getDate(element) {
+          var date;
+          var dateFormat = "yy-mm-dd";
+          try {
+            date = $.datepicker.parseDate(dateFormat, element.value);
+          } catch (error) {
+            date = null;
+          }
 
-    return date;    
-  }
+          return date;
+        }
     });
     </script>
 </body>
