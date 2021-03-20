@@ -28,14 +28,14 @@
                 <div>
                     <label>Aktiv: </label>
                     <div>
-                        <input type="checkbox" th:checked="*{enabled}" class="form-control" />
+                        <input type="checkbox" th:field="*{enabled}" th:checked="*{enabled}" class="form-control"/>
                     </div>
                 </div>
                 <br>
                 <div>
                     <label>Klassenlehrer: </label>
                     <select th:field="*{classTeacher}" class="form-control" required/>
-                    <option th:each="teacher : ${allTeachers}" th:text="${teacher}"
+                    <option th:each="teacher : ${allTeachers}" th:text="${teacher}" th:selected="(${teacher} == *{classTeacher})" 
                         th:value="${teacher.id}" />
                     </select>
                 </div>
