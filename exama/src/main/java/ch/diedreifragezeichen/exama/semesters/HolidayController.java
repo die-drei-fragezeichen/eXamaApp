@@ -23,56 +23,52 @@ public class HolidayController {
     @PersistenceContext
     private EntityManager em;
 
-
     /**
      * Semester Mappings
      */
 
-    @GetMapping("/holidays/create")
-    public ModelAndView newHoliday() {
-        ModelAndView mav = new ModelAndView("adminTemplates/holidayModify");
-        
-        Holiday holiday = new Holiday();
-        mav.addObject("holiday", holiday);
-        
-        List<Semester> allSemesters = semesterRepo.findAll().stream().filter(s->s.isEnabled()).collect(Collectors.toList());
-        mav.addObject("allSemesters", allSemesters);
-        return mav;
-    }
-    
     @GetMapping("/holidays/show")
-    public String showHolidays(Model model) {
+    public String show(Model model) {
         List<Holiday> listHolidays = holidayRepo.findAll();
-        //Sort the list by StartDate for nice display
+        // Sort the list by StartDate for nice display
         listHolidays.sort(Comparator.comparing(Holiday::getStartDate));
         model.addAttribute("listHolidays", listHolidays);
         return "adminTemplates/holidaysShow";
     }
 
-    
-    @GetMapping("/holidays/edit")
-    public ModelAndView updateHoliday(@RequestParam(name = "id") Long id) {
+    @GetMapping("/holidays/create")
+    public ModelAndView add() {
         ModelAndView mav = new ModelAndView("adminTemplates/holidayModify");
-        //fetch Holiday you want to edit from Database
-        Holiday holiday = holidayRepo.findHolidayById(id);
+        Holiday holiday = new Holiday();
         mav.addObject("holiday", holiday);
-        List<Semester> allSemesters = semesterRepo.findAll().stream().filter(s->s.isEnabled()).collect(Collectors.toList());
+        List<Semester> allSemesters = semesterRepo.findAll().stream().filter(s -> s.isEnabled())
+                .collect(Collectors.toList());
         mav.addObject("allSemesters", allSemesters);
-
         return mav;
     }
-    
+
+    @GetMapping("/holidays/edit")
+    public ModelAndView edit(@RequestParam(name = "id") Long id) {
+        ModelAndView mav = new ModelAndView("adminTemplates/holidayModify");
+        // fetch Holiday you want to edit from Database
+        Holiday holiday = holidayRepo.findHolidayById(id);
+        mav.addObject("holiday", holiday);
+        List<Semester> allSemesters = semesterRepo.findAll().stream().filter(s -> s.isEnabled())
+                .collect(Collectors.toList());
+        mav.addObject("allSemesters", allSemesters);
+        return mav;
+    }
+
     @PostMapping("/holidays/modified")
     @Transactional
-    public String modifyHoliday(Holiday holiday) {
+    public String modify(Holiday holiday) {
         em.unwrap(org.hibernate.Session.class).saveOrUpdate(holiday);
         return "redirect:/holidays/show";
     }
 
     @GetMapping("/holidays/delete")
-    public String deleteHoliday(@RequestParam(name = "id") Long id) {
+    public String delete(@RequestParam(name = "id") Long id) {
         holidayRepo.deleteById(id);
         return "redirect:/holidays/show";
     }
 }
-

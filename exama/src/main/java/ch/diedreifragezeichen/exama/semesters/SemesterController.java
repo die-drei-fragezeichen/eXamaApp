@@ -27,50 +27,46 @@ public class SemesterController {
      * Semester Mappings
      */
 
-    @GetMapping("/semesters/create")
-    public ModelAndView newSubject() {
-
-        ModelAndView mav = new ModelAndView("adminTemplates/semesterModify");
-        Semester semester = new Semester();
-        mav.addObject("semester", semester);
-
-        List<Holiday> allHolidays = holidayRepo.findAll();
-        mav.addObject("allHolidays", allHolidays);
-        return mav;
-    }
-
     @GetMapping("/semesters/show")
-    public String listSemesters(Model model) {
+    public String show(Model model) {
         List<Semester> listSemesters = semesterRepo.findAll();
-        //Sort the list by StartDate for nice display
+        // Sort the list by StartDate for nice display
         listSemesters.sort(Comparator.comparing(Semester::getStartDate));
         model.addAttribute("allSemesters", listSemesters);
         return "adminTemplates/semestersShow";
     }
 
+    @GetMapping("/semesters/create")
+    public ModelAndView add() {
+        ModelAndView mav = new ModelAndView("adminTemplates/semesterModify");
+        Semester semester = new Semester();
+        mav.addObject("semester", semester);
+        List<Holiday> allHolidays = holidayRepo.findAll();
+        mav.addObject("allHolidays", allHolidays);
+        return mav;
+    }
+
     @GetMapping("/semesters/edit")
-    public ModelAndView updateSemester(@RequestParam(name = "id") Long id) {
+    public ModelAndView edit(@RequestParam(name = "id") Long id) {
         ModelAndView mav = new ModelAndView("adminTemplates/semesterModify");
         // fetch the Semester you want to edit from Database
         Semester semester = semesterRepo.findSemesterById(id);
         mav.addObject("semester", semester);
         List<Holiday> allHolidays = holidayRepo.findAll();
         mav.addObject("allHolidays", allHolidays);
-
         return mav;
     }
 
     @PostMapping("/semesters/modified")
     @Transactional
-    public String modifySemester(Semester semester) {
+    public String modify(Semester semester) {
         em.unwrap(org.hibernate.Session.class).saveOrUpdate(semester);
         return "redirect:/semesters/show";
     }
 
     @GetMapping("/semesters/delete")
-    public String deleteSemester(@RequestParam(name = "id") Long id) {
+    public String delete(@RequestParam(name = "id") Long id) {
         semesterRepo.deleteById(id);
         return "redirect:/holidays/show";
     }
-
 }

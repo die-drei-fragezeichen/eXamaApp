@@ -59,7 +59,7 @@ public class AvailablePrepTimesController {
     }
 
     @GetMapping("preptimes/delete")
-    public String delete(@RequestParam(name = "id") Long id){
+    public String delete(@RequestParam(name = "id") Long id) {
         prepTimeRepo.deleteById(id);
         return "redirect:/preptimes/show";
     }
