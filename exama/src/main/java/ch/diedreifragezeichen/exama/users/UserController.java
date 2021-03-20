@@ -39,14 +39,14 @@ public class UserController {
      */
 
     @GetMapping("/users/show")
-    public String showUsers(Model model) {
+    public String show(Model model) {
         List<User> listUsers = userRepo.findAll();
         model.addAttribute("allUsers", listUsers);
         return "adminTemplates/usersShow";
     }
 
     @GetMapping("/users/create")
-    public ModelAndView newUser() {
+    public ModelAndView add() {
         User newUser = new User();
         ModelAndView mav = new ModelAndView("adminTemplates/userCreate");
         mav.addObject("user", newUser);
@@ -78,7 +78,7 @@ public class UserController {
     }
 
     @GetMapping("/users/edit")
-    public ModelAndView editUser(@RequestParam(name = "id") Long id) {
+    public ModelAndView edit(@RequestParam(name = "id") Long id) {
         User user = userRepo.findUserById(id);
         ModelAndView mav = new ModelAndView("adminTemplates/userEdit");
         mav.addObject("user", user);
@@ -93,7 +93,7 @@ public class UserController {
     
     @PostMapping("/users/edited")
     @Transactional
-    public String edit(User user) {
+    public String modify(User user) {
         if(user.getAbbreviation().equals("")){
             user.setAbbreviation(null);
         }
@@ -114,7 +114,7 @@ public class UserController {
 
     @PostMapping("/users/passwordReseted")
     @Transactional
-    public String resetedPassword(User user) {
+    public String passwordReseted(User user) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -123,7 +123,7 @@ public class UserController {
     }
 
     @GetMapping("/users/delete")
-    public String deleteCoreCourse(@RequestParam(name = "id") Long id) {
+    public String delete(@RequestParam(name = "id") Long id) {
         userRepo.deleteById(id);
         return "redirect:/users/show";
     }

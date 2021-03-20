@@ -33,14 +33,14 @@ public class CoreCourseController {
      */
 
     @GetMapping("/coreCourses/show")
-    public String showCoreCourses(Model model) {
+    public String show(Model model) {
         List<CoreCourse> listCoreCourses = coreCourseRepo.findAll();
         model.addAttribute("allCoreCourses", listCoreCourses);
         return "adminTemplates/coreCoursesShow";
     }
 
     @GetMapping("/coreCourses/create")
-    public ModelAndView newCoreCourse() {
+    public ModelAndView add() {
         ModelAndView mav = new ModelAndView("adminTemplates/coreCourseModify");
         CoreCourse newCoreCourse = new CoreCourse();
         mav.addObject("coreCourse", newCoreCourse);
@@ -52,7 +52,7 @@ public class CoreCourseController {
     }
 
     @GetMapping("/coreCourses/edit")
-    public ModelAndView updateCoreCourse(@RequestParam(name = "id") Long id) {
+    public ModelAndView edit(@RequestParam(name = "id") Long id) {
         ModelAndView mav = new ModelAndView("adminTemplates/coreCourseModify");
         CoreCourse coreCourse = coreCourseRepo.findCoreCourseById(id);
         mav.addObject("coreCourse", coreCourse);
@@ -71,7 +71,7 @@ public class CoreCourseController {
     }
 
     @GetMapping("/coreCourses/delete")
-    public String deleteCoreCourse(@RequestParam(name = "id") Long id) {
+    public String delete(@RequestParam(name = "id") Long id) {
         coreCourseRepo.deleteById(id);
         return "redirect:/coreCourses/show";
     }

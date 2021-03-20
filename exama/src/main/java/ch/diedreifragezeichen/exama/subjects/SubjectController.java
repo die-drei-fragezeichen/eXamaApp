@@ -2,7 +2,8 @@ package ch.diedreifragezeichen.exama.subjects;
 
 import java.util.*;
 
-import javassist.NotFoundException;
+import javax.persistence.*;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Controller;
@@ -10,78 +11,51 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.diedreifragezeichen.exama.courses.Course;
-import ch.diedreifragezeichen.exama.courses.CourseRepository;
-import ch.diedreifragezeichen.exama.subjects.Subject;
-import ch.diedreifragezeichen.exama.subjects.SubjectRepository;
-
 @Controller
 public class SubjectController {
     @Autowired
     private SubjectRepository subjectRepo;
 
-    @Autowired
-    private CourseRepository courseRepo;
+    @PersistenceContext
+    private EntityManager em;
 
     /**
      * Subject Mappings
      */
 
-    @GetMapping("/subjects/create")
-    public ModelAndView newSubject() {
-        
-        ModelAndView mav = new ModelAndView("adminTemplates/subjectCreate");
-        Subject subject = new Subject();
-        mav.addObject("subject", subject);
-        //List<Course> courses = courseRepo.findAll();
-        Set<Course> courses = Set.copyOf(courseRepo.findAll());
-        mav.addObject("allCourses", courses);
-        return mav;
-    }
-
-    @PostMapping("/subjects/created")
-    public String processSaving(Subject subject) {
-        subjectRepo.save(subject);
-        return "redirect:/subjects/show";
-    }
-
     @GetMapping("/subjects/show")
-    public String listSubjects(Model model) {
+    public String show(Model model) {
         List<Subject> listSubjects = subjectRepo.findAll();
-        model.addAttribute("listSubjects", listSubjects);
+        model.addAttribute("allSubjects", listSubjects);
         return "adminTemplates/subjectsShow";
     }
 
-    @GetMapping("/subjects/{id}/edit")
-    public ModelAndView editSubject(@PathVariable(name = "id") Long id) throws NotFoundException {
-        Subject subject = subjectRepo.findSubjectById(id);
-        if (subject == null) {
-            throw new NotFoundException("Subject not found");
-        }
-        ModelAndView mav = new ModelAndView("adminTemplates/subjectEdit");
+    @GetMapping("/subjects/create")
+    public ModelAndView add() {
+        ModelAndView mav = new ModelAndView("adminTemplates/subjectModify");
+        Subject subject = new Subject();
         mav.addObject("subject", subject);
         return mav;
     }
 
-    @GetMapping("/subjects/{id}/edited")
-    public String updateSubject(@PathVariable(name = "id") Long id, @RequestParam(name = "name") String name,
-            @RequestParam(name = "tag") String tag) throws NotFoundException {
+    @GetMapping("/subjects/edit")
+    public ModelAndView edit(@RequestParam(name = "id") Long id) {
+        ModelAndView mav = new ModelAndView("adminTemplates/subjectModify");
         Subject subject = subjectRepo.findSubjectById(id);
-        if (subject == null) {
-            throw new NotFoundException("Subject not found");
-        }
-        subjectRepo.editSubjectById(id, name, tag);
+        mav.addObject("subject", subject);
+        return mav;
+    }
+
+    @PostMapping("/subjects/modified")
+    @Transactional
+    public String modify(Subject subject) {
+        em.unwrap(org.hibernate.Session.class).saveOrUpdate(subject);
         return "redirect:/subjects/show";
     }
 
-    @GetMapping("/subjects/{id}/delete")
-    public String deleteSubject(@PathVariable(name = "id") Long id) throws NotFoundException {
-        Subject subject = subjectRepo.findSubjectById(id);
-        if (subject == null) {
-            throw new NotFoundException("Subject not found");
-        }
-        subjectRepo.deleteSubjectById(id);
+    @GetMapping("/subjects/delete")
+    public String delete(@RequestParam(name = "id") Long id) {
+        subjectRepo.deleteById(id);
         return "redirect:/subjects/show";
     }
-
 }

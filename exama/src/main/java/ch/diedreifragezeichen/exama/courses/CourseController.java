@@ -28,14 +28,14 @@ public class CourseController {
      */
 
     @GetMapping("/courses/show")
-    public String showCourses(Model model) {
+    public String show(Model model) {
         List<Course> listCourses = courseRepo.findAll();
         model.addAttribute("allCourses", listCourses);
         return "adminTemplates/coursesShow";
     }
 
     @GetMapping("/courses/create")
-    public ModelAndView newCoreCourse() {
+    public ModelAndView add() {
         ModelAndView mav = new ModelAndView("adminTemplates/courseModify");
         Course newCourse = new Course();
         mav.addObject("course", newCourse);
@@ -45,7 +45,7 @@ public class CourseController {
     }
 
     @GetMapping("/courses/edit")
-    public ModelAndView updateCourse(@RequestParam(name = "id") Long id) {
+    public ModelAndView edit(@RequestParam(name = "id") Long id) {
         ModelAndView mav = new ModelAndView("adminTemplates/courseModify");
         Course course = courseRepo.findCourseById(id);
         mav.addObject("course", course);
@@ -62,7 +62,7 @@ public class CourseController {
     }
 
     @GetMapping("/courses/delete")
-    public String deleteCourse(@RequestParam(name = "id") Long id) {
+    public String delete(@RequestParam(name = "id") Long id) {
         courseRepo.deleteById(id);
         return "redirect:/courses/show";
     }

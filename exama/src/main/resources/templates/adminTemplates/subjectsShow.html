@@ -26,12 +26,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="subject: ${listSubjects}">
+                    <tr th:each="subject: ${allSubjects}">
                         <td th:text="${subject.id}"></td>
                         <td th:text="${subject.name}"></td>
                         <td th:text="${subject.tag}"></td>
-                        <td><a th:href="@{/subjects/{id}/edit(id=${subject.id})}">bearbeiten</a></td>
-                        <td><a th:href="@{/subjects/{id}/delete(id=${subject.id})}">löschen</a></td>
+                        <td><a th:href="@{/subjects/edit?id={id}(id=${subject.id})}">bearbeiten</a></td>
+                        <td><a th:href="@{/subjects/delete?id={id}(id=${subject.id})}">löschen</a></td>
                         </a>
                     </tr>
                 </tbody>

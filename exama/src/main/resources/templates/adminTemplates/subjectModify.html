@@ -12,14 +12,13 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Fach bearbeiten</h1>
+            <h1>Fach erstellen/bearbeiten</h1>
             <a href="/subjects/show">> alle Fächer anzeigen</a><br><br><br>
 
-            <form
-                th:action="@{/subjects/{id}/edited?name={name}&tag={tag}(id=${subject.id},name=${subject.name},tag=${subject.tag})}"
-                th:object="${subject}" method="put">
+            <form th:action="@{/subjects/modified}" th:object="${subject}" method="post">
+                <input type="hidden" th:field="*{id}" th:value="${subject.id}"/>
                 <div>
-                    <label>Subject name: </label>
+                    <label>Fach Name: </label>
                     <div>
                         <input type="text" th:field="*{name}" class="form-control" required minlength="1"
                             maxlength="20" />
@@ -27,7 +26,7 @@
                 </div>
                 <br>
                 <div>
-                    <label>Subject tag: </label>
+                    <label>Fach Tag: </label>
                     <div>
                         <input type="text" th:field="*{tag}" class="form-control" required minlength="1"
                             maxlength="4" />
