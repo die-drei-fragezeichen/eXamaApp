@@ -147,40 +147,4 @@ public class UserController {
         em.unwrap(org.hibernate.Session.class).saveOrUpdate(user);
         return "generalTemplates/passwordChanged";
     }
-/*     @GetMapping("/users/changepassword")
-    public ModelAndView changePassword() {
-        ModelAndView mav = new ModelAndView("generalTemplates/changePassword");
-        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = authLoggedInUser.getName();
-        User user = userRepo.getUserByEmail(currentUserName);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        mav.addObject("user", user);
-        return mav;
-    }
-
-    @GetMapping("/users/changepassword/changed")
-    public String updateUser(@RequestParam(name = "password") String password) throws UsernameNotFoundException {
-        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = authLoggedInUser.getName();
-        User user = userRepo.getUserByEmail(currentUserName);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        if(password.isEmpty()) {
-            return "redirect:/settings";
-        } else {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            String encodedPassword = encoder.encode(password);
-            userRepo.changeUserPassword(currentUserName, encodedPassword);
-        }
-        return "redirect:/changepassword/success";
-    }
-
-    @GetMapping("/changepassword/success")
-    public String settings() {
-        return "generalTemplates/passwordChanged";
-    } */
-
 }
