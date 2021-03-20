@@ -2,6 +2,10 @@ package ch.diedreifragezeichen.exama._config.controller.assignmentController;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,60 +20,46 @@ public class ExamTypeController {
     @Autowired
     private ExamTypeRepository examTypeRepo;
 
+    @PersistenceContext
+    private EntityManager em;
+
     /**
      * ExamType Mappings
      */
 
-    @GetMapping("/examtypes/create")
-    public ModelAndView newExamType() {
-        ExamType type = new ExamType();
-        ModelAndView mav = new ModelAndView("adminTemplates/examtypeCreate");
-        mav.addObject("type", type);
-        return mav;
-    }
-
-    @PostMapping("/examtypes/created")
-    public String processSaving(ExamType type) {
-        examTypeRepo.save(type);
-        return "redirect:/examtypes/show";
-    }
-
     @GetMapping("/examtypes/show")
-    public String listTypes(Model model) {
+    public String listExamTypes(Model model) {
         List<ExamType> listTypes = examTypeRepo.findAll();
-        model.addAttribute("listTypes", listTypes);
+        model.addAttribute("allExamTypes", listTypes);
         return "adminTemplates/examtypesShow";
     }
 
-    // @GetMapping("/examtypes/{id}/edit")
-    // public ModelAndView editExamType(@PathVariable(name = "id") Long id) throws NotFoundException {
-    //     ExamType type = examTypeRepo.getExamTypeByID(id);
-    //     if (type == null) {
-    //         throw new NotFoundException("ExamType not found");
-    //     }
-    //     ModelAndView mav = new ModelAndView("adminTemplates/examtypeEdit");
-    //     mav.addObject("type", type);
-    //     return mav;
-    // }
+    @GetMapping("/examtypes/create")
+    public ModelAndView newExamType() {
+        ModelAndView mav = new ModelAndView("adminTemplates/examtypeModify");
+        ExamType examType = new ExamType();
+        mav.addObject("examType", examType);
+        return mav;
+    }
 
-    // @GetMapping("examtypes/{id}/edited")
-    // public String updateExamType(@PathVariable(name = "id") Long id, @RequestParam(name = "name") String name) throws NotFoundException {
-    //     ExamType type = examTypeRepo.getExamTypeByID(id);
-    //     if (type == null) {
-    //         throw new NotFoundException("ExamType not found");
-    //     }
-    //     examTypeRepo.editExamTypeById(id, name);
-    //     return "redirect:/examtypes/show";
-    // }
+    @GetMapping("/examtypes/edit")
+    public ModelAndView updateExamType(@RequestParam(name = "id") Long id) {
+        ModelAndView mav = new ModelAndView("adminTemplates/examtypeModify");
+        ExamType examType = examTypeRepo.findExamTypeById(id);
+        mav.addObject("examType", examType);
+        return mav;
+    }
 
-    // @GetMapping("examtypes/{id}/delete")
-    // public String deleteExamType(@PathVariable(name = "id") Long id) throws NotFoundException {
-    //     ExamType type = examTypeRepo.getExamTypeByID(id);
-    //     if (type == null) {
-    //         throw new NotFoundException("ExamType not found");
-    //     }
-    //     examTypeRepo.deleteExamTypeById(id);
-    //     return "redirect:/examtypes/show";
-    // }
+    @PostMapping("/examtypes/modified")
+    @Transactional
+    public String modify(ExamType examType) {
+        em.unwrap(org.hibernate.Session.class).saveOrUpdate(examType);
+        return "redirect:/examtypes/show";
+    }
 
+    @GetMapping("/examtypes/delete")
+    public String deleteExamType(@RequestParam(name = "id") Long id) {
+        examTypeRepo.deleteById(id);
+        return "redirect:/examtypes/show";
+    }
 }

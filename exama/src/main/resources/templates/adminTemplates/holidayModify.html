@@ -12,7 +12,8 @@
     <!-- content displayed in the center of the window -->
     <div id="content-wrapper">
 
-      <h1>Ferien erfassen</h1>
+      <h1>Ferienzeit/Sonderwoche erstellen/bearbeiten</h1>
+      <a href="/holidays/show">> alle Ferienzeiten anzeigen</a><br><br><br>
       <!-- Values for th:object attributes in form tags must be variable expressions (${...}). It specifies the NAME OF THE MODEL ATTRIBUTE!! So: ${mime.editDate} would not be. -->
       <!-- Once you are working inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
       <form th:action="@{/holidays/modified}" th:object="${holiday}" method="post">

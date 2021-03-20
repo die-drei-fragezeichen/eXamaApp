@@ -19,8 +19,10 @@ import ch.diedreifragezeichen.exama.userAdministration.*;
 public class CoreCourseController {
     @Autowired
     private CoreCourseRepository coreCourseRepo;
+
     @Autowired
     private UserRepository userRepo;
+    
     @Autowired
     private RoleRepository roleRepo;
 
@@ -30,6 +32,13 @@ public class CoreCourseController {
     /**
      * CoreCourse Mappings
      */
+
+    @GetMapping("/coreCourses/show")
+    public String showCoreCourses(Model model) {
+        List<CoreCourse> listCoreCourses = coreCourseRepo.findAll();
+        model.addAttribute("allCoreCourses", listCoreCourses);
+        return "adminTemplates/coreCoursesShow";
+    }
 
     @GetMapping("/coreCourses/create")
     public ModelAndView newCoreCourse() {
@@ -43,13 +52,6 @@ public class CoreCourseController {
         return mav;
     }
 
-    @GetMapping("/coreCourses/show")
-    public String showCoreCourses(Model model) {
-        List<CoreCourse> listCoreCourses = coreCourseRepo.findAll();
-        model.addAttribute("allCoreCourses", listCoreCourses);
-        return "adminTemplates/coreCoursesShow";
-    }
-
     @GetMapping("/coreCourses/edit")
     public ModelAndView updateCoreCourse(@RequestParam(name = "id") Long id) {
         ModelAndView mav = new ModelAndView("adminTemplates/coreCourseModify");
@@ -58,7 +60,6 @@ public class CoreCourseController {
         List<User> userList = userRepo.findAll();
         List<User> teacherList = userList;
         mav.addObject("allTeachers", teacherList);
-
         return mav;
     }
 
