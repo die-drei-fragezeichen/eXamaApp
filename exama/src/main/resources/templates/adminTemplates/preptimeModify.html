@@ -12,12 +12,11 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Vorbereitungszeiten bearbeiten</h1>
-            <a href="/preptimes/show">> alle Prüfungstypen anzeigen</a><br><br><br>
+            <h1>Neue Vorbereitungszeit erstellen/bearbeiten</h1>
+            <a href="/preptimes/show">> alle Vorbereitungszeiten anzeigen</a><br><br><br>
 
-            <form
-                th:action="@{/preptimes/{id}/edited?name={name}&days={days}(id=${prepTime.id},name=${prepTime.name},days=${prepTime.days})}"
-                th:object="${prepTime}" method="put">
+            <form th:action="@{/preptimes/modified}" th:object="${prepTime}" method="post">
+                <input type="hidden" th:field="*{id}" th:value="${prepTime.id}"/>
                 <div>
                     <label>PrepTime Name: </label>
                     <div>

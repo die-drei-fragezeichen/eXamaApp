@@ -3,7 +3,7 @@ package ch.diedreifragezeichen.exama.assignments.availablePrepTimes;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AvailablePrepTimeRepository extends JpaRepository<AvailablePrepTime, Long> {
-    public AvailablePrepTime findPrepTimeById(Long id);
-    public AvailablePrepTime findPrepTimeByName(String name);
-    public AvailablePrepTime findPrepTimeByDays(int days);
+    public AvailablePrepTime findAvailablePrepTimeById(Long id);
+    public AvailablePrepTime findAvailablePrepTimeByName(String name);
+    public AvailablePrepTime findAvailablePrepTimeByDays(int days);
 }
