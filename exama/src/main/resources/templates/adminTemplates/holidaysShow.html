@@ -34,8 +34,8 @@
                          <td th:text="${holiday.semester}"></td>
                         <td th:text="${holiday.startDate}"></td>
                         <td th:text="${holiday.endDate}"></td>
-                        <td>bearbeiten</td>
-                        <td>löschen</td>
+                        <td><a th:href="@{/holidays/edit?id={id}(id=${holiday.id})}">bearbeiten</a></td>
+                        <td><a th:href="@{/holidays/delete?id={id}(id=${holiday.id})}">löschen</a></td>
                     </tr>
                 </tbody>
             </table>

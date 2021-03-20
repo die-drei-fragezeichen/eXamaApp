@@ -13,18 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ch.diedreifragezeichen.exama.courses.*;
-import ch.diedreifragezeichen.exama.userAdministration.RoleRepository;
-import ch.diedreifragezeichen.exama.userAdministration.User;
-import ch.diedreifragezeichen.exama.userAdministration.UserRepository;
+import ch.diedreifragezeichen.exama.userAdministration.*;
 
 @Controller
 public class CoreCourseController {
     @Autowired
     private CoreCourseRepository coreCourseRepo;
-
     @Autowired
     private UserRepository userRepo;
-
     @Autowired
     private RoleRepository roleRepo;
 
@@ -34,12 +30,6 @@ public class CoreCourseController {
     /**
      * CoreCourse Mappings
      */
-    @GetMapping("/coreCourses/show")
-    public String showCoreCourses(Model model) {
-        List<CoreCourse> listCoreCourses = coreCourseRepo.findAll();
-        model.addAttribute("allCoreCourses", listCoreCourses);
-        return "adminTemplates/coreCoursesShow";
-    }
 
     @GetMapping("/coreCourses/create")
     public ModelAndView newCoreCourse() {
@@ -51,6 +41,13 @@ public class CoreCourseController {
                 .filter(c -> c.getRoles().contains(roleRepo.findRoleByName("Teacher"))).collect(Collectors.toList());
         mav.addObject("allTeachers", teacherList);
         return mav;
+    }
+
+    @GetMapping("/coreCourses/show")
+    public String showCoreCourses(Model model) {
+        List<CoreCourse> listCoreCourses = coreCourseRepo.findAll();
+        model.addAttribute("allCoreCourses", listCoreCourses);
+        return "adminTemplates/coreCoursesShow";
     }
 
     @GetMapping("/coreCourses/edit")

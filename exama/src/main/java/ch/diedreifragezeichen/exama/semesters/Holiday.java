@@ -19,10 +19,10 @@ public class Holiday {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(length = 20)
     private String name;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDate;
 
