@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama._config.controller.assignmentController;
+package ch.diedreifragezeichen.exama.operator;
 
 import java.time.*;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.userAdministration;
+package ch.diedreifragezeichen.exama.users;
 
 import java.time.LocalDate;
 import java.util.HashSet;

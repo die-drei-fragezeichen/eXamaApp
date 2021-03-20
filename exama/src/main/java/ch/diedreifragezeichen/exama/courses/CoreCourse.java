@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import ch.diedreifragezeichen.exama.userAdministration.User;
+import ch.diedreifragezeichen.exama.users.User;
 
 @Entity
 @DynamicUpdate

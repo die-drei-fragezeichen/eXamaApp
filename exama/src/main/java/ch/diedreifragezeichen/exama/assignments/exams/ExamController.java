@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama._config.controller.assignmentController;
+package ch.diedreifragezeichen.exama.assignments.exams;
 
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
@@ -25,12 +25,14 @@ import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistribution;
 import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistributionRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.courses.CourseRepository;
+import ch.diedreifragezeichen.exama.operator.Operator;
+import ch.diedreifragezeichen.exama.operator.OperatorRepository;
 import ch.diedreifragezeichen.exama.semesters.Semester;
 import ch.diedreifragezeichen.exama.semesters.SemesterRepository;
 import ch.diedreifragezeichen.exama.subjects.Subject;
 import ch.diedreifragezeichen.exama.subjects.SubjectRepository;
-import ch.diedreifragezeichen.exama.userAdministration.User;
-import ch.diedreifragezeichen.exama.userAdministration.UserRepository;
+import ch.diedreifragezeichen.exama.users.User;
+import ch.diedreifragezeichen.exama.users.UserRepository;
 import javassist.NotFoundException;
 
 @Controller

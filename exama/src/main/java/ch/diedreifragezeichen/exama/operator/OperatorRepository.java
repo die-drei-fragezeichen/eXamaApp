@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama._config.controller.assignmentController;
+package ch.diedreifragezeichen.exama.operator;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

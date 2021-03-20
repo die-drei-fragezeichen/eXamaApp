@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.assignments;
+package ch.diedreifragezeichen.exama.assignments.assignment;
 
 import java.time.LocalDate;
 
@@ -11,7 +11,7 @@ import java.time.temporal.ChronoUnit;
 import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTime;
 import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistribution;
 import ch.diedreifragezeichen.exama.courses.Course;
-import ch.diedreifragezeichen.exama.userAdministration.User;
+import ch.diedreifragezeichen.exama.users.User;
 
 // can not be abstract because of the ManyToOne-Mapping
 //no objects should be instatiated

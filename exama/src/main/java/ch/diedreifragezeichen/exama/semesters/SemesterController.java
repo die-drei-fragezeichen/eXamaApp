@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama._config.controller;
+package ch.diedreifragezeichen.exama.semesters;
 
 import java.util.*;
 
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import ch.diedreifragezeichen.exama.semesters.*;
 
 @Controller
 public class SemesterController {

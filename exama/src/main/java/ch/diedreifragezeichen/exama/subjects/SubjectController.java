@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama._config.controller;
+package ch.diedreifragezeichen.exama.subjects;
 
 import java.util.*;
 

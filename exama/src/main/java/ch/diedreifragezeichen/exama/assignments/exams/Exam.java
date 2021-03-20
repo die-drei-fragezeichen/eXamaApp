@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import ch.diedreifragezeichen.exama.assignments.Assignment;
+import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
 import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
 
 @Entity

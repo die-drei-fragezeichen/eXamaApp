@@ -1,7 +1,5 @@
 package ch.diedreifragezeichen.exama._config;
 
-import ch.diedreifragezeichen.exama.userAdministration.*;
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -22,6 +20,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import ch.diedreifragezeichen.exama.users.*;
 
 @Configuration
 @EnableWebSecurity

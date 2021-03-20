@@ -8,7 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import ch.diedreifragezeichen.exama.assignments.exams.Exam;
 import ch.diedreifragezeichen.exama.subjects.Subject;
-import ch.diedreifragezeichen.exama.userAdministration.User;
+import ch.diedreifragezeichen.exama.users.User;
 
 @Entity
 @DynamicUpdate

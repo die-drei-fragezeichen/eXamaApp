@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama._config.controller;
+package ch.diedreifragezeichen.exama._config;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import ch.diedreifragezeichen.exama.userAdministration.User;
-import ch.diedreifragezeichen.exama.userAdministration.UserRepository;
+import ch.diedreifragezeichen.exama.users.User;
+import ch.diedreifragezeichen.exama.users.UserRepository;
 
 @Controller
 public class AppController {

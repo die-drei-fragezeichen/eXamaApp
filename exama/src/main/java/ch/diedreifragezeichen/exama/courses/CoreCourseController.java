@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama._config.controller;
+package ch.diedreifragezeichen.exama.courses;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,8 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import ch.diedreifragezeichen.exama.courses.*;
-import ch.diedreifragezeichen.exama.userAdministration.*;
+import ch.diedreifragezeichen.exama.users.*;
 
 @Controller
 public class CoreCourseController {
@@ -58,7 +57,8 @@ public class CoreCourseController {
         CoreCourse coreCourse = coreCourseRepo.findCoreCourseById(id);
         mav.addObject("coreCourse", coreCourse);
         List<User> userList = userRepo.findAll();
-        List<User> teacherList = userList;
+        List<User> teacherList = userList.stream()
+        .filter(c -> c.getRoles().contains(roleRepo.findRoleByName("Teacher"))).collect(Collectors.toList());
         mav.addObject("allTeachers", teacherList);
         return mav;
     }

@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama._config.controller;
+package ch.diedreifragezeichen.exama.users;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,10 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.diedreifragezeichen.exama.userAdministration.Role;
-import ch.diedreifragezeichen.exama.userAdministration.RoleRepository;
-import ch.diedreifragezeichen.exama.userAdministration.User;
-import ch.diedreifragezeichen.exama.userAdministration.UserRepository;
+import ch.diedreifragezeichen.exama.users.Role;
+import ch.diedreifragezeichen.exama.users.RoleRepository;
+import ch.diedreifragezeichen.exama.users.User;
+import ch.diedreifragezeichen.exama.users.UserRepository;
 
 @Controller
 public class UserController {
