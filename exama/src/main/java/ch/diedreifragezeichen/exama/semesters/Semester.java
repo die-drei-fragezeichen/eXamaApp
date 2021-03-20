@@ -8,6 +8,8 @@ import javax.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import ch.diedreifragezeichen.exama.assignments.exams.Exam;
+
 @Entity
 @DynamicUpdate
 @Table(name = "semesters")
@@ -39,6 +41,9 @@ public class Semester {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "semester")
     private List<Holiday> holidays;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "semester")
+    private List<Exam> exams;
     
 
     /**

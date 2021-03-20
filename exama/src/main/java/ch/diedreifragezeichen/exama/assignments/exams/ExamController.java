@@ -5,6 +5,9 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.persistence.*;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -58,83 +61,88 @@ public class ExamController {
     private OperatorRepository operatorRepo;
 
     @Autowired
-    SemesterRepository semesterRepo;
+    private SemesterRepository semesterRepo;
+
+    @PersistenceContext
+    private EntityManager em;
 
     /**
-     * The following methods handle the examBar creation
+     * Exam Mappings
      */
 
-    /**
-     * user arriving at this path is enabled to create a new mime. When arriving at
-     * the path a ModelAndView is created and the HTML link injected. New Mime
-     * "template" is added to the ModelAndView and returned to the "HTML" to be
-     * "filled"
-     */
+    @GetMapping("/exams/show")
+    public String show(Model model) {
+        List<Exam> listExams = examRepo.findAll();
+        model.addAttribute("allExams", listExams);
+        return "teacherTemplates/examsShow";
+    }
 
     @GetMapping("/exams/create")
-    public ModelAndView newExam() {
-        Exam exam = new Exam();
-        ModelAndView mav = new ModelAndView("teacherTemplates/examsCreate");
-        mav.addObject("newExam", exam);
-        // NOTE: "verpacktesObjekt" is the so-called "NAME OF THE MODEL ATTRIBUTE"
-        // mav.addAttribute("standardDate", new LocalDate());
-        List<ExamType> listTypes = examtypeRepo.findAll();
-        mav.addObject("holmirdietypenverpackung", listTypes);
-
-        List<AvailablePrepTime> listPrepTimes = availablePrepTimeRepo.findAll();
-        mav.addObject("bringmirdiepreptimes", listPrepTimes);
-
-        List<Subject> listSubjects = subjectRepo.findAll();
-        mav.addObject("welchefaecherhabenwir", listSubjects);
-
-        List<Course> listKlassen = courseRepo.findAll();
-        mav.addObject("holmirmaldiearmenschafe", listKlassen);
-
-        List<WorkloadDistribution> listDist = distributionRepo.findAll();
-        mav.addObject("allWorkloadDistributions", listDist);
-
-        //create List of active semesters to enable lower and an upper bound Date selection for exams
+    public ModelAndView chooseSemester(Model model) {
+        ModelAndView mav = new ModelAndView("teacherTemplates/examCreateChooseSemester");
         List<Semester> semesterList = semesterRepo.findAll();
         semesterList.stream().filter(s -> s.isEnabled()).collect(Collectors.toList());
         semesterList.sort(Comparator.comparing(Semester::getStartDate));
         mav.addObject("allSemesters", semesterList);
-
-        LocalDate firstDay = semesterList.get(0).getStartDate();
-        mav.addObject("firstDay", firstDay.toString());
-        LocalDate lastDay = semesterList.get(semesterList.size() - 1).getEndDate();
-        mav.addObject("lastDay", lastDay.toString());
-
+        Exam exam = new Exam();
+        mav.addObject("newExam", exam);
         return mav;
     }
 
-    /**
-     * When clicking the submit button, the User sends an Mime object. The mimeRepo
-     * saves this object into the db note that the link here is different than in
-     * the get method, but the user never really sees it user is redirected to the
-     * "show" page immediately
-     */
+    @PostMapping("/exams/create")
+    public ModelAndView add(Exam exam) {
+        ModelAndView mav = new ModelAndView("teacherTemplates/examModify");
+        mav.addObject("exam", exam);
+        List<Course> listCourses = courseRepo.findAll();
+        mav.addObject("allCourses", listCourses);
+        List<ExamType> listTypes = examtypeRepo.findAll();
+        mav.addObject("allExamTypes", listTypes);
+        List<AvailablePrepTime> listPrepTimes = availablePrepTimeRepo.findAll();
+        mav.addObject("allPrepTimes", listPrepTimes);
+        List<WorkloadDistribution> listDist = distributionRepo.findAll();
+        mav.addObject("allWorkloadDistributions", listDist);
+        LocalDate firstDay = exam.getSemester().getStartDate();
+        mav.addObject("firstDay", firstDay);
+        LocalDate lastDay = exam.getSemester().getStartDate();
+        mav.addObject("lastDay", lastDay);
+        return mav;
+    }
 
-    @PostMapping("/exams/created")
-    public String processSaving(Exam exam) {
+    @GetMapping("/exams/edit")
+    public ModelAndView edit(@RequestParam(name = "id") Long id) {
+        ModelAndView mav = new ModelAndView("teacherTemplates/examModify");
+        Exam exam = examRepo.findExamById(id);
+        mav.addObject("exam", exam);
+        List<Course> listCourses = courseRepo.findAll();
+        mav.addObject("allCourses", listCourses);
+        List<ExamType> listTypes = examtypeRepo.findAll();
+        mav.addObject("allExamTypes", listTypes);
+        List<AvailablePrepTime> listPrepTimes = availablePrepTimeRepo.findAll();
+        mav.addObject("allPrepTimes", listPrepTimes);
+        List<WorkloadDistribution> listDist = distributionRepo.findAll();
+        mav.addObject("allWorkloadDistributions", listDist);
+        LocalDate firstDay = exam.getSemester().getStartDate();
+        mav.addObject("firstDay", firstDay);
+        LocalDate lastDay = exam.getSemester().getStartDate();
+        mav.addObject("lastDay", lastDay);
+        return mav;
+    }
+
+    @PostMapping("/exams/modified")
+    @Transactional
+    public String modify(Exam exam) {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         exam.setCreator(user);
         exam.setEditDate(LocalDate.now());
-        exam.setExamType(examtypeRepo.findExamTypeById(1l));
-        examRepo.save(exam);
+        em.unwrap(org.hibernate.Session.class).saveOrUpdate(exam);
         return "redirect:/exams/show";
     }
 
-    /**
-     * user arrives at exams/show and sees a list of all the mimes in DB table
-     * mimes.
-     */
-
-    @GetMapping("/exams/show")
-    public String showExams(Model model) {
-        List<Exam> listExams = examRepo.findAll();
-        model.addAttribute("allExams", listExams);
-        return "teacherTemplates/examsShow";
+    @GetMapping("/exams/delete")
+    public String delete(@RequestParam(name = "id") Long id) {
+        examRepo.deleteById(id);
+        return "redirect:/exams/show";
     }
 
     /*

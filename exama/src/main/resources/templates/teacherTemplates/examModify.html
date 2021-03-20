@@ -18,7 +18,9 @@
             <!-- Once you are working inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
 
 
-                <form th:action="@{/exams/created}" th:object="${newExam}" method="post">
+                <form th:action="@{/exams/modified}" th:object="${exam}" method="post">
+                    <input type="hidden" th:field="*{id}" th:value="${exam.id}"/>
+                    <input type="hidden" th:field="*{semester}" th:value="${exam.semester}"/>
                     <div>
                         <div>
                             <label>Prüfungsname: </label>
@@ -30,6 +32,13 @@
                             <label>Beschreibung: </label>
                             <textarea th:field="*{description}" class="form-control"
                                 maxlength="255" />
+                        </div>
+                        <br>
+                        <div>
+                            <label>Kurs: </label>
+                            <select th:field="*{course}" class="form-control" required />
+                            <option th:each="course : ${allCourses}" th:text="${course.name}" th:value="${course.id}" th:selected="(${course} == *{course})"/>
+                            </select>
                         </div>
                         <br>
                         <div>
@@ -45,35 +54,21 @@
                         <div>
                             <label>Voraussichtliche Vorbereitungszeit: </label>
                             <select th:field="*{availablePrepTime}" class="form-control" required />
-                            <option th:each="preptime : ${bringmirdiepreptimes}" th:text="${preptime.name}"
-                                th:value="${preptime.id}" />
+                            <option th:each="preptime : ${allPrepTimes}" th:text="${preptime.name}"
+                                th:value="${preptime.id}" th:selected="(${preptime} == *{availablePrepTime})"/>
                             </select>
                         </div>
                         <br>
                         <div>
                             <label>Prüfungstyp: </label>
                             <select th:field="*{examType}" class="form-control" required />
-                            <option th:each="type : ${holmirdietypenverpackung}" th:text="${type.name + ' (' + type.timeValue + ' h)'}"
-                                th:value="${type.id}" />
+                            <option th:each="type : ${allExamTypes}" th:text="${type.name + ' (' + type.timeValue + ' h)'}"
+                                th:value="${type.id}" th:selected="(${type} == *{examType})"/>
                             </select>
                         </div>
                         <br>
                         <div>
-                            <label>Fach: </label>
-                            <select th:field="*{subject}" class="form-control" required />
-                            <option th:each="subject : ${welchefaecherhabenwir}" th:text="${subject.name}" th:value="${subject.id}" />
-                            </select>
-                        </div>
-                        <br>
-                        <div>
-                            <label>Klasse: </label>
-                            <select th:field="*{course}" class="form-control" required />
-                            <option th:each="course : ${holmirmaldiearmenschafe}" th:text="${course.name}" th:value="${course.id}" />
-                            </select>
-                        </div>
-                        <br>
-                        <div>
-                            <label>Workload Minutes Total: </label>
+                            <label>Workload Minutes Total (optional): </label>
                             <input type="text" th:field="*{workloadMinutesTotal}"
                                 class="form-control" minlength="1" maxlength="4" />
                         </div>
@@ -81,7 +76,7 @@
                         <div>
                             <label>Workload Distribution:
                                 <select th:field="*{workloadDistribution}" class="form-control" required>
-                                    <option th:each="dist : ${allWorkloadDistributions}" th:text="${dist.name}" th:value="${dist.id}" />
+                                    <option th:each="dist : ${allWorkloadDistributions}" th:text="${dist.name}" th:value="${dist.id}" th:selected="(${dist} == *{workloadDistribution})"/>
                                 </select>
                             </label>
                         </div>

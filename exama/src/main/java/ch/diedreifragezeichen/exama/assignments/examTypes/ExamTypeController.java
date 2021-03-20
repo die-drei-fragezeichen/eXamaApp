@@ -25,14 +25,14 @@ public class ExamTypeController {
      */
 
     @GetMapping("/examtypes/show")
-    public String listExamTypes(Model model) {
+    public String show(Model model) {
         List<ExamType> listTypes = examTypeRepo.findAll();
         model.addAttribute("allExamTypes", listTypes);
         return "adminTemplates/examtypesShow";
     }
 
     @GetMapping("/examtypes/create")
-    public ModelAndView newExamType() {
+    public ModelAndView add() {
         ModelAndView mav = new ModelAndView("adminTemplates/examtypeModify");
         ExamType examType = new ExamType();
         mav.addObject("examType", examType);
@@ -40,7 +40,7 @@ public class ExamTypeController {
     }
 
     @GetMapping("/examtypes/edit")
-    public ModelAndView updateExamType(@RequestParam(name = "id") Long id) {
+    public ModelAndView edit(@RequestParam(name = "id") Long id) {
         ModelAndView mav = new ModelAndView("adminTemplates/examtypeModify");
         ExamType examType = examTypeRepo.findExamTypeById(id);
         mav.addObject("examType", examType);
@@ -55,7 +55,7 @@ public class ExamTypeController {
     }
 
     @GetMapping("/examtypes/delete")
-    public String deleteExamType(@RequestParam(name = "id") Long id) {
+    public String delete(@RequestParam(name = "id") Long id) {
         examTypeRepo.deleteById(id);
         return "redirect:/examtypes/show";
     }

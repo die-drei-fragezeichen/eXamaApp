@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
 import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
+import ch.diedreifragezeichen.exama.semesters.Semester;
 
 @Entity
 @DynamicUpdate
@@ -21,8 +22,12 @@ public class Exam extends Assignment {
     @JoinColumn(nullable = false)
     private ExamType examType;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    private Semester semester;
+
     /**
-     * Methods
+     * Getters and Setters only
      */
 
     public double getCountingFactor() {
@@ -39,5 +44,13 @@ public class Exam extends Assignment {
 
     public void setExamType(ExamType examType) {
         this.examType = examType;
+    }
+
+    public Semester getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Semester semester) {
+        this.semester = semester;
     }
 }

@@ -37,21 +37,21 @@ public class WorkloadDistribution {
         return this.name;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        WorkloadDistribution prepTime = (WorkloadDistribution) obj;
-        if (this.id == prepTime.getId()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    // @Override
+    // public boolean equals(Object obj) {
+    //     if (this == obj) {
+    //         return true;
+    //     }
+    //     if (obj == null) {
+    //         return false;
+    //     }
+    //     WorkloadDistribution dist = (WorkloadDistribution) obj;
+    //     if (this.id == dist.getId()) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
     @Override
     public int hashCode() {
