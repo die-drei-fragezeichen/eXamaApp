@@ -121,7 +121,7 @@ public class ExamController {
     @PostMapping("/exams/created")
     public String processSaving(Exam exam) {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepo.getUserByEmail(authLoggedInUser.getName());
+        User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         exam.setCreator(user);
         exam.setEditDate(LocalDate.now());
         exam.setExamType(examtypeRepo.findExamTypeById(1l));

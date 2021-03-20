@@ -84,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     Authentication authentication) throws IOException, ServletException {
                 if (!(authentication instanceof AnonymousAuthenticationToken)) {
                     String currentUserName = authentication.getName();
-                    User user = userRepo.getUserByEmail(currentUserName);
+                    User user = userRepo.findUserByEmail(currentUserName);
                     user.setLoggedIn(false);
                     userRepo.save(user);
                 }

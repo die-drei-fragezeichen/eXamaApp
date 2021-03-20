@@ -2,22 +2,20 @@ package ch.diedreifragezeichen.exama.users;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
+
+import javax.persistence.*;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.diedreifragezeichen.exama.users.Role;
-import ch.diedreifragezeichen.exama.users.RoleRepository;
-import ch.diedreifragezeichen.exama.users.User;
-import ch.diedreifragezeichen.exama.users.UserRepository;
+import ch.diedreifragezeichen.exama.courses.*;
 
 @Controller
 public class UserController {
@@ -27,90 +25,129 @@ public class UserController {
     @Autowired
     private RoleRepository roleRepo;
 
+    @Autowired
+    private CoreCourseRepository coreCourseRepo;
+
+    @Autowired
+    private CourseRepository courseRepo;
+
+    @PersistenceContext
+    private EntityManager em;
+
     /**
      * User Mappings
      */
 
     @GetMapping("/users/show")
-    public String listUsers(Model model) {
+    public String showUsers(Model model) {
         List<User> listUsers = userRepo.findAll();
-        model.addAttribute("listUsers", listUsers);
+        model.addAttribute("allUsers", listUsers);
         return "adminTemplates/usersShow";
     }
 
     @GetMapping("/users/create")
     public ModelAndView newUser() {
-        User user = new User();
+        User newUser = new User();
         ModelAndView mav = new ModelAndView("adminTemplates/userCreate");
-        mav.addObject("user", user);
-        List<Role> roles = (List<Role>) roleRepo.findAll();
-        mav.addObject("allRoles", roles);
+        mav.addObject("user", newUser);
+        List<Role> roleList = roleRepo.findAll();
+        mav.addObject("allRoles", roleList);
+        List<CoreCourse> coreCourseList = coreCourseRepo.findAll();
+        mav.addObject("allCoreCourses", coreCourseList);
+        List<Course> courseList = courseRepo.findAll();
+        mav.addObject("allCourses", courseList);
         return mav;
     }
 
     @PostMapping("/users/created")
-    public String processSaving(User user) {
+    @Transactional
+    public String create(User user) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        user.setEnabled(true);
-        user.setLoggedIn(false);
         if(user.getAbbreviation().equals("")){
             user.setAbbreviation(null);
         }
+        if(!user.getRoles().contains(roleRepo.findRoleByName("Student"))){
+            user.setCoreCourse(null);
+        }
+        user.setLoggedIn(false);
         user.setCreatedOn(LocalDate.now());
-        userRepo.save(user);
-        // returns new mapping command on userSaved.html
+        em.unwrap(org.hibernate.Session.class).saveOrUpdate(user);
         return "redirect:/users/show";
     }
 
-    @GetMapping("/users/{email}/edit")
-    public ModelAndView editUser(@PathVariable(name = "email") String email) {
+    @GetMapping("/users/edit")
+    public ModelAndView editUser(@RequestParam(name = "id") Long id) {
+        User user = userRepo.findUserById(id);
         ModelAndView mav = new ModelAndView("adminTemplates/userEdit");
-        User user = userRepo.getUserByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        List<Role> roles = (List<Role>) roleRepo.findAll();
         mav.addObject("user", user);
-        mav.addObject("allRoles", roles);
+        List<Role> roleList = roleRepo.findAll();
+        mav.addObject("allRoles", roleList);
+        List<CoreCourse> coreCourseList = coreCourseRepo.findAll();
+        mav.addObject("allCoreCourses", coreCourseList);
+        List<Course> courseList = courseRepo.findAll();
+        mav.addObject("allCourses", courseList);
+        return mav;
+    }
+    
+    @PostMapping("/users/edited")
+    @Transactional
+    public String edit(User user) {
+        if(user.getAbbreviation().equals("")){
+            user.setAbbreviation(null);
+        }
+        if(!user.getRoles().contains(roleRepo.findRoleByName("Student"))){
+            user.setCoreCourse(null);
+        }
+        em.unwrap(org.hibernate.Session.class).saveOrUpdate(user);
+        return "redirect:/users/show";
+    }
+
+    @GetMapping("/users/resetPassword")
+    public ModelAndView resetPassword(@RequestParam(name = "id") Long id) {
+        User user = userRepo.findUserById(id);
+        ModelAndView mav = new ModelAndView("adminTemplates/userResetPassword");
+        mav.addObject("user", user);
         return mav;
     }
 
-    @GetMapping("/users/{email}/edited")
-    public String updateUser(@PathVariable(name = "email") String email,
-            @RequestParam(name = "password") String password, @RequestParam(name = "firstName") String firstName,
-            @RequestParam(name = "lastName") String lastName,
-            @RequestParam(name = "isEnabled", required = false) boolean isEnabled,
-            @RequestParam(name = "roles", required = false) Set<Role> roles) throws UsernameNotFoundException {
-        User user = userRepo.getUserByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        if (password.isEmpty()) {
-            userRepo.editUserByEmail(email, firstName, lastName, isEnabled);
-        } else {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            String encodedPassword = encoder.encode(password);
-            userRepo.editUserByEmailPW(email, encodedPassword, firstName, lastName, isEnabled);
-        }
-        // TODO: Rollenupdate funktioniert noch nicht
-        user.setRoles(roles);
-
+    @PostMapping("/users/passwordReseted")
+    @Transactional
+    public String resetedPassword(User user) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        em.unwrap(org.hibernate.Session.class).saveOrUpdate(user);
         return "redirect:/users/show";
     }
 
-    @GetMapping("/users/{email}/delete")
-    public String deleteUser(@PathVariable(name = "email") String email) throws UsernameNotFoundException {
-        User user = userRepo.getUserByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        userRepo.deleteUserByEmail(email);
+    @GetMapping("/users/delete")
+    public String deleteCoreCourse(@RequestParam(name = "id") Long id) {
+        userRepo.deleteById(id);
         return "redirect:/users/show";
     }
 
-    @GetMapping("/users/changepassword")
+    @GetMapping("/users/changePassword")
+    public ModelAndView changePassword() {
+        ModelAndView mav = new ModelAndView("generalTemplates/changePassword");
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authLoggedInUser.getName();
+        User user = userRepo.findUserByEmail(currentUserName);
+        mav.addObject("user", user);
+        return mav;
+    }
+
+    @PostMapping("/users/passwordChanged")
+    @Transactional
+    public String passwordChanged(User user) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        em.unwrap(org.hibernate.Session.class).saveOrUpdate(user);
+        return "generalTemplates/passwordChanged";
+    }
+/*     @GetMapping("/users/changepassword")
     public ModelAndView changePassword() {
         ModelAndView mav = new ModelAndView("generalTemplates/changePassword");
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
@@ -144,6 +181,6 @@ public class UserController {
     @GetMapping("/changepassword/success")
     public String settings() {
         return "generalTemplates/passwordChanged";
-    }
+    } */
 
 }

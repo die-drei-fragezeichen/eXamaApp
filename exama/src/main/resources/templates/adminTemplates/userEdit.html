@@ -15,29 +15,21 @@
             <h1>User bearbeiten</h1>
             <a href="/users/show">> alle User anzeigen</a><br><br><br>
 
-            <form
-                th:action="@{/users/{email}/edited?password={password}&firstName={firstName}&lastName={lastName}&isEnabled={isEnabled}&isLocked={isLocked}&roles={roles}
-                (email=${user.email},password=${user.password},firstName=${user.firstName},lastName=${user.lastName},isEnabled=${user.isEnabled},roles=${user.roles})}"
-                th:object="${user}" method="put">
+            <form th:action="@{/users/edited}" th:object="${user}" method="post">
+                <input type="hidden" th:field="*{id}" th:value="${user.id}"/>
+                <input type="hidden" th:field="*{createdOn}" th:value="${user.createdOn}"/>
+                <input type="hidden" th:field="*{password}" th:value="${user.password}"/>
                 <div>
                     <label>Email (Username): </label>
                     <div>
-                        <input type="email" th:field="*{email}" class="form-control" required disabled />
-                    </div>
-                </div>
-                <br>
-                <div>
-                    <label>Kürzel: </label>
-                    <div>
-                        <input type="text" th:field="*{abbreviation}" class="form-control" required disabled/>
+                        <input type="email" th:field="*{email}" class="form-control" required />
                     </div>
                 </div>
                 <br>
                 <div>
                     <label>Passwort: </label>
                     <div>
-                        <input type="password" th:field="*{password}" class="form-control" minlength="6"
-                            maxlength="20" />
+                        <a th:href="@{/users/resetPassword?id={id}(id=*{id})}">> Passwort neu setzen</a>
                     </div>
                 </div>
                 <br>
@@ -58,17 +50,40 @@
                 </div>
                 <br>
                 <div>
-                    <label>Aktiv: </label>
+                    <label>Kürzel: </label>
                     <div>
-                        <input type="checkbox" th:name="isEnabled" th:checked="*{isEnabled}" class="form-control" />
+                        <input type="text" th:field="*{abbreviation}" class="form-control" minlength="2"
+                            maxlength="3" />
                     </div>
                 </div>
                 <br>
                 <div>
-                    <label>Nutzerrechte:
-                        <input type="checkbox" name="roles" style="margin:0 0.5em 0 1.5em" th:each="role : ${allRoles}"
-                            th:text="${role.name}" th:value="${role.id}" th:field="*{roles}" />
-                    </label>
+                    <label>Aktiv: </label>
+                    <div>
+                        <input type="checkbox" th:field="*{enabled}" th:checked="*{enabled}" class="form-control"/>
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label>Stammklasse (nur Schüler): </label>
+                    <select th:field="*{coreCourse}" class="form-control" required />
+                    <option th:each="coreCourse : ${allCoreCourses}" th:text="${coreCourse.name}"
+                        th:selected="(${coreCourse} == *{coreCourse})" th:value="${coreCourse.id}" />
+                    </select>
+                </div>
+                <br>
+                <div>
+                    <label>Kurse: </label>
+                    <select multiple id="langOpt" th:field="*{courses}" class="form-control" />
+                    <option th:each="course : ${allCourses}" th:text="${course.name}" th:value="${course.id}" th:selected="${#lists.contains(user.courses, course)}" />
+                    </select>
+                </div>
+                <br>
+                <div>
+                    <label>Rolle(n): </label>
+                    <select multiple id="langOpt" th:field="*{roles}" class="form-control" />
+                    <option th:each="role : ${allRoles}" th:text="${role.name}" th:value="${role.id}" th:selected="${#lists.contains(user.roles, role)}"/>
+                    </select>
                 </div>
                 <br>
                 <div>

@@ -18,7 +18,7 @@ public class UserDetailsServiceExama implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepo.getUserByEmail(email);
+        User user = userRepo.findUserByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -26,7 +26,7 @@ public class UserDetailsServiceExama implements UserDetailsService {
     }
 
     public UserDetails loadUserByID(Long id) throws UsernameNotFoundException {
-        User user = userRepo.getUserByID(id);
+        User user = userRepo.findUserById(id);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }

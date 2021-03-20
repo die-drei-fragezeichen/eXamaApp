@@ -12,7 +12,7 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Users bearbeitn</h1>
+            <h1>Users</h1>
             <a href="/users/create">> neuen User hinzufügen</a><br><br>
 
             <table>
@@ -23,23 +23,34 @@
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Kürzel</th>
-                        <th>Rechte</th>
                         <th>Aktiv</th>
+                        <th>LoggedIn</th>
+                        <th>Last Login</th>
+                        <th>Created On</th>
+                        <th>Stammklasse</th>
+                        <th>Kurse</th>
+                        <th>Rolle(n)</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="user: ${listUsers}">
+                    <tr th:each="user: ${allUsers}">
                         <td th:text="${user.id}"></td>
                         <td th:text="${user.email}"></td>
                         <td th:text="${user.firstName}"></td>
                         <td th:text="${user.lastName}"></td>
                         <td th:text="${user.abbreviation}"></td>
+                        <td th:text="${user.enabled}"></td>
+                        <td th:text="${user.loggedIn}"></td>
+                        <td th:text="${user.lastLogin}"></td>
+                        <td th:text="${user.createdOn}"></td>
+                        <td th:text="${user.coreCourse}"></td>
+                        <td th:text="${user.courses}"></td>
                         <td th:text="${user.roles}"></td>
-                        <td th:text="${user.isEnabled}"></td>
-                        <td><a th:href="@{/users/{email}/edit/(email=${user.email})}">bearbeiten</a></td>
-                        <td><a th:href="@{/users/{email}/delete(email=${user.email})}">löschen</a></td>
+                        <td><a th:href="@{/users/edit?id={id}(id=${user.id})}">bearbeiten</a></td>
+                        <td><a th:href="@{/users/delete?id={id}(id=${user.id})}">löschen</a></td>
                         </a>
                     </tr>
                 </tbody>

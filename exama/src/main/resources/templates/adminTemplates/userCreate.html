@@ -15,7 +15,7 @@
             <h1>Neuen Nutzer erstellen</h1>
             <a href="/users/show">> alle User anzeigen</a><br><br><br>
 
-            <form th:action="@{/users/created}" th:object="${user}" method="post">
+            <form th:action="@{/users/created}" onsubmit="checkMatchingPasswords(this);" th:object="${user}" method="post">
                 <div>
                     <label>Email (Username): </label>
                     <div>
@@ -26,8 +26,15 @@
                 <div>
                     <label>Passwort: </label>
                     <div>
-                        <input type="password" th:field="*{password}" class="form-control" required minlength="6"
-                            maxlength="20" />
+                        <input name="PW1" type="password" th:field="*{password}" class="form-control" required
+                            minlength="6" maxlength="20" />
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label>Passwort wiederholen (not working yet): </label>
+                    <div>
+                        <input name="PW2" type="password" class="form-control" required minlength="6" maxlength="20" />
                     </div>
                 </div>
                 <br>
@@ -56,10 +63,32 @@
                 </div>
                 <br>
                 <div>
-                    <label>Nutzerrechte:
-                        <input type="checkbox" name="roles" style="margin:0 0.5em 0 1.5em" th:each="role : ${allRoles}"
-                            th:text="${role.name}" th:value="${role.id}" th:field="*{roles}" />
-                    </label>
+                    <label>Aktiv: </label>
+                    <div>
+                        <input type="checkbox" th:field="*{enabled}" th:checked="*{enabled}" class="form-control"/>
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label>Stammklasse (nur Schüler): </label>
+                    <select th:field="*{coreCourse}" class="form-control" required />
+                    <option th:each="coreCourse : ${allCoreCourses}" th:text="${coreCourse.name}"
+                        th:selected="(${coreCourse} == *{coreCourse})" th:value="${coreCourse.id}" />
+                    </select>
+                </div>
+                <br>
+                <div>
+                    <label>Kurse: </label>
+                    <select multiple id="langOpt" th:field="*{courses}" class="form-control" />
+                    <option th:each="course : ${allCourses}" th:text="${course.name}" th:value="${course.id}" />
+                    </select>
+                </div>
+                <br>
+                <div>
+                    <label>Rolle(n): </label>
+                    <select multiple id="langOpt" th:field="*{roles}" class="form-control" />
+                    <option th:each="role : ${allRoles}" th:text="${role.name}" th:value="${role.id}" />
+                    </select>
                 </div>
                 <br>
                 <div>
@@ -70,6 +99,16 @@
 
         <!-- footer with navigation (only mobile) -->
         <div th:include="fragments/footer :: footer"></div>
+        <script type="text/javascript">
+            function checkMatchingPasswords(form) {
+                if (form.PW1.value != theForm.PW2.value) {
+                    alert('Die Passwörter stimmen nicht überein');
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        </script>
 </body>
 
 </html>

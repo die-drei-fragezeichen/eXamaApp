@@ -8,4 +8,43 @@
             <div class="navigation-footer-item nav2-settings" onclick="location.href='/profile';"></div>
         </div>
     </div>
+
+    <script>
+        $('select[multiple]').multiselect();
+        $(function () {
+            $("#datepicker").datepicker();
+            //datepicker which is expecting two dates, the second cannot be chosen before the first
+            //creates the first date (id = from Date)
+            var from = $("#fromDate")
+                .datepicker({
+                    dateFormat: "yy-mm-dd",
+                    firstDay: 1,
+                    changeMonth: true
+                })
+                .on("change", function () {
+                    to.datepicker("option", "minDate", getDate(this));
+                }),
+                //creates the second date (id = toDate)
+                to = $("#toDate").datepicker({
+                    dateFormat: "yy-mm-dd",
+                    firstDay: 1,
+                    changeMonth: true
+                })
+                    .on("change", function () {
+                        from.datepicker("option", "maxDate", getDate(this));
+                    });
+
+            function getDate(element) {
+                var date;
+                var dateFormat = "yy-mm-dd";
+                try {
+                    date = $.datepicker.parseDate(dateFormat, element.value);
+                } catch (error) {
+                    date = null;
+                }
+
+                return date;
+            }
+        });
+    </script>
 </div>

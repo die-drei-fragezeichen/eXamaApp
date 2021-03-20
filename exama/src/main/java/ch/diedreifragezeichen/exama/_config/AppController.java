@@ -38,7 +38,7 @@ public class AppController {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         if (!(authLoggedInUser instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authLoggedInUser.getName();
-            User user = userRepo.getUserByEmail(currentUserName);
+            User user = userRepo.findUserByEmail(currentUserName);
             user.setLoggedIn(true);
             user.setLastLogin(LocalDate.now());
             userRepo.save(user);
@@ -103,7 +103,7 @@ public class AppController {
     @GetMapping("/profile")
     public String settings2(Model model) {
     	Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepo.getUserByEmail(authLoggedInUser.getName());
+        User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         model.addAttribute("user", user);
     	return "generalTemplates/profile";
     }

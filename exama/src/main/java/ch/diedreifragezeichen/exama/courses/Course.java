@@ -47,7 +47,11 @@ public class Course {
     /**
      * Methods
      */
-
+    @Override
+    public String toString() {
+        return this.name;
+    }
+    
     /**
      * Getters and Setters only
      */

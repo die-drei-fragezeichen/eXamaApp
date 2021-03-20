@@ -39,6 +39,10 @@ public class CoreCourse {
     /**
      * Methods
      */
+    @Override
+    public String toString() {
+        return this.name;
+    }    
 
     /**
      * Getters and Setters only
