@@ -12,18 +12,17 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Neue Prüfung erstellen</h1>
+            <h1>Hausaufgabe erstellen/bearbeiten</h1>
 
             <!-- Values for th:object attributes in form tags must be variable expressions (${...}). It specifies the NAME OF THE MODEL ATTRIBUTE!! So: ${mime.editDate} would not be. -->
             <!-- Once you are working inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
 
 
-                <form th:action="@{/exams/modified}" th:object="${exam}" method="post">
-                    <input type="hidden" th:field="*{id}" th:value="${exam.id}"/>
-                    <input type="hidden" th:field="*{semester}" th:value="${exam.semester}"/>
+                <form th:action="@{/homeworks/modified}" th:object="${homework}" method="post">
+                    <input type="hidden" th:field="*{id}" th:value="${homework.id}"/>
                     <div>
                         <div>
-                            <label>Prüfungsname: </label>
+                            <label>Titel: </label>
                             <input type="text" th:field="*{name}" class="form-control" maxlength="20"
                                 required />
                         </div>
@@ -42,35 +41,14 @@
                         </div>
                         <br>
                         <div>
-                            <label>Prüfungsdatum / Abgabedatum: </label>
+                            <label>Abgabedatum: </label>
                             <input type="date" th:field="*{dueDate}" class="form-control" th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, max=${lastDay}" required>
                         </div>
                         <br>
                         <div>
-                            <label>Startdatum: </label>
-                            <input type="date" th:field="*{startDate}" class="form-control" th:attr="min=${firstDay}, max=${lastDay}"/>
-                        </div>
-                        <br>
-                        <div>
-                            <label>Voraussichtliche Vorbereitungszeit: </label>
-                            <select th:field="*{availablePrepTime}" class="form-control" required />
-                            <option th:each="preptime : ${allPrepTimes}" th:text="${preptime.name}"
-                                th:value="${preptime.id}" th:selected="(${preptime} == *{availablePrepTime})"/>
-                            </select>
-                        </div>
-                        <br>
-                        <div>
-                            <label>Prüfungstyp: </label>
-                            <select th:field="*{examType}" class="form-control" required />
-                            <option th:each="type : ${allExamTypes}" th:text="${type.name + ' (' + type.timeValue + ' h)'}"
-                                th:value="${type.id}" th:selected="(${type} == *{examType})"/>
-                            </select>
-                        </div>
-                        <br>
-                        <div>
-                            <label>Workload Minutes Total (optional): </label>
+                            <label>Workload Minutes Total: </label>
                             <input type="text" th:field="*{workloadMinutesTotal}"
-                                class="form-control" minlength="1" maxlength="4" />
+                                class="form-control" minlength="1" maxlength="4" required />
                         </div>
                         <br>
                         <div>
@@ -82,16 +60,7 @@
                         </div>
                         <br>
                         <div>
-                            <label>Prüfungsfaktor: </label>
-                        </div>
-                        <br>
-                        <div>
-                            <input type="number"  th:field="*{countingFactor}" class="form-control"
-                                min="0.5" max="3.0" step="0.5" value="1.0" required />
-                        </div>
-                        <br>
-                        <div>
-                            <button type="submit" class="login-button">Prüfung speichern</button>
+                            <button type="submit" class="login-button">Hausaufgabe speichern</button>
                         </div>
                     </div>
                 </form>

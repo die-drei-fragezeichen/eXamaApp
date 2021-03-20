@@ -91,10 +91,13 @@ public class ExamController {
 
     @PostMapping("/exams/create")
     public ModelAndView add(Exam exam) {
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         ModelAndView mav = new ModelAndView("teacherTemplates/examModify");
         mav.addObject("exam", exam);
         List<Course> listCourses = courseRepo.findAll();
-        mav.addObject("allCourses", listCourses);
+        List<Course> usersCourses = listCourses.stream().filter(c -> c.getUsers().contains(user)).collect(Collectors.toList());
+        mav.addObject("allCourses", usersCourses);
         List<ExamType> listTypes = examtypeRepo.findAll();
         mav.addObject("allExamTypes", listTypes);
         List<AvailablePrepTime> listPrepTimes = availablePrepTimeRepo.findAll();
@@ -110,11 +113,14 @@ public class ExamController {
 
     @GetMapping("/exams/edit")
     public ModelAndView edit(@RequestParam(name = "id") Long id) {
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         ModelAndView mav = new ModelAndView("teacherTemplates/examModify");
         Exam exam = examRepo.findExamById(id);
         mav.addObject("exam", exam);
         List<Course> listCourses = courseRepo.findAll();
-        mav.addObject("allCourses", listCourses);
+        List<Course> usersCourses = listCourses.stream().filter(c -> c.getUsers().contains(user)).collect(Collectors.toList());
+        mav.addObject("allCourses", usersCourses);
         List<ExamType> listTypes = examtypeRepo.findAll();
         mav.addObject("allExamTypes", listTypes);
         List<AvailablePrepTime> listPrepTimes = availablePrepTimeRepo.findAll();

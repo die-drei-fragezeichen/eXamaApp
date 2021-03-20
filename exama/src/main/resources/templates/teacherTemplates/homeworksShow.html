@@ -1,0 +1,58 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/head :: head"></head>
+
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="fragments/header :: header"></div>
+
+        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>Hausaufgaben</h1>
+            <a href="/homeworks/create">> neue Hausaufgabe hinzufügen</a><br><br>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Exam ID</th>
+                        <th>Name</th>
+                        <th>Beschreibung</th>
+                        <th>editDate</th>
+                        <th>startDate</th>
+                        <th>dueDate</th>
+                        <th>Kurs</th>
+                        <th>Arbeitszeit</th>
+                        <th>Distribution</th>
+                        <th>Creator</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="homework : ${allHomeworks}">
+                        <td th:text="${homework.id}"></td>
+                        <td th:text="${homework.name}"></td>
+                        <td th:text="${homework.description}"></td>
+                        <td th:text="${homework.editDate}"></td>
+                        <td th:text="${homework.startDate}"></td>
+                        <td th:text="${homework.dueDate}"></td>
+                        <td th:text="${homework.course}"></td>
+                        <td th:text="${homework.workloadMinutesTotal}"></td>
+                        <td th:text="${homework.workloadDistribution}"></td>
+                        <td th:text="${homework.creator}"></td>
+                        <td><a th:href="@{/homeworks/edit?id={id}(id=${homework.id})}">bearbeiten</a></td>
+                        <td><a th:href="@{/homeworks/delete?id={id}(id=${homework.id})}">löschen</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="fragments/footer :: footer"></div>
+</body>
+
+</html>
