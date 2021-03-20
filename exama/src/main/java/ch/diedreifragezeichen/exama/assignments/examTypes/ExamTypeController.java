@@ -12,9 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
-import ch.diedreifragezeichen.exama.assignments.examTypes.ExamTypeRepository;
-
 @Controller
 public class ExamTypeController {
     @Autowired

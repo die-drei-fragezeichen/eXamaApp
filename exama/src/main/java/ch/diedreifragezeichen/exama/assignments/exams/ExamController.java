@@ -3,7 +3,6 @@ package ch.diedreifragezeichen.exama.assignments.exams;
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
-//import javassist.NotFoundException;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.*;
@@ -18,9 +17,6 @@ import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrep
 import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTimeRepository;
 import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
 import ch.diedreifragezeichen.exama.assignments.examTypes.ExamTypeRepository;
-import ch.diedreifragezeichen.exama.assignments.exams.Exam;
-import ch.diedreifragezeichen.exama.assignments.exams.ExamRepository;
-import ch.diedreifragezeichen.exama.assignments.exams.ExamService;
 import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistribution;
 import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistributionRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
