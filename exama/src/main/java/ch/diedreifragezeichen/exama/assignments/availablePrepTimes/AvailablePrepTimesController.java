@@ -29,14 +29,14 @@ public class AvailablePrepTimesController {
      */
 
     @GetMapping("/preptimes/show")
-    public String listTypes(Model model) {
+    public String show(Model model) {
         List<AvailablePrepTime> listPrepTimes = prepTimeRepo.findAll();
         model.addAttribute("listPrepTimes", listPrepTimes);
         return "adminTemplates/preptimesShow";
     }
 
     @GetMapping("/preptimes/create")
-    public ModelAndView newPrepTime() {
+    public ModelAndView add() {
         AvailablePrepTime prepTime = new AvailablePrepTime();
         ModelAndView mav = new ModelAndView("adminTemplates/preptimeModify");
         mav.addObject("prepTime", prepTime);
@@ -44,7 +44,7 @@ public class AvailablePrepTimesController {
     }
 
     @GetMapping("/preptimes/edit")
-    public ModelAndView updateAvailablePreptime(@RequestParam(name = "id") Long id) {
+    public ModelAndView edit(@RequestParam(name = "id") Long id) {
         ModelAndView mav = new ModelAndView("adminTemplates/preptimeModify");
         AvailablePrepTime prepTime = prepTimeRepo.findAvailablePrepTimeById(id);
         mav.addObject("prepTime", prepTime);
@@ -58,8 +58,8 @@ public class AvailablePrepTimesController {
         return "redirect:/preptimes/show";
     }
 
-    @GetMapping("preptimes/{id}/delete")
-    public String deletePrepTime(@PathVariable(name = "id") Long id) throws NotFoundException {
+    @GetMapping("preptimes/delete")
+    public String delete(@RequestParam(name = "id") Long id){
         prepTimeRepo.deleteById(id);
         return "redirect:/preptimes/show";
     }

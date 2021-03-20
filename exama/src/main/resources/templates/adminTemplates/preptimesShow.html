@@ -32,7 +32,7 @@
                         <td th:text="${preptime.days}" th:if="${preptime.id} &gt; 1"></td>
                         <td><a th:href="@{/preptimes/edit?id={id}(id=${preptime.id})}"
                                 th:if="${preptime.id} &gt; 1">bearbeiten</a></td>
-                        <td><a th:href="@{/preptimes/edit?id={id}(id=${preptime.id})}"
+                        <td><a th:href="@{/preptimes/delete?id={id}(id=${preptime.id})}"
                                 th:if="${preptime.id} &gt; 1">löschen</a></td>
                         </a>
                     </tr>
