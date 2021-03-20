@@ -310,6 +310,7 @@ public class ExamController {
     /*
      * Hilfsmethode 4
      */
+    @SuppressWarnings("unused")
     private int calculateNumberOfExams(List<List<Exam>> allExams) {
         int sum = 0;
         Iterator<List<Exam>> iter = allExams.iterator();
