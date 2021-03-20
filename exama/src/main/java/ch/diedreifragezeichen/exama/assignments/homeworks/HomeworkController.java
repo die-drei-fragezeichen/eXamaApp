@@ -90,8 +90,13 @@ public class HomeworkController {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         homework.setCreator(user);
-        homework.setEditDate(LocalDate.now());
-        homework.setStartDate(LocalDate.now());
+        if(homework.getEditDate() == null){
+            homework.setEditDate(LocalDate.now());
+            homework.setStartDate(LocalDate.now());
+        }
+        else{
+            homework.setEditDate(LocalDate.now());
+        }
         homework.setAvailablePrepTime(preptimeRepo.findAvailablePrepTimeById(1l));
         em.unwrap(org.hibernate.Session.class).saveOrUpdate(homework);
         return "redirect:/homeworks/show";
