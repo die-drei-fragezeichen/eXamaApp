@@ -22,8 +22,8 @@ import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrep
 import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTimeRepository;
 import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
 import ch.diedreifragezeichen.exama.assignments.examTypes.ExamTypeRepository;
-import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistribution;
-import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistributionRepository;
+import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDistribution;
+import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDistributionRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.courses.CourseRepository;
 import ch.diedreifragezeichen.exama.operator.Operator;

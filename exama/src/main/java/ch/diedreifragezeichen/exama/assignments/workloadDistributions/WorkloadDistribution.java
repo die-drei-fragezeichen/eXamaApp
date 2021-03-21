@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.assignments.workload;
+package ch.diedreifragezeichen.exama.assignments.workloadDistributions;
 
 import java.util.List;
 

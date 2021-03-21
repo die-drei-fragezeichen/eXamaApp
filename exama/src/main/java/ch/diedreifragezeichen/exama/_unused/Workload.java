@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.assignments.workload;
+/* package ch.diedreifragezeichen.exama.assignments.workloadDistributions;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -74,4 +74,4 @@ public class Workload {
             return m * dayNumberInProcess;
         }
     }
-}
+} */
