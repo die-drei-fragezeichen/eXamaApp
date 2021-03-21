@@ -98,7 +98,6 @@ public class ExamController {
 
     @PostMapping("/exams/create")
     public ModelAndView add(Exam exam) {
-        exam.setSemester(exam.getSemester());
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         ModelAndView mav = new ModelAndView("teacherTemplates/examModify");
@@ -115,7 +114,7 @@ public class ExamController {
         mav.addObject("allWorkloadDistributions", listDist);
         LocalDate firstDay = exam.getSemester().getStartDate();
         mav.addObject("firstDay", firstDay);
-        LocalDate lastDay = exam.getSemester().getStartDate();
+        LocalDate lastDay = exam.getSemester().getEndDate();
         mav.addObject("lastDay", lastDay);
         return mav;
     }
@@ -139,7 +138,7 @@ public class ExamController {
         mav.addObject("allWorkloadDistributions", listDist);
         LocalDate firstDay = exam.getSemester().getStartDate();
         mav.addObject("firstDay", firstDay);
-        LocalDate lastDay = exam.getSemester().getStartDate();
+        LocalDate lastDay = exam.getSemester().getEndDate();
         mav.addObject("lastDay", lastDay);
         return mav;
     }
