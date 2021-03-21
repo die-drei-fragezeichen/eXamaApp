@@ -16,9 +16,10 @@
         <div id="content-wrapper">
             <h1 data-th-text="'Das ist deine Semesterübersicht für das ' + ${semester.name}"> </h1>
             <a href="/semesterView/choose">> neues Semester auswählen</a><br><br>
-
-            <h3 data-th-text="${examTotal}" />
-            <h3 data-th-text="${xExam}" />
+            
+            <!-- dead code - Keep for practice's sake -->
+            <!--<h3 data-th-text="${examTotal}" /> -->
+            <!--<h3 data-th-text="${xExam}" /> -->
             
             
             <table>
@@ -31,19 +32,22 @@
                 </thead>
                 
                 <tbody>
-                <tr th:if="${examTotal}==0">
+                <!-- dead code - Keep for practice's sake -->
+                <!--<tr th:if="${examTotal}==0">
                   <td colspan="100%"> Bislang wurden in diesem Semester noch keine Prüfungen erfasst </td>
                 </tr>
-                <tr th:unless="${examTotal}==0"
-                    th:each="monday, iStat : ${allMondays}" th:style="${iStat.odd} ? 'font-weight: bold;'" 
+                <tr th:unless="${examTotal}==0"-->
+                <tr th:each="monday, iStat : ${allMondays}" th:style="${iStat.odd} ? 'font-weight: bold;'" 
                     th:styleappend="${#maps.containsKey(alleTageMap, monday)} ? 'background-color:var(--orange);'" 
                     th:alt-title="${iStat.even}? 'even' : 'odd'">
                   <td th:text="${iStat.count}"> Semesterwoche</td>
                   <td><span th:text="${#temporals.dayOfWeekNameShort(monday)} + ', ' + ${#temporals.format(monday, 'dd.MM.yyyy')}"> Wochenanfang </span></td>
-                  <td th:if="${#maps.containsKey(alleTageMap, monday)}" colspan="100%" th:text="${alleTageMap.get(monday)}">
+                  <td th:if="${#maps.containsKey(alleTageMap, monday)}" colspan="100%" th:text="${alleTageMap.get(monday)}" th:style="'font-weight: bold;'">
                   <td th:unless="${#maps.containsKey(alleTageMap, monday)}" th:each="subject: ${allSubjects}"
                       th:text="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.tag).dueDate)}"
-                      th:style="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? (${allExams.get(iStat.index).get(subject.tag).countingFactor} >= 1 ? 'background-color:var(--red);' : 'background-color:var(--orange);')"/>
+                      th:style="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? (${allExams.get(iStat.index).get(subject.tag).countingFactor} >= 1 ? 'background-color:var(--red);' : 'background-color:var(--orange);')"
+                      th:styleappend="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? 'font-weight: bold;'"/>
+
                   </td>
                 </tbody>
 <!-- be aware that the above lines could also contain nested conditionals cond1 ? do1 : (cond2 ? do2 : do3)
