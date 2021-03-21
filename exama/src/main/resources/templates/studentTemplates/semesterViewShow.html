@@ -28,6 +28,7 @@
                   <th>SW</th> <!--Schulwoche-->
                   <th>Woche</th>
                   <th th:each="subject: ${allSubjects}" class="column-title" th:text="${subject.tag}" />
+                  <th>Kurzkommentar</th>
                   </tr>
                 </thead>
                 
@@ -38,18 +39,26 @@
                 </tr>
                 <tr th:unless="${examTotal}==0"-->
                 <tr th:each="monday, iStat : ${allMondays}" th:style="${iStat.odd} ? 'font-weight: bold;'" 
-                    th:styleappend="${#maps.containsKey(alleTageMap, monday)} ? 'background-color:var(--orange);'" 
+                    th:styleappend="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--orange);'" 
                     th:alt-title="${iStat.even}? 'even' : 'odd'">
-                  <td th:text="${iStat.count}"> Semesterwoche</td>
+                  <td th:text="${iStat.count}"> Semesterwoche anzeigen</td>
                   <td><span th:text="${#temporals.dayOfWeekNameShort(monday)} + ', ' + ${#temporals.format(monday, 'dd.MM.yyyy')}"> Wochenanfang </span></td>
-                  <td th:if="${#maps.containsKey(alleTageMap, monday)}" colspan="100%" th:text="${alleTageMap.get(monday)}" th:style="'font-weight: bold;'">
-                  <td th:unless="${#maps.containsKey(alleTageMap, monday)}" th:each="subject: ${allSubjects}"
+                  <td th:if="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" colspan="100%" th:text="${alleTageMap.get(monday)}" th:style="'font-weight: bold;'">
+                  <td th:unless="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:each="subject: ${allSubjects}"
                       th:text="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.tag).dueDate)}"
                       th:style="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? (${allExams.get(iStat.index).get(subject.tag).countingFactor} >= 1 ? 'background-color:var(--red);' : 'background-color:var(--orange);')"
                       th:styleappend="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? 'font-weight: bold;'"/>
-
-                  </td>
+                  <td th:unless="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}"
+                      th:text="${#maps.containsKey(alleTageMap, monday)} ? ${alleTageMap.get(monday).getName()} : (${#maps.containsKey(alleTageMap, monday.plusDays(1))} ? ${alleTageMap.get(monday.plusDays(1)).getName()}: (${#maps.containsKey(alleTageMap, monday.plusDays(2))} ? ${alleTageMap.get(monday.plusDays(2)).getName()}: (${#maps.containsKey(alleTageMap, monday.plusDays(3))} ? ${alleTageMap.get(monday.plusDays(3)).getName()}: (${#maps.containsKey(alleTageMap, monday.plusDays(4))} ? ${alleTageMap.get(monday.plusDays(4)).getName()}))))"
+                      th:style="${#maps.containsKey(alleTageMap, monday)} ? 'font-weight:bold;' : (${#maps.containsKey(alleTageMap, monday.plusDays(1))} ? 'font-weight:bold;': (${#maps.containsKey(alleTageMap, monday.plusDays(2))} ? 'font-weight:bold;': (${#maps.containsKey(alleTageMap, monday.plusDays(3))} ? 'font-weight:bold;': (${#maps.containsKey(alleTageMap, monday.plusDays(4))} ? 'font-weight:bold;'))))"
+                      th:styleappend="${#maps.containsKey(alleTageMap, monday)} ?'background-color:var(--orange);': (${#maps.containsKey(alleTageMap, monday.plusDays(1))} ?'background-color:var(--orange);': (${#maps.containsKey(alleTageMap, monday.plusDays(2))} ?'background-color:var(--orange);' :(${#maps.containsKey(alleTageMap, monday.plusDays(3))} ?'background-color:var(--orange);':(${#maps.containsKey(alleTageMap, monday.plusDays(4))} ?'background-color:var(--orange);'))))"
+                  >Kommentarzeile</td>
+                  <td th:if="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}"
+                      </td>
                 </tbody>
+
+
+
 <!-- be aware that the above lines could also contain nested conditionals cond1 ? do1 : (cond2 ? do2 : do3)
 alternative code: : (${#lists.contains(allHolidaysList, monday)} ? 'Ferien' : ' ')-->
 
