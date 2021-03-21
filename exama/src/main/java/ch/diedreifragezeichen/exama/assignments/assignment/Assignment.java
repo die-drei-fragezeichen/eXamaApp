@@ -9,7 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.temporal.ChronoUnit;
 
 import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTime;
-import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistribution;
+import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDistribution;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.users.User;
 

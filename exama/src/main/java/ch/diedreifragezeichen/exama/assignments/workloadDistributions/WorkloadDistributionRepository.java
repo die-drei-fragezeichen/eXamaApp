@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.assignments.workload;
+package ch.diedreifragezeichen.exama.assignments.workloadDistributions;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

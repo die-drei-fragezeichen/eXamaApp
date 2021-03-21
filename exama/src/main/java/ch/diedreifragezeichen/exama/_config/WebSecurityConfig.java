@@ -71,6 +71,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests().anyRequest().authenticated().and()
 
+                // .authorizeRequests().antMatchers("/**").permitAll().and()
+                // .authorizeRequests().anyRequest().permitAll().and()
+
                 .formLogin().loginPage("/login").usernameParameter("email").permitAll().and()
 
                 .exceptionHandling().accessDeniedPage("/403").and()

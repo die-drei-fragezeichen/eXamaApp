@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTimeRepository;
-import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistributionRepository;
-import ch.diedreifragezeichen.exama.assignments.workload.WorkloadDistribution;
+import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDistribution;
+import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDistributionRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.courses.CourseRepository;
 import ch.diedreifragezeichen.exama.users.User;

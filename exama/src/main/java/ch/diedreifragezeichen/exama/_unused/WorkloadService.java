@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.assignments.workload;
+/* package ch.diedreifragezeichen.exama.assignments.workloadDistributions;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,3 +22,4 @@ public class WorkloadService {
         return workload;
     }
 }
+ */

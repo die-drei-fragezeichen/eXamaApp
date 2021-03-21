@@ -34,7 +34,8 @@
                 <br>
                 <div>
                     <label>Klassenlehrer: </label>
-                    <select th:field="*{classTeacher}" class="form-control" required/>
+                    <select th:field="*{classTeacher}" class="form-control"/>
+                    <option th:text="---" th:value="NULL"></option>
                     <option th:each="teacher : ${allTeachers}" th:text="${teacher}" th:selected="(${teacher} == *{classTeacher})" 
                         th:value="${teacher.id}" />
                     </select>

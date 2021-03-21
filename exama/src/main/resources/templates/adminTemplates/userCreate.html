@@ -71,7 +71,8 @@
                 <br>
                 <div>
                     <label>Stammklasse (nur Schüler): </label>
-                    <select th:field="*{coreCourse}" class="form-control" required />
+                    <select th:field="*{coreCourse}" class="form-control"/>
+                    <option th:text="---" th:value="NULL"></option>
                     <option th:each="coreCourse : ${allCoreCourses}" th:text="${coreCourse.name}"
                         th:selected="(${coreCourse} == *{coreCourse})" th:value="${coreCourse.id}" />
                     </select>
