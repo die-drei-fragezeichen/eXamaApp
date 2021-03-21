@@ -25,7 +25,8 @@
                     to.datepicker("option", "minDate", getDate(this));
                 }),
                 //creates the second date (id = toDate)
-                to = $("#toDate").datepicker({
+                to = $("#toDate")
+                .datepicker({
                     dateFormat: "yy-mm-dd",
                     firstDay: 1,
                     changeMonth: true
