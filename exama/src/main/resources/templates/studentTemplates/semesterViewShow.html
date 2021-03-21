@@ -36,12 +36,12 @@
                 </tr>
                 <tr th:unless="${examTotal}==0"
                     th:each="monday, iStat : ${allMondays}" th:style="${iStat.odd} ? 'font-weight: bold;'" 
-                    th:styleappend="${#lists.contains(allHolidaysList, monday)} ? 'background-color:var(--orange);'" 
+                    th:styleappend="${#maps.containsKey(alleTageMap, monday)} ? 'background-color:var(--orange);'" 
                     th:alt-title="${iStat.even}? 'even' : 'odd'">
                   <td th:text="${iStat.count}"> Semesterwoche</td>
                   <td><span th:text="${#temporals.dayOfWeekNameShort(monday)} + ', ' + ${#temporals.format(monday, 'dd.MM.yyyy')}"> Wochenanfang </span></td>
-                  <td th:if="${#lists.contains(allHolidaysList, monday)}" colspan="100%" th:text="${allHolidaysMap.get(monday)}">
-                  <td th:unless="${#lists.contains(allHolidaysList, monday)}" th:each="subject: ${allSubjects}"
+                  <td th:if="${#maps.containsKey(alleTageMap, monday)}" colspan="100%" th:text="${alleTageMap.get(monday)}">
+                  <td th:unless="${#maps.containsKey(alleTageMap, monday)}" th:each="subject: ${allSubjects}"
                       th:text="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.tag).dueDate)}"
                       th:style="${#maps.containsKey(allExams.get(iStat.index), subject.tag)} ? (${allExams.get(iStat.index).get(subject.tag).countingFactor} >= 1 ? 'background-color:var(--red);' : 'background-color:var(--orange);')"/>
                   </td>
