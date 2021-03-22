@@ -1,5 +1,15 @@
 package ch.diedreifragezeichen.exama._config;
 
+import static java.time.DayOfWeek.FRIDAY;
+import static java.time.DayOfWeek.MONDAY;
+import static java.time.DayOfWeek.SATURDAY;
+import static java.time.DayOfWeek.SUNDAY;
+import static java.time.DayOfWeek.THURSDAY;
+import static java.time.DayOfWeek.TUESDAY;
+import static java.time.DayOfWeek.WEDNESDAY;
+import static java.time.temporal.TemporalAdjusters.nextOrSame;
+import static java.time.temporal.TemporalAdjusters.previousOrSame;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +44,7 @@ public class AppController {
      */
     @SuppressWarnings("unchecked")
     @GetMapping("/")
-    public String viewRolespecificLanding() {
+    public String viewRolespecificLanding(Model model) {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         if (!(authLoggedInUser instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authLoggedInUser.getName();
@@ -55,6 +65,8 @@ public class AppController {
         } else if (roles.contains("ADMIN")) {
             return "adminTemplates/index";
         } else if (roles.contains("TEACHER")) {
+        	LocalDate today = LocalDate.now();
+        	model.addAttribute("today", today);
             return "teacherTemplates/index";
         } else if (roles.contains("REFERENCESTUDENT")) {
             return "rstudentTemplates/index";
@@ -95,7 +107,7 @@ public class AppController {
     @GetMapping("/settings")
     public String settings() {
         return "generalTemplates/settings";
-    }
+    }    
     
     /**
      * Go to own profile page
