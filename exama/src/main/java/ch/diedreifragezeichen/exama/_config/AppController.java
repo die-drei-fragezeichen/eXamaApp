@@ -67,6 +67,17 @@ public class AppController {
         } else if (roles.contains("TEACHER")) {
         	LocalDate today = LocalDate.now();
         	model.addAttribute("today", today);
+        	LocalDate monday = today.with(previousOrSame(MONDAY));
+        	model.addAttribute("monday", monday);
+        	LocalDate tuesday = monday.with(nextOrSame(TUESDAY));
+        	model.addAttribute("tuesday", tuesday);
+            LocalDate wednesday = monday.with(nextOrSame(WEDNESDAY));
+        	model.addAttribute("wednesday", wednesday);
+            LocalDate thursday = monday.with(nextOrSame(THURSDAY));
+        	model.addAttribute("thursday", thursday);
+            LocalDate friday = monday.with(nextOrSame(FRIDAY));
+        	model.addAttribute("friday", friday);
+
             return "teacherTemplates/index";
         } else if (roles.contains("REFERENCESTUDENT")) {
             return "rstudentTemplates/index";
