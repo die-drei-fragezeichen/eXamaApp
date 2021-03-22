@@ -17,7 +17,38 @@
             Willkommen <b><span sec:authentication="name"></span></b>! Sie haben die folgenden Nutzungsrechte: <b><span
                     sec:authentication="principal.authorities"></span></b>!
 
+        
+        
+        <br>
+        <br>
+        <br>
+        
+        <hr>
+        
+        
+            <h1>Diese Woche</h1>
+            
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Wochentag</th>
+                        <th>Datum</th>
+                        <th>Kurs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr> <td>Montag </td> <td><span th:text="${today}"></span></td></tr>
+                        <tr> <td>Dienstag </td> <td><span th:text="${today}"></span></td> </tr>
+                        <tr> <td>Mittwoch </td>  <td><span th:text="${today}"></span></td></tr>
+                        <tr> <td>Donnerstag </td> <td><span th:text="${today}"></span></td> </tr>
+                        <tr> <td>Freitag </td> <td><span th:text="${today}"></span></td></tr>
+           				
+                    
+                </tbody>
+            </table>
         </div>
+        
 
         <!-- footer with navigation (only mobile) -->
         <div th:include="fragments/footer :: footer">
