@@ -36,6 +36,8 @@ public class CoreCourse {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "coreCourse")
     private List<User> students;
 
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "coreCourse")
+    private List<Course> courses;
     
 
     /**
@@ -88,4 +90,14 @@ public class CoreCourse {
     public void setStudents(List<User> students) {
         this.students = students;
     }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    
 }

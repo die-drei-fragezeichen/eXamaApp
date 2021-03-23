@@ -116,6 +116,12 @@ public class semesterViewController {
         //     userCourses = courseRepo.findAll();
         //     mav.addObject("userCourses", userCourses);
         // }
+        
+        /**Navbar List */
+            List <Course> userList = new ArrayList<Course>(user.getCourses());
+            mav.addObject("userCoreCourses",
+            userList.stream().map(Course::getCoreCourse).distinct().sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList()));
+
 
         /**
          * retrieve allExams, week by week, for the whole semester and put into a list

@@ -32,6 +32,10 @@ public class Course {
     @JoinColumn(nullable = true)
     private Subject subject;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(nullable = true)
+	private CoreCourse coreCourse;
+
     /**
      * OneToMany mappings
      */
@@ -101,5 +105,13 @@ public class Course {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public CoreCourse getCoreCourse() {
+        return coreCourse;
+    }
+
+    public void setCoreCourse(CoreCourse coreCourse) {
+        this.coreCourse = coreCourse;
     }
 }
