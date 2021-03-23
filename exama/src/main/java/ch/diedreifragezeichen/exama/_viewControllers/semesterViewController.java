@@ -90,14 +90,16 @@ public class semesterViewController {
         }
         mav.addObject("allMondays", mondays);
 
-        //** retrieve all the courses that a user has */
+        //** retrieve current user */
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authLoggedInUser.getName();
         User user = userRepo.findUserByEmail(currentUserName);
-        Set<Course> userCourses = user.getCourses();
-        mav.addObject("userCourses", userCourses);
         String userName = user.getFirstName();
         mav.addObject("userName", userName);
+        //** retrieve courses of current user */
+        Set<Course> userCourses = user.getCourses();
+        mav.addObject("userCourses", userCourses);
+        
 
 
         /**
