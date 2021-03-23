@@ -6,6 +6,9 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.*;
 
 import org.springframework.stereotype.Controller;
@@ -14,10 +17,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.exams.*;
+import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.operator.*;
 import ch.diedreifragezeichen.exama.semesters.*;
 import ch.diedreifragezeichen.exama.subjects.*;
+import ch.diedreifragezeichen.exama.users.User;
+import ch.diedreifragezeichen.exama.users.UserDetailsExama;
+import ch.diedreifragezeichen.exama.users.UserRepository;
 import javassist.NotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 @Controller
 public class semesterViewController {
@@ -32,6 +42,11 @@ public class semesterViewController {
 
     @Autowired
     private SubjectRepository subjectRepo;
+
+    @Autowired UserRepository userRepo;
+
+    @PersistenceContext
+    private EntityManager em;
 
     /**
      * The following methods handle the Semester view creation
@@ -75,6 +90,16 @@ public class semesterViewController {
         }
         mav.addObject("allMondays", mondays);
 
+        //** retrieve all the courses that a user has */
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authLoggedInUser.getName();
+        User user = userRepo.findUserByEmail(currentUserName);
+        Set<Course> userCourses = user.getCourses();
+        mav.addObject("userCourses", userCourses);
+        String userName = user.getFirstName();
+        mav.addObject("userName", userName);
+
+
         /**
          * retrieve allExams, week by week, for the whole semester and put into a list
          * of hashmap. note: dead approach with list of list leads to thymeleaf
@@ -84,7 +109,7 @@ public class semesterViewController {
         monday = semesterStart;
         List<HashMap<String, Exam>> allExams = new ArrayList<>();
         while (monday.isBefore(semesterEnd)) {
-            List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY));
+            List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY)).stream().filter(e -> userCourses.contains(e.getCourse())).collect(Collectors.toList());
             HashMap<String, Exam> map = new HashMap<>();
             for (Exam exam : examsByWeek) {
                 map.put(exam.getCourse().getSubject().getTag(), exam);

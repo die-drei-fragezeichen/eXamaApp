@@ -10,11 +10,14 @@
         <!-- header with navigation (only desktop and tablet), title and logout-button -->
         <div th:include="fragments/header :: header"></div>
         
-        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
-        
+<div th:fragment="coursenavigation">
+    <div sec:authorize="hasAnyAuthority('TEACHER')" id="course-navigation">
+        <div th:each="course: ${userCourses}" class="course-navigation-item" onclick="location.href='/semesterView/choose';"><p data-th-text="${course.getName()}"> </p></div>
+    </div>
+</div>        
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1 data-th-text="'Das ist deine Semesterübersicht für das ' + ${semester.name}"> </h1>
+            <h1 data-th-text="'Das ist deine Semesterübersicht für das ' + ${semester.name} + ', ' + ${userName}"> </h1>
             <a href="/semesterView/choose">> neues Semester auswählen</a><br><br>
             
             <!-- dead code - Keep for practice's sake -->
