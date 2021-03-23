@@ -18,16 +18,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.exams.*;
 import ch.diedreifragezeichen.exama.courses.Course;
+import ch.diedreifragezeichen.exama.courses.CourseRepository;
 import ch.diedreifragezeichen.exama.operator.*;
 import ch.diedreifragezeichen.exama.semesters.*;
 import ch.diedreifragezeichen.exama.subjects.*;
+import ch.diedreifragezeichen.exama.users.RoleRepository;
 import ch.diedreifragezeichen.exama.users.User;
 import ch.diedreifragezeichen.exama.users.UserDetailsExama;
 import ch.diedreifragezeichen.exama.users.UserRepository;
 import javassist.NotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
 
 @Controller
 public class semesterViewController {
@@ -43,7 +44,14 @@ public class semesterViewController {
     @Autowired
     private SubjectRepository subjectRepo;
 
-    @Autowired UserRepository userRepo;
+    @Autowired
+    private UserRepository userRepo;
+
+    @Autowired
+    private RoleRepository roleRepo;
+
+    @Autowired
+    private CourseRepository courseRepo;
 
     @PersistenceContext
     private EntityManager em;
@@ -78,7 +86,8 @@ public class semesterViewController {
 
         /** count all the exams */
         // Dead code: keep for practice's sake
-        // Long examTotal = examRepo.findAllByDueDateBetween(semesterStart, semesterEnd).stream().count();
+        // Long examTotal = examRepo.findAllByDueDateBetween(semesterStart,
+        // semesterEnd).stream().count();
         // mav.addObject("examTotal", examTotal);
 
         /** create a list of all Mondays */
@@ -90,17 +99,23 @@ public class semesterViewController {
         }
         mav.addObject("allMondays", mondays);
 
-        //** retrieve current user */
+        // ** retrieve current user */
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authLoggedInUser.getName();
         User user = userRepo.findUserByEmail(currentUserName);
         String userName = user.getFirstName();
         mav.addObject("userName", userName);
-        //** retrieve courses of current user */
-        Set<Course> userCourses = user.getCourses();
-        mav.addObject("userCourses", userCourses);
-        
-
+        // check if current user is a student
+        List<Course> userCourses = new ArrayList<Course>(user.getCourses());
+        // if (user.getRoles().contains(roleRepo.findRoleById(39l))) {
+            // ** retrieve courses of current user if student */
+            mav.addObject("userCourses",
+                    userCourses.stream().sorted((c1, c2) -> c1.getSubject().getId().compareTo(c2.getSubject().getId()))
+                            .collect(Collectors.toList()));
+        // } else {
+        //     userCourses = courseRepo.findAll();
+        //     mav.addObject("userCourses", userCourses);
+        // }
 
         /**
          * retrieve allExams, week by week, for the whole semester and put into a list
@@ -111,7 +126,8 @@ public class semesterViewController {
         monday = semesterStart;
         List<HashMap<String, Exam>> allExams = new ArrayList<>();
         while (monday.isBefore(semesterEnd)) {
-            List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY)).stream().filter(e -> userCourses.contains(e.getCourse())).collect(Collectors.toList());
+            List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY)).stream()
+                    .filter(e -> userCourses.contains(e.getCourse())).collect(Collectors.toList());
             HashMap<String, Exam> map = new HashMap<>();
             for (Exam exam : examsByWeek) {
                 map.put(exam.getCourse().getSubject().getTag(), exam);
@@ -120,7 +136,7 @@ public class semesterViewController {
             monday = monday.plusWeeks(1);
         }
         mav.addObject("allExams", allExams);
-        
+
         /** Count all exams */
         // Dead code: keep for practice's sake
         // long xExam = allExams.stream().count();
@@ -133,7 +149,7 @@ public class semesterViewController {
         for (Holiday holiday : listHolidays) {
             long holidayLength = ChronoUnit.DAYS.between(holiday.getStartDate(), holiday.getEndDate());
             List<LocalDate> allHolidayDays = Stream.iterate(holiday.getStartDate(), date -> date.plusDays(1))
-                    .limit(holidayLength+1).collect(Collectors.toList());
+                    .limit(holidayLength + 1).collect(Collectors.toList());
             for (LocalDate date : allHolidayDays) {
 
                 alleTageMap.put(date, holiday);

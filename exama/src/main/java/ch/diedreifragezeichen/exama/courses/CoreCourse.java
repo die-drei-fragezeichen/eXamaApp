@@ -36,6 +36,8 @@ public class CoreCourse {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "coreCourse")
     private List<User> students;
 
+    
+
     /**
      * Methods
      */
