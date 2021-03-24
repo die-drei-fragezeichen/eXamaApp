@@ -34,11 +34,7 @@ public class CoreCourse {
      * OneToMany mappings
      */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "coreCourse")
-    private List<User> students;
-
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "coreCourse")
-    private List<Course> courses;
-    
+    private List<User> students;    
 
     /**
      * Methods
@@ -92,12 +88,6 @@ public class CoreCourse {
     }
 
     public List<Course> getCourses() {
-        return courses;
+        return new ArrayList<Course>();
     }
-
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
-
-    
 }
