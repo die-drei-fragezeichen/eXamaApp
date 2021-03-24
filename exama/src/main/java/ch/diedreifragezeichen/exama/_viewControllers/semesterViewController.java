@@ -20,7 +20,6 @@ import ch.diedreifragezeichen.exama.assignments.exams.*;
 import ch.diedreifragezeichen.exama.courses.CoreCourse;
 import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
-import ch.diedreifragezeichen.exama.courses.CourseRepository;
 import ch.diedreifragezeichen.exama.operator.*;
 import ch.diedreifragezeichen.exama.semesters.*;
 import ch.diedreifragezeichen.exama.subjects.*;
@@ -59,21 +58,23 @@ public class semesterViewController {
 
     /**
      * The following methods handle the Semester view creation
+     * @throws NotFoundException
      */
 
-    @GetMapping("/semesterView/choose")
-    public ModelAndView selectSemester() {
-        ModelAndView mav = new ModelAndView("studentTemplates/semesterViewChoose");
-        List<Semester> allSemesters = semesterRepo.findAll();
-        mav.addObject("allSemesters", allSemesters);
-
-        Operator semester = new Operator();
-        mav.addObject("chosenSemster", semester);
-
-        return mav;
+    @GetMapping("/semesterView")
+    public ModelAndView initializeView() throws NotFoundException{
+        LocalDate today = LocalDate.now();
+        LocalDate currentSemesterStart = semesterRepo.findAll().stream().filter(u -> Objects.nonNull(u.getStartDate())).map(Semester::getStartDate).filter(u -> Objects.nonNull(u.isBefore(today))).filter(date -> date.isBefore(today)).sorted((c1, c2) -> c1.compareTo(c2)).reduce((first, second) -> second).get();
+        if (currentSemesterStart == null) {
+            throw new NotFoundException("No Semester has been assigned");
+        }
+        List<Semester> currentSem = semesterRepo.findAll().stream().filter(s->s.getStartDate() == currentSemesterStart).collect(Collectors.toList());
+        Semester currentSemester = currentSem.get(0);
+        
+        return selectSemesterView(currentSemester.getId());
     }
 
-    // initial mapping
+    //mapping following semester selection
     @GetMapping("/semesterView/select")                   
     public ModelAndView selectSemesterView(@RequestParam(name = "selectedSemester") Long semesterId) throws NotFoundException {
 
@@ -104,7 +105,7 @@ public class semesterViewController {
         }
     }
 
-    // coreCourseSelectedMapping
+    // actual Mapping for semesterView after parameters have been defined
     @GetMapping("/semesterView/show")                   
     public ModelAndView showSemesterView(@RequestParam(name = "selectedSemester") Long semesterId,
             @RequestParam(name = "selectedCoreCourse") Long coreCourseId) throws NotFoundException {
@@ -226,7 +227,17 @@ public class semesterViewController {
         return mav;
 
     }
+    @GetMapping("/semesterView/choose")
+    public ModelAndView selectSemester() {
+        ModelAndView mav = new ModelAndView("studentTemplates/semesterViewChoose");
+        List<Semester> allSemesters = semesterRepo.findAll();
+        mav.addObject("allSemesters", allSemesters);
 
+        Operator semester = new Operator();
+        mav.addObject("chosenSemster", semester);
+
+        return mav;
+    }
     /**
      * Sample Code
      * 
