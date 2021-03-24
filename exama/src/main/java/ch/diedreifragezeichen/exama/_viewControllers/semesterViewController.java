@@ -26,7 +26,6 @@ import ch.diedreifragezeichen.exama.semesters.*;
 import ch.diedreifragezeichen.exama.subjects.*;
 import ch.diedreifragezeichen.exama.users.RoleRepository;
 import ch.diedreifragezeichen.exama.users.User;
-import ch.diedreifragezeichen.exama.users.UserDetailsExama;
 import ch.diedreifragezeichen.exama.users.UserRepository;
 import javassist.NotFoundException;
 import org.springframework.security.core.Authentication;
@@ -53,9 +52,6 @@ public class semesterViewController {
     private RoleRepository roleRepo;
 
     @Autowired
-    private CourseRepository courseRepo;
-
-    @Autowired
     private CoreCourseRepository coreCourseRepo;
 
     @PersistenceContext
@@ -77,13 +73,45 @@ public class semesterViewController {
         return mav;
     }
 
-    @GetMapping("/semesterView/show")
-    public ModelAndView showSemesterView(@RequestParam(name = "selectedSemester") Long semesterId, @RequestParam(name = "selectedCoreCourse") Long coreCourseId) throws NotFoundException {
+    // initial mapping
+    @GetMapping("/semesterView/select")                   
+    public ModelAndView selectSemesterView(@RequestParam(name = "selectedSemester") Long semesterId) throws NotFoundException {
+
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authLoggedInUser.getName();
+        User user = userRepo.findUserByEmail(currentUserName);
+        // if user is student get student's coreCourse id and redirect accordingly.
+        if (user.getRoles().contains(roleRepo.findRoleById(39l))) {
+            // ** retrieve courses of current user if student */
+            CoreCourse userCoreCourse = user.getCoreCourse();
+            if (userCoreCourse == null) {
+                throw new NotFoundException("CoreCourse not assigned");
+            }
+            return showSemesterView(semesterId, userCoreCourse.getId());
+
+        } else {
+            /**
+             * Else user is not a student. User will see the actual coreCourse subject list.
+             * So user is redirected with its first coreCourse
+             */
+            CoreCourse firstCoreCourse = user.getCourses().stream().map(Course::getUsersList).flatMap(List::stream)
+                    .distinct().filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoreCourse).distinct()
+                    .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).findFirst().orElse(null);
+            if (firstCoreCourse == null) {
+                throw new NotFoundException("no Courses or CoreCourses have been assigned");
+            }
+            return showSemesterView(semesterId, firstCoreCourse.getId());
+        }
+    }
+
+    // coreCourseSelectedMapping
+    @GetMapping("/semesterView/show")                   
+    public ModelAndView showSemesterView(@RequestParam(name = "selectedSemester") Long semesterId,
+            @RequestParam(name = "selectedCoreCourse") Long coreCourseId) throws NotFoundException {
         ModelAndView mav = new ModelAndView("studentTemplates/semesterViewShow");
 
         Semester semester = semesterRepo.findSemesterById(semesterId);
         mav.addObject("semester", semester);
-
 
         /** retrieve semester Information and first / last day of Semester */
         LocalDate semesterStart = semester.getStartDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
@@ -115,21 +143,22 @@ public class semesterViewController {
         List<Course> userCourses = new ArrayList<Course>(user.getCourses());
         // check if current user is a student
         if (user.getRoles().contains(roleRepo.findRoleById(39l))) {
-        // ** retrieve courses of current user if student */
-        List<Subject> currentStudentSubjects = user.getCourses().stream().filter(c -> Objects.nonNull(c.getSubject())).map(Course::getSubject).sorted((c1, c2) -> c1.getId().compareTo(c2.getId()))
-        .collect(Collectors.toList());
-        mav.addObject("userSubjects", currentStudentSubjects);
+            // ** retrieve courses of current user if student */
+            List<Subject> currentStudentSubjects = user.getCourses().stream()
+                    .filter(c -> Objects.nonNull(c.getSubject())).map(Course::getSubject)
+                    .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
+            mav.addObject("userSubjects", currentStudentSubjects);
         } else {
-        /**
-         * Else user is not a student. User will see the actual coreCourse subject list
-         */
-        CoreCourse coreCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
-        List<Subject> studentsSubjects = coreCourse.getStudents().stream().filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoursesList)
-                .flatMap(List::stream).distinct().map(Course::getSubject).distinct()
-                .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
-        mav.addObject("userSubjects", studentsSubjects);
+            /**
+             * Else user is not a student. User will see the actual coreCourse subject list
+             */
+            CoreCourse coreCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
+            List<Subject> studentsSubjects = coreCourse.getStudents().stream()
+                    .filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoursesList).flatMap(List::stream)
+                    .distinct().map(Course::getSubject).distinct().sorted((c1, c2) -> c1.getId().compareTo(c2.getId()))
+                    .collect(Collectors.toList());
+            mav.addObject("userSubjects", studentsSubjects);
         }
-
 
         /** Create the user's CoreCourses for the Navbar List */
         List<CoreCourse> teacherStudentCoreCourses = user.getCourses().stream().map(Course::getUsersList)
@@ -148,9 +177,6 @@ public class semesterViewController {
         // userStudentList.stream().filter(u ->
         // Objects.nonNull(u.getCoreCourse())).map(User::getCoreCourse).distinct().sorted((c1,
         // c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
-
-
-
 
         /**
          * retrieve allExams, week by week, for the whole semester and put into a list
