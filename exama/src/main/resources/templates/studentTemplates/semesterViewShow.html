@@ -30,7 +30,7 @@
                   <tr class="headings">
                   <th>SW</th> <!--Schulwoche-->
                   <th>Woche</th>
-                  <th th:each="subject: ${studentSubjects}" class="column-title" th:text="${subject}" />
+                  <th th:each="subject: ${userSubjects}" class="column-title" th:text="${subject.getTag()}" />
                   <th>Kurzkommentar</th>
                   </tr>
                 </thead>
@@ -47,7 +47,7 @@
                   <td th:text="${iStat.count}"> Semesterwoche anzeigen</td>
                   <td><span th:text="${#temporals.dayOfWeekNameShort(monday)} + ', ' + ${#temporals.format(monday, 'dd.MM.yyyy')}"> Wochenanfang </span></td>
                   <td th:if="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" colspan="100%" th:text="${alleTageMap.get(monday)}" th:style="'font-weight: bold;'">
-                  <td th:unless="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:each="subject: ${studentSubjects}"
+                  <td th:unless="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:each="subject: ${userSubjects}"
                       th:text="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)}"
                       th:style="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? (${allExams.get(iStat.index).get(subject.getTag()).countingFactor} >= 1 ? 'background-color:var(--red);' : 'background-color:var(--orange);')"
                       th:styleappend="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? 'font-weight: bold;'"/>

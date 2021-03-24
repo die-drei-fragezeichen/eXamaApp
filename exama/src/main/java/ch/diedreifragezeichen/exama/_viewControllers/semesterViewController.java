@@ -106,13 +106,29 @@ public class semesterViewController {
         User user = userRepo.findUserByEmail(currentUserName);
         String userName = user.getFirstName();
         mav.addObject("userName", userName);
-        // check if current user is a student
+
         List<Course> userCourses = new ArrayList<Course>(user.getCourses());
-        // if (user.getRoles().contains(roleRepo.findRoleById(39l))) {
+        // check if current user is a student
+
+        if (user.getRoles().contains(roleRepo.findRoleById(39l))) {
         // ** retrieve courses of current user if student */
-        mav.addObject("userCourses",
-                userCourses.stream().sorted((c1, c2) -> c1.getSubject().getId().compareTo(c2.getSubject().getId()))
-                        .collect(Collectors.toList()));
+        List<Subject> currentStudentSubjects = user.getCourses().stream().filter(c -> Objects.nonNull(c.getSubject())).map(Course::getSubject).sorted((c1, c2) -> c1.getId().compareTo(c2.getId()))
+        .collect(Collectors.toList());
+        mav.addObject("userSubjects", currentStudentSubjects);
+        } else {
+        /**
+         * Create the user's student's subject List. Currently this list is handed over
+         * for the semesterview. This is wrong, but works for the moment. Eventually,
+         * the actual coreCourse subject list (provided parameter needs to be passed on
+         * to the model)
+         */
+
+        List<Subject> studentsSubjects = user.getCourses().stream().map(Course::getUsersList).flatMap(List::stream)
+                .distinct().filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoursesList)
+                .flatMap(List::stream).distinct().map(Course::getSubject).distinct()
+                .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
+        mav.addObject("userSubjects", studentsSubjects);
+        }
         // } else {
         // userCourses = courseRepo.findAll();
         // mav.addObject("userCourses", userCourses);
@@ -137,18 +153,8 @@ public class semesterViewController {
         // Objects.nonNull(u.getCoreCourse())).map(User::getCoreCourse).distinct().sorted((c1,
         // c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
 
-        /**
-         * Create the user's student's subject List. Currently this list is handed over
-         * for the semesterview. This is wrong, but works for the moment. Eventually,
-         * the actual coreCourse subject list (provided parameter needs to be passed on
-         * to the model)
-         */
 
-        List<Subject> studentsSubjects = user.getCourses().stream().map(Course::getUsersList).flatMap(List::stream)
-                .distinct().filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoursesList)
-                .flatMap(List::stream).distinct().map(Course::getSubject).distinct()
-                .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
-        mav.addObject("studentSubjects", studentsSubjects);
+
 
         /**
          * retrieve allExams, week by week, for the whole semester and put into a list
