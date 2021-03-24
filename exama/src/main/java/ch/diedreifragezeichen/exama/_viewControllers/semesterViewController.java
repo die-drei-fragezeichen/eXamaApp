@@ -129,10 +129,7 @@ public class semesterViewController {
                 .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
         mav.addObject("userSubjects", studentsSubjects);
         }
-        // } else {
-        // userCourses = courseRepo.findAll();
-        // mav.addObject("userCourses", userCourses);
-        // }
+
 
         /** Create the user's CoreCourses for the Navbar List */
 
