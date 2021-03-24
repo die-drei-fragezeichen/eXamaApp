@@ -121,14 +121,10 @@ public class semesterViewController {
         mav.addObject("userSubjects", currentStudentSubjects);
         } else {
         /**
-         * Create the user's student's subject List. Currently this list is handed over
-         * for the semesterview. This is wrong, but works for the moment. Eventually,
-         * the actual coreCourse subject list (provided parameter needs to be passed on
-         * to the model)
+         * Else user is not a student. User will see the actual coreCourse subject list
          */
         CoreCourse coreCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
-        List<Subject> studentsSubjects = coreCourse.getCourses().stream().map(Course::getUsersList).flatMap(List::stream)
-                .distinct().filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoursesList)
+        List<Subject> studentsSubjects = coreCourse.getStudents().stream().filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoursesList)
                 .flatMap(List::stream).distinct().map(Course::getSubject).distinct()
                 .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
         mav.addObject("userSubjects", studentsSubjects);
