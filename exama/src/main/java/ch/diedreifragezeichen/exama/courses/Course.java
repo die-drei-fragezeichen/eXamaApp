@@ -67,6 +67,51 @@ public class Course {
     }
 
     /**
+     * Get CoreCourse call on Course returns the CoreCourse of a specific Course if
+     * there is only one CoreCourse present returns null if there are no students in
+     * the course or if there are different CoreCourses present (returns the same
+     * than before with the field CoreCourse, which was set to null on a course with
+     * students form different courses)
+     */
+    public CoreCourse getCoreCourse() {
+        Set<User> studentSet = this.getUsers();
+        // return null, if there are no users in the course
+        if (studentSet == null) {
+            return null;
+        }
+        List<User> studentList = studentSet.stream().filter(u -> Objects.nonNull(u.getCoreCourse()))
+                .collect(Collectors.toList());
+        // return null, if there are no students in the course (a teacher doesnt have a
+        // coreCourse)
+        if (studentList.size() == 0) {
+            return null;
+        }
+        int numCoreCourses = studentList.stream().map(User::getCoreCourse).distinct().collect(Collectors.toList())
+                .size();
+        // return null, if there are students from more than one coreCourses present in
+        // the course
+        if (numCoreCourses != 1) {
+            return null;
+        }
+        return studentList.get(0).getCoreCourse();
+    }
+
+    /** Get a list of all CoreCourse present in a specific Course */
+    public List<CoreCourse> getAllCoreCourses() {
+        Set<User> studentSet = this.getUsers();
+        if (studentSet == null) {
+            return null;
+        }
+        List<User> studentList = studentSet.stream().filter(u -> Objects.nonNull(u.getCoreCourse()))
+                .collect(Collectors.toList());
+        if (studentList.size() == 0) {
+            return null;
+        }
+        // return all different CoureCourses present in the Studentlist as a List.
+        return studentList.stream().map(User::getCoreCourse).distinct().collect(Collectors.toList());
+    }
+
+    /**
      * Getters and Setters only
      */
     public Long getId() {
@@ -115,47 +160,5 @@ public class Course {
 
     public void setUsers(Set<User> users) {
         this.users = users;
-    }
-
-    /** Get CoreCourse call on Course */
-    public CoreCourse getCoreCourse() {
-        Set<User> studentSet = this.getUsers();
-        if (studentSet == null) {
-            return null;
-        }
-        List<User> studentList = studentSet.stream().filter(u -> Objects.nonNull(u.getCoreCourse()))
-                .collect(Collectors.toList());
-        if (studentList.size() == 0) {
-            return null;
-        }
-        CoreCourse coreCourse = studentList.get(0).getCoreCourse();
-        for (int i = 0; i < studentList.size() - 1; i++) {
-            System.out.println(i);
-            System.out.println(studentList.size());
-            System.out.println(studentList.get(i).getCoreCourse().getName() + " / "
-                    + studentList.get(i + 1).getCoreCourse().getName());
-            if (!studentList.get(i).getCoreCourse().equals(studentList.get(i).getCoreCourse())) {
-                return null;
-            }
-        }
-        return coreCourse;
-    }
-    /** Get a list of all CoreCourse present in a specific Course */
-    public List<CoreCourse> getAllCoreCourses() {
-        Set<User> studentSet = this.getUsers();
-        if (studentSet == null) {
-            return null;
-        }
-        List<User> studentList = studentSet.stream().filter(u -> Objects.nonNull(u.getCoreCourse()))
-                .collect(Collectors.toList());
-        if (studentList.size() == 0) {
-            return null;
-        }
-        List<CoreCourse> coreCourses = new ArrayList<CoreCourse>();
-        for (User s : studentList) {
-            coreCourses.add(s.getCoreCourse());
-        }
-        coreCourses = coreCourses.stream().distinct().collect(Collectors.toList());
-        return coreCourses;
     }
 }
