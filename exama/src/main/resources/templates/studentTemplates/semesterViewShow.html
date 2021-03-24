@@ -17,7 +17,7 @@
 </div>        
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1 data-th-text="'Das ist deine Semesterübersicht für das ' + ${semester.name} + ', ' + ${#request.userPrincipal.principal.abbreviation}"> </h1>
+            <h1 data-th-text="'Das ist deine Semesterübersicht für das ' + ${semester.name} + ', ' + ${#request.userPrincipal.principal.getFirstName}"> </h1>
             <a href="/semesterView/choose">> neues Semester auswählen</a><br><br>
             
             <!-- dead code - Keep for practice's sake -->

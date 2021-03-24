@@ -58,25 +58,31 @@ public class semesterViewController {
 
     /**
      * The following methods handle the Semester view creation
+     * 
      * @throws NotFoundException
      */
 
     @GetMapping("/semesterView")
-    public ModelAndView initializeView() throws NotFoundException{
+    public ModelAndView initializeView() throws NotFoundException {
         LocalDate today = LocalDate.now();
-        LocalDate currentSemesterStart = semesterRepo.findAll().stream().filter(u -> Objects.nonNull(u.getStartDate())).map(Semester::getStartDate).filter(u -> Objects.nonNull(u.isBefore(today))).filter(date -> date.isBefore(today)).sorted((c1, c2) -> c1.compareTo(c2)).reduce((first, second) -> second).get();
+        LocalDate currentSemesterStart = semesterRepo.findAll().stream().filter(u -> Objects.nonNull(u.getStartDate()))
+                .map(Semester::getStartDate).filter(u -> Objects.nonNull(u.isBefore(today)))
+                .filter(date -> date.isBefore(today)).sorted((c1, c2) -> c1.compareTo(c2))
+                .reduce((first, second) -> second).get();
         if (currentSemesterStart == null) {
             throw new NotFoundException("No Semester has been assigned");
         }
-        List<Semester> currentSem = semesterRepo.findAll().stream().filter(s->s.getStartDate() == currentSemesterStart).collect(Collectors.toList());
+        List<Semester> currentSem = semesterRepo.findAll().stream()
+                .filter(s -> s.getStartDate() == currentSemesterStart).collect(Collectors.toList());
         Semester currentSemester = currentSem.get(0);
-        
+
         return selectSemesterView(currentSemester.getId());
     }
 
-    //mapping following semester selection
-    @GetMapping("/semesterView/select")                   
-    public ModelAndView selectSemesterView(@RequestParam(name = "selectedSemester") Long semesterId) throws NotFoundException {
+    // mapping following semester selection
+    @GetMapping("/semesterView/select")
+    public ModelAndView selectSemesterView(@RequestParam(name = "selectedSemester") Long semesterId)
+            throws NotFoundException {
 
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authLoggedInUser.getName();
@@ -106,11 +112,12 @@ public class semesterViewController {
     }
 
     // actual Mapping for semesterView after parameters have been defined
-    @GetMapping("/semesterView/show")                   
+    @GetMapping("/semesterView/show")
     public ModelAndView showSemesterView(@RequestParam(name = "selectedSemester") Long semesterId,
             @RequestParam(name = "selectedCoreCourse") Long coreCourseId) throws NotFoundException {
-        ModelAndView mav = new ModelAndView("studentTemplates/semesterViewShow");
 
+        ModelAndView mav = new ModelAndView("studentTemplates/semesterViewShow");
+        /** The following parts deal with time parameters */
         Semester semester = semesterRepo.findSemesterById(semesterId);
         mav.addObject("semester", semester);
 
@@ -118,12 +125,6 @@ public class semesterViewController {
         LocalDate semesterStart = semester.getStartDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate monday = semesterStart;
         LocalDate semesterEnd = semester.getEndDate().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
-
-        /** count all the exams */
-        // Dead code: keep for practice's sake
-        // Long examTotal = examRepo.findAllByDueDateBetween(semesterStart,
-        // semesterEnd).stream().count();
-        // mav.addObject("examTotal", examTotal);
 
         /** create a list of all Mondays */
         List<LocalDate> mondays = new ArrayList<>();
@@ -134,6 +135,7 @@ public class semesterViewController {
         }
         mav.addObject("allMondays", mondays);
 
+        /** The following parts deal with user information */
         // ** retrieve current user */
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authLoggedInUser.getName();
@@ -179,6 +181,7 @@ public class semesterViewController {
         // Objects.nonNull(u.getCoreCourse())).map(User::getCoreCourse).distinct().sorted((c1,
         // c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
 
+        /** The following parts deal with exam information */
         /**
          * retrieve allExams, week by week, for the whole semester and put into a list
          * of hashmap. note: dead approach with list of list leads to thymeleaf
@@ -187,15 +190,32 @@ public class semesterViewController {
          */
         monday = semesterStart;
         List<HashMap<String, Exam>> allExams = new ArrayList<>();
-        while (monday.isBefore(semesterEnd)) {
-            List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY)).stream()
-                    .filter(e -> userCourses.contains(e.getCourse())).collect(Collectors.toList());
-            HashMap<String, Exam> map = new HashMap<>();
-            for (Exam exam : examsByWeek) {
-                map.put(exam.getCourse().getSubject().getTag(), exam);
+        if (user.getRoles().contains(roleRepo.findRoleById(39l))) {
+            while (monday.isBefore(semesterEnd)) {
+                List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY))
+                        .stream().filter(e -> userCourses.contains(e.getCourse())).collect(Collectors.toList());
+                HashMap<String, Exam> map = new HashMap<>();
+                for (Exam exam : examsByWeek) {
+                    map.put(exam.getCourse().getSubject().getTag(), exam);
+                }
+                allExams.add(map);
+                monday = monday.plusWeeks(1);
             }
-            allExams.add(map);
-            monday = monday.plusWeeks(1);
+        } else {
+            CoreCourse coreCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
+            List<Course> coreCourseCourses = coreCourse.getStudents().stream()
+                    .filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoursesList).flatMap(List::stream)
+                    .distinct().collect(Collectors.toList());
+            while (monday.isBefore(semesterEnd)) {
+                List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY))
+                        .stream().filter(e -> coreCourseCourses.contains(e.getCourse())).collect(Collectors.toList());
+                HashMap<String, Exam> map = new HashMap<>();
+                for (Exam exam : examsByWeek) {
+                    map.put(exam.getCourse().getSubject().getTag(), exam);
+                }
+                allExams.add(map);
+                monday = monday.plusWeeks(1);
+            }
         }
         mav.addObject("allExams", allExams);
 
@@ -227,6 +247,7 @@ public class semesterViewController {
         return mav;
 
     }
+
     @GetMapping("/semesterView/choose")
     public ModelAndView selectSemester() {
         ModelAndView mav = new ModelAndView("studentTemplates/semesterViewChoose");
@@ -238,6 +259,7 @@ public class semesterViewController {
 
         return mav;
     }
+
     /**
      * Sample Code
      * 
