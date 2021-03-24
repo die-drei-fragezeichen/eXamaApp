@@ -1,6 +1,7 @@
 package ch.diedreifragezeichen.exama.courses;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.persistence.*;
 
@@ -8,12 +9,14 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import ch.diedreifragezeichen.exama.assignments.exams.Exam;
 import ch.diedreifragezeichen.exama.subjects.Subject;
+import ch.diedreifragezeichen.exama.users.RoleRepository;
 import ch.diedreifragezeichen.exama.users.User;
 
 @Entity
 @DynamicUpdate
 @Table(name = "courses")
 public class Course {
+    private static RoleRepository roleRepo;
     /**
      * Fields
      */
@@ -32,9 +35,10 @@ public class Course {
     @JoinColumn(nullable = true)
     private Subject subject;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    // unnecessary field -> all data allready saved -> look at getCoreCourse / getAllCoreCourses
+    /* @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = true)
-	private CoreCourse coreCourse;
+	private CoreCourse coreCourse; */
 
     /**
      * OneToMany mappings
@@ -107,11 +111,42 @@ public class Course {
         this.users = users;
     }
 
+    
+    // Get CoreCourse / CoreCourseList
     public CoreCourse getCoreCourse() {
+        Set<User> studentSet = this.getUsers();
+        if(studentSet == null){
+            return null;
+        }
+        List<User> studentList = studentSet.stream().filter(u -> Objects.nonNull(u.getCoreCourse())).collect(Collectors.toList());
+        if(studentList.size() == 0){
+            return null;
+        }
+        CoreCourse coreCourse = studentList.get(0).getCoreCourse();
+        for(int i = 0; i<studentList.size()-1; i++){
+            System.out.println(i);
+            System.out.println(studentList.size());
+            System.out.println(studentList.get(i).getCoreCourse().getName()+" / "+studentList.get(i+1).getCoreCourse().getName());
+            if(!studentList.get(i).getCoreCourse().equals(studentList.get(i).getCoreCourse())){
+                return null;
+            }
+        }
         return coreCourse;
     }
-
-    public void setCoreCourse(CoreCourse coreCourse) {
-        this.coreCourse = coreCourse;
+    public List<CoreCourse> getAllCoreCourses() {
+        Set<User> studentSet = this.getUsers();
+        if(studentSet == null){
+            return null;
+        }
+        List<User> studentList = studentSet.stream().filter(u -> Objects.nonNull(u.getCoreCourse())).collect(Collectors.toList());
+        if(studentList.size() == 0){
+            return null;
+        }
+        List<CoreCourse> coreCourses = new ArrayList<CoreCourse>();
+        for(User s : studentList){
+            coreCourses.add(s.getCoreCourse());
+        }
+        coreCourses = coreCourses.stream().distinct().collect(Collectors.toList());
+        return coreCourses;
     }
 }

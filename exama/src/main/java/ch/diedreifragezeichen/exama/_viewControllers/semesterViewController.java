@@ -120,7 +120,7 @@ public class semesterViewController {
         /**Navbar List */
             List <Course> userList = new ArrayList<Course>(user.getCourses());
             mav.addObject("userCoreCourses",
-            userList.stream().map(Course::getCoreCourse).distinct().sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList()));
+            userList.stream().map(u -> u.getCoreCourse()).distinct().sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList()));
 
 
         /**
