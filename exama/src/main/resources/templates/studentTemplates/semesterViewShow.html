@@ -12,7 +12,7 @@
         
 <div th:fragment="coursenavigation">
     <div sec:authorize="hasAnyAuthority('TEACHER')" id="course-navigation">
-      <a th:each="coreCourse: ${teachersCoreCourses}" th:href="@{/semesterView/choose?selectedSemester={sId}&coreCourse={ccId}(sId=${semester.id}, ccId=${coreCourse.id})}"><div class="course-navigation-item"><p data-th-text="${coreCourse}"> </p></div></a>
+      <a th:each="coreCourse: ${teachersCoreCourses}" th:href="@{/semesterView/show?selectedSemester={sId}&selectedCoreCourse={ccId}(sId=${semester.id}, ccId=${coreCourse.id})}"><div class="course-navigation-item"><p data-th-text="${coreCourse}"> </p></div></a>
     </div>
 </div>        
         <!-- content displayed in the center of the window -->

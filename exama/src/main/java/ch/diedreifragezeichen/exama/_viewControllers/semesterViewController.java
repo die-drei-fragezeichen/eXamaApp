@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.exams.*;
 import ch.diedreifragezeichen.exama.courses.CoreCourse;
+import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.courses.CourseRepository;
 import ch.diedreifragezeichen.exama.operator.*;
@@ -54,6 +55,9 @@ public class semesterViewController {
     @Autowired
     private CourseRepository courseRepo;
 
+    @Autowired
+    private CoreCourseRepository coreCourseRepo;
+
     @PersistenceContext
     private EntityManager em;
 
@@ -74,11 +78,12 @@ public class semesterViewController {
     }
 
     @GetMapping("/semesterView/show")
-    public ModelAndView showSemesterView(@RequestParam(name = "selectedSemester") Long id) throws NotFoundException {
+    public ModelAndView showSemesterView(@RequestParam(name = "selectedSemester") Long semesterId, @RequestParam(name = "selectedCoreCourse") Long coreCourseId) throws NotFoundException {
         ModelAndView mav = new ModelAndView("studentTemplates/semesterViewShow");
 
-        Semester semester = semesterRepo.findSemesterById(id);
+        Semester semester = semesterRepo.findSemesterById(semesterId);
         mav.addObject("semester", semester);
+
 
         /** retrieve semester Information and first / last day of Semester */
         LocalDate semesterStart = semester.getStartDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
@@ -109,7 +114,6 @@ public class semesterViewController {
 
         List<Course> userCourses = new ArrayList<Course>(user.getCourses());
         // check if current user is a student
-
         if (user.getRoles().contains(roleRepo.findRoleById(39l))) {
         // ** retrieve courses of current user if student */
         List<Subject> currentStudentSubjects = user.getCourses().stream().filter(c -> Objects.nonNull(c.getSubject())).map(Course::getSubject).sorted((c1, c2) -> c1.getId().compareTo(c2.getId()))
@@ -122,8 +126,8 @@ public class semesterViewController {
          * the actual coreCourse subject list (provided parameter needs to be passed on
          * to the model)
          */
-
-        List<Subject> studentsSubjects = user.getCourses().stream().map(Course::getUsersList).flatMap(List::stream)
+        CoreCourse coreCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
+        List<Subject> studentsSubjects = coreCourse.getCourses().stream().map(Course::getUsersList).flatMap(List::stream)
                 .distinct().filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoursesList)
                 .flatMap(List::stream).distinct().map(Course::getSubject).distinct()
                 .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
@@ -132,7 +136,6 @@ public class semesterViewController {
 
 
         /** Create the user's CoreCourses for the Navbar List */
-
         List<CoreCourse> teacherStudentCoreCourses = user.getCourses().stream().map(Course::getUsersList)
                 .flatMap(List::stream).distinct().filter(u -> Objects.nonNull(u.getCoreCourse()))
                 .map(User::getCoreCourse).distinct().sorted((c1, c2) -> c1.getId().compareTo(c2.getId()))
