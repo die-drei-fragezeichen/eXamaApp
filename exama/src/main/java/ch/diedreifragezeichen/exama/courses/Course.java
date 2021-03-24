@@ -59,6 +59,13 @@ public class Course {
     public String toString() {
         return this.name;
     }
+
+    public List<User> getUsersList(){
+        List<User> userList = new ArrayList<>(this.getUsers());
+		return userList;
+    }
+
+    
     
     /**
      * Getters and Setters only
@@ -133,6 +140,8 @@ public class Course {
         }
         return coreCourse;
     }
+
+
     public List<CoreCourse> getAllCoreCourses() {
         Set<User> studentSet = this.getUsers();
         if(studentSet == null){

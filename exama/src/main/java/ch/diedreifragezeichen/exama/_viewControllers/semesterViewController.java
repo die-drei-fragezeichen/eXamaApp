@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.exams.*;
+import ch.diedreifragezeichen.exama.courses.CoreCourse;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.courses.CourseRepository;
 import ch.diedreifragezeichen.exama.operator.*;
@@ -108,20 +109,46 @@ public class semesterViewController {
         // check if current user is a student
         List<Course> userCourses = new ArrayList<Course>(user.getCourses());
         // if (user.getRoles().contains(roleRepo.findRoleById(39l))) {
-            // ** retrieve courses of current user if student */
-            mav.addObject("userCourses",
-                    userCourses.stream().sorted((c1, c2) -> c1.getSubject().getId().compareTo(c2.getSubject().getId()))
-                            .collect(Collectors.toList()));
+        // ** retrieve courses of current user if student */
+        mav.addObject("userCourses",
+                userCourses.stream().sorted((c1, c2) -> c1.getSubject().getId().compareTo(c2.getSubject().getId()))
+                        .collect(Collectors.toList()));
         // } else {
-        //     userCourses = courseRepo.findAll();
-        //     mav.addObject("userCourses", userCourses);
+        // userCourses = courseRepo.findAll();
+        // mav.addObject("userCourses", userCourses);
         // }
-        
-        /**Navbar List */
-            List <Course> userList = new ArrayList<Course>(user.getCourses());
-            mav.addObject("userCoreCourses",
-            userList.stream().map(u -> u.getCoreCourse()).distinct().sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList()));
 
+        /** Create the user's CoreCourses for the Navbar List */
+
+        List<CoreCourse> teacherStudentCoreCourses = user.getCourses().stream().map(Course::getUsersList)
+                .flatMap(List::stream).distinct().filter(u -> Objects.nonNull(u.getCoreCourse()))
+                .map(User::getCoreCourse).distinct().sorted((c1, c2) -> c1.getId().compareTo(c2.getId()))
+                .collect(Collectors.toList());
+        mav.addObject("teachersCoreCourses", teacherStudentCoreCourses);
+
+        // Elaboration:
+        // List <Course> userCourseList = new ArrayList<Course>(user.getCourses());
+
+        // List<User> userStudentList =
+        // userCourseList.stream().map(Course::getUsersList).flatMap(List::stream).distinct().collect(Collectors.toList());
+
+        // List<CoreCourse> teacherStudentCoreCourses =
+        // userStudentList.stream().filter(u ->
+        // Objects.nonNull(u.getCoreCourse())).map(User::getCoreCourse).distinct().sorted((c1,
+        // c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
+
+        /**
+         * Create the user's student's subject List. Currently this list is handed over
+         * for the semesterview. This is wrong, but works for the moment. Eventually,
+         * the actual coreCourse subject list (provided parameter needs to be passed on
+         * to the model)
+         */
+
+        List<Subject> studentsSubjects = user.getCourses().stream().map(Course::getUsersList).flatMap(List::stream)
+                .distinct().filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoursesList)
+                .flatMap(List::stream).distinct().map(Course::getSubject).distinct()
+                .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
+        mav.addObject("studentSubjects", studentsSubjects);
 
         /**
          * retrieve allExams, week by week, for the whole semester and put into a list
