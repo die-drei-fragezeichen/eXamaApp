@@ -73,7 +73,7 @@ public class UserController {
         }
         user.setLoggedIn(false);
         user.setCreatedOn(LocalDate.now());
-        em.unwrap(org.hibernate.Session.class).saveOrUpdate(user);
+        em.unwrap(org.hibernate.Session.class).merge(user);
         return "redirect:/users/show";
     }
 
@@ -100,7 +100,7 @@ public class UserController {
         if(!user.getRoles().contains(roleRepo.findRoleByName("Student"))){
             user.setCoreCourse(null);
         }
-        em.unwrap(org.hibernate.Session.class).saveOrUpdate(user);
+        em.unwrap(org.hibernate.Session.class).merge(user);
         return "redirect:/users/show";
     }
 
@@ -118,7 +118,7 @@ public class UserController {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        em.unwrap(org.hibernate.Session.class).saveOrUpdate(user);
+        em.unwrap(org.hibernate.Session.class).merge(user);
         return "redirect:/users/show";
     }
 
@@ -144,7 +144,7 @@ public class UserController {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        em.unwrap(org.hibernate.Session.class).saveOrUpdate(user);
+        em.unwrap(org.hibernate.Session.class).merge(user);
         return "generalTemplates/passwordChanged";
     }
 }
