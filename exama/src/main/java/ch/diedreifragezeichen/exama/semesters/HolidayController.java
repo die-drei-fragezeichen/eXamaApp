@@ -1,5 +1,6 @@
 package ch.diedreifragezeichen.exama.semesters;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -44,6 +45,14 @@ public class HolidayController {
         List<Semester> allSemesters = semesterRepo.findAll().stream().filter(s -> s.isEnabled())
                 .collect(Collectors.toList());
         mav.addObject("allSemesters", allSemesters);
+
+        LocalDate today = LocalDate.now();
+        LocalDate currentSemesterStart = semesterRepo.findAll().stream().filter(u -> Objects.nonNull(u.getStartDate()))
+                .map(Semester::getStartDate).filter(u -> Objects.nonNull(u.isBefore(today)))
+                .filter(date -> date.isBefore(today)).sorted((c1, c2) -> c1.compareTo(c2))
+                .reduce((first, second) -> second).get();
+        mav.addObject("starter", currentSemesterStart);
+
         return mav;
     }
 

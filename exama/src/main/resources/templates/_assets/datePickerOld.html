@@ -12,39 +12,40 @@
     </head>
     <body>
     <h1>HOW to pick dates with jQuery</h1>
-
-    
-    <h3> EINFACHER Datepicker - MIT ZUSATZ</h3>
+    <h3>basic datepicker</h3> 
     <p>Date: <input type="text" id="datepicker"></p>
+    <h3>basic datepicker - change format</h3>
+    <p>Date: <input type="text" id="datepicker2"></p>
+    <h3>basic datepicker - adds select option in calender view: month/year</h3>
+    <p>Date: <input type="text" id="datepicker3"></p>
+    <h3>basic datepicker - restict to a range of dates</h3>
+    <p>Date: <input type="text" id="datepicker4"></p>
     
     
-    <h3>Datepicker 2 DATEN - select two date but second date cannot be chosen before first</h3>
-    <p>AUSWAHL: Start: <input type="text" id="fromDate"> Ende: <input type="text" id="toDate"></p>       
+    <h3>basic datepicker - select two date but second date cannot be chosen before first</h3>
+    <p>Date: <input type="text" id="fromDate"> TO <input type="text" id="toDate"></p>       
     
+    
+    
+    <h3>basic datepicker - multiple range</h3>
+    <p>Date: <input type="text" id="datepicker5"></p>
+
     <script>
     $(function(){
+    $("#datepicker").datepicker();
 
-    var semesterStart = new Date(2021, 0, 11),
-    semesterEnd = new Date(2021, 6, 14);
-    holidayStart = new Date(2021, 1, 7),
-    holidayEnd = new Date(2021, 1, 14),  
-    $("#datepicker").datepicker({
-        //defines how many months are shown in the view
-        numberOfMonths: 3,
-        //allows changing the month/year in the calender view
-        changeMonth:true,
-        changeYear:true,
+    $("#datepicker2").datepicker({
+        dateFormat: "yy-mm-dd"
+    });
+
+    $("#datepicker3").datepicker({
+        changeMonth: true,
+        changeYear: true
+    });
+    $("#datepicker4").datepicker({
         //For today use minDate:0
-        //minDate: 0,
-        //for maxDate choose semesterEnd
-        //alternative maxDate: "+1M +5D"
-        beforeShowDay: function(date) {
-            return [(date >= semesterStart && date <= holidayStart || date >= holidayEnd
-     && date <= semesterEnd), ''];
-    },
-    //Upper & lower bounds
-    minDate: semesterStart,
-    maxDate: semesterEnd
+        minDate: 0,
+        maxDate: "+1M +5D"
     });
 
     //The following example shows how you can implement date range select functionality in the form input field. This code allows the user to select From Date and To Date, but it restricts the user to select a previous date as To Date.
@@ -52,7 +53,6 @@
       .datepicker({
         dateFormat: "yy-mm-dd",
         changeMonth: true
-        
       })
       .on( "change", function() {
         to.datepicker( "option", "minDate", getDate( this ) );
@@ -76,6 +76,27 @@
 
     return date;
   }
+  //datepicker 5
+  //here are some static values
+var semesterStart = new Date(2021, 0, 11),
+    semesterEnd = new Date(2021, 2, 14);
+    holidayStart = new Date(2021, 1, 7),
+    holidayEnd = new Date(2021, 1, 14),
+    $("#datepicker5").datepicker({
+        //defines how many months are shown
+        numberOfMonths: 1,
+        beforeShowDay: function(date) {
+            return [(date >= semesterStart && date <= holidayStart || date >= holidayEnd
+     && date <= semesterEnd), ''];
+    },
+    //Upper & lower bounds
+    minDate: semesterStart,
+    maxDate: semesterEnd
+    });
+
+
+
+
     });
     </script>
 

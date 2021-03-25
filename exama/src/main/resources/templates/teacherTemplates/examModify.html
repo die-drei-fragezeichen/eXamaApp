@@ -43,13 +43,14 @@
                         <br>
                         <div>
                             <label>Prüfungsdatum / Abgabedatum: </label>
-                            <input type="date" th:field="*{dueDate}" class="form-control" th:attr="min=${firstDay}, max=${lastDay}" required>
+                            <input type="text" th:field="*{dueDate}" id="toDate" class="form-control" required>
                             <!-- th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd') > firstDay ? #dates.format(#dates.createNow(), 'yyyy-MM-dd') : firstDay}, max=${lastDay}" required> -->
                         </div>
                         <br>
                         <div>
                             <label>Startdatum: </label>
-                            <input type="date" th:field="*{startDate}" class="form-control" th:attr="min=${firstDay}, max=${lastDay}"/>
+                            <input type="text" th:field="*{startDate}" id="fromDate" class="form-control">
+                            <!--this has been deleted: th:attr="min=${firstDay}, max=${lastDay}"-->
                         </div>
                         <br>
                         <div>

@@ -1,90 +1,54 @@
-<html lang="DE" xmlns:th="http://www.thymeleaf.org"
-  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="DE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head th:include="fragments/head :: head"></head>
 
 <body>
-  <div id="wrapper">
-    <!-- header with navigation (only desktop and tablet), title and logout-button -->
-    <div th:include="fragments/header :: header"></div>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="fragments/header :: header"></div>
 
-    <div th:include="fragments/coursenavigation :: coursenavigation"></div>
-    <!-- content displayed in the center of the window -->
-    <div id="content-wrapper">
+        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
 
-      <h1>Ferienzeit/Sonderwoche erstellen/bearbeiten</h1>
-      <a href="/holidays/show">> alle Ferienzeiten anzeigen</a><br><br><br>
-      <!-- Values for th:object attributes in form tags must be variable expressions (${...}). It specifies the NAME OF THE MODEL ATTRIBUTE!! So: ${mime.editDate} would not be. -->
-      <!-- Once you are working inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
-      <form th:action="@{/holidays/modified}" th:object="${holiday}" method="post">
-        <input type="hidden" th:field="*{id}" th:value="${holiday.id}" />
-        <div>
-          <div>
-            <label>Ferienname: </label>
-            <input type="text" th:field="*{name}" class="form-control" minlength="1" maxlength="30" />
-          </div>
-          <br>
-          <div>
-            <label>Ferienanfang:</label>
-            <input type="text" th:field="*{startDate}" id="fromDate" class="form-control" required>
-            </label>Ferienende:</label>
-            <input type="text" th:field="*{endDate}" id="toDate" class="form-control" required>
-          </div>
-          <br>
-          <div>
-            <label>Semester zuweisen:</label>
-            <select th:field="*{semester}" class="form-control">
+            <h1>Ferienzeit/Sonderwoche erstellen/bearbeiten</h1>
+            <a href="/holidays/show">> alle Ferienzeiten anzeigen</a><br>
+                <br><br>
+                <!-- Values for th:object attributes in form tags must be variable expressions (${...}). It specifies the NAME OF THE MODEL ATTRIBUTE!! So: ${mime.editDate} would not be. -->
+                <!-- Once you are working inside the <form> tag, no other th:object attribute can be specified. This is consistent with the fact that HTML forms cannot be nested.-->
+                <form th:action="@{/holidays/modified}" th:object="${holiday}" method="post">
+                    <input type="hidden" th:field="*{id}" th:value="${holiday.id}" />
+                    <div>
+                        <div>
+                            <label>Ferienname: </label>
+                            <input type="text" th:field="*{name}" class="form-control" minlength="1" maxlength="30" />
+                        </div>
+                        <br>
+                        <div>
+                            <label>Ferienanfang:</label>
+                            <input type="text" th:field="*{startDate}" id="fromDate" class="form-control" required>
+                            </label>Ferienende:</label>
+                            <input type="text" th:field="*{endDate}" id="toDate" class="form-control" required>
+                        </div>
+                        <br>
+                        <div>
+                            <label>Semester zuweisen:</label>
+                            <select th:field="*{semester}" class="form-control">
               <option th:each="semester : ${allSemesters}" th:text="${semester.name}" th:value="${semester.id}" />
             </select>
-          </div>
-          <br>
-          <div>
-            <button type="submit" class="login-button">Ferien erstellen</button>
-          </div>
+                        </div>
+                        <br>
+                        <div>
+                            <button type="submit" class="login-button">Ferien erstellen</button>
+                        </div>
+                    </div>
+                </form>
         </div>
-      </form>
-    </div>
 
-    <!-- footer with navigation (only mobile) -->
-    <div th:include="fragments/footer :: footer"></div>
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="fragments/footer :: footer"></div>
 
-    <script>
-      $(function () {
-        $("#datepicker").datepicker();
-        //datepicker which is expecting two dates, the second cannot be chosen before the first
-        //creates the first date (id = from Date)
-        var from = $("#fromDate")
-          .datepicker({
-            dateFormat: "yy-mm-dd",
-            firstDay: 1,
-            changeMonth: true
-          })
-          .on("change", function () {
-            to.datepicker("option", "minDate", getDate(this));
-          }),
-          //creates the second date (id = toDate)
-          to = $("#toDate").datepicker({
-            dateFormat: "yy-mm-dd",
-            firstDay: 1,
-            changeMonth: true
-          })
-            .on("change", function () {
-              from.datepicker("option", "maxDate", getDate(this));
-            });
-
-        function getDate(element) {
-          var date;
-          var dateFormat = "yy-mm-dd";
-          try {
-            date = $.datepicker.parseDate(dateFormat, element.value);
-          } catch (error) {
-            date = null;
-          }
-
-          return date;
-        }
-      });
-    </script>
+       
 </body>
 
 </html>

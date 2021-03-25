@@ -42,7 +42,7 @@
                         <br>
                         <div>
                             <label>Abgabedatum: </label>
-                            <input type="date" th:field="*{dueDate}" class="form-control" th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}, max=${lastDay}" required>
+                            <input type="text" th:field="*{dueDate}" id="datepicker" class="form-control" required>
                         </div>
                         <br>
                         <div>

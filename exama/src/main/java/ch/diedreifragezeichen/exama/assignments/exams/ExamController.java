@@ -1,11 +1,8 @@
 package ch.diedreifragezeichen.exama.assignments.exams;
 
 import java.time.*;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -28,15 +25,11 @@ import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.courses.CourseRepository;
 import ch.diedreifragezeichen.exama.operator.Operator;
 import ch.diedreifragezeichen.exama.operator.OperatorRepository;
-import ch.diedreifragezeichen.exama.semesters.Holiday;
-import ch.diedreifragezeichen.exama.semesters.HolidayRepository;
 import ch.diedreifragezeichen.exama.semesters.Semester;
 import ch.diedreifragezeichen.exama.semesters.SemesterRepository;
 import ch.diedreifragezeichen.exama.subjects.Subject;
-import ch.diedreifragezeichen.exama.subjects.SubjectRepository;
 import ch.diedreifragezeichen.exama.users.User;
 import ch.diedreifragezeichen.exama.users.UserRepository;
-import javassist.NotFoundException;
 
 @Controller
 public class ExamController {
@@ -48,9 +41,6 @@ public class ExamController {
 
     @Autowired
     private AvailablePrepTimeRepository availablePrepTimeRepo;
-
-    @Autowired
-    private SubjectRepository subjectRepo;
 
     @Autowired
     private CourseRepository courseRepo;
@@ -66,9 +56,6 @@ public class ExamController {
 
     @Autowired
     private SemesterRepository semesterRepo;
-
-    @Autowired
-    private HolidayRepository holidayRepo;
 
     @PersistenceContext
     private EntityManager em;
@@ -251,126 +238,4 @@ public class ExamController {
         mav.addObject("numberOfSubjects", numberOfSubjects);
         return mav;
     }
-
-    /**
-     * The following methods handle the Semester view creation
-     */
-
-//     @GetMapping("/semesterView/choose")
-//     public ModelAndView selectSemester() {
-//         ModelAndView mav = new ModelAndView("studentTemplates/semesterViewChoose");
-//         List<Semester> allSemesters = semesterRepo.findAll();
-//         mav.addObject("allSemesters", allSemesters);
-
-//         Operator semester = new Operator();
-//         mav.addObject("chosenSemster", semester);
-
-//         return mav;
-//     }
-
-//     /*
-//      * Not necessary anymore
-//      * 
-//      * @PostMapping("/semesterView/selected") public String
-//      * processSelectedSemester(Operator semester) { operatorRepo.save(semester);
-//      * return "redirect:/semesterView/show"; }
-//      */
-
-//     @GetMapping("/semesterView/show")
-//     public ModelAndView showSemesterView(@RequestParam(name = "selectedSemester") Long id) throws NotFoundException {
-//         ModelAndView mav = new ModelAndView("studentTemplates/semesterViewShow");
-//         // retrieve selected semester
-//         // Operator selected = operatorRepo.findAll().get(0);
-//         // operatorRepo.deleteAll();
-//         // Semester semester = selected.getSelectedSemester();
-//         Semester semester = semesterRepo.findSemesterById(id);
-//         mav.addObject("semester", semester);
-//         // retrieve semester Information and first / last day of Semester
-//         LocalDate semesterStart = semester.getStartDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-//         LocalDate monday = semesterStart;
-//         LocalDate semesterEnd = semester.getEndDate().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
-//         // count all the exams
-//         Long examTotal = examRepo.findAllByDueDateBetween(semesterStart, semesterEnd).stream().count();
-//         mav.addObject("examTotal", examTotal);
-//         // create a list of all Mondays
-//         List<LocalDate> mondays = new ArrayList<>();
-//         while (monday.isBefore(semesterEnd)) {
-//             mondays.add(monday);
-//             // Set up the loop.
-//             monday = monday.plusWeeks(1);
-//         }
-//         mav.addObject("allMondays", mondays);
-
-//         // retrieve allExams, week by week, for the whole semester
-//         // dead approach with list of list leads to thymeleaf useability restrictions
-//         // dead code: List<List<Exam>> allExams = new ArrayList<>();i
-//         // working approach: creating a list of hashmaps --> usage see html.
-//         monday = semesterStart;
-//         List<HashMap<String, Exam>> allExams = new ArrayList<>();
-//         while (monday.isBefore(semesterEnd)) {
-//             List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY));
-//             HashMap<String, Exam> map = new HashMap<>();
-//             for (Exam exam : examsByWeek) {
-//                 map.put(exam.getCourse().getSubject().getTag(), exam);
-//             }
-//             allExams.add(map);
-//             monday = monday.plusWeeks(1);
-//         }
-//         mav.addObject("allExams", allExams);
-//         long xExam = allExams.stream().count();
-//         mav.addObject("xExam", xExam);
-
-//         // create a HolidayHashmap
-//         // not used because finding all days between is easier in list: see below
-//         monday = semesterStart;
-//         List<Holiday> allHolidays = holidayRepo.findAllByStartDateBetween(semesterStart, semesterEnd);
-//         mav.addObject("allHolidays", allHolidays);
-//         HashMap<LocalDate, Holiday> allHolidaysMap = new HashMap<>();
-//         for (Holiday holiday : allHolidays) {
-
-//             allHolidaysMap.put(holiday.getStartDate(), holiday);
-//         }
-//         mav.addObject("allHolidaysMap", allHolidaysMap);
-
-//         // create a List containing all the days of all the holidays
-//         // this allows catching holidays that are wrongly set, or begin mid-week -> TemporalAdjusters then sets start to following Monday.
-//         List<Holiday> allHolidaysList = holidayRepo.findAllByStartDateBetween(semesterStart, semesterEnd);
-//         List<LocalDate> allHolidaysDays = new ArrayList<>();
-//         for (Holiday holiday : allHolidaysList) {
-//             long numOfDays = ChronoUnit.DAYS.between(holiday.getStartDate().with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY)), holiday.getEndDate());
-//             List<LocalDate> allDays = Stream.iterate(holiday.getStartDate(), date -> date.plusDays(1))
-//                     .limit(numOfDays).collect(Collectors.toList());
-//             allHolidaysDays.addAll(allDays);
-//         }
-//         mav.addObject("allHolidaysList", allHolidaysDays);
-
-
-
-        
-
-//         List<Subject> allSubjects = subjectRepo.findAll();
-//         mav.addObject("allSubjects", allSubjects);
-//         // count all the subjects, method returns "numberOfSubjects"
-//         calculateNumberOfSubjects(mav, allSubjects);
-//         return mav;
-
-
-
-//     }
-
-//     /*
-//      * Hilfsmethode 4
-//      */
-//     @SuppressWarnings("unused")
-//     private int calculateNumberOfExams(List<List<Exam>> allExams) {
-//         int sum = 0;
-//         Iterator<List<Exam>> iter = allExams.iterator();
-//         while (iter.hasNext()) {
-//             Iterator<Exam> innerIter = iter.next().iterator();
-//             while (innerIter.hasNext()) {
-//                 sum++;
-//             }
-//         }
-//         return sum;
-//     }
 }

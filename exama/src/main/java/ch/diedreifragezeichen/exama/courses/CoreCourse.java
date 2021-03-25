@@ -13,7 +13,7 @@ import ch.diedreifragezeichen.exama.users.User;
 @DynamicUpdate
 @Table(name = "coreCourses")
 public class CoreCourse {
-    private static CourseRepository courseRepo;
+//    private static CourseRepository courseRepo;
 
     /**
      * Fields

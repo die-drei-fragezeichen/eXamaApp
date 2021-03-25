@@ -1,7 +1,6 @@
 package ch.diedreifragezeichen.exama.semesters;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
