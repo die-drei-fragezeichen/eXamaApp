@@ -19,35 +19,10 @@
 
             <h2>Klasse [[${coreCourse.name}]]</h2>
             <h3>Woche vom Montag, [[${#temporals.format(monday, 'dd.MM.yyyy')}]]</h3>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Beschreibung</th>
-                        <th>startDate</th>
-                        <th>dueDate</th>
-                        <th>Kurs</th>
-                        <th>Faktor</th>
-                        <th>Pruefungstyp</th>
-                        <th>ungefähre Vorbereitungszeit (optional)</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="exam : ${exams}">
-                        <td th:text="${exam.name}"></td>
-                        <td th:text="${exam.description}"></td>
-                        <td th:text="${exam.startDate}"></td>
-                        <td th:text="${exam.dueDate}"></td>
-                        <td th:text="${exam.course}"></td>
-                        <td th:text="${exam.countingFactor}"></td>
-                        <td th:text="${exam.examType.getName()}"></td>
-                        <td th:text="${exam.workloadMinutesTotal} == 0 ? '-' : ${exam.workloadMinutesTotal}"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}" th:href="${urlBuilder.replaceQueryParam('monday', lastMonday).toUriString()}">&lt; vorherige Woche</a> | 
+            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}" th:href="${urlBuilder.replaceQueryParam('monday', nextMonday).toUriString()}">nächste Woche &gt;</a>
+            <br><br>
+            Diagramm
 
         </div>
 
