@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>ch.diedreifragezeichen</groupId>
 	<artifactId>exama</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<name>exama</name>
 	<description>eXama Project</description>
 	<properties>
