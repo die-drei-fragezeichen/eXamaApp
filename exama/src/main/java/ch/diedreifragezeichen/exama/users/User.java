@@ -86,7 +86,7 @@ public class User {
 	public String toString() {
 		String toString = "";
 		if (this.abbreviation != null) {
-			toString += "("+this.abbreviation+") ";
+			toString += "(" + this.abbreviation + ") ";
 		}
 		toString += this.firstName + " " + this.lastName;
 		return toString;
@@ -97,8 +97,9 @@ public class User {
 		return courseList;
 	}
 
-	public List<CoreCourse> getCoreCourses(){
-		return this.getCoursesList().stream().filter(c -> Objects.nonNull(c.getCoreCourse())).map(Course::getCoreCourse).sorted((c1, c2) -> c1.getName().compareTo(c2.getName())).distinct().collect(Collectors.toList());
+	public List<CoreCourse> getCoreCourses() {
+		return this.getCoursesList().stream().filter(c -> Objects.nonNull(c.getCoreCourse())).map(Course::getCoreCourse)
+				.sorted((c1, c2) -> c1.getName().compareTo(c2.getName())).distinct().collect(Collectors.toList());
 	}
 
 	/**

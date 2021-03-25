@@ -23,15 +23,15 @@ public class WorkloadDistribution {
     @Column(unique = true, nullable = false, length = 20)
     private String name;
 
-	/**
-	 * OneToMany mappings
-	 */
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "workloadDistribution")
-	private List<Exam> exams;
+    /**
+     * OneToMany mappings
+     */
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "workloadDistribution")
+    private List<Exam> exams;
 
-	/**
-	 * Methods
-	 */
+    /**
+     * Methods
+     */
     @Override
     public String toString() {
         return this.name;
@@ -39,18 +39,18 @@ public class WorkloadDistribution {
 
     // @Override
     // public boolean equals(Object obj) {
-    //     if (this == obj) {
-    //         return true;
-    //     }
-    //     if (obj == null) {
-    //         return false;
-    //     }
-    //     WorkloadDistribution dist = (WorkloadDistribution) obj;
-    //     if (this.id == dist.getId()) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
+    // if (this == obj) {
+    // return true;
+    // }
+    // if (obj == null) {
+    // return false;
+    // }
+    // WorkloadDistribution dist = (WorkloadDistribution) obj;
+    // if (this.id == dist.getId()) {
+    // return true;
+    // } else {
+    // return false;
+    // }
     // }
 
     @Override

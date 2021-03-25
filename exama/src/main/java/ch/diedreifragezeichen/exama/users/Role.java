@@ -23,7 +23,7 @@ public class Role {
      * ManyToMany Mapping with user
      */
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "roles")
-	private Set<User> users = new HashSet<>();
+    private Set<User> users = new HashSet<>();
 
     /**
      * Methods

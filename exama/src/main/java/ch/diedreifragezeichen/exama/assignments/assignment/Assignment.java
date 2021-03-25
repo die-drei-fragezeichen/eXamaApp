@@ -65,7 +65,7 @@ public class Assignment {
      * Methods
      */
     public int getAvailableDaysToGo(LocalDate date) {
-        int daysToGo = (int) ChronoUnit.DAYS.between(date, this.dueDate)-1;
+        int daysToGo = (int) ChronoUnit.DAYS.between(date, this.dueDate) - 1;
         if (daysToGo < 0) {
             return -1;
         }
@@ -91,27 +91,28 @@ public class Assignment {
 
     public LocalDate getRealStartDate() {
         LocalDate realStartDate;
-        if(this.availablePrepTime.getDays() == -1 || this.availablePrepTime.getName().equals("ganze Zeit")){
-            if(this.startDate == null){
+        if (this.availablePrepTime.getDays() == -1 || this.availablePrepTime.getName().equals("ganze Zeit")) {
+            if (this.startDate == null) {
                 realStartDate = this.editDate;
-            } else{
+            } else {
                 realStartDate = this.startDate;
             }
-        } else{
-            realStartDate = this.dueDate.minusDays(this.availablePrepTime.getDays()+1);
+        } else {
+            realStartDate = this.dueDate.minusDays(this.availablePrepTime.getDays() + 1);
         }
         return realStartDate;
     }
 
     public double getWorkloadMinutesOnDayX(LocalDate startDate, LocalDate dayX, LocalDate dueDate) {
-       int daysToGo = this.getAvailableDaysToGo(dayX);
-        if(daysToGo==-1 || (daysToGo>this.getAvailablePrepTime().getDays() && this.getAvailablePrepTime().getDays() != -1)){
+        int daysToGo = this.getAvailableDaysToGo(dayX);
+        if (daysToGo == -1
+                || (daysToGo > this.getAvailablePrepTime().getDays() && this.getAvailablePrepTime().getDays() != -1)) {
             return 0;
         }
-        
-        //dayNumberInProcess is the n-th day of working on the assignment
-        //if the set preptime (days) is shorter than the days between dayX and dueDate,
-        //dayNumbeInProcess = -1
+
+        // dayNumberInProcess is the n-th day of working on the assignment
+        // if the set preptime (days) is shorter than the days between dayX and dueDate,
+        // dayNumbeInProcess = -1
         int dayNumberInProcess = (int) ChronoUnit.DAYS.between(startDate, dayX);
 
         double workloadMinutes = this.getWorkloadMinutesTotal();
@@ -120,7 +121,7 @@ public class Assignment {
         switch (this.getWorkloadDistribution().getName()) {
         case "linear":
             m = 2 * workloadMinutes / Math.pow(this.getAvailableDaysTotal(), 2);
-            return m * (dayNumberInProcess+0.5);
+            return m * (dayNumberInProcess + 0.5);
 
         case "konstant":
             return workloadMinutes / this.getAvailableDaysTotal();
@@ -130,8 +131,9 @@ public class Assignment {
             // function f(x)=a*b^x -> Integral from 0 to diffDays t is (a*(b^t-1))/ln(b)
             // Integral from 0 to diffDays must be workloadMinutesTotal
             // solve -> a=(ln(b)*w)/(b^t-1)
-            double workloadDayOne = (Math.log(faktor)*workloadMinutes)/(Math.pow(faktor, this.getAvailableDaysTotal()) - 1);
-            return workloadDayOne*Math.pow(faktor, dayNumberInProcess+0.5);
+            double workloadDayOne = (Math.log(faktor) * workloadMinutes)
+                    / (Math.pow(faktor, this.getAvailableDaysTotal()) - 1);
+            return workloadDayOne * Math.pow(faktor, dayNumberInProcess + 0.5);
 
         default: // konstant
             return workloadMinutes / this.getAvailableDaysTotal();

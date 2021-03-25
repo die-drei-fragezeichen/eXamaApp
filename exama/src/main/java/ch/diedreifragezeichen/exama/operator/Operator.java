@@ -17,13 +17,13 @@ public class Operator {
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate selectedDate;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Semester selectedSemester;
 
     /*
-    * Getters and Setters only
-    */
+     * Getters and Setters only
+     */
 
     public LocalDate getSelectedDate() {
         return selectedDate;

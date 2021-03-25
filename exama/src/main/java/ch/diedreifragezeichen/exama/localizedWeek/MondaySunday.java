@@ -1,4 +1,4 @@
-package ch.diedreifragezeichen.exama.localizedWeek;
+/* package ch.diedreifragezeichen.exama.localizedWeek;
 
 import java.time.LocalDate;
 
@@ -29,4 +29,4 @@ public class MondaySunday  {
     
   }
   
-}
+} */

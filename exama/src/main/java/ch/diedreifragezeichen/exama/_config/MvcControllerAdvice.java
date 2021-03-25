@@ -1,7 +1,6 @@
 package ch.diedreifragezeichen.exama._config;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,26 +21,28 @@ public class MvcControllerAdvice {
 
     // @ModelAttribute("currentUser")
     // public User getCurrentUser(){
-    //     Authentication currentUserAuth = SecurityContextHolder.getContext().getAuthentication();
-    //     User currentUser = userRepo.findUserByEmail(currentUserAuth.getName());
-    //     return currentUser;
+    // Authentication currentUserAuth =
+    // SecurityContextHolder.getContext().getAuthentication();
+    // User currentUser = userRepo.findUserByEmail(currentUserAuth.getName());
+    // return currentUser;
     // }
 
     @ModelAttribute("coursesCurrentUser")
-    public List<Course> getCoursesCurrentUser(){
+    public List<Course> getCoursesCurrentUser() {
         Authentication currentUserAuth = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepo2.findUserByEmail(currentUserAuth.getName());
-        if(currentUser == null || currentUser.getCourses()==null){
+        if (currentUser == null || currentUser.getCourses() == null) {
             return null;
         }
-        return currentUser.getCourses().stream().sorted((c1, c2) -> c1.getName().compareTo(c2.getName())).collect(Collectors.toList());
+        return currentUser.getCourses().stream().sorted((c1, c2) -> c1.getName().compareTo(c2.getName()))
+                .collect(Collectors.toList());
     }
 
     @ModelAttribute("coreCoursesCurrentUser")
-    public List<CoreCourse> getCoreCoursesCurrentUser(){
+    public List<CoreCourse> getCoreCoursesCurrentUser() {
         Authentication currentUserAuth = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepo2.findUserByEmail(currentUserAuth.getName());
-        if(currentUser == null || currentUser.getCourses()==null){
+        if (currentUser == null || currentUser.getCourses() == null) {
             return null;
         }
         return currentUser.getCoreCourses();

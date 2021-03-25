@@ -13,8 +13,6 @@ import ch.diedreifragezeichen.exama.users.User;
 @DynamicUpdate
 @Table(name = "coreCourses")
 public class CoreCourse {
-    private static CourseRepository courseRepo;
-
     /**
      * Fields
      */
@@ -37,7 +35,7 @@ public class CoreCourse {
      * OneToMany mappings
      */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "coreCourse")
-    private List<User> students;    
+    private List<User> students;
 
     /**
      * Methods
@@ -47,9 +45,11 @@ public class CoreCourse {
         return this.name;
     }
 
-    public List<Course> getCourses(){
-        List<Course> allCourses = this.students.stream().map(u -> u.getCourses()).flatMap(Set::stream).distinct().collect(Collectors.toList());
-        return allCourses;//.stream().filter(c -> Objects.nonNull(c.getCoreCourse())).filter(c -> c.getCoreCourse().getId() == this.getId()).collect(Collectors.toList());
+    public List<Course> getCourses() {
+        List<Course> allCourses = this.students.stream().map(u -> u.getCourses()).flatMap(Set::stream).distinct()
+                .collect(Collectors.toList());
+        return allCourses;// .stream().filter(c -> Objects.nonNull(c.getCoreCourse())).filter(c ->
+                          // c.getCoreCourse().getId() == this.getId()).collect(Collectors.toList());
     }
 
     /**

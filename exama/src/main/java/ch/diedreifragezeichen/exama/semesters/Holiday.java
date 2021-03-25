@@ -30,7 +30,6 @@ public class Holiday {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate endDate;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "semester")
     private Semester semester;
@@ -43,58 +42,45 @@ public class Holiday {
         return id;
     }
 
-
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public String getName() {
         return name;
     }
 
-
     public void setName(String name) {
         this.name = name;
     }
-
 
     public LocalDate getStartDate() {
         return startDate;
     }
 
-
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
-
 
     public LocalDate getEndDate() {
         return endDate;
     }
 
-
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
-
 
     public Semester getSemester() {
         return semester;
     }
 
-
     public void setSemester(Semester semester) {
         this.semester = semester;
     }
-
 
     @Override
     public String toString() {
         return name + " (Beginn: " + startDate + ", Ende: " + endDate + ")";
     }
-
-
-    
 
 }
