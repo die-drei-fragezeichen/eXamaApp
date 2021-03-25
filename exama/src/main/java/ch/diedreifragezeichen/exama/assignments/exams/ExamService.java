@@ -15,7 +15,6 @@ import javassist.NotFoundException;
 @Service("ExamService")
 public class ExamService {
 
-    
     @Autowired
     private ExamRepository examRepo;
 
@@ -30,8 +29,9 @@ public class ExamService {
         return exam;
     }
     /*
-    *You can use this method if you ever want to find all the exams for a specific date
-    */
+     * You can use this method if you ever want to find all the exams for a specific
+     * date
+     */
 
     // public List<Exam> loadByDate(Date date) throws NotFoundException {
     // List<Exam> dailyExams = examRepo.findAllByExamDate(date);
@@ -48,7 +48,7 @@ public class ExamService {
     }
 
     public List<Exam> loadExamWeekByDate(LocalDate date) throws NotFoundException {
-        
+
         LocalDate Monday = getFirstDayOfWeek(date);
         LocalDate Sunday = getLastDayOfWeek(date);
 
@@ -69,12 +69,11 @@ public class ExamService {
 /*
  * // // Find a subject by Id
  *
- 
-// Optional<Subject> result = subjectRepo.findById(1L);
-// result.ifPresent(subject -> System.out.println(subject.getSubjectName()));
-
-/*
- * // // Find a subject by Tag
+ * 
+ * // Optional<Subject> result = subjectRepo.findById(1L); //
+ * result.ifPresent(subject -> System.out.println(subject.getSubjectName()));
+ * 
+ * /* // // Find a subject by Tag
  */
 
 // Subject wanted = subjectRepo.findSubjectByName("English");

@@ -28,48 +28,17 @@
 /* ---------------------------- */
 
 /* ---------- workload diagram ---------- */
-#workload-diagram {
-    position: relative;
+#workloadDiagram{
+    /*border-top: 2px solid var(--black);
+    border-bottom: 2px solid var(--black);*/
+    width: 100%;
+}
+#day-buttons{
     clear: left;
     float: left;
-
+    margin-top: 1em;
     width: 100%;
-    height: var(--diagHeight);
-    margin: 0 0 0.5em 0;
-    padding: 0;
-
-    background-image: linear-gradient(0deg, var(--green) 0%, var(--orange) 50%, red 100%); 
 }
-
-#monday-diag, #tuesday-diag, #wednesday-diag, #thursday-diag, #friday-diag, #saturday-diag, #sunday-diag {
-    position: relative;
-    float: left;
-
-    width: calc(100% / 7);
-    background-color: var(--lighterGray);
-}
-#monday-diag{
-    height: calc(var(--diagHeight) - var(--diagHeight) * var(--percMonday));
-}
-#tuesday-diag{
-    height: calc(var(--diagHeight) - var(--diagHeight) * var(--percTuesday));
-}
-#wednesday-diag{
-    height: calc(var(--diagHeight) - var(--diagHeight) * var(--percWednesday));
-}
-#thursday-diag{
-    height: calc(var(--diagHeight) - var(--diagHeight) * var(--percThursday));
-}
-#friday-diag{
-    height: calc(var(--diagHeight) - var(--diagHeight) * var(--percFriday));
-}
-#saturday-diag{
-    height: calc(var(--diagHeight) - var(--diagHeight) * var(--percSaturday));
-}
-#sunday-diag{
-    height: calc(var(--diagHeight) - var(--diagHeight) * var(--percSunday));
-}
-
 .day-button{
     position: relative;
     float: left;
@@ -111,7 +80,4 @@
 }
 
 @media screen and (max-width: 1024px) and (orientation: landscape){
-    :root {
-        --diagHeight: 7.5em;
-    }
 }

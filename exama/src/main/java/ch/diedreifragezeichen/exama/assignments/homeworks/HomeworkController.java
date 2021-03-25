@@ -30,7 +30,7 @@ public class HomeworkController {
 
     @Autowired
     private CourseRepository courseRepo;
-    
+
     @Autowired
     private UserRepository userRepo;
 
@@ -39,7 +39,7 @@ public class HomeworkController {
 
     @Autowired
     private WorkloadDistributionRepository distributionRepo;
-    
+
     @PersistenceContext
     private EntityManager em;
 
@@ -53,16 +53,17 @@ public class HomeworkController {
         model.addAttribute("allHomeworks", listHomeworks);
         return "teacherTemplates/homeworksShow";
     }
-    
+
     @GetMapping("/homeworks/create")
-    public ModelAndView add(){
+    public ModelAndView add() {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         ModelAndView mav = new ModelAndView("teacherTemplates/homeworkModify");
         Homework newHomework = new Homework();
         mav.addObject("homework", newHomework);
         List<Course> listCourses = courseRepo.findAll();
-        List<Course> usersCourses = listCourses.stream().filter(c -> c.getUsers().contains(user)).collect(Collectors.toList());
+        List<Course> usersCourses = listCourses.stream().filter(c -> c.getUsers().contains(user))
+                .collect(Collectors.toList());
         mav.addObject("allCourses", usersCourses);
         List<WorkloadDistribution> listDist = distributionRepo.findAll();
         mav.addObject("allWorkloadDistributions", listDist);
@@ -70,14 +71,15 @@ public class HomeworkController {
     }
 
     @GetMapping("/homeworks/edit")
-    public ModelAndView edit(@RequestParam(name = "id") Long id){
+    public ModelAndView edit(@RequestParam(name = "id") Long id) {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         ModelAndView mav = new ModelAndView("teacherTemplates/homeworkModify");
         Homework homework = homeworkRepo.findHomeworkById(id);
         mav.addObject("homework", homework);
         List<Course> listCourses = courseRepo.findAll();
-        List<Course> usersCourses = listCourses.stream().filter(c -> c.getUsers().contains(user)).collect(Collectors.toList());
+        List<Course> usersCourses = listCourses.stream().filter(c -> c.getUsers().contains(user))
+                .collect(Collectors.toList());
         mav.addObject("allCourses", usersCourses);
         List<WorkloadDistribution> listDist = distributionRepo.findAll();
         mav.addObject("allWorkloadDistributions", listDist);
@@ -86,15 +88,14 @@ public class HomeworkController {
 
     @PostMapping("homeworks/modified")
     @Transactional
-    public String modify(Homework homework){
+    public String modify(Homework homework) {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         homework.setCreator(user);
-        if(homework.getEditDate() == null){
+        if (homework.getEditDate() == null) {
             homework.setEditDate(LocalDate.now());
             homework.setStartDate(LocalDate.now());
-        }
-        else{
+        } else {
             homework.setEditDate(LocalDate.now());
         }
         homework.setAvailablePrepTime(preptimeRepo.findAvailablePrepTimeById(1l));

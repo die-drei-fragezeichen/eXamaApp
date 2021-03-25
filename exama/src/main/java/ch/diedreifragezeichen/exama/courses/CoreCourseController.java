@@ -21,7 +21,7 @@ public class CoreCourseController {
 
     @Autowired
     private UserRepository userRepo;
-    
+
     @Autowired
     private RoleRepository roleRepo;
 
@@ -58,7 +58,7 @@ public class CoreCourseController {
         mav.addObject("coreCourse", coreCourse);
         List<User> userList = userRepo.findAll();
         List<User> teacherList = userList.stream()
-        .filter(c -> c.getRoles().contains(roleRepo.findRoleByName("Teacher"))).collect(Collectors.toList());
+                .filter(c -> c.getRoles().contains(roleRepo.findRoleByName("Teacher"))).collect(Collectors.toList());
         mav.addObject("allTeachers", teacherList);
         return mav;
     }

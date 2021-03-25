@@ -61,10 +61,12 @@ public class SemesterController {
     @PostMapping("/semesters/modified")
     @Transactional
     public String modify(Semester semester) {
-        /* List<Long> holidayIds = semester.getHolidays().stream().map(Holiday :: s.getId()).collect(Collectors.toList());
-        for(id : holidayIds){
-
-        } */
+        /*
+         * List<Long> holidayIds = semester.getHolidays().stream().map(Holiday ::
+         * s.getId()).collect(Collectors.toList()); for(id : holidayIds){
+         * 
+         * }
+         */
         // Liste von allen Holiday-ids in semester
         // for each holiday in Liste oben, saveorupdate holiday(id)
         em.unwrap(org.hibernate.Session.class).saveOrUpdate(semester);

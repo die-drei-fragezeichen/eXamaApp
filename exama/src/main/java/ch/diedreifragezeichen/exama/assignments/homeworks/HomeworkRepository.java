@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface HomeworkRepository extends JpaRepository<Homework, Long> {
     public Homework findHomeworkById(Long id);
+
     public List<Homework> findAllByDueDateBetween(LocalDate Monday, LocalDate Sunday);
 }

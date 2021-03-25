@@ -44,7 +44,6 @@ public class Semester {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "semester")
     private List<Exam> exams;
-    
 
     /**
      * Getters and Setters only
@@ -109,5 +108,5 @@ public class Semester {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }   
+    }
 }

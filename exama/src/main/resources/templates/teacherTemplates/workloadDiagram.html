@@ -13,16 +13,79 @@
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
             <h1>Workloaddiagramm</h1>
-            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}" th:href="${urlBuilder.replaceQueryParam('view', '2').toUriString()}">> Wochenansicht</a><br><br>
+            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                th:href="${urlBuilder.replaceQueryParam('view', '2').toUriString()}">> Wochenansicht</a><br><br>
             <a th:href="@{/calendarchoose?view=3&coreCourse={cc}(cc=${coreCourse.id})}">> Semesteransicht</a><br><br>
             <!-- @ Roman: vielleicht wäre es cool, wenn die Seite auch auf calendar&view=3... gemappt würde. aber besprechen wir noch, wo was hin kommt :-) -->
 
             <h2>Klasse [[${coreCourse.name}]]</h2>
             <h3>Woche vom Montag, [[${#temporals.format(monday, 'dd.MM.yyyy')}]]</h3>
-            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}" th:href="${urlBuilder.replaceQueryParam('monday', lastMonday).toUriString()}">&lt; vorherige Woche</a> | 
-            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}" th:href="${urlBuilder.replaceQueryParam('monday', nextMonday).toUriString()}">nächste Woche &gt;</a>
+            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                th:href="${urlBuilder.replaceQueryParam('monday', lastMonday).toUriString()}">&lt; vorherige Woche</a> |
+            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                th:href="${urlBuilder.replaceQueryParam('monday', nextMonday).toUriString()}">nächste Woche &gt;</a>
             <br><br>
-            Diagramm
+            <!-- for test purpose -->
+            <!-- [[${workloadValueList[0]}]]<br><br>
+            [[${workloadValueList[1]}]]<br><br>
+            [[${workloadValueList[2]}]]<br><br>
+            [[${workloadValueList[3]}]]<br><br>
+            [[${workloadValueList[4]}]]<br><br>
+            [[${workloadValueList[5]}]]<br><br>
+            [[${workloadValueList[6]}]]<br><br> -->
+
+            <canvas id="workloadDiagram">
+                Your browser does not support the HTML5 canvas tag.
+            </canvas>
+            <div
+                style="width: 100%; height: 0.5em; background-color: var(--green); padding:0; margin:0; float: left; clear:none;">
+            </div>
+            <div id="day-buttons">
+                <div class="day-button">Mo</div>
+                <div class="day-button">Di</div>
+                <div class="day-button">Mi</div>
+                <div class="day-button">Do</div>
+                <div class="day-button">Fr</div>
+                <div class="day-button">Sa</div>
+                <div class="day-button">So</div>
+            </div>
+
+            <script th:inline="javascript">
+                var diagram = document.getElementById("workloadDiagram");
+                var width = document.getElementById("content-wrapper").offsetWidth - 5;
+                var barWidth = width / 7;
+                var height = Math.floor(width / 3);
+                diagram.width = width;
+                diagram.height = height;
+
+                //workload values in percent (0.3 for 30%)
+                var mon = /*[[${workloadValueList[0]}]]*/ '0';
+                var tue = /*[[${workloadValueList[1]}]]*/ '0';
+                var wed = /*[[${workloadValueList[2]}]]*/ '0';
+                var thu = /*[[${workloadValueList[3]}]]*/ '0';
+                var fri = /*[[${workloadValueList[4]}]]*/ '0';
+                var sat = /*[[${workloadValueList[5]}]]*/ '0';
+                var sun = /*[[${workloadValueList[6]}]]*/ '0';
+
+                var ctx = diagram.getContext("2d");
+                var grd = ctx.createLinearGradient(0, height, 0, 0);
+
+                var style = getComputedStyle(document.body)
+                grd.addColorStop(0, style.getPropertyValue('--green'));
+                grd.addColorStop(0.5, style.getPropertyValue('--orange'));
+                grd.addColorStop(1, "red");
+
+                ctx.fillStyle = grd;
+                ctx.globalAlpha = 1;
+                ctx.fillRect(0, height - mon * height, barWidth, height);
+                ctx.fillRect(barWidth - 1, height - tue * height, barWidth + 1, height);
+                ctx.fillRect(2 * barWidth - 1, height - wed * height, barWidth + 1, height);
+                ctx.fillRect(3 * barWidth - 1, height - thu * height, barWidth + 1, height);
+                ctx.fillRect(4 * barWidth - 1, height - fri * height, barWidth + 1, height);
+                ctx.fillRect(5 * barWidth - 1, height - sat * height, barWidth + 1, height);
+                ctx.fillRect(6 * barWidth - 1, height - sun * height, barWidth + 1, height);
+            </script>
+
 
         </div>
 

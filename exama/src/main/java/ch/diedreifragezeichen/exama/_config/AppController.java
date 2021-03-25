@@ -63,18 +63,18 @@ public class AppController {
         } else if (roles.contains("ADMIN")) {
             return "adminTemplates/index";
         } else if (roles.contains("TEACHER")) {
-        	LocalDate today = LocalDate.now();
-        	model.addAttribute("today", today);
-        	LocalDate monday = today.with(previousOrSame(MONDAY));
-        	model.addAttribute("monday", monday);
-        	LocalDate tuesday = monday.with(nextOrSame(TUESDAY));
-        	model.addAttribute("tuesday", tuesday);
+            LocalDate today = LocalDate.now();
+            model.addAttribute("today", today);
+            LocalDate monday = today.with(previousOrSame(MONDAY));
+            model.addAttribute("monday", monday);
+            LocalDate tuesday = monday.with(nextOrSame(TUESDAY));
+            model.addAttribute("tuesday", tuesday);
             LocalDate wednesday = monday.with(nextOrSame(WEDNESDAY));
-        	model.addAttribute("wednesday", wednesday);
+            model.addAttribute("wednesday", wednesday);
             LocalDate thursday = monday.with(nextOrSame(THURSDAY));
-        	model.addAttribute("thursday", thursday);
+            model.addAttribute("thursday", thursday);
             LocalDate friday = monday.with(nextOrSame(FRIDAY));
-        	model.addAttribute("friday", friday);
+            model.addAttribute("friday", friday);
 
             return "teacherTemplates/index";
         } else if (roles.contains("REFERENCESTUDENT")) {
@@ -116,17 +116,17 @@ public class AppController {
     @GetMapping("/settings")
     public String settings() {
         return "generalTemplates/settings";
-    }    
-    
+    }
+
     /**
      * Go to own profile page
      */
     @GetMapping("/profile")
     public String settings2(Model model) {
-    	Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         model.addAttribute("user", user);
-    	return "generalTemplates/profile";
+        return "generalTemplates/profile";
     }
 
 }

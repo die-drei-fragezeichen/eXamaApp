@@ -65,10 +65,10 @@ public class UserController {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        if(user.getAbbreviation().equals("")){
+        if (user.getAbbreviation().equals("")) {
             user.setAbbreviation(null);
         }
-        if(!user.getRoles().contains(roleRepo.findRoleByName("Student"))){
+        if (!user.getRoles().contains(roleRepo.findRoleByName("Student"))) {
             user.setCoreCourse(null);
         }
         user.setLoggedIn(false);
@@ -90,14 +90,14 @@ public class UserController {
         mav.addObject("allCourses", courseList);
         return mav;
     }
-    
+
     @PostMapping("/users/edited")
     @Transactional
     public String modify(User user) {
-        if(user.getAbbreviation().equals("")){
+        if (user.getAbbreviation().equals("")) {
             user.setAbbreviation(null);
         }
-        if(!user.getRoles().contains(roleRepo.findRoleByName("Student"))){
+        if (!user.getRoles().contains(roleRepo.findRoleByName("Student"))) {
             user.setCoreCourse(null);
         }
         em.unwrap(org.hibernate.Session.class).merge(user);

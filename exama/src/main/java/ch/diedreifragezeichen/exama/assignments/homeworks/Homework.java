@@ -10,6 +10,6 @@ import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
 @Entity
 @DynamicUpdate
 @Table(name = "homeworks")
-public class Homework extends Assignment{
-    
+public class Homework extends Assignment {
+
 }

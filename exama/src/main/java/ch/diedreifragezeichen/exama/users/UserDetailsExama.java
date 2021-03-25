@@ -64,12 +64,12 @@ public class UserDetailsExama implements UserDetails {
     }
 
     public Long getId() {
-		return user.getId();
-	}
+        return user.getId();
+    }
 
     public String getEmail() {
-		return user.getEmail();
-	}
+        return user.getEmail();
+    }
 
     public Set<Role> getRoles() {
         return user.getRoles();
@@ -87,34 +87,32 @@ public class UserDetailsExama implements UserDetails {
         return user.getLastName();
     }
 
-    public Set<Course> getCourses(){
+    public Set<Course> getCourses() {
         return user.getCourses();
     }
 
     public String getAbbreviation() {
-		return user.getAbbreviation();
-	}
+        return user.getAbbreviation();
+    }
 
     public boolean isLoggedIn() {
-		return user.isLoggedIn();
-	}
+        return user.isLoggedIn();
+    }
 
     public LocalDate getLastLogin() {
-		return user.getLastLogin();
-	}
+        return user.getLastLogin();
+    }
 
     public CoreCourse getCoreCourse() {
-		return user.getCoreCourse();
-	}
+        return user.getCoreCourse();
+    }
 
     public List<Exam> getExams() {
-		return user.getExams();
-	}
+        return user.getExams();
+    }
 
     public List<CoreCourse> getClassTeacherCourses() {
-		return user.getClassTeacherCourses();
-	}
-
-
+        return user.getClassTeacherCourses();
+    }
 
 }

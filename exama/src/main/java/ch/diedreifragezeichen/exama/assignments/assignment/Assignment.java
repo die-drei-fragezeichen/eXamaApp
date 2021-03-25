@@ -65,84 +65,78 @@ public class Assignment {
      * Methods
      */
     public int getAvailableDaysToGo(LocalDate date) {
-        long daysToGo = ChronoUnit.DAYS.between(date, this.dueDate);
+        int daysToGo = (int) ChronoUnit.DAYS.between(date, this.dueDate) - 1;
         if (daysToGo < 0) {
             return -1;
         }
-        return (int) daysToGo;
+        return daysToGo;
     }
 
     public int getAvailableDaysTotal() {
-        LocalDate startDate;
-        if (this.startDate == null) {
-            startDate = this.editDate;
-        } else {
-            startDate = this.startDate;
-        }
-        return (int) ChronoUnit.DAYS.between(startDate, this.dueDate);
+        return (int) ChronoUnit.DAYS.between(this.getRealStartDate(), this.dueDate);
     }
 
     public double getWorkloadValue(LocalDate date) {
         // not yet started
-        if (this.startDate.isAfter(date)) {
+        if (this.getRealStartDate().isAfter(date)) {
             return 0;
+        } else {
+            // 3.5 hours is the max of workload besides classes in school
+            double hundredPercent = 3.5;
+            double hundredPercentMinutes = hundredPercent * 60;
+            double workloadMinutes = this.getWorkloadMinutesOnDayX(this.getRealStartDate(), date, this.dueDate);
+            return workloadMinutes / hundredPercentMinutes;
         }
-        // TODO: store this constant in the Database to be changable
-        // specifice the number of workload hours for 100%
-        double hundredPercent = 3.5;
-        double hundredPercentMinutes = hundredPercent * 60;
-
-        double workloadMinutes = this.getWorkloadMinutesOnDayX(this.getRealStartDate(), date, this.dueDate);
-
-        return workloadMinutes / hundredPercentMinutes;
     }
 
     public LocalDate getRealStartDate() {
-        LocalDate startDate;
-        if (this.startDate == null) {
-            startDate = this.editDate;
+        LocalDate realStartDate;
+        if (this.availablePrepTime.getDays() == -1 || this.availablePrepTime.getName().equals("ganze Zeit")) {
+            if (this.startDate == null) {
+                realStartDate = this.editDate;
+            } else {
+                realStartDate = this.startDate;
+            }
         } else {
-            startDate = this.startDate;
+            realStartDate = this.dueDate.minusDays(this.availablePrepTime.getDays() + 1);
         }
-        int diffDays = (int) ChronoUnit.DAYS.between(startDate, this.dueDate);
-        if (availablePrepTime.getDays() == -1 || availablePrepTime.getName().equals("All Time")
-                || diffDays < availablePrepTime.getDays()) {
-            return startDate;
-        } else {
-            startDate = this.dueDate.minusDays(this.availablePrepTime.getDays());
-            return startDate;
-        }
+        return realStartDate;
     }
 
     public double getWorkloadMinutesOnDayX(LocalDate startDate, LocalDate dayX, LocalDate dueDate) {
-        if (startDate.isAfter(dayX)) {
+        int daysToGo = this.getAvailableDaysToGo(dayX);
+        if (daysToGo == -1
+                || (daysToGo > this.getAvailablePrepTime().getDays() && this.getAvailablePrepTime().getDays() != -1)) {
             return 0;
         }
-        double m;
-        int diffDays = (int) ChronoUnit.DAYS.between(startDate, dueDate);
+
+        // dayNumberInProcess is the n-th day of working on the assignment
+        // if the set preptime (days) is shorter than the days between dayX and dueDate,
+        // dayNumbeInProcess = -1
         int dayNumberInProcess = (int) ChronoUnit.DAYS.between(startDate, dayX);
 
-        switch (this.workloadDistribution.getName()) {
-        case "LINEAR":
-            m = 2 * workloadMinutesTotal / Math.pow(diffDays, 2);
-            return m * dayNumberInProcess;
+        double workloadMinutes = this.getWorkloadMinutesTotal();
 
-        case "CONSTANT":
-            return workloadMinutesTotal / diffDays;
+        double m;
+        switch (this.getWorkloadDistribution().getName()) {
+        case "linear":
+            m = 2 * workloadMinutes / Math.pow(this.getAvailableDaysTotal(), 2);
+            return m * (dayNumberInProcess + 0.5);
 
-        case "EXPONENTIAL":
-            double faktor = 1.1; // 10% more per day (faktor a)
-            // function f(x)=a^x+b -> Integral from 0 to diffDays t is
-            // a^t/ln(a)+b*t-1/ln(a)
-            // Integral from 0 to diffDays must be workloadMinutesTotal w -> solve ->
-            // b=-(a^t-ln(a)*w-1)/(ln(a)*t)
-            double workloadDayOne = -(Math.pow(faktor, diffDays) - Math.log(faktor) * workloadMinutesTotal - 1)
-                    / (Math.log(faktor) * diffDays);
-            return Math.pow(faktor, dayNumberInProcess) + workloadDayOne;
+        case "konstant":
+            return workloadMinutes / this.getAvailableDaysTotal();
 
-        default: // LINEAR
-            m = 2 * workloadMinutesTotal / Math.pow(diffDays, 2);
-            return m * dayNumberInProcess;
+        case "exponentiell":
+            double faktor = 1.4; // 40% more per day (faktor b)
+            // function f(x)=a*b^x -> Integral from 0 to diffDays t is (a*(b^t-1))/ln(b)
+            // Integral from 0 to diffDays must be workloadMinutesTotal
+            // solve -> a=(ln(b)*w)/(b^t-1)
+            double workloadDayOne = (Math.log(faktor) * workloadMinutes)
+                    / (Math.pow(faktor, this.getAvailableDaysTotal()) - 1);
+            return workloadDayOne * Math.pow(faktor, dayNumberInProcess + 0.5);
+
+        default: // konstant
+            return workloadMinutes / this.getAvailableDaysTotal();
         }
     }
 
