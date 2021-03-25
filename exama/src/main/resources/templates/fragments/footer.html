@@ -65,6 +65,8 @@
             beforeShowDay: DisableDates,
             changeMonth: true,
             changeYear:true,
+            minDate: semesterStart,
+            maxDate: semesterEnd,
           })
             .on("change", function () {
               from.datepicker("option", "maxDate", getDate(this));
