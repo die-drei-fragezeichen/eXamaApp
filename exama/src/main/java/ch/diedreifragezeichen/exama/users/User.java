@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.*;
 
@@ -93,6 +95,10 @@ public class User {
 	public List<Course> getCoursesList() {
 		List<Course> courseList = new ArrayList<>(this.getCourses());
 		return courseList;
+	}
+
+	public List<CoreCourse> getCoreCourses(){
+		return this.getCoursesList().stream().filter(c -> Objects.nonNull(c.getCoreCourse())).map(Course::getCoreCourse).sorted((c1, c2) -> c1.getName().compareTo(c2.getName())).distinct().collect(Collectors.toList());
 	}
 
 	/**

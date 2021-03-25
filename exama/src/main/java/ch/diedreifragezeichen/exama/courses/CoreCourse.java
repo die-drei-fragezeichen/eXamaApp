@@ -1,6 +1,7 @@
 package ch.diedreifragezeichen.exama.courses;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.persistence.*;
 
@@ -12,6 +13,8 @@ import ch.diedreifragezeichen.exama.users.User;
 @DynamicUpdate
 @Table(name = "coreCourses")
 public class CoreCourse {
+    private static CourseRepository courseRepo;
+
     /**
      * Fields
      */
@@ -42,7 +45,12 @@ public class CoreCourse {
     @Override
     public String toString() {
         return this.name;
-    }    
+    }
+
+    public List<Course> getCourses(){
+        List<Course> allCourses = this.students.stream().map(u -> u.getCourses()).flatMap(Set::stream).distinct().collect(Collectors.toList());
+        return allCourses;//.stream().filter(c -> Objects.nonNull(c.getCoreCourse())).filter(c -> c.getCoreCourse().getId() == this.getId()).collect(Collectors.toList());
+    }
 
     /**
      * Getters and Setters only
@@ -85,9 +93,5 @@ public class CoreCourse {
 
     public void setStudents(List<User> students) {
         this.students = students;
-    }
-
-    public List<Course> getCourses() {
-        return new ArrayList<Course>();
     }
 }

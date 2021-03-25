@@ -44,6 +44,6 @@ public class MvcControllerAdvice {
         if(currentUser == null || currentUser.getCourses()==null){
             return null;
         }
-        return currentUser.getCourses().stream().filter(c -> Objects.nonNull(c.getCoreCourse())).map(Course::getCoreCourse).sorted((c1, c2) -> c1.getName().compareTo(c2.getName())).distinct().collect(Collectors.toList());
+        return currentUser.getCoreCourses();
     }
 }
