@@ -105,7 +105,7 @@ public class Assignment {
             startDate = this.startDate;
         }
         int diffDays = (int) ChronoUnit.DAYS.between(startDate, this.dueDate);
-        if (availablePrepTime.getDays() == -1 || availablePrepTime.getName().equals("All Time")
+        if (availablePrepTime.getDays() == -1 || availablePrepTime.getName().equals("ganze Zeit")
                 || diffDays < availablePrepTime.getDays()) {
             return startDate;
         } else {
@@ -124,8 +124,10 @@ public class Assignment {
 
         switch (this.workloadDistribution.getName()) {
         case "LINEAR":
-            m = 2 * workloadMinutesTotal / Math.pow(diffDays, 2);
-            return m * dayNumberInProcess;
+            // m = 2 * workloadMinutesTotal / Math.pow(diffDays, 2);
+            // return m * dayNumberInProcess;
+            // for testing everything constant
+            return workloadMinutesTotal / diffDays;
 
         case "CONSTANT":
             return workloadMinutesTotal / diffDays;
@@ -136,13 +138,17 @@ public class Assignment {
             // a^t/ln(a)+b*t-1/ln(a)
             // Integral from 0 to diffDays must be workloadMinutesTotal w -> solve ->
             // b=-(a^t-ln(a)*w-1)/(ln(a)*t)
-            double workloadDayOne = -(Math.pow(faktor, diffDays) - Math.log(faktor) * workloadMinutesTotal - 1)
-                    / (Math.log(faktor) * diffDays);
-            return Math.pow(faktor, dayNumberInProcess) + workloadDayOne;
+            // double workloadDayOne = -(Math.pow(faktor, diffDays) - Math.log(faktor) * workloadMinutesTotal - 1)
+            //         / (Math.log(faktor) * diffDays);
+            // return Math.pow(faktor, dayNumberInProcess) + workloadDayOne;
+            // for testing everything constant
+            return workloadMinutesTotal / diffDays;
 
         default: // LINEAR
-            m = 2 * workloadMinutesTotal / Math.pow(diffDays, 2);
-            return m * dayNumberInProcess;
+            // m = 2 * workloadMinutesTotal / Math.pow(diffDays, 2);
+            // return m * dayNumberInProcess;
+            // for testing everything constant
+            return workloadMinutesTotal / diffDays;
         }
     }
 

@@ -2,6 +2,7 @@ package ch.diedreifragezeichen.exama._viewControllers;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -56,7 +57,8 @@ public class workloadDiagramController {
 
     @GetMapping("/calendar")
     public ModelAndView workloadDiagram(@RequestParam(name = "view") Long viewId, @RequestParam(name = "monday") String mondayString, @RequestParam(name = "coreCourse") Long coreCourseId) {
-        
+        double additionalWorkingTimeMax = 3.5;
+
         String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepo.findUserByEmail(currentUserName);
         List<Course> userCourses = user.getCoursesList();
@@ -91,6 +93,7 @@ public class workloadDiagramController {
         }
         //Workload Diagram
         else{
+            
             ModelAndView mav = new ModelAndView("teacherTemplates/workloadDiagram.html");
             mav.addObject("coreCourse", coreCourseRepo.findCoreCourseById(coreCourseId));
             LocalDate monday = LocalDate.parse(mondayString);
@@ -99,8 +102,33 @@ public class workloadDiagramController {
             mav.addObject("lastMonday", monday.minusWeeks(1));
 
             List<Exam> allExams = ccCourses.stream().filter(c -> Objects.nonNull(c.getExams())).map(c -> c.getExams()).flatMap(List::stream).distinct().collect(Collectors.toList());
-            List<Exam> exams = allExams.stream().filter(c -> c.getDueDate().isBefore(monday.plusDays(7))).filter(c -> c.getDueDate().isAfter(monday.minusDays(1))).collect(Collectors.toList());
-            mav.addObject("exams", exams);
+            List<Exam> exams = allExams.stream().filter(c -> c.getDueDate().isBefore(monday.plusDays(7))).filter(c -> c.getDueDate().isAfter(monday.minusDays(1))).collect(Collectors.toList()); //
+            
+            Double[] workloadTotalDaysList = {0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+            
+            if(exams != null){
+                List<Double> workloadListMonday = exams.stream().map(c -> c.getWorkloadValue(monday)).collect(Collectors.toList());
+                workloadTotalDaysList[0] = workloadListMonday.stream().mapToDouble(w -> w).sum()/additionalWorkingTimeMax;
+
+                List<Double> workloadListTuesday = exams.stream().map(c -> c.getWorkloadValue(monday.plusDays(1))).collect(Collectors.toList());
+                workloadTotalDaysList[1] = workloadListTuesday.stream().mapToDouble(w -> w).sum()/additionalWorkingTimeMax;
+
+                List<Double> workloadListWednesday = exams.stream().map(c -> c.getWorkloadValue(monday.plusDays(2))).collect(Collectors.toList());
+                workloadTotalDaysList[2] = workloadListWednesday.stream().mapToDouble(w -> w).sum()/additionalWorkingTimeMax;
+
+                List<Double> workloadListThursday = exams.stream().map(c -> c.getWorkloadValue(monday.plusDays(3))).collect(Collectors.toList());
+                workloadTotalDaysList[3] = workloadListThursday.stream().mapToDouble(w -> w).sum()/additionalWorkingTimeMax;
+
+                List<Double> workloadListFriday = exams.stream().map(c -> c.getWorkloadValue(monday.plusDays(4))).collect(Collectors.toList());
+                workloadTotalDaysList[4] = workloadListFriday.stream().mapToDouble(w -> w).sum()/additionalWorkingTimeMax;
+
+                List<Double> workloadListSaturday = exams.stream().map(c -> c.getWorkloadValue(monday.plusDays(5))).collect(Collectors.toList());
+                workloadTotalDaysList[5] = workloadListSaturday.stream().mapToDouble(w -> w).sum()/additionalWorkingTimeMax;
+
+                List<Double> workloadListSunday = exams.stream().map(c -> c.getWorkloadValue(monday.plusDays(6))).collect(Collectors.toList());
+                workloadTotalDaysList[6] = workloadListSunday.stream().mapToDouble(w -> w).sum()/additionalWorkingTimeMax;
+            }
+            mav.addObject("workloadValueList", workloadTotalDaysList);
 
             return mav;
         }
