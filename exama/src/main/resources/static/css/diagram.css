@@ -29,8 +29,8 @@
 
 /* ---------- workload diagram ---------- */
 #workloadDiagram{
-    border-top: 2px solid var(--black);
-    border-bottom: 2px solid var(--black);
+    /*border-top: 2px solid var(--black);
+    border-bottom: 2px solid var(--black);*/
     width: 100%;
 }
 #day-buttons{

@@ -57,7 +57,6 @@ public class workloadDiagramController {
 
     @GetMapping("/calendar")
     public ModelAndView workloadDiagram(@RequestParam(name = "view") Long viewId, @RequestParam(name = "monday") String mondayString, @RequestParam(name = "coreCourse") Long coreCourseId) {
-        double additionalWorkingTimeMax = 3.5;
 
         String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepo.findUserByEmail(currentUserName);
@@ -102,31 +101,31 @@ public class workloadDiagramController {
             mav.addObject("lastMonday", monday.minusWeeks(1));
 
             List<Exam> allExams = ccCourses.stream().filter(c -> Objects.nonNull(c.getExams())).map(c -> c.getExams()).flatMap(List::stream).distinct().collect(Collectors.toList());
-            List<Exam> exams = allExams.stream().filter(c -> c.getDueDate().isBefore(monday.plusDays(7))).filter(c -> c.getDueDate().isAfter(monday.minusDays(1))).collect(Collectors.toList()); //
+            List<Exam> exams = allExams.stream().filter(c -> c.getDueDate().isAfter(monday.minusDays(1))).collect(Collectors.toList()); //
             
             Double[] workloadTotalDaysList = {0.0,0.0,0.0,0.0,0.0,0.0,0.0};
             
             if(exams != null){
                 List<Double> workloadListMonday = exams.stream().map(c -> c.getWorkloadValue(monday)).collect(Collectors.toList());
-                workloadTotalDaysList[0] = workloadListMonday.stream().mapToDouble(w -> w).sum()/additionalWorkingTimeMax;
+                workloadTotalDaysList[0] = Math.min(workloadListMonday.stream().mapToDouble(w -> w).sum(),1);
 
                 List<Double> workloadListTuesday = exams.stream().map(c -> c.getWorkloadValue(monday.plusDays(1))).collect(Collectors.toList());
-                workloadTotalDaysList[1] = workloadListTuesday.stream().mapToDouble(w -> w).sum()/additionalWorkingTimeMax;
+                workloadTotalDaysList[1] = Math.min(workloadListTuesday.stream().mapToDouble(w -> w).sum(),1);
 
                 List<Double> workloadListWednesday = exams.stream().map(c -> c.getWorkloadValue(monday.plusDays(2))).collect(Collectors.toList());
-                workloadTotalDaysList[2] = workloadListWednesday.stream().mapToDouble(w -> w).sum()/additionalWorkingTimeMax;
+                workloadTotalDaysList[2] = Math.min(workloadListWednesday.stream().mapToDouble(w -> w).sum(),1);
 
                 List<Double> workloadListThursday = exams.stream().map(c -> c.getWorkloadValue(monday.plusDays(3))).collect(Collectors.toList());
-                workloadTotalDaysList[3] = workloadListThursday.stream().mapToDouble(w -> w).sum()/additionalWorkingTimeMax;
+                workloadTotalDaysList[3] = Math.min(workloadListThursday.stream().mapToDouble(w -> w).sum(),1);
 
                 List<Double> workloadListFriday = exams.stream().map(c -> c.getWorkloadValue(monday.plusDays(4))).collect(Collectors.toList());
-                workloadTotalDaysList[4] = workloadListFriday.stream().mapToDouble(w -> w).sum()/additionalWorkingTimeMax;
+                workloadTotalDaysList[4] = Math.min(workloadListFriday.stream().mapToDouble(w -> w).sum(),1);
 
                 List<Double> workloadListSaturday = exams.stream().map(c -> c.getWorkloadValue(monday.plusDays(5))).collect(Collectors.toList());
-                workloadTotalDaysList[5] = workloadListSaturday.stream().mapToDouble(w -> w).sum()/additionalWorkingTimeMax;
+                workloadTotalDaysList[5] = Math.min(workloadListSaturday.stream().mapToDouble(w -> w).sum(),1);
 
                 List<Double> workloadListSunday = exams.stream().map(c -> c.getWorkloadValue(monday.plusDays(6))).collect(Collectors.toList());
-                workloadTotalDaysList[6] = workloadListSunday.stream().mapToDouble(w -> w).sum()/additionalWorkingTimeMax;
+                workloadTotalDaysList[6] = Math.min(workloadListSunday.stream().mapToDouble(w -> w).sum(),1);
             }
             mav.addObject("workloadValueList", workloadTotalDaysList);
 

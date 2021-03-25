@@ -22,17 +22,19 @@
             <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}" th:href="${urlBuilder.replaceQueryParam('monday', lastMonday).toUriString()}">&lt; vorherige Woche</a> | 
             <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}" th:href="${urlBuilder.replaceQueryParam('monday', nextMonday).toUriString()}">nächste Woche &gt;</a>
             <br><br>
-            [[${workloadValueList[0]}]]<br><br>
+            <!-- for test purpose -->
+            <!-- [[${workloadValueList[0]}]]<br><br>
             [[${workloadValueList[1]}]]<br><br>
             [[${workloadValueList[2]}]]<br><br>
             [[${workloadValueList[3]}]]<br><br>
             [[${workloadValueList[4]}]]<br><br>
             [[${workloadValueList[5]}]]<br><br>
-            [[${workloadValueList[6]}]]<br><br>
+            [[${workloadValueList[6]}]]<br><br> -->
 
             <canvas id="workloadDiagram">
                 Your browser does not support the HTML5 canvas tag.
             </canvas>
+            <div style="width: 100%; height: 0.5em; background-color: var(--green); padding:0; margin:0; float: left; clear:none;"></div>
             <div id="day-buttons">
                 <div class="day-button">Mo</div>
                 <div class="day-button">Di</div>
@@ -49,7 +51,7 @@
                 var barWidth = width/7;
                 var height = Math.floor(width/3);
                 diagram.width = width;
-                diagram.height = height+10;
+                diagram.height = height;
 
                 //workload values in percent (0.3 for 30%)
                 var mon = /*[[${workloadValueList[0]}]]*/ '0';
@@ -66,7 +68,7 @@
                 var style = getComputedStyle(document.body)
                 grd.addColorStop(0, style.getPropertyValue('--green'));
                 grd.addColorStop(0.5, style.getPropertyValue('--orange'));
-                grd.addColorStop(1, style.getPropertyValue('--red'));
+                grd.addColorStop(1, "red");
                 
                 ctx.fillStyle = grd;
                 ctx.globalAlpha = 1;
@@ -75,7 +77,6 @@
                 ctx.fillRect(2*barWidth-1, height - wed*height, barWidth+1, height);
                 ctx.fillRect(3*barWidth-1, height - thu*height, barWidth+1, height);
                 ctx.fillRect(4*barWidth-1, height - fri*height, barWidth+1, height);
-                ctx.globalAlpha = 0.75;
                 ctx.fillRect(5*barWidth-1, height - sat*height, barWidth+1, height);
                 ctx.fillRect(6*barWidth-1, height - sun*height, barWidth+1, height);
                 </script>

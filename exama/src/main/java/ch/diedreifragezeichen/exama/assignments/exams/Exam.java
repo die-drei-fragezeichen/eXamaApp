@@ -34,17 +34,17 @@ public class Exam extends Assignment {
      */
     @Override
     public double getWorkloadMinutesOnDayX(LocalDate startDate, LocalDate dayX, LocalDate dueDate) {
-        if (startDate.isAfter(dayX)) {
+       int daysToGo = this.getAvailableDaysToGo(dayX);
+        if(daysToGo==-1 || (daysToGo>this.getAvailablePrepTime().getDays() && this.getAvailablePrepTime().getDays() != -1)){
             return 0;
         }
-        if (dayX.minusDays(1).isAfter(dueDate)) {
-            return 0;
-        }
-
+        
+        //dayNumberInProcess is the n-th day of working on the assignment
+        //if the set preptime (days) is shorter than the days between dayX and dueDate,
+        //dayNumbeInProcess = -1
         int dayNumberInProcess = (int) ChronoUnit.DAYS.between(startDate, dayX);
-        //if(dayNumberInProcess < 0 || dayNumberInProcess > this.getAvailablePrepTime().getDays()
 
-
+        //if workloadminutes are not set by the user, take the timevalue of the examtype as workloadminutes
         double workloadMinutes = 0;
         if(this.getWorkloadMinutesTotal() == 0){
             workloadMinutes = this.getExamType().getTimeValue()*60.0;
@@ -52,36 +52,25 @@ public class Exam extends Assignment {
             workloadMinutes = this.getWorkloadMinutesTotal();
         }
 
-
         double m;
-        int diffDays = (int) ChronoUnit.DAYS.between(startDate, dueDate);
         switch (this.getWorkloadDistribution().getName()) {
-        case "LINEAR":
-            /* m = 2 * workloadMinutes / Math.pow(diffDays, 2);
-            return m * dayNumberInProcess; */
-            // for testing everything constant
-            return workloadMinutes / diffDays;
+        case "linear":
+            m = 2 * workloadMinutes / Math.pow(this.getAvailableDaysTotal(), 2);
+            return m * (dayNumberInProcess+0.5);
 
-        case "CONSTANT":
-            return workloadMinutes / diffDays;
+        case "konstant":
+            return workloadMinutes / this.getAvailableDaysTotal();
 
-        case "EXPONENTIAL":
-            double faktor = 1.1; // 10% more per day (faktor a)
-            // function f(x)=a^x+b -> Integral from 0 to diffDays t is
-            // a^t/ln(a)+b*t-1/ln(a)
-            // Integral from 0 to diffDays must be workloadMinutesTotal w -> solve ->
-            // b=-(a^t-ln(a)*w-1)/(ln(a)*t)
-            // double workloadDayOne = -(Math.pow(faktor, diffDays) - Math.log(faktor) * workloadMinutes - 1)
-            //         / (Math.log(faktor) * diffDays);
-            // return Math.pow(faktor, dayNumberInProcess) + workloadDayOne;
-            // for testing everything constant
-            return workloadMinutes / diffDays;
+        case "exponentiell":
+            double faktor = 1.4; // 40% more per day (faktor b)
+            // function f(x)=a*b^x -> Integral from 0 to diffDays t is (a*(b^t-1))/ln(b)
+            // Integral from 0 to diffDays must be workloadMinutesTotal
+            // solve -> a=(ln(b)*w)/(b^t-1)
+            double workloadDayOne = (Math.log(faktor)*workloadMinutes)/(Math.pow(faktor, this.getAvailableDaysTotal()) - 1);
+            return workloadDayOne*Math.pow(faktor, dayNumberInProcess+0.5);
 
-        default: // LINEAR
-            // m = 2 * workloadMinutes / Math.pow(diffDays, 2);
-            // return m * dayNumberInProcess;
-            // for testing everything constant
-            return workloadMinutes / diffDays;
+        default: // konstant
+            return workloadMinutes / this.getAvailableDaysTotal();
         }
     }
 
