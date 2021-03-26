@@ -275,7 +275,7 @@ textarea {
     clear: left;
     width: calc(50% - 0.5em);
 }
-.content-box-half:nth-child(even){
+.content-box-half:nth-of-type(even){
     clear: none;
     margin-left:1em;
 }
