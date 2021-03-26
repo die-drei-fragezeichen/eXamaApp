@@ -260,30 +260,48 @@ textarea {
 
 
 /* 100% of parent div */
-
-.box-wrapper {
-    position: relative;
+.content-box-full{
     float: left;
     clear: left;
     width: 100%;
+}
+/* 50% of parent div minus margin */
+.content-box-half{
+    float: left;
+    clear: left;
+    width: calc(50% - 0.5em);
+}
+.content-box-half:nth-child(even){
+    clear: none;
+    margin-left:1em;
+}
+/* general */
+.content-box-full, .content-box-half {
+    position: relative;
     height: auto;
     margin: 0 0 1em 0;
     padding: 0;
     background-color: var(--lighterGray);
 }
 
-.box-header {
-    width: calc(100% - 0.5em);
+.content-box-header {
+    width: 100%;
     height: 2em;
-    margin: 0 0 0.5em 0;
-    padding: 0 0 0 0.5em;
+    margin: 0;
+    padding: 0.3em 0.5em 0.5em 0.5em;
     background-color: var(--lightGray);
     font-size: 1.5em;
-    line-height: 2em;
+    line-height: 1.5em;
     color: var(--red);
     text-transform: uppercase;
 }
 
+.content-box-content{
+    width: 100%;
+    height: auto;
+    margin:0;
+    padding: 0.5em;
+}
 
 /* --------------------------------------- */
 
