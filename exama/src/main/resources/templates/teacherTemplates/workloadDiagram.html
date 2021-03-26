@@ -116,10 +116,9 @@
                 </tbody>
             </table>
 
-            <!-- Load React. The first two tags load React. The third one will load your component code. -->
+            <!-- Load React. The first two tags load React. A one third one will load your component code. -->
             <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
             <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-            <!-- Load our React component. -->
             <script th:inline="javascript">
 
                 //workloadView
@@ -176,7 +175,7 @@
                 };
 
                 const stack100 = () => {
-                const data = [{ color: '#d41414', percent: [[${xFactor}]] }, { color: style.getPropertyValue('--green'), percent: 10-[[${xFactor}]] }];
+                const data = [{ color: style.getPropertyValue('--red'), percent: ((6-[[${xFactor}]])/5)*100 }, { color: style.getPropertyValue('--green'), percent: ([[${xFactor}]]/5)*100}];
                 return /*#__PURE__*/ (
                 React.createElement("div", { className: "stack100" }, /*#__PURE__*/
                 React.createElement(Bar, { data: data })));
