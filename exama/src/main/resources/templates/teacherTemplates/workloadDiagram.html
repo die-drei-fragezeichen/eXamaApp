@@ -52,6 +52,12 @@
                 <div class="day-button">So, [[${#temporals.format(monday.plusDays(6), 'dd.MM.')}]]</div>
             </div>
             
+            <!-- show examBar here -->
+            <h2> Dies ist dein Testbar</h2>
+            <div id="stack100"></div>
+
+
+            <!-- exam overview table here-->
             <h2>Meine Prüfungen diese Woche</h2>
             <span style="font-size:1.5em; font-weight:bold;" th:if="${examsThisWeek.size == 0}">keine Prüfungen - yay!</span>
             <table th:unless="${examsThisWeek.size == 0}">
@@ -78,6 +84,10 @@
                     </tr>
                 </tbody>
             </table>
+
+ 
+
+            
 
             <h2>Meine Prüfungen nächste Woche</h2>
             <span style="font-size:1.5em; font-weight:bold;" th:if="${examsNextWeek.size == 0}">keine Prüfungen - yay!</span>
@@ -106,7 +116,13 @@
                 </tbody>
             </table>
 
+            <!-- Load React. The first two tags load React. The third one will load your component code. -->
+            <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+            <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+            <!-- Load our React component. -->
             <script th:inline="javascript">
+
+                //workloadView
                 var diagram = document.getElementById("workloadDiagram");
                 var width = document.getElementById("content-wrapper").offsetWidth - 5;
                 var barWidth = width / 7;
@@ -140,6 +156,35 @@
                 ctx.fillRect(4 * barWidth - 1, height - fri * height, barWidth + 1, height);
                 ctx.fillRect(5 * barWidth - 1, height - sat * height, barWidth + 1, height);
                 ctx.fillRect(6 * barWidth - 1, height - sun * height, barWidth + 1, height);
+
+                //this is the code for examBarView
+                const Bar = ({ data }) => {
+                return /*#__PURE__*/ (
+                React.createElement("div", { className: "BarChart" },
+                data &&
+                data.map(d => {
+                return /*#__PURE__*/ (
+                    React.createElement("div", {
+                            className: "BarData",
+                            style: { background: `${d.color}`, height: `${d.percent}%` }
+                        }, /*#__PURE__*/
+
+                        React.createElement("p", { className: "PercentText" }, d.percent + "%")));
+                })));
+
+
+                };
+
+                const stack100 = () => {
+                const data = [{ color: '#d41414', percent: [[${xFactor}]] }, { color: style.getPropertyValue('--green'), percent: 10-[[${xFactor}]] }];
+                return /*#__PURE__*/ (
+                React.createElement("div", { className: "stack100" }, /*#__PURE__*/
+                React.createElement(Bar, { data: data })));
+
+                };
+
+
+            ReactDOM.render( /*#__PURE__*/ React.createElement(stack100, null), document.querySelector("#stack100"));
             </script>
 
 

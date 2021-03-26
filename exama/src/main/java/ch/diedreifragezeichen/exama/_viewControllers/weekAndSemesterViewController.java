@@ -47,13 +47,13 @@ public class weekAndSemesterViewController {
         public String calendarChoose(@RequestParam(name = "view") Long viewId,
                         @RequestParam(name = "coreCourse") Long coreCourseId) {
 
-                // View 1: Workloaddiagram, View 2: Week View
+                // View 1: Direct User to Workloaddiagram
                 if (viewId == 1) {
                         LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
                         return "redirect:/calendar?view=" + viewId + "&monday=" + monday + "&coreCourse="
                                         + coreCourseId;
                 }
-                // View 3: Semester-View
+                // View 3: Direct User to SemesterView
                 else if (viewId == 3) {
                         return "redirect:/semesterView/show?selectedSemester=1&selectedCoreCourse=" + coreCourseId;
                 }
@@ -64,15 +64,16 @@ public class weekAndSemesterViewController {
         public ModelAndView workloadDiagram(@RequestParam(name = "view") Long viewId,
                         @RequestParam(name = "monday") String mondayString,
                         @RequestParam(name = "coreCourse") Long coreCourseId) {
-
+                //retrieve List of coreCourses form current user                
                 String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
                 User user = userRepo.findUserByEmail(currentUserName);
                 List<CoreCourse> coreCourses = user.getCoreCourses();
 
-                // if course is not existing -> redirect to home
-                // security: if coreCourse is not assigned to user in any way -> redirect to
-                // home (later errorpage)
+                
                 CoreCourse chosenCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
+                // if chosen CoreCourse empty  -> redirect to home
+                // (security check) or if: coreCourse is not assigned to user in any way -> redirect to
+                // home (later errorpage)
                 if (chosenCourse == null
                                 || (user.getRoles().contains(roleRepo.findRoleByName("Teacher"))
                                                 && !coreCourses.contains(chosenCourse))
@@ -85,7 +86,7 @@ public class weekAndSemesterViewController {
                 final LocalDate monday = LocalDate.parse(mondayString)
                                 .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 
-                // Week View
+                // View 2: Direct User to WeekView
                 if (viewId == 2) {
                         ModelAndView mav = new ModelAndView("teacherTemplates/weeklyView.html");
                         mav.addObject("coreCourse", coreCourseRepo.findCoreCourseById(coreCourseId));
@@ -120,7 +121,12 @@ public class weekAndSemesterViewController {
                         assignments = assignments.stream()
                                         .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
                                         .collect(Collectors.toList());
+
+                        // add all assignments for weekView
                         mav.addObject("assignments", assignments);
+
+                        // add exams for examBar
+                        mav.addObject("allWeekExams", exams);
 
                         return mav;
                 }
@@ -150,6 +156,9 @@ public class weekAndSemesterViewController {
                                         .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
                                         .collect(Collectors.toList());
 
+                        // uses Hilfsmethode 2 below - calculates how much the actual exams "count"
+                        calculateExamFactor(mav, examsThisWeek);
+
                         mav.addObject("examsThisWeek", examsThisWeek);
                         mav.addObject("examsNextWeek", examsNextWeek);
 
@@ -174,8 +183,8 @@ public class weekAndSemesterViewController {
                         Double[] workloadTotalDaysList = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
                         if (assignments != null) {
-                                List<Double> workloadListMonday = assignments.stream().map(c -> c.getWorkloadValue(monday))
-                                                .collect(Collectors.toList());
+                                List<Double> workloadListMonday = assignments.stream()
+                                                .map(c -> c.getWorkloadValue(monday)).collect(Collectors.toList());
                                 workloadTotalDaysList[0] = Math
                                                 .min(workloadListMonday.stream().mapToDouble(w -> w).sum(), 1);
 
@@ -219,5 +228,16 @@ public class weekAndSemesterViewController {
 
                         return mav;
                 }
+        }
+
+        /**
+         * Hilfsmethode 2
+         */
+
+        public ModelAndView calculateExamFactor(ModelAndView mav, List<Exam> listExams) {
+
+                double ExamFactor = listExams.stream().mapToDouble(exam -> exam.getCountingFactor()).sum();
+                mav.addObject("xFactor", ExamFactor);
+                return mav;
         }
 }

@@ -1,22 +1,75 @@
 <html>
+
 <head>
     <link rel="stylesheet" href="100stack.css">
-    </head>
+</head>
 
 <body>
-      <!--Add an empty <div> tag to mark the spot where you want to display something with React.
+    <!--Add an empty <div> tag to mark the spot where you want to display something with React.
       You can place a “container” <div> like this anywhere inside the <body> tag. You may have as 
       many independent DOM containers on one page as you need. 
       They are usually empty — React will replace any existing content inside DOM containers.-->
-        <div> Dies ist dein Testbar</div>
+    <div> Dies ist dein Testbar</div>
 
-      <div id="stack100"></div>
+    <div id="stack100"></div>
 
-    <!-- Load React. The first two tags load React. The third one will load your component code. -->    
-      <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>  
-      <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-      <!-- Load our React component. -->
-      <script src="100stack.js"></script>
+    <!-- Load React. The first two tags load React. The third one will load your component code. -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <!-- Load our React component. -->
+    <script>
+        const Bar = ({
+            data
+        }) => {
+            return /*#__PURE__*/ (
+                React.createElement("div", {
+                        className: "BarChart"
+                    },
+                    data &&
+                    data.map(d => {
+                        return /*#__PURE__*/ (
+                            React.createElement("div", {
+                                    className: "BarData",
+                                    style: {
+                                        background: `${d.color}`,
+                                        height: `${d.percent}%`
+                                    }
+                                }, /*#__PURE__*/
+
+                                React.createElement("p", {
+                                    className: "PercentText"
+                                }, d.percent + "%")));
+
+
+                    })));
+
+
+        };
+
+        const stack100 = () => {
+            const data = [{
+                color: '#d41414',
+                percent: 30
+            }, {
+                color: '#14d444',
+                percent: 70
+            }];
+            // third coulour could be added: , { color: '#ebb860', percent: 19 }
+            return /*#__PURE__*/ (
+                React.createElement("div", {
+                        className: "stack100"
+                    }, /*#__PURE__*/
+                    React.createElement(Bar, {
+                        data: data
+                    })));
+
+
+        };
+
+
+        ReactDOM.render( /*#__PURE__*/ React.createElement(stack100, null), document.querySelector("#stack100"));
+    </script>
 
 </body>
+
 </html>

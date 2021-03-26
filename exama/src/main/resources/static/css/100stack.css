@@ -1,5 +1,5 @@
 .stack100 {
-    height: 20rem;
+    height: 10rem;
     transform: rotate(90deg);
     display: flex;
     justify-content: center;
@@ -13,7 +13,7 @@
     height: inherit;
     /* inherit will take in the height of its parent, you could also 
         use 100% if the parent's height is set. */
-    width: 4em;
+    width: 7em;
     overflow: hidden;
 }
 
