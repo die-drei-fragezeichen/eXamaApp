@@ -4,10 +4,10 @@
         <div id="header">
             <div id="navigation-header">
                 <div class="navigation-header-item nav-burgermenu"></div>
-                <div class="navigation-header-item nav-home" onclick="location.href='/';"></div>
+                <a th:href="@{/}"><div class="navigation-header-item nav-home"></div></a>
                 <a th:href="@{/calendarchoose?view=1&coreCourse={cc}(cc=${coreCoursesCurrentUser.get(0).id})}"><div class="navigation-header-item nav-calendar"></div></a>
-                <div class="navigation-header-item nav-notifications" onclick="location.href='/exams/create';"></div>
-                <div class="navigation-header-item nav-settings" onclick="location.href='/profile';"></div>
+                <a th:href="@{/exams/create}"><div class="navigation-header-item nav-notifications"></div></a>
+                <a th:href="@{/profile}"><div class="navigation-header-item nav-settings"></div></a>
             </div>
             <div id="title">eXama</div>
             <div id="logout">
