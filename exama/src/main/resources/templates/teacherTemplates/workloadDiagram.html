@@ -175,7 +175,8 @@
                 };
 
                 const stack100 = () => {
-                const data = [{ color: style.getPropertyValue('--red'), percent: ((6-[[${xFactor}]])/5)*100 }, { color: style.getPropertyValue('--green'), percent: ([[${xFactor}]]/5)*100}];
+                //assumed max value for exams per week: 6 (counting factor)
+                const data = [{ color: style.getPropertyValue('--red'), percent: Math.round(((6-[[${xFactor}]])/6)*100)}, { color: style.getPropertyValue('--green'), percent: Math.round(([[${xFactor}]]/6)*100)}];
                 return /*#__PURE__*/ (
                 React.createElement("div", { className: "stack100" }, /*#__PURE__*/
                 React.createElement(Bar, { data: data })));
