@@ -14,14 +14,14 @@
     $('select[multiple]').multiselect();
     $(function () {
       
-      var startday = /*[[${currentSemester.startDate.dayOfMonth}]]*/ '',
-      startmonth = /*[[${currentSemester.startDate.monthValue}]]-1*/ '', // Month is 0-indexed
-      startyear = /*[[${currentSemester.startDate.year}]]*/ '',
+      var startday = [[${currentSemester.startDate.dayOfMonth}]],
+      startmonth = [[${currentSemester.startDate.monthValue}]]-1, // Month is 0-indexed
+      startyear = [[${currentSemester.startDate.year}]],
       semesterStart = new Date(startyear,startmonth,startday);
       
-      var endday = /*[[${currentSemester.endDate.dayOfMonth}]]*/ '',
-      endmonth = /*[[${currentSemester.endDate.monthValue}]]-1*/ '', // Month is 0-indexed
-      endyear = /*[[${currentSemester.endDate.year}]]*/ '',
+      var endday = [[${currentSemester.endDate.dayOfMonth}]],
+      endmonth = [[${currentSemester.endDate.monthValue}]]-1, // Month is 0-indexed
+      endyear = [[${currentSemester.endDate.year}]],
       semesterEnd = new Date(endyear, endmonth, endday);
       
       $("#datepicker").datepicker({
@@ -72,7 +72,7 @@
               from.datepicker("option", "maxDate", getDate(this));
             });
       
-        var dates = "[" + /*[[${allHolidayDays}]]*/ '' + "]";
+        var dates = "[" + [[${allHolidayDays}]] + "]";
         
         function DisableDates(date) {
         var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
