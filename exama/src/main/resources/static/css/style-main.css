@@ -55,12 +55,16 @@
     --lighterGray: #EAEAEA;
     --lightGray: #DBDBDB;
     --black: #000000;
-    --green: #00A511;
-    --orange: #FF9900;
-    --red: #751F1F;
-    --lightRed: #BC9999;
-    /*other variables later submitted by backend*/
-    --numMenuItems: 4;
+    --green: #009C36;
+    --lightGreen:#78A387;
+    --blue: #0097C4;
+    --lightBlue: #D0EEF7;
+    --orange: #DE7A16;
+    --lightOrange: #E6AA6E;
+    --lighterOrange: #FFE2C4;
+    --red: #8A0500;
+    --lightRed: #E05A55;
+    --lighterRed: #D99491;
 }
 
 
@@ -201,7 +205,7 @@ tr:hover {
 
 thead,
 thead>tr:hover {
-    background-color: var(--lightRed);
+    background-color: var(--lighterRed);
     border: 1px solid var(--black);
 }
 
