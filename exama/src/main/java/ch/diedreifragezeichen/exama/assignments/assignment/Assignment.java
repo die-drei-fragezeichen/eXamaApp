@@ -98,7 +98,7 @@ public class Assignment {
                 realStartDate = this.startDate;
             }
         } else {
-            realStartDate = this.dueDate.minusDays(this.availablePrepTime.getDays() + 1);
+            realStartDate = this.dueDate.minusDays(this.availablePrepTime.getDays());
         }
         return realStartDate;
     }

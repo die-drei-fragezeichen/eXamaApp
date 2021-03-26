@@ -14,12 +14,14 @@
         <div id="content-wrapper">
             <h1>Workloaddiagramm</h1>
             <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                th:href="${urlBuilder.replaceQueryParam('view', '2').toUriString()}">> Wochenansicht</a><br><br>
+                th:href="${urlBuilder.replaceQueryParam('view', '2').toUriString()}">> Wochenansicht (alle Assignments)</a><br><br>
             <a th:href="@{/calendarchoose?view=3&coreCourse={cc}(cc=${coreCourse.id})}">> Semesteransicht</a><br><br>
             <!-- @ Roman: vielleicht wäre es cool, wenn die Seite auch auf calendar&view=3... gemappt würde. aber besprechen wir noch, wo was hin kommt :-) -->
 
             <h2>Klasse [[${coreCourse.name}]]</h2>
             <h3>Woche vom Montag, [[${#temporals.format(monday, 'dd.MM.yyyy')}]]</h3>
+            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                th:href="${urlBuilder.replaceQueryParam('monday', #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')).toUriString()}">zur Aktuellen Woche</a><br><br>
             <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
                 th:href="${urlBuilder.replaceQueryParam('monday', lastMonday).toUriString()}">&lt; vorherige Woche</a> |
             <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
@@ -41,14 +43,68 @@
                 style="width: 100%; height: 0.5em; background-color: var(--green); padding:0; margin:0; float: left; clear:none;">
             </div>
             <div id="day-buttons">
-                <div class="day-button">Mo</div>
-                <div class="day-button">Di</div>
-                <div class="day-button">Mi</div>
-                <div class="day-button">Do</div>
-                <div class="day-button">Fr</div>
-                <div class="day-button">Sa</div>
-                <div class="day-button">So</div>
+                <div class="day-button">Mo, [[${#temporals.format(monday, 'dd.MM.')}]]</div>
+                <div class="day-button">Di, [[${#temporals.format(monday.plusDays(1), 'dd.MM.')}]]</div>
+                <div class="day-button">Mi, [[${#temporals.format(monday.plusDays(2), 'dd.MM.')}]]</div>
+                <div class="day-button">Do, [[${#temporals.format(monday.plusDays(3), 'dd.MM.')}]]</div>
+                <div class="day-button">Fr, [[${#temporals.format(monday.plusDays(4), 'dd.MM.')}]]</div>
+                <div class="day-button">Sa, [[${#temporals.format(monday.plusDays(5), 'dd.MM.')}]]</div>
+                <div class="day-button">So, [[${#temporals.format(monday.plusDays(6), 'dd.MM.')}]]</div>
             </div>
+            
+            <h2>Meine Prüfungen diese Woche</h2>
+            <span style="font-size:1.5em; font-weight:bold;" th:if="${examsThisWeek.size == 0}">keine Prüfungen - yay!</span>
+            <table th:unless="${examsThisWeek.size == 0}">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Datum</th>
+                        <th>Fach</th>
+                        <th>Faktor</th>
+                        <th>Pruefungstyp</th>
+                        <th>Aufwand</th>
+                        <th>Vorbereitungsintervall / Startdatum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="exam : ${examsThisWeek}">
+                        <td th:text="${exam.name}"></td>
+                        <td th:text="${#temporals.format(exam.dueDate, 'dd.MM.yyyy')}"></td>
+                        <td th:text="${exam.course.subject} + ' (' + ${exam.course} + ')'"></td>
+                        <td th:text="${exam.countingFactor}"></td>
+                        <td th:text="${exam.examType.getName()}"></td>
+                        <td th:text="${exam.workloadMinutesTotal} == 0 ? ${exam.examType.timeValue}+'h' : ${exam.workloadMinutesTotal}+'min'"></td>
+                        <td th:text="${exam.getAvailableDaysTotal} + ' Tage / '+${#temporals.format(exam.getRealStartDate, 'dd.MM.yyyy')}"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Meine Prüfungen nächste Woche</h2>
+            <span style="font-size:1.5em; font-weight:bold;" th:if="${examsNextWeek.size == 0}">keine Prüfungen - yay!</span>
+            <table th:unless="${examsNextWeek.size == 0}">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Datum</th>
+                        <th>Fach</th>
+                        <th>Faktor</th>
+                        <th>Pruefungstyp</th>
+                        <th>Aufwand</th>
+                        <th>Vorbereitungsintervall / Startdatum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="exam : ${examsNextWeek}">
+                        <td th:text="${exam.name}"></td>
+                        <td th:text="${#temporals.format(exam.dueDate, 'dd.MM.yyyy')}"></td>
+                        <td th:text="${exam.course.subject} + ' (' + ${exam.course} + ')'"></td>
+                        <td th:text="${exam.countingFactor}"></td>
+                        <td th:text="${exam.examType.getName()}"></td>
+                        <td th:text="${exam.workloadMinutesTotal} == 0 ? ${exam.examType.timeValue}+'h' : ${exam.workloadMinutesTotal}+'min'"></td>
+                        <td th:text="${exam.getAvailableDaysTotal} + ' Tage / '+${#temporals.format(exam.getRealStartDate, 'dd.MM.yyyy')}"></td>
+                    </tr>
+                </tbody>
+            </table>
 
             <script th:inline="javascript">
                 var diagram = document.getElementById("workloadDiagram");

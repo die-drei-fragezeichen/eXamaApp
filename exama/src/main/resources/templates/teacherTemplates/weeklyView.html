@@ -21,34 +21,36 @@
             <h2>Klasse [[${coreCourse.name}]]</h2>
             <h3>Woche vom Montag, [[${#temporals.format(monday, 'dd.MM.yyyy')}]]</h3>
             <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                th:href="${urlBuilder.replaceQueryParam('monday', #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')).toUriString()}">zur Aktuellen Woche</a><br><br>
+            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
                 th:href="${urlBuilder.replaceQueryParam('monday', lastMonday).toUriString()}">&lt; vorherige Woche</a> |
             <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                th:href="${urlBuilder.replaceQueryParam('monday', nextMonday).toUriString()}">nächste Woche &gt;</a>
+                th:href="${urlBuilder.replaceQueryParam('monday', nextMonday).toUriString()}">nächste Woche &gt;</a><br><br>
             <table>
                 <thead>
                     <tr>
+                        <th>Typ</th>
                         <th>Name</th>
-                        <th>Beschreibung</th>
-                        <th>startDate</th>
-                        <th>dueDate</th>
-                        <th>Kurs</th>
-                        <th>Faktor</th>
-                        <th>Pruefungstyp</th>
-                        <th>ungefähre Vorbereitungszeit (optional)</th>
-                        <th></th>
+                        <th>Datum</th>
+                        <th>Fach</th>
+                        <th>Aufwand</th>
+                        <th>Vorbereitungsintervall / Startdatum</th>
+                        <th>Faktor (nur PR)</th>
+                        <th>Pruefungstyp (nur PR)</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="exam : ${exams}">
-                        <td th:text="${exam.name}"></td>
-                        <td th:text="${exam.description}"></td>
-                        <td th:text="${exam.startDate}"></td>
-                        <td th:text="${exam.dueDate}"></td>
-                        <td th:text="${exam.course}"></td>
-                        <td th:text="${exam.countingFactor}"></td>
-                        <td th:text="${exam.examType.getName()}"></td>
-                        <td th:text="${exam.workloadMinutesTotal} == 0 ? '-' : ${exam.workloadMinutesTotal}"></td>
+                    <tr th:each="assignment : ${assignments}" th:style="${assignment.class.simpleName} == 'Exam' ? 'font-weight:bold;'">
+                        <td th:text="${assignment.class.simpleName} == 'Exam' ? 'PR' : 'HA'"></td>
+                        <td th:text="${assignment.name}"></td>
+                        <td th:text="${#temporals.format(assignment.dueDate, 'dd.MM.yyyy')}"></td>
+                        <td th:text="${assignment.course.subject} + ' (' + ${assignment.course} + ')'"></td>
+                        <td th:text="${assignment.workloadMinutesTotal} == 0 ? ${assignment.examType.timeValue}+'h' : ${assignment.workloadMinutesTotal}+'min'"></td>
+                        <td th:text="${assignment.getAvailableDaysTotal} + ' Tage / '+${#temporals.format(assignment.getRealStartDate, 'dd.MM.yyyy')}"></td>
+                        <td th:text="${assignment.class.simpleName} == 'Exam' ? ${assignment.countingFactor} : '-'"></td>
+                        <td th:text="${assignment.class.simpleName} == 'Exam' ? ${assignment.examType.getName()} : '-'"></td>
+                        <td>ansehen</td>
                     </tr>
                 </tbody>
             </table>

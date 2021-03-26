@@ -8,6 +8,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import ch.diedreifragezeichen.exama.assignments.exams.Exam;
+import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
 import ch.diedreifragezeichen.exama.subjects.Subject;
 import ch.diedreifragezeichen.exama.users.User;
 
@@ -46,6 +47,9 @@ public class Course {
      */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
     private List<Exam> exams;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
+    private List<Homework> homeworks;
 
     /**
      * ManyToMany Mapping with user
@@ -152,6 +156,14 @@ public class Course {
 
     public void setExams(List<Exam> exams) {
         this.exams = exams;
+    }
+
+    public List<Homework> getHomeworks() {
+        return this.homeworks;
+    }
+
+    public void setHomeworks(List<Homework> homeworks) {
+        this.homeworks = homeworks;
     }
 
     public Set<User> getUsers() {
