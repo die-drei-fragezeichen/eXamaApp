@@ -149,7 +149,13 @@ body {
     scroll-behavior: smooth;
 }
 
-
+a {
+    color: var(--lightRed);
+}
+a:hover{
+    color: var(--red);
+    text-decoration: none;
+}
 /*provisorisch*/
 
 #myBtn {
@@ -184,15 +190,20 @@ button {
 }
 
 table {
+    font-size: 1.2em;
     overflow-x: auto;
     text-align: left;
     border-collapse: collapse;
     width: 100%;
+    background-color: var(--white);
+    border: 1px solid var(--black);
 }
 
 td,
 th {
-    border: 1px solid var(--black);
+    border-left: 1px solid var(--black);
+    border-right: 1px solid var(--black);
+    padding: 0.2em;
 }
 
 tr:nth-child(even) {
@@ -200,13 +211,12 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-    background-color: var(--lightGray)
+    background-color: var(--lightGray);
 }
 
 thead,
 thead>tr:hover {
     background-color: var(--lighterRed);
-    border: 1px solid var(--black);
 }
 
 .scrollableTable {
@@ -275,9 +285,9 @@ textarea {
     clear: left;
     width: calc(50% - 0.5em);
 }
-.content-box-half:nth-of-type(even){
+.content-box-half-even{
     clear: none;
-    margin-left:1em;
+    margin: 0 0 1em 1em !important;
 }
 /* general */
 .content-box-full, .content-box-half {
@@ -290,12 +300,12 @@ textarea {
 
 .content-box-header {
     width: 100%;
-    height: 2em;
+    height: 1.75em;
     margin: 0;
     padding: 0.3em 0.5em 0.5em 0.5em;
     background-color: var(--lightGray);
-    font-size: 1.5em;
-    line-height: 1.5em;
+    font-size: 1.25em;
+    line-height: 1.25em;
     color: var(--red);
     text-transform: uppercase;
 }
@@ -344,6 +354,11 @@ textarea {
     #content-wrapper {
         width: calc(100% - 2em);
         height: calc(100% - 10em);
+    }
+    .content-box-half, .content-box-half-even{
+        clear: left;
+        margin: 0 0 1em 0 !important;
+        width: 100%;
     }
 }
 

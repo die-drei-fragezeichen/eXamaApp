@@ -12,49 +12,74 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Wochenansicht</h1>
-            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                th:href="${urlBuilder.replaceQueryParam('view', '1').toUriString()}">> Workload Diagramm</a><br><br>
-            <a th:href="@{/calendarchoose?view=3&coreCourse={cc}(cc=${coreCourse.id})}">> Semesteransicht</a><br><br>
-            <!-- @ Roman: vielleicht wäre es cool, wenn die Seite auch auf calendar&view=3... gemappt würde. aber besprechen wir noch, wo was hin kommt :-) -->
 
-            <h2>Klasse [[${coreCourse.name}]]</h2>
-            <h3>Woche vom Montag, [[${#temporals.format(monday, 'dd.MM.yyyy')}]]</h3>
-            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                th:href="${urlBuilder.replaceQueryParam('monday', #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')).toUriString()}">zur Aktuellen Woche</a><br><br>
-            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                th:href="${urlBuilder.replaceQueryParam('monday', lastMonday).toUriString()}">&lt; vorherige Woche</a> |
-            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                th:href="${urlBuilder.replaceQueryParam('monday', nextMonday).toUriString()}">nächste Woche &gt;</a><br><br>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Typ</th>
-                        <th>Name</th>
-                        <th>Datum</th>
-                        <th>Fach</th>
-                        <th>Aufwand</th>
-                        <th>Vorbereitungsintervall / Startdatum</th>
-                        <th>Faktor (nur PR)</th>
-                        <th>Pruefungstyp (nur PR)</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="assignment : ${assignments}" th:style="${assignment.class.simpleName} == 'Exam' ? 'font-weight:bold;'">
-                        <td th:text="${assignment.class.simpleName} == 'Exam' ? 'PR' : 'HA'"></td>
-                        <td th:text="${assignment.name}"></td>
-                        <td th:text="${#temporals.format(assignment.dueDate, 'dd.MM.yyyy')}"></td>
-                        <td th:text="${assignment.course.subject} + ' (' + ${assignment.course} + ')'"></td>
-                        <td th:text="${assignment.workloadMinutesTotal} == 0 ? ${assignment.examType.timeValue}+'h' : ${assignment.workloadMinutesTotal}+'min'"></td>
-                        <td th:text="${assignment.getAvailableDaysTotal} + ' Tage / '+${#temporals.format(assignment.getRealStartDate, 'dd.MM.yyyy')}"></td>
-                        <td th:text="${assignment.class.simpleName} == 'Exam' ? ${assignment.countingFactor} : '-'"></td>
-                        <td th:text="${assignment.class.simpleName} == 'Exam' ? ${assignment.examType.getName()} : '-'"></td>
-                        <td>ansehen</td>
-                    </tr>
-                </tbody>
-            </table>
-
+            <div class="week-navigation">
+                <div class="this-week">
+                    <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                        th:href="${urlBuilder.replaceQueryParam('monday', #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')).toUriString()}">zur
+                        aktuellen Woche</a>
+                </div>
+                <div class="last-week">
+                    <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                        th:href="${urlBuilder.replaceQueryParam('monday', lastMonday).toUriString()}">&lt; letzte
+                        Woche</a>
+                </div>
+                <div class="next-week">
+                    <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                        th:href="${urlBuilder.replaceQueryParam('monday', nextMonday).toUriString()}">nächste Woche
+                        &gt;</a>
+                </div>
+            </div>
+            <div class="content-box-full">
+                <div class="content-box-header">
+                    Klasse [[${coreCourse.name}]] | Woche vom Montag, [[${#temporals.format(monday, 'dd.MM.yyyy')}]]
+                </div>
+                <div class="content-box-content">
+                    <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                        th:href="${urlBuilder.replaceQueryParam('view', '1').toUriString()}">Diagramm</a> | <b>Liste</b>
+                    | <a th:href="@{/calendarchoose?view=3&coreCourse={cc}(cc=${coreCourse.id})}">Semesterplan</a>
+                    <br><br>
+                    <span style="font-size:1.5em; font-weight:bold;" th:if="${assignments.size == 0}">Nichts zu tun
+                        -
+                        Partytime!</span>
+                    <table th:unless="${assignments.size == 0}">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Datum</th>
+                                <th>Kurs</th>
+                                <th>Beschreibung</th>
+                                <th>Aufwand</th>
+                                <th>Vorbereitungsintervall / Startdatum</th>
+                                <th>Pruefungstyp</th>
+                                <th>Gewichtung</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="assignment : ${assignments}"
+                                th:style="${assignment.class.simpleName} == 'Exam' ? 'font-weight:bold;'">
+                                <td th:text="${#temporals.format(assignment.dueDate, 'dd.MM.yyyy')}"></td>
+                                <td th:text="${assignment.course}"></td>
+                                <td th:text="${assignment.description}" td:style="max-width: 20%; overflow: hidden; text-overflow: ellipsis;"></td>
+                                <td
+                                    th:text="${assignment.workloadMinutesTotal} == 0 ? ${assignment.examType.timeValue}+'h' : ${assignment.workloadMinutesTotal}+'min'">
+                                </td>
+                                <td
+                                    th:text="${assignment.getAvailableDaysTotal} + ' Tag'+ ${assignment.getAvailableDaysTotal==1?'':'e'} +' / '+${#temporals.format(assignment.getRealStartDate, 'dd.MM.yyyy')}">
+                                </td>
+                                <td
+                                    th:text="${assignment.class.simpleName} == 'Exam' ? ${assignment.examType.getName()} : '-'">
+                                </td>
+                                <td
+                                    th:text="${assignment.class.simpleName} == 'Exam' ? ${assignment.countingFactor} : '-'">
+                                </td>
+                                <td><a href="#">ansehen</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <!-- footer with navigation (only mobile) -->

@@ -1,97 +1,110 @@
 <!-- footer with navigation (only mobile) -->
 <div th:fragment="footer">
-    <div id="footer">
-        <div id="navigation-footer">
-            <a th:href="@{/}"><div class="navigation-footer-item nav2-home"></div></a>
-            <a th:href="@{/calendarchoose?view=1&coreCourse={cc}(cc=${coreCoursesCurrentUser.get(0).id})}"><div class="navigation-footer-item nav2-calendar"></div></a>
-            <a th:href="@{/exams/create}"><div class="navigation-footer-item nav2-notifications"></div></a>
-            <a th:href="@{/profile}"><div class="navigation-footer-item nav2-settings"></div></a>
-        </div>
+  <div id="footer">
+    <div id="navigation-footer">
+      <a th:href="@{/}">
+        <div class="navigation-footer-item nav2-home"></div>
+      </a>
+      <a th:href="@{/calendarchoose?view=1&coreCourse={cc}(cc=${coreCoursesCurrentUser.get(0).id})}">
+        <div class="navigation-footer-item nav2-calendar"></div>
+      </a>
+      <a th:href="@{/exams/create}">
+        <div class="navigation-footer-item nav2-notifications"></div>
+      </a>
+      <a th:href="@{/profile}">
+        <div class="navigation-footer-item nav2-settings"></div>
+      </a>
     </div>
+  </div>
 
- <script th:inline="javascript">
+  <script th:inline="javascript">
+    var i = 1;
+    $(".content-box-half").each(function () {
+      if (i % 2 == 0) $(this).addClass("content-box-half-even");
+      i++;
+    });
 
     $('select[multiple]').multiselect();
     $(function () {
-      
-      var startday = [[${currentSemester.startDate.dayOfMonth}]],
-      startmonth = [[${currentSemester.startDate.monthValue}]]-1, // Month is 0-indexed
-      startyear = [[${currentSemester.startDate.year}]],
-      semesterStart = new Date(startyear,startmonth,startday);
-      
-      var endday = [[${currentSemester.endDate.dayOfMonth}]],
-      endmonth = [[${currentSemester.endDate.monthValue}]]-1, // Month is 0-indexed
-      endyear = [[${currentSemester.endDate.year}]],
-      semesterEnd = new Date(endyear, endmonth, endday);
-      
+
+      var startday = [[${ currentSemester.startDate.dayOfMonth }]],
+        startmonth = [[${ currentSemester.startDate.monthValue }]] - 1, // Month is 0-indexed
+        startyear = [[${ currentSemester.startDate.year }]],
+        semesterStart = new Date(startyear, startmonth, startday);
+
+      var endday = [[${ currentSemester.endDate.dayOfMonth }]],
+        endmonth = [[${ currentSemester.endDate.monthValue }]] - 1, // Month is 0-indexed
+        endyear = [[${ currentSemester.endDate.year }]],
+        semesterEnd = new Date(endyear, endmonth, endday);
+
       $("#datepicker").datepicker({
-              //changes calendar view to Monday, dateFormate must not be changed - error - improve!
-              dateFormat: "yy-mm-dd",
+        //changes calendar view to Monday, dateFormate must not be changed - error - improve!
+        dateFormat: "yy-mm-dd",
         firstDay: 1,
         //defines how many months are shown in the view
         numberOfMonths: 2,
         //allows changing the month/year in the calender view
-        changeMonth:true,
-        changeYear:true,
+        changeMonth: true,
+        changeYear: true,
         //alternative for "today" minDate: 0
         //this function activates the "restrictions"
-        beforeShowDay: DisableDates,                 
+        beforeShowDay: DisableDates,
         //define upper & lower bounds
         minDate: semesterStart,
         maxDate: semesterEnd
       });
-      
-        //datepicker which is expecting two dates, the second cannot be chosen before the first
-        //creates the first date (id="fromDate") (see html code above)
-        var from = $("#fromDate")
-          .datepicker({
-            dateFormat: "yy-mm-dd",
-            firstDay: 1,
-            numberOfMonths: 2,
-            changeMonth: true,
-            changeYear:true,
-            beforeShowDay: DisableDates,
-            minDate: semesterStart,
-            maxDate: semesterEnd,
-          })
+
+      //datepicker which is expecting two dates, the second cannot be chosen before the first
+      //creates the first date (id="fromDate") (see html code above)
+      var from = $("#fromDate")
+        .datepicker({
+          dateFormat: "yy-mm-dd",
+          firstDay: 1,
+          numberOfMonths: 2,
+          changeMonth: true,
+          changeYear: true,
+          beforeShowDay: DisableDates,
+          minDate: semesterStart,
+          maxDate: semesterEnd,
+        })
+        .on("change", function () {
+          to.datepicker("option", "minDate", getDate(this));
+        }),
+        //creates the second date (id="toDate") (see html code above)
+        to = $("#toDate").datepicker({
+          dateFormat: "yy-mm-dd",
+          firstDay: 1,
+          numberOfMonths: 2,
+          beforeShowDay: DisableDates,
+          changeMonth: true,
+          changeYear: true,
+          minDate: semesterStart,
+          maxDate: semesterEnd,
+        })
           .on("change", function () {
-              to.datepicker("option", "minDate", getDate(this));
-          }),
-          //creates the second date (id="toDate") (see html code above)
-          to = $("#toDate").datepicker({
-            dateFormat: "yy-mm-dd",
-            firstDay: 1,
-            numberOfMonths: 2,
-            beforeShowDay: DisableDates,
-            changeMonth: true,
-            changeYear:true,
-            minDate: semesterStart,
-            maxDate: semesterEnd,
-          })
-            .on("change", function () {
-              from.datepicker("option", "maxDate", getDate(this));
-            });
-      
-        var dates = "[" + [[${allHolidayDays}]] + "]";
-        
-        function DisableDates(date) {
+            from.datepicker("option", "maxDate", getDate(this));
+          });
+
+      var dates = "[" + [[${ allHolidayDays }]] + "]";
+
+      function DisableDates(date) {
         var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
         return [dates.indexOf(string) == -1];
+      }
+
+
+      function getDate(element) {
+        var date;
+        var dateFormat = "yy-mm-dd";
+        try {
+          date = $.datepicker.parseDate(dateFormat, element.value);
+        } catch (error) {
+          date = null;
         }
-      
-      
-        function getDate(element) {
-          var date;
-          var dateFormat = "yy-mm-dd";
-          try {
-              date = $.datepicker.parseDate(dateFormat, element.value);
-          } catch (error) {
-              date = null;
-          }
-      
-          return date;
-        }
-      });
-      
-      </script>
+
+        return date;
+      }
+    });
+
+  </script>
 </div>
