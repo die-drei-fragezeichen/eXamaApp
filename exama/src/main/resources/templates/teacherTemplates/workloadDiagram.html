@@ -14,14 +14,16 @@
         <div id="content-wrapper">
             <h1>Workloaddiagramm</h1>
             <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                th:href="${urlBuilder.replaceQueryParam('view', '2').toUriString()}">> Wochenansicht (alle Assignments)</a><br><br>
+                th:href="${urlBuilder.replaceQueryParam('view', '2').toUriString()}">> Wochenansicht (alle
+                Assignments)</a><br><br>
             <a th:href="@{/calendarchoose?view=3&coreCourse={cc}(cc=${coreCourse.id})}">> Semesteransicht</a><br><br>
             <!-- @ Roman: vielleicht wäre es cool, wenn die Seite auch auf calendar&view=3... gemappt würde. aber besprechen wir noch, wo was hin kommt :-) -->
 
             <h2>Klasse [[${coreCourse.name}]]</h2>
             <h3>Woche vom Montag, [[${#temporals.format(monday, 'dd.MM.yyyy')}]]</h3>
             <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                th:href="${urlBuilder.replaceQueryParam('monday', #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')).toUriString()}">zur Aktuellen Woche</a><br><br>
+                th:href="${urlBuilder.replaceQueryParam('monday', #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')).toUriString()}">zur
+                Aktuellen Woche</a><br><br>
             <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
                 th:href="${urlBuilder.replaceQueryParam('monday', lastMonday).toUriString()}">&lt; vorherige Woche</a> |
             <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
@@ -51,7 +53,7 @@
                 <div class="day-button">Sa, [[${#temporals.format(monday.plusDays(5), 'dd.MM.')}]]</div>
                 <div class="day-button">So, [[${#temporals.format(monday.plusDays(6), 'dd.MM.')}]]</div>
             </div>
-            
+
             <!-- show examBar here -->
             <h2> Dies ist dein Testbar</h2>
             <div id="stack100"></div>
@@ -59,7 +61,8 @@
 
             <!-- exam overview table here-->
             <h2>Meine Prüfungen diese Woche</h2>
-            <span style="font-size:1.5em; font-weight:bold;" th:if="${examsThisWeek.size == 0}">keine Prüfungen - yay!</span>
+            <span style="font-size:1.5em; font-weight:bold;" th:if="${examsThisWeek.size == 0}">keine Prüfungen -
+                yay!</span>
             <table th:unless="${examsThisWeek.size == 0}">
                 <thead>
                     <tr>
@@ -79,18 +82,23 @@
                         <td th:text="${exam.course.subject} + ' (' + ${exam.course} + ')'"></td>
                         <td th:text="${exam.countingFactor}"></td>
                         <td th:text="${exam.examType.getName()}"></td>
-                        <td th:text="${exam.workloadMinutesTotal} == 0 ? ${exam.examType.timeValue}+'h' : ${exam.workloadMinutesTotal}+'min'"></td>
-                        <td th:text="${exam.getAvailableDaysTotal} + ' Tage / '+${#temporals.format(exam.getRealStartDate, 'dd.MM.yyyy')}"></td>
+                        <td
+                            th:text="${exam.workloadMinutesTotal} == 0 ? ${exam.examType.timeValue}+'h' : ${exam.workloadMinutesTotal}+'min'">
+                        </td>
+                        <td
+                            th:text="${exam.getAvailableDaysTotal} + ' Tage / '+${#temporals.format(exam.getRealStartDate, 'dd.MM.yyyy')}">
+                        </td>
                     </tr>
                 </tbody>
             </table>
 
- 
 
-            
+
+
 
             <h2>Meine Prüfungen nächste Woche</h2>
-            <span style="font-size:1.5em; font-weight:bold;" th:if="${examsNextWeek.size == 0}">keine Prüfungen - yay!</span>
+            <span style="font-size:1.5em; font-weight:bold;" th:if="${examsNextWeek.size == 0}">keine Prüfungen -
+                yay!</span>
             <table th:unless="${examsNextWeek.size == 0}">
                 <thead>
                     <tr>
@@ -110,8 +118,12 @@
                         <td th:text="${exam.course.subject} + ' (' + ${exam.course} + ')'"></td>
                         <td th:text="${exam.countingFactor}"></td>
                         <td th:text="${exam.examType.getName()}"></td>
-                        <td th:text="${exam.workloadMinutesTotal} == 0 ? ${exam.examType.timeValue}+'h' : ${exam.workloadMinutesTotal}+'min'"></td>
-                        <td th:text="${exam.getAvailableDaysTotal} + ' Tage / '+${#temporals.format(exam.getRealStartDate, 'dd.MM.yyyy')}"></td>
+                        <td
+                            th:text="${exam.workloadMinutesTotal} == 0 ? ${exam.examType.timeValue}+'h' : ${exam.workloadMinutesTotal}+'min'">
+                        </td>
+                        <td
+                            th:text="${exam.getAvailableDaysTotal} + ' Tage / '+${#temporals.format(exam.getRealStartDate, 'dd.MM.yyyy')}">
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -159,32 +171,28 @@
 
                 //this is the code for examBarView
                 const Bar = ({ data }) => {
-                return /*#__PURE__*/ (
-                React.createElement("div", { className: "BarChart" },
-                data &&
-                data.map(d => {
-                return /*#__PURE__*/ (
-                    React.createElement("div", {
-                            className: "BarData",
-                            style: { background: `${d.color}`, height: `${d.percent}%` }
-                        }, /*#__PURE__*/
+                    return /*#__PURE__*/ (
+                        React.createElement("div", { className: "BarChart" },
+                            data &&
+                            data.map(d => {
+                                return /*#__PURE__*/ (
+                                    React.createElement("div", {
+                                        className: "BarData",
+                                        style: { background: `${d.color}`, width: `${d.percent}%` }
+                                    }, /*#__PURE__*/
 
-                        React.createElement("p", { className: "PercentText" }, d.percent + "%")));
-                })));
-
-
+                                        React.createElement("p", { className: "PercentText" }, d.percent + "%")));
+                            })));
                 };
 
                 const stack100 = () => {
-                const data = [{ color: '#d41414', percent: [[${xFactor}]] }, { color: style.getPropertyValue('--green'), percent: 10-[[${xFactor}]] }];
-                return /*#__PURE__*/ (
-                React.createElement("div", { className: "stack100" }, /*#__PURE__*/
-                React.createElement(Bar, { data: data })));
-
+                    const data = [{ color: style.getPropertyValue('--lightRed'), percent: [[${ xFactor }]] }, { color: style.getPropertyValue('--green'), percent: 100 - [[${ xFactor }]] }];
+                    return /*#__PURE__*/ (
+                        React.createElement("div", { className: "stack100" }, /*#__PURE__*/
+                            React.createElement(Bar, { data: data })));
                 };
 
-
-            ReactDOM.render( /*#__PURE__*/ React.createElement(stack100, null), document.querySelector("#stack100"));
+                ReactDOM.render( /*#__PURE__*/ React.createElement(stack100, null), document.querySelector("#stack100"));
             </script>
 
 
