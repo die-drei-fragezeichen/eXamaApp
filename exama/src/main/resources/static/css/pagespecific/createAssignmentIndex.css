@@ -1,0 +1,30 @@
+.form-control{
+    clear: left;
+    float:left;
+    width: 100%;
+}
+.exam-start{
+    clear: none;
+    float: left;
+    margin: 0 0.5em 0.5em 0;
+    width: calc(100% / 3 - 0.333em)
+}
+.exam-start-course, .exam-start-preptime, .exam-start-startdate{
+    clear: left;
+}
+.exam-start-type, .exam-start-factor{
+    margin: 0 0 0.5em 0;
+}
+.exam-start-name{
+    clear: left;
+    width:100%;
+    margin: 0 0 0.5em 0;
+}
+.exam-start-description, .exam-start-description>textarea{
+    clear: left;
+    width: 100%;
+    margin: 0 0 0.5em 0 !important;
+}
+textarea.exam-start-description{
+    margin: 0 !important;
+}

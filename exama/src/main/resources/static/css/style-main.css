@@ -39,6 +39,7 @@
 /* pagespecific */
 @import url('pagespecific/login.css');
 @import url('pagespecific/settings.css');
+@import url('pagespecific/createAssignmentIndex.css');
 
 /* ------------------------------- */
 
@@ -128,6 +129,16 @@ name {
 }
 */
 
+/* ---------- preset ---------- */
+html,body,p,h1,h2,h3,h4,h5,h6,img,table,td,th{
+   margin:0;
+   padding:0;
+   border:none;
+   font-family: 'Montserrat';
+   font-size:20px;
+}
+
+*/
 
 /* ---------- overall styles ---------- */
 
@@ -236,15 +247,9 @@ thead>tr:hover {
 textarea {
     overflow-y: scroll;
     scrollbar-width: none;
-    /*Hide scrollbar for Firefox */
-    display: none;
-    /* Hide scrollbar for Chrome, Safari and Opera */
     -ms-overflow-style: none;
-    /* IE and Edge */
     display: block;
-    height: 25px;
     resize: none;
-    /* Remove this if you want the user to resize the textarea */
 }
 
 
@@ -269,7 +274,13 @@ textarea {
     display: none;
 }
 
-
+.welcome-text{
+    width: 100%;
+    text-align: center;
+    clear: left;
+    float: left;
+    margin-bottom: 2em;
+}
 /* ---------- boxes ---------- */
 
 
