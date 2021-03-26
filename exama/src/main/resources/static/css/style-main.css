@@ -21,7 +21,7 @@
 
 /* login */
 
-@import url('login.css');
+@import url('pagespecific/login.css');
 
 /* navigation */
 
@@ -29,12 +29,16 @@
 
 /* workload diagram */
 
-@import url('diagram.css');
+@import url('pagespecific/diagram.css');
 
 /* specialeffects */
 
 @import url('specialeffects.css');
 @import url('100stack.css');
+
+/* pagespecific */
+@import url('pagespecific/login.css');
+@import url('pagespecific/settings.css');
 
 /* ------------------------------- */
 
