@@ -31,6 +31,8 @@
 
 .PercentText {
     color: var(--black);
-    font: 700 1.25rem sans-serif;
+    font-weight: bold;
+    padding-top: 0.75em;
+    /* font: 700 1.25rem sans-serif; */
     text-align: center;
 }
