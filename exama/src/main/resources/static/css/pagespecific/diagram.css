@@ -9,16 +9,8 @@
 /* ---------- variables ---------- */
 /* ------------------------------- */
 
-:root {
-    --diagHeight: 15em;
-    /* diag test (submitted by backend)*/
-    --percMonday: 0.9999;
-    --percTuesday: 0.8;
-    --percWednesday: 0.5;
-    --percThursday: 0.2;
-    --percFriday: 0.4;
-    --percSaturday: 0.6;
-    --percSunday: 0.8;    
+:root {  
+
 }
 
 
@@ -36,26 +28,53 @@
 #day-buttons{
     clear: left;
     float: left;
-    margin: 1em 0 2em 0;
+    margin: 0 0 0.5em 0;
+    padding-top: 0.25em;
     width: 100%;
+    background: var(--green);
 }
 .day-button{
     position: relative;
     float: left;
 
-    width: calc(100% / 7 - 2%);
-    height: 2em;
-    margin: 0 1% 0.5em 1%;
+    width: calc(100% / 7);
+    height: 1.5em;
+    margin: 0;
     
-    background-color: var(--lightRed);
-    border-radius: 0.5em;
+    border-right: 1px solid var(--black);
    
-    line-height: 2em;
+    line-height: 1.5em;
     text-align: center;
     overflow: hidden;
 }
+.day-button:last-of-type{
+    border-right: none;
+}
 
-
+.week-navigation{
+    width: 100%;
+    height: 1.5em;
+    line-height: 1.5em;
+    margin: 0 0 0.5em 0;
+    padding: 0;
+}
+.last-week, .next-week, .this-week{
+    position: absolute;
+    top:0;
+}
+.last-week{
+    left: 0;
+}
+.next-week{
+    right: 0;
+}
+.this-week{
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
 
 /* --------------------------------------- */
 /* ---------- responsive layout ---------- */

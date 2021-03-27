@@ -68,7 +68,6 @@ public class weekAndSemesterViewController {
                 String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
                 User user = userRepo.findUserByEmail(currentUserName);
                 List<CoreCourse> coreCourses = user.getCoreCourses();
-
                 
                 CoreCourse chosenCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
                 // if chosen CoreCourse empty  -> redirect to home

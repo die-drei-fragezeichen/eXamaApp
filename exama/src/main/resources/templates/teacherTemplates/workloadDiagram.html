@@ -12,121 +12,112 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Workloaddiagramm</h1>
-            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                th:href="${urlBuilder.replaceQueryParam('view', '2').toUriString()}">> Wochenansicht (alle
-                Assignments)</a><br><br>
-            <a th:href="@{/calendarchoose?view=3&coreCourse={cc}(cc=${coreCourse.id})}">> Semesteransicht</a><br><br>
-            <!-- @ Roman: vielleicht wäre es cool, wenn die Seite auch auf calendar&view=3... gemappt würde. aber besprechen wir noch, wo was hin kommt :-) -->
-
-            <h2>Klasse [[${coreCourse.name}]]</h2>
-            <h3>Woche vom Montag, [[${#temporals.format(monday, 'dd.MM.yyyy')}]]</h3>
-            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                th:href="${urlBuilder.replaceQueryParam('monday', #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')).toUriString()}">zur
-                Aktuellen Woche</a><br><br>
-            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                th:href="${urlBuilder.replaceQueryParam('monday', lastMonday).toUriString()}">&lt; vorherige Woche</a> |
-            <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                th:href="${urlBuilder.replaceQueryParam('monday', nextMonday).toUriString()}">nächste Woche &gt;</a>
-            <br><br>
-            <!-- for test purpose -->
-            <!-- [[${workloadValueList[0]}]]<br><br>
-            [[${workloadValueList[1]}]]<br><br>
-            [[${workloadValueList[2]}]]<br><br>
-            [[${workloadValueList[3]}]]<br><br>
-            [[${workloadValueList[4]}]]<br><br>
-            [[${workloadValueList[5]}]]<br><br>
-            [[${workloadValueList[6]}]]<br><br> -->
-
-            <canvas id="workloadDiagram">
-                Your browser does not support the HTML5 canvas tag.
-            </canvas>
-            <div
-                style="width: 100%; height: 0.5em; background-color: var(--green); padding:0; margin:0; float: left; clear:none;">
+            <div class="week-navigation">
+                <div class="this-week">
+                    <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                        th:href="${urlBuilder.replaceQueryParam('monday', #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')).toUriString()}">zur
+                        aktuellen Woche</a>
+                </div>
+                <div class="last-week">
+                    <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                        th:href="${urlBuilder.replaceQueryParam('monday', lastMonday).toUriString()}">&lt; letzte
+                        Woche</a>
+                </div>
+                <div class="next-week">
+                    <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                        th:href="${urlBuilder.replaceQueryParam('monday', nextMonday).toUriString()}">nächste Woche
+                        &gt;</a>
+                </div>
             </div>
-            <div id="day-buttons">
-                <div class="day-button">Mo, [[${#temporals.format(monday, 'dd.MM.')}]]</div>
-                <div class="day-button">Di, [[${#temporals.format(monday.plusDays(1), 'dd.MM.')}]]</div>
-                <div class="day-button">Mi, [[${#temporals.format(monday.plusDays(2), 'dd.MM.')}]]</div>
-                <div class="day-button">Do, [[${#temporals.format(monday.plusDays(3), 'dd.MM.')}]]</div>
-                <div class="day-button">Fr, [[${#temporals.format(monday.plusDays(4), 'dd.MM.')}]]</div>
-                <div class="day-button">Sa, [[${#temporals.format(monday.plusDays(5), 'dd.MM.')}]]</div>
-                <div class="day-button">So, [[${#temporals.format(monday.plusDays(6), 'dd.MM.')}]]</div>
+            <div class="content-box-full">
+                <div class="content-box-header">
+                    Klasse [[${coreCourse.name}]] | Woche vom Montag, [[${#temporals.format(monday, 'dd.MM.yyyy')}]]
+                </div>
+                <div class="content-box-content">
+                    <b>Diagramm</b> | <a
+                        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                        th:href="${urlBuilder.replaceQueryParam('view', '2').toUriString()}">Liste</a> | <a
+                        th:href="@{/calendarchoose?view=3&coreCourse={cc}(cc=${coreCourse.id})}">Semesterplan</a>
+                    <br><br>
+                    <canvas id="workloadDiagram"></canvas>
+                    <div id="day-buttons">
+                        <div class="day-button">Mo, [[${#temporals.format(monday, 'dd.MM.')}]]</div>
+                        <div class="day-button">Di, [[${#temporals.format(monday.plusDays(1), 'dd.MM.')}]]</div>
+                        <div class="day-button">Mi, [[${#temporals.format(monday.plusDays(2), 'dd.MM.')}]]</div>
+                        <div class="day-button">Do, [[${#temporals.format(monday.plusDays(3), 'dd.MM.')}]]</div>
+                        <div class="day-button">Fr, [[${#temporals.format(monday.plusDays(4), 'dd.MM.')}]]</div>
+                        <div class="day-button">Sa, [[${#temporals.format(monday.plusDays(5), 'dd.MM.')}]]</div>
+                        <div class="day-button">So, [[${#temporals.format(monday.plusDays(6), 'dd.MM.')}]]</div>
+                    </div>
+                </div>
             </div>
 
-            <!-- show examBar here -->
-            <h2> Dies ist dein Testbar</h2>
-            <div id="stack100"></div>
+            <div class="content-box-full">
+                <div class="content-box-header">
+                    Prüfungsbarometer
+                </div>
+                <div class="content-box-content">
+                    <div id="stack100"></div>
+                </div>
+            </div>
 
+            <div class="content-box-half">
+                <div class="content-box-header">
+                    Meine Prüfungen diese Woche
+                </div>
+                <div class="content-box-content">
+                    <span style="font-size:1.5em; font-weight:bold;" th:if="${examsThisWeek.size == 0}">keine Prüfungen
+                        -
+                        yay!</span>
+                    <table th:unless="${examsThisWeek.size == 0}">
+                        <thead>
+                            <tr>
+                                <th>Datum</th>
+                                <th>Fach</th>
+                                <th>Pruefungstyp</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="exam : ${examsThisWeek}">
+                                <td th:text="${#temporals.format(exam.dueDate, 'dd.MM.yyyy')}"></td>
+                                <td th:text="${exam.course.subject.tag}"></td>
+                                <td th:text="${exam.examType.getName()}"></td>
+                                <td><a href="#">ansehen</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-            <!-- exam overview table here-->
-            <h2>Meine Prüfungen diese Woche</h2>
-            <span style="font-size:1.5em; font-weight:bold;" th:if="${examsThisWeek.size == 0}">keine Prüfungen -
-                yay!</span>
-            <table th:unless="${examsThisWeek.size == 0}">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Datum</th>
-                        <th>Fach</th>
-                        <th>Faktor</th>
-                        <th>Pruefungstyp</th>
-                        <th>Aufwand</th>
-                        <th>Vorbereitungsintervall / Startdatum</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="exam : ${examsThisWeek}">
-                        <td th:text="${exam.name}"></td>
-                        <td th:text="${#temporals.format(exam.dueDate, 'dd.MM.yyyy')}"></td>
-                        <td th:text="${exam.course.subject} + ' (' + ${exam.course} + ')'"></td>
-                        <td th:text="${exam.countingFactor}"></td>
-                        <td th:text="${exam.examType.getName()}"></td>
-                        <td
-                            th:text="${exam.workloadMinutesTotal} == 0 ? ${exam.examType.timeValue}+'h' : ${exam.workloadMinutesTotal}+'min'">
-                        </td>
-                        <td
-                            th:text="${exam.getAvailableDaysTotal} + ' Tage / '+${#temporals.format(exam.getRealStartDate, 'dd.MM.yyyy')}">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-
-
-
-
-            <h2>Meine Prüfungen nächste Woche</h2>
-            <span style="font-size:1.5em; font-weight:bold;" th:if="${examsNextWeek.size == 0}">keine Prüfungen -
-                yay!</span>
-            <table th:unless="${examsNextWeek.size == 0}">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Datum</th>
-                        <th>Fach</th>
-                        <th>Faktor</th>
-                        <th>Pruefungstyp</th>
-                        <th>Aufwand</th>
-                        <th>Vorbereitungsintervall / Startdatum</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="exam : ${examsNextWeek}">
-                        <td th:text="${exam.name}"></td>
-                        <td th:text="${#temporals.format(exam.dueDate, 'dd.MM.yyyy')}"></td>
-                        <td th:text="${exam.course.subject} + ' (' + ${exam.course} + ')'"></td>
-                        <td th:text="${exam.countingFactor}"></td>
-                        <td th:text="${exam.examType.getName()}"></td>
-                        <td
-                            th:text="${exam.workloadMinutesTotal} == 0 ? ${exam.examType.timeValue}+'h' : ${exam.workloadMinutesTotal}+'min'">
-                        </td>
-                        <td
-                            th:text="${exam.getAvailableDaysTotal} + ' Tage / '+${#temporals.format(exam.getRealStartDate, 'dd.MM.yyyy')}">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="content-box-half">
+                <div class="content-box-header">
+                    Meine Prüfungen nächste Woche
+                </div>
+                <div class="content-box-content">
+                    <span style="font-size:1.5em; font-weight:bold;" th:if="${examsNextWeek.size == 0}">keine Prüfungen
+                        -
+                        yay!</span>
+                    <table th:unless="${examsNextWeek.size == 0}">
+                        <thead>
+                            <tr>
+                                <th>Datum</th>
+                                <th>Fach</th>
+                                <th>Pruefungstyp</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="exam : ${examsNextWeek}">
+                                <td th:text="${#temporals.format(exam.dueDate, 'dd.MM.yyyy')}"></td>
+                                <td th:text="${exam.course.subject.tag}"></td>
+                                <td th:text="${exam.examType.getName()}"></td>
+                                <td><a href="#">ansehen</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
             <!-- Load React. The first two tags load React. A one third one will load your component code. -->
             <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
@@ -137,7 +128,7 @@
                 var diagram = document.getElementById("workloadDiagram");
                 var width = document.getElementById("content-wrapper").offsetWidth - 5;
                 var barWidth = width / 7;
-                var height = Math.floor(width / 3);
+                var height = Math.floor(width / 5);
                 diagram.width = width;
                 diagram.height = height;
 
@@ -156,7 +147,7 @@
                 var style = getComputedStyle(document.body)
                 grd.addColorStop(0, style.getPropertyValue('--green'));
                 grd.addColorStop(0.5, style.getPropertyValue('--orange'));
-                grd.addColorStop(1, "red");
+                grd.addColorStop(1, style.getPropertyValue('--lightRed'));
 
                 ctx.fillStyle = grd;
                 ctx.globalAlpha = 1;
@@ -179,16 +170,16 @@
                                         className: "BarData",
                                         style: { background: `${d.color}`, width: `${d.percent}%` }
                                     }, /*#__PURE__*/
-                                        (d.percent<5 ? '' : React.createElement("p", { className: "PercentText" }, d.percent + "%"))));
+                                        (d.percent < 5 ? '' : React.createElement("p", { className: "PercentText" }, d.percent + "%"))));
                             })));
                 };
 
                 const stack100 = () => {
-                //assumed max value for exams per week: 6 (counting factor)
-                const data = [{ color: style.getPropertyValue('--green'), percent: Math.round(((6-[[${xFactor}]])/6)*100)}, { color: style.getPropertyValue('--lightRed'), percent: Math.round(([[${xFactor}]]/6)*100)}];
-                return /*#__PURE__*/ (
-                React.createElement("div", { className: "stack100" }, /*#__PURE__*/
-                React.createElement(Bar, { data: data })));
+                    //assumed max value for exams per week: 6 (counting factor)
+                    const data = [{ color: style.getPropertyValue('--green'), percent: Math.round(((6 - [[${ xFactor }]]) / 6) * 100) }, { color: style.getPropertyValue('--lightRed'), percent: Math.round(([[${ xFactor }]] / 6) * 100) }];
+                    return /*#__PURE__*/ (
+                        React.createElement("div", { className: "stack100" }, /*#__PURE__*/
+                            React.createElement(Bar, { data: data })));
 
                 };
 

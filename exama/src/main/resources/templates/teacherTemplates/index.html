@@ -12,56 +12,127 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>TEACHER-LANDING</h1>
+            <div class="welcome-text">Willkommen <b><span sec:authentication="name"></span></b>!</div>
 
-            Willkommen <b><span sec:authentication="name"></span></b>! Sie haben die folgenden Nutzungsrechte: <b><span
-                    sec:authentication="principal.authorities"></span></b>!
+            <div class="content-box-half">
+                <div class="content-box-header">
+                    Hausaufgabe setzen
+                </div>
+                <div class="content-box-content">
+                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                    labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                    et
+                    ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem
+                    ipsum
+                    dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+                    dolore
+                    magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+                    Stet
+                    clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                </div>
+            </div>
 
+            <div class="content-box-half">
+                <div class="content-box-header">
+                    Leistungsüberprüfung setzen
+                </div>
+                <div class="content-box-content">
+                    <form th:action="@{/exams/modified}" th:object="${exam}" method="post">
+                        <!-- <input type="hidden" th:field="*{semester}" th:value="${currentSemester}" /> -->
 
-
-            <br>
-            <br>
-            <br>
-
-            <hr>
-
-
-            <h1>Diese Woche</h1>
-
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Wochentag</th>
-                        <th>Datum</th>
-                        <th>Kurs</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Montag </td>
-                        <td><span th:text="${today}"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Dienstag </td>
-                        <td><span th:text="${today}"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Mittwoch </td>
-                        <td><span th:text="${today}"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Donnerstag </td>
-                        <td><span th:text="${today}"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Freitag </td>
-                        <td><span th:text="${today}"></span></td>
-                    </tr>
+                        <div class="exam-start exam-start-course">
+                            <select class="form-control" required>
+                                <!--th:field="*{course}"-->
+                                <!-- <option th:each="course : ${allCourses}" th:text="${course.name}"
+                                    th:value="${course.id}" th:selected="(${course} == *{course})" /> -->
+                                <option selected="true" disabled="disabled">Kurs*</option>
+                                <option>blabla</option>
+                            </select>
+                        </div>
 
 
-                </tbody>
-            </table>
+                        <div class="exam-start exam-start-duedate">
+                            <input type="text" id="toDate" class="form-control" required
+                                placeholder="Prüfungs-/Abgabedatum*" />
+                            <!--th:field="*{dueDate}"-->
+                        </div>
+
+
+                        <div class="exam-start exam-start-type">
+                            <select class="form-control" required>
+                                <!--th:field="*{examType}" -->
+                                <!-- <option th:each="type : ${allExamTypes}"
+                                    th:text="${type.name + ' (' + type.timeValue + ' h)'}" th:value="${type.id}"
+                                    th:selected="(${type} == *{examType})" /> -->
+                                <option selected="true" disabled="disabled">Prüfungstyp*</option>
+                                <option>blabla</option>
+                            </select>
+                        </div>
+
+
+                        <div class="exam-start exam-start-name">
+                            <input type="text" class="form-control" maxlength="20" required placeholder="Name/Thema*" />
+                            <!--th:field="*{name}"-->
+                        </div>
+
+
+                        <div class="exam-start exam-start-description">
+                            <textarea class="form-control" rows="5" placeholder="Beschreibung/Lernziele"
+                                maxlength="4095"></textarea>
+                        </div>
+
+                        <div class="exam-start exam-start-preptime">
+                            <select class="form-control" required>
+                                <!--th:field="*{availablePrepTime}"-->
+                                <!-- <option th:each="preptime : ${allPrepTimes}" th:text="${preptime.name}"
+                                    th:value="${preptime.id}" th:selected="(${preptime} == *{availablePrepTime})" /> -->
+                                <option selected="true" disabled="disabled">Vorbereitungszeit*</option>
+                                <option>blabla</option>
+                            </select>
+                        </div>
+
+
+                        <div class="exam-start exam-start-distribution">
+                            <select class="form-control" required>
+                                <!--th:field="*{workloadDistribution}"-->
+                                <!-- <option th:each="dist : ${allWorkloadDistributions}" th:text="${dist.name}"
+                                            th:value="${dist.id}" th:selected="(${dist} == *{workloadDistribution})" /> -->
+                                <option selected="true" disabled="disabled">Verteilung des Aufwands*</option>
+                                <option>blabla</option>
+                            </select>
+                            </label>
+                        </div>
+
+
+                        <div class="exam-start exam-start-factor">
+                            <input placeholder="Gewichtung" type="number" class="form-control" min="0.5" max="3.0"
+                                step="0.5" required />
+                            <!--th:field="*{countingFactor}"-->
+                        </div>
+
+
+                        <div class="exam-start exam-start-startdate">
+                            <input type="text" id="fromDate" class="form-control" placeholder="Startdatum" />
+                            <!--th:field="*{startDate}"-->
+                        </div>
+
+
+                        <div class="exam-start exam-start-workloadminutes">
+                            <input type="text" class="form-control" minlength="1" maxlength="4"
+                                placeholder="Arbeitsaufwand (Minuten)" />
+                            <!--th:field="*{workloadMinutesTotal}"-->
+                        </div>
+
+
+                        <div>
+                            <button type="submit" class="login-button">Leistungsüberprüfung setzen</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
         </div>
 
 
