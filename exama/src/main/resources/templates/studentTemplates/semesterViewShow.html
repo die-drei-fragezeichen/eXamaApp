@@ -1,5 +1,4 @@
-<html lang="DE" xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="DE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head th:include="fragments/head :: head"></head>
 
@@ -7,183 +6,76 @@
     <div id="wrapper">
         <!-- header with navigation (only desktop and tablet), title and logout-button -->
         <div th:include="fragments/header :: header"></div>
-        
-<div th:fragment="coursenavigation">
-    <div sec:authorize="hasAnyAuthority('TEACHER')" id="course-navigation">
-      <a th:each="coreCourse: ${teachersCoreCourses}" th:href="@{/semesterView/show?selectedSemester={sId}&selectedCoreCourse={ccId}(sId=${semester.id}, ccId=${coreCourse.id})}"><div class="course-navigation-item"><p data-th-text="${coreCourse}"> </p></div></a>
-    </div>
-</div>        
+
+        <div th:fragment="coursenavigation">
+            <div sec:authorize="hasAnyAuthority('TEACHER')" id="course-navigation">
+                <a th:each="coreCourse: ${teachersCoreCourses}" th:href="@{/semesterView/show?selectedSemester={sId}&selectedCoreCourse={ccId}(sId=${semester.id}, ccId=${coreCourse.id})}">
+                    <div class="course-navigation-item">
+                        <p data-th-text="${coreCourse}"> </p>
+                    </div>
+                </a>
+            </div>
+        </div>
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
             <h1 data-th-text="'Das ist deine Semesterübersicht für das ' + ${semester.name} + ', ' + ${#request.userPrincipal.principal.getFirstName}"> </h1>
-            <a href="/semesterView/choose">> neues Semester auswählen</a><br><br>
-            
             <!-- dead code - Keep for practice's sake -->
             <!--<h3 data-th-text="${examTotal}" /> -->
             <!--<h3 data-th-text="${xExam}" /> -->
-            
-            
+
+
             <table>
-                <thead>
-                  <tr class="headings">
-                  <th>SW</th> <!--Schulwoche-->
-                  <th>Woche</th>
-                  <th th:each="subject: ${userSubjects}" class="column-title" th:text="${subject.getTag()}" />
-                  <th>Kurzkommentar</th>
-                  </tr>
+                <thead th:hover>
+                    <tr class="headings">
+                        <th></th>
+                        <th>Schulwoche</th>
+                        <th th:each="subject: ${userSubjects}" class="column-title" th:text="${subject.getTag()}" />
+                        <th>Kurzkommentar</th>
+                    </tr>
                 </thead>
+                <!--th:alt-title="${iStat.even}? 'even' : 'odd'" th:style="${iStat.odd} ? 'font-weight: bold;'" ${#temporals.dayOfWeekNameShort(monday)}
+                th:style="${#maps.containsKey(alleTageMap, monday)} ? 'font-weight:bold;' : (${#maps.containsKey(alleTageMap, monday.plusDays(1))} ? 'font-weight:bold;': (${#maps.containsKey(alleTageMap, monday.plusDays(2))} ? 'font-weight:bold;': (${#maps.containsKey(alleTageMap, monday.plusDays(3))} ? 'font-weight:bold;': (${#maps.containsKey(alleTageMap, monday.plusDays(4))} ? 'font-weight:bold;'))))"
                 
-                <tbody>
-                <!-- dead code - Keep for practice's sake -->
-                <!--<tr th:if="${examTotal}==0">
-                  <td colspan="100%"> Bislang wurden in diesem Semester noch keine Prüfungen erfasst </td>
-                </tr>
-                <tr th:unless="${examTotal}==0"-->
-                <tr th:each="monday, iStat : ${allMondays}" th:style="${iStat.odd} ? 'font-weight: bold;'" 
-                    th:styleappend="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--orange);'" 
-                    th:alt-title="${iStat.even}? 'even' : 'odd'">
-                  <td th:text="${iStat.count}"> Semesterwoche anzeigen</td>
-                  <td><span th:text="${#temporals.dayOfWeekNameShort(monday)} + ', ' + ${#temporals.format(monday, 'dd.MM.yyyy')}"> Wochenanfang </span></td>
-                  <td th:if="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" colspan="100%" th:text="${alleTageMap.get(monday)}" th:style="'font-weight: bold;'">
-                  <td th:unless="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:each="subject: ${userSubjects}"
-                      th:text="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)}"
-                      th:style="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? (${allExams.get(iStat.index).get(subject.getTag()).countingFactor} >= 1 ? 'background-color:var(--red);' : 'background-color:var(--orange);')"
-                      th:styleappend="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? 'font-weight: bold;'"/>
-                  <td th:unless="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}"
-                      th:text="${#maps.containsKey(alleTageMap, monday)} ? ${alleTageMap.get(monday).getName()} : (${#maps.containsKey(alleTageMap, monday.plusDays(1))} ? ${alleTageMap.get(monday.plusDays(1)).getName()}: (${#maps.containsKey(alleTageMap, monday.plusDays(2))} ? ${alleTageMap.get(monday.plusDays(2)).getName()}: (${#maps.containsKey(alleTageMap, monday.plusDays(3))} ? ${alleTageMap.get(monday.plusDays(3)).getName()}: (${#maps.containsKey(alleTageMap, monday.plusDays(4))} ? ${alleTageMap.get(monday.plusDays(4)).getName()}))))"
-                      th:style="${#maps.containsKey(alleTageMap, monday)} ? 'font-weight:bold;' : (${#maps.containsKey(alleTageMap, monday.plusDays(1))} ? 'font-weight:bold;': (${#maps.containsKey(alleTageMap, monday.plusDays(2))} ? 'font-weight:bold;': (${#maps.containsKey(alleTageMap, monday.plusDays(3))} ? 'font-weight:bold;': (${#maps.containsKey(alleTageMap, monday.plusDays(4))} ? 'font-weight:bold;'))))"
-                      th:styleappend="${#maps.containsKey(alleTageMap, monday)} ?'background-color:var(--orange);': (${#maps.containsKey(alleTageMap, monday.plusDays(1))} ?'background-color:var(--orange);': (${#maps.containsKey(alleTageMap, monday.plusDays(2))} ?'background-color:var(--orange);' :(${#maps.containsKey(alleTageMap, monday.plusDays(3))} ?'background-color:var(--orange);':(${#maps.containsKey(alleTageMap, monday.plusDays(4))} ?'background-color:var(--orange);'))))"
-                  >Kommentarzeile</td>
-                  <td th:if="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}"
-                      </td>
+                th:style="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? 'font-weight: bold;'"
+                th:styleappend="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? (${allExams.get(iStat.index).get(subject.getTag()).countingFactor} >= 1 ? 'background-color:var(--red);' : 'background-color:var(--orange);')"/>
+                -->
+                <tbody td:hover>
+                    <!-- check if week is holiday, change background-->
+                    <tr th:each="monday, iStat : ${allMondays}" th:style="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--lightGray);' : 'background-color:var(--green);'">
+                        <td th:text="${iStat.count}" </td>
+                            <!--Write school week date-->
+                            <td th:text="'(' + ${#temporals.format(monday, 'dd.MM')} + '-' + ${#temporals.format(monday.plusDays(4), 'dd.MM')} + ')'"></td>
+                            <!-- Week is holiday -->
+                            <td th:if="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" colspan="100%" th:text="${alleTageMap.get(monday)}" th:style="'font-weight: light;'">
+                                <!-- Make an empty box for each subject-->
+                                <td th:unless="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:each="subject: ${userSubjects}" th:text="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? (${allExams.get(iStat.index).get(subject.getTag()).countingFactor} >= 1 ? ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)} : (('(' + ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)} + ')')))"
+                                />
+
+                                <td th:unless="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:text="${#maps.containsKey(alleTageMap, monday)} ? ${alleTageMap.get(monday).getName()} : (${#maps.containsKey(alleTageMap, monday.plusDays(1))} ? ${alleTageMap.get(monday.plusDays(1)).getName()}: (${#maps.containsKey(alleTageMap, monday.plusDays(2))} ? ${alleTageMap.get(monday.plusDays(2)).getName()}: (${#maps.containsKey(alleTageMap, monday.plusDays(3))} ? ${alleTageMap.get(monday.plusDays(3)).getName()}: (${#maps.containsKey(alleTageMap, monday.plusDays(4))} ? ${alleTageMap.get(monday.plusDays(4)).getName()}))))"
+                                    th:style="${#maps.containsKey(alleTageMap, monday)} ?'background-color:var(--lightGray);': (${#maps.containsKey(alleTageMap, monday.plusDays(1))} ?'background-color:var(--lightGray);': (${#maps.containsKey(alleTageMap, monday.plusDays(2))} ?'background-color:var(--lightGray);' :(${#maps.containsKey(alleTageMap, monday.plusDays(3))} ?'background-color:var(--lightGray);':(${#maps.containsKey(alleTageMap, monday.plusDays(4))} ?'background-color:var(--lightGray);'))))">Kommentarzeile</td>
                 </tbody>
 
+                <!-- potential workload colour code <td th:style="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--lightGray);' : 
+                (${allWorkloads.get(iStat.index)} >= 99 ? 'background-color:var(--red);' : ((${allWorkloads.get(iStat.index)} < 30) ? 'background-color:var(--green);' : ('background-color:var(--orange);')))"/>  end code-->
 
 
-<!-- be aware that the above lines could also contain nested conditionals cond1 ? do1 : (cond2 ? do2 : do3)
-alternative code: : (${#lists.contains(allHolidaysList, monday)} ? 'Ferien' : ' ')-->
+                <!-- be aware that the above lines could also contain nested conditionals cond1 ? do1 : (cond2 ? do2 : do3)
+                alternative code: : (${#lists.contains(allHolidaysList, monday)} ? 'Ferien' : ' ')-->
 
 
-<!-- Funktionierende Befehle für die Tabelle -->
-<!-- <td th:each="subject: ${allSubjects}" th:text="${#lists.isEmpty(allExams)}" />-->
-<!-- <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).size} == 0 ? 'Yes' : 'No'"/>-->
-<!-- <td th:each="subject: ${allSubjects}" th:text="${#lists.size(allExams.get(iStat.index))}"/> -->
-
-
-<!-- <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).stream().count()}"/> -->
-<!-- <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).stream().filter(c -> c.getCountingFactor() > 1).count()}"/>-->
+                <!-- Funktionierende Befehle für die Tabelle -->
+                <!-- <td th:each="subject: ${allSubjects}" th:text="${#lists.isEmpty(allExams)}" />-->
+                <!-- <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).size} == 0 ? 'Yes' : 'No'"/>-->
+                <!-- <td th:each="subject: ${allSubjects}" th:text="${#lists.size(allExams.get(iStat.index))}"/> -->
+                <!-- <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).stream().count()}"/> -->
+                <!-- <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).stream().filter(c -> c.getCountingFactor() > 1).count()}"/>-->
             </table>
-  
-            <br />
-            <br />
-            <br />
+            <a href="/semesterView/choose">>Semester wechseln</a><br><br>
 
-        <!--<td th:each="subject: ${allSubjects}" th:each="exam: ${allExams}" th:if="subject == exam.subject">
-                <th:text="${#temporals.dayOfWeekNameShort(exam.dueDate)}"</td>
-            
-            <table>
-              <th:each="subject : ${allSubjects}">
-                <td>
-                   <tr th:each="exam: ${allExams.get(iStat.index)}"
-                      th:text="${exam.name}">
-                    </tr>
-                <td>
-                <td></td>
-            </table>-->
+        </div>
 
-            <br />
-            <!-- <input type="text" placeholder="Suche nach Prüfungsamen - hier passiert noch nichts">
+        <div th:include="fragments/footer :: footer"></div>
 
-            <h3 data-th-text="${msg}" />
-            <h3 data-th-text="${anzpr}" />
-             <h3 data-th-text="${msg2}" />
-             <h3 data-th-text="${xFactor}" />
-
-
-<script>
-//TODO:
-//Hier kommt der neue 100stak.js code!!!!
-
-</script>
-
-
-
-
-<script>
-
-// Dies ist der "alte" CanvasJS.Chart Exambar - wird gelöscht werden!
-window.onload = function () {
-
-var chart = new CanvasJS.Chart("chartContainer", {
-	animationEnabled: true,
-	theme: "light2", //"light1", "dark1", "dark2"
-	title:{
-        text: "Du hast " + "[[${Datum}]]" + " gewählt, und dies ist dein ExamBar"             
-	},
-	axisY:{
-		interval: 25,
-		suffix: "%"
-	},
-	toolTip:{
-		shared: true
-	},
-	data:[{
-		type: "stackedBar100",
-		toolTipContent: "{label}<br><b>{name}:</b> {y} (#percent%)",
-		showInLegend: true, 
-		name: "Besetzt",
-		dataPoints: [
-			{ y: [[${xFactor}]], label: "Deine Woche, Socke!" }
-		]
-		},
-		
-		{
-			type: "stackedBar100",
-			toolTipContent: "<b>{name}:</b> {y} (#percent%)",
-			showInLegend: true, 
-			name: "Frei",
-			dataPoints: [
-				{ y: 10-[[${xFactor}]], label: "Woche ab: " + "[[${Montag}]]" }
-
-			]
-	}]
-});
-chart.render();
-
-}
-</script>
-</head>
-<body>
-<div id="chartContainer" style="height: 300px; max-width: 920px; margin: 0px auto;"></div>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
-<script>
-//Get the button
-var mybutton = document.getElementById("myBtn");
-
-// When the user scrolls down 20px from the top of the document, show the button
-window.onscroll = function() {scrollFunction()};
-
-function scrollFunction() {
-  if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10 || document.getElementById("").scrollTop > 10) {
-    mybutton.style.display = "block";
-  } else {
-    mybutton.style.display = "none";
-  }
-}
-
-// When the user clicks on the button, scroll to the top of the document
-function topFunction() {
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
-}
-</script>
-
-
-        <!-- footer with navigation (only mobile)
-        <div th:include="fragments/footer :: footer"></div>-->
-
-</div>
 </body>
 
 </html>
