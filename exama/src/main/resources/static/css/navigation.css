@@ -60,42 +60,75 @@
 
 
 .nav-home{
-    background-image:url(img/home_w.svg);
+    background-image:url(img/navigation-icons/home-w.svg);
 }
 .nav-home:hover{
-    background-image:url(img/home_r2.svg);
+    background-image:url(img/navigation-icons/home-r2.svg);
+}
+.nav-home:active{
+    background-image:url(img/navigation-icons/home-r.svg);
 }
 
-.nav-calendar{
-    background-image:url(img/calendar_w.svg);
+.nav-diagram{
+    background-image:url(img/navigation-icons/diagram-w.svg);
 }
-.nav-calendar:hover{
-    background-image:url(img/calendar_r2.svg);
+.nav-diagram:hover{
+    background-image:url(img/navigation-icons/diagram-r2.svg);
 }
-
-.nav-notifications{
-    background-image:url(img/notification_w.svg);
-}
-.nav-notifications:hover{
-    background-image:url(img/notification_r2.svg);
+.nav-diagram:active{
+    background-image:url(img/navigation-icons/diagram-r.svg);
 }
 
-.nav-settings{
-    background-image:url(img/settings_w.svg);
+.nav-addexam{
+    background-image:url(img/navigation-icons/addexam-w.svg);
 }
-.nav-settings:hover{
-    background-image:url(img/settings_r2.svg);
+.nav-addexam:hover{
+    background-image:url(img/navigation-icons/addexam-r2.svg);
+}
+.nav-addexam:active{
+    background-image:url(img/navigation-icons/addexam-r.svg);
 }
 
-.nav-logout{
-    width:100%;
-    height:100%;
-    background-image:url(img/logout_w.svg);
+.nav-schoolsettings{
+    background-image:url(img/navigation-icons/school-w.svg);
+}
+.nav-schoolsettings:hover{
+    background-image:url(img/navigation-icons/school-r2.svg);
+}
+.nav-schoolsettings:active{
+    background-image:url(img/navigation-icons/school-r.svg);
+}
+
+.nav-profile{
+    width: var(--naviHeight);
+    height: var(--naviHeight);
     background-size: contain;
     background-repeat: no-repeat;
+    clear:left;
+    float: left;
+    margin: 0 calc(var(--naviHeight) * 0.5) 0 0;
+    background-image: url(img/navigation-icons/profile-w.svg);
+}
+.nav-profile:hover{
+    background-image: url(img/navigation-icons/profile-r2.svg);
+}
+.nav-profile:active{
+    background-image: url(img/navigation-icons/profile-r.svg);
+}
+
+
+.nav-logout{
+    width: var(--naviHeight);
+    height: var(--naviHeight);
+    margin: 0;
+    background-image:url(img/navigation-icons/logout-w.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    clear:none;
+    float: left;
 }
 .nav-logout:hover{
-    background-image:url(img/logout_r2.svg);
+    background-image:url(img/navigation-icons/logout-r2.svg);
     cursor: pointer;
 }
 
@@ -103,12 +136,12 @@
     display: none;
     width: calc(var(--naviHeight) * 1.5);
     height: var(--naviHeight);
-    background-image:url(img/burger_w.svg);
+    background-image:url(img/navigation-icons/burger-w.svg);
     background-size: contain;
     background-repeat: no-repeat;
 }
 .nav-burgermenu:hover{
-    background-image:url(img/burger_r2.svg);
+    background-image:url(img/navigation-icons/burger-r2.svg);
     cursor: pointer;
 }
 
@@ -130,11 +163,13 @@
 }
 
 
-#logout {
+#logout-profile {
     position: absolute;
+    margin:0;
+    padding:0;
     right: calc((var(--headerSize) - var(--naviHeight)) / 2);
     top: calc((var(--headerSize) - var(--naviHeight)) / 2);
-    width: var(--naviHeight);
+    width: calc(var(--naviHeight) * 2.5);
     height: var(--naviHeight);
 }
 
@@ -186,31 +221,31 @@
 }
 
 .nav2-home{
-    background-image:url(img/home_r2.svg);
+    background-image:url(img/navigation-icons/home-r2.svg);
 }
 .nav2-home:hover{
-    background-image:url(img/home_r.svg);
+    background-image:url(img/navigation-icons/home-r.svg);
 }
 
 .nav2-calendar{
-    background-image:url(img/calendar_r2.svg);
+    background-image:url(img/navigation-icons/diagram-r.svg);
 }
 .nav2-calendar:hover{
-    background-image:url(img/calendar_r.svg);
+    background-image:url(img/navigation-icons/diagram-r.svg);
 }
 
 .nav2-notifications{
-    background-image:url(img/notification_r2.svg);
+    background-image:url(img/navigation-icons/addexam-r2.svg);
 }
 .nav2-notifications:hover{
-    background-image:url(img/notification_r.svg);
+    background-image:url(img/navigation-icons/addexam-r.svg);
 }
 
 .nav2-settings{
-    background-image:url(img/settings_r2.svg);
+    background-image:url(img/navigation-icons/school-r2.svg);
 }
 .nav2-settings:hover{
-    background-image:url(img/settings_r.svg);
+    background-image:url(img/navigation-icons/school-r.svg);
 }
 
 
