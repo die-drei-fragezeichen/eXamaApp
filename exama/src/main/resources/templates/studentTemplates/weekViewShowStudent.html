@@ -20,22 +20,25 @@
                     <th>Datum</th>  
                     <th>Prüfungen</th>
                     <th>Hausaufgaben</th>
-                    {% comment %} <th>Sondertermine</th> {% endcomment %}
                     </tr>
                   </thead>
 
                   <tbody>
-                  {% comment %} Montag {% endcomment %}
-                    <tr th:each="exam : ${allExams}" th:each="homework : ${allHomework}">
-                    <td>"${dates.getFirst}"</td>
-                    <td><span th:if="${exam.dueDate==dates.getFirst">"${exam.name}"</span>
-                    <span th:unless="${exam.dueDate==dates.getFirst">keine Prüfung</span>
+                  <!-- Montag -->
+                    <tr>
+                    <td th:text="${dates.getFirst}"></td>
+                    <td th:each="exam : ${allExams}" th:text="keine Prüfung">
                     </td>
-                    <td><span th:if="${homework.dueDate==dates.getFirst">"${exam.name}"</span>
-                    <span th:unless="${homework.dueDate==dates.getFirst">keine Hausaufgaben</span>
+                    <td ><!--<span th:if="${homework.dueDate==dates.getFirst">"${exam.name}"</span>
+                    <span th:unless="${homework.dueDate==dates.getFirst">keine Hausaufgaben</span>-->Test2
                     </td>
                     </tr>
-                    {% comment %} jetzt muss ich noch das erste Date aus der Queue herausbekommen {% endcomment %}
+                    <!-- Dienstag -->
+                    <!-- Mittwoch -->
+                    <!-- Donnerstag -->
+                    <!-- Freitag -->
+                    <!-- Samstag -->
+                    <!-- Sonntag -->
                   </tbody>
                 </table>
         </div>
