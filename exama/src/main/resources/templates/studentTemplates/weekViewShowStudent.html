@@ -12,7 +12,7 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Guten Tag, das steht diese Woche an </h1>
+            <h1>Guten Tag, das steht diese Woche an: </h1>
             <br><br>
               <table>
                   <thead>
@@ -22,16 +22,15 @@
                     <th>Hausaufgaben</th>
                     </tr>
                   </thead>
-
+                  
                   <tbody>
-                  <!-- Montag -->
-                    <tr>
-                    <td th:text="${dates.getFirst}"></td>
-                    <td>
-                    </td>
-                    <td ><!--<span th:if="${homework.dueDate==dates.getFirst">"${exam.name}"</span>
-                    <span th:unless="${homework.dueDate==dates.getFirst">keine Hausaufgaben</span>-->Test2
-                    </td>
+                  <span th:each="date :${dates}" >
+                  <!-- Montag th:each="exam :${allExams}" th:text="${exam.name}"-->
+                    <tr >
+                    <td th:text="${date}"></td><span th:each="exam :${allExams}" >
+                    <td >
+                    </td></span><span th:each="homework :${allHomework}" >
+                    <td ></td></span>
                     </tr>
                     <!-- Dienstag -->
                     <!-- Mittwoch -->
@@ -39,7 +38,9 @@
                     <!-- Freitag -->
                     <!-- Samstag -->
                     <!-- Sonntag -->
+                  </span>
                   </tbody>
+                  
                 </table>
         </div>
 
