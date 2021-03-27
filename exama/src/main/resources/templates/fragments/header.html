@@ -5,12 +5,13 @@
             <div id="navigation-header">
                 <div class="navigation-header-item nav-burgermenu"></div>
                 <a th:href="@{/}"><div class="navigation-header-item nav-home"></div></a>
-                <a th:href="@{/calendarchoose?view=1&coreCourse={cc}(cc=${coreCoursesCurrentUser.get(0).id})}"><div class="navigation-header-item nav-calendar"></div></a>
-                <a th:href="@{/exams/create}"><div class="navigation-header-item nav-notifications"></div></a>
-                <a th:href="@{/profile}"><div class="navigation-header-item nav-settings"></div></a>
+                <a th:href="@{/calendarchoose?view=1&coreCourse={cc}(cc=${coreCoursesCurrentUser.get(0).id})}"><div class="navigation-header-item nav-diagram"></div></a>
+                <a th:href="@{/exams/create}"><div class="navigation-header-item nav-addexam"></div></a>
+                <a th:href="@{/profile}"><div class="navigation-header-item nav-schoolsettings"></div></a>
             </div>
             <div id="title">eXama</div>
-            <div id="logout">
+            <div id="logout-profile">
+                <a th:href="@{/profile}"><div class="nav-profile"></div></a>
                 <form th:action="@{/logout}" method="post">
                     <button type="submit" class="navigation-header-item nav-logout" />
                 </form>
