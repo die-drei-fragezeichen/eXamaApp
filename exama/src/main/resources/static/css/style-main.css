@@ -40,6 +40,7 @@
 @import url('pagespecific/login.css');
 @import url('pagespecific/settings.css');
 @import url('pagespecific/createAssignmentIndex.css');
+@import url('pagespecific/profile.css');
 
 /* ------------------------------- */
 
@@ -56,16 +57,19 @@
     --lighterGray: #EAEAEA;
     --lightGray: #DBDBDB;
     --black: #000000;
-    --green: #009C36;
-    --lightGreen:#78A387;
-    --blue: #0097C4;
-    --lightBlue: #D0EEF7;
+
+    --green: #044B1C;
+    --lightGreen:#089739;
+    --lighterGreen: #9CD5B0;
+    --blue: #063A75;
+    --lightBlue: #3C8FEF;
+    --lighterBlue: #CEE3FB;
     --orange: #DE7A16;
-    --lightOrange: #E6AA6E;
-    --lighterOrange: #FFE2C4;
+    --lightOrange: #EBAF73;
+    --lighterOrange: #F8E4D0;
     --red: #8A0500;
-    --lightRed: #E05A55;
-    --lighterRed: #D99491;
+    --lightRed: #A13733;
+    --lighterRed: #E8CDCC;
 }
 
 

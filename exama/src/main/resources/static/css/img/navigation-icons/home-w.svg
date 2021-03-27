@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve">
+<style type="text/css">
+	.st0{display:none;}
+	.st1{fill:none;}
+	.st2{fill:none;stroke:#FFFFFF;stroke-width:3;stroke-miterlimit:10;}
+	.st3{display:inline;fill:#8A0500;}
+	.st4{display:none;fill:#8A0500;}
+	.st5{display:inline;}
+	.st6{fill:#8A0500;}
+	.st7{fill:#FFFFFF;}
+</style>
+<g class="st0">
+	<rect class="st1" width="48" height="48"/>
+</g>
+<path id="Rahmen" class="st2" d="M41.9,46.5H6.1c-2.5,0-4.6-2.1-4.6-4.6V6.1c0-2.5,2.1-4.6,4.6-4.6h35.8c2.5,0,4.6,2.1,4.6,4.6v35.8
+	C46.5,44.4,44.4,46.5,41.9,46.5z"/>
+<g id="Add_exam" class="st0">
+	<path class="st3" d="M32.1,27.7v-9.5h-4.9v9.5h-9.9v4.8h9.9V42h4.9v-9.5H42v-4.8H32.1z M6,8.4h36V6.2H6V8.4z M6,12.4h36v-2.2H6
+		V12.4z M6,16.5h36v-2.2H6V16.5z M6,20.4h18v-2.2H6V20.4z M6,24.4h18v-2.2H6V24.4z"/>
+</g>
+<path id="Diagramm" class="st4" d="M6,6h8.3v36H6V6z M33.7,25.2H42V42h-8.3V25.2z M19.8,15.6h8.3V42h-8.3V15.6z"/>
+<g id="Schule" class="st0">
+	<g class="st5">
+		<rect x="9.6" y="21.4" class="st6" width="5.4" height="12"/>
+		<rect x="21.3" y="21.4" class="st6" width="5.4" height="12"/>
+		<rect x="6" y="36.9" class="st6" width="36" height="5.1"/>
+		<rect x="33" y="21.4" class="st6" width="5.4" height="12"/>
+		<polygon class="st6" points="24,6 6,14.6 6,18 42,18 42,14.6 		"/>
+	</g>
+</g>
+<polygon id="Logout" class="st4" points="24.9,33.1 28.4,36.7 41.1,24 28.4,11.3 24.9,14.9 31.4,21.5 6.9,21.5 6.9,26.5 31.4,26.5 
+	"/>
+<path id="Home" class="st7" d="M20.4,42V29.3h7.2V42h9V25.1H42L24,6L6,25.1h5.4V42H20.4z"/>
+</svg>

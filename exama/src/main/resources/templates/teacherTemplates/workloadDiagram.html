@@ -145,7 +145,7 @@
                 var grd = ctx.createLinearGradient(0, height, 0, 0);
 
                 var style = getComputedStyle(document.body)
-                grd.addColorStop(0, style.getPropertyValue('--green'));
+                grd.addColorStop(0, style.getPropertyValue('--lightGreen'));
                 grd.addColorStop(0.5, style.getPropertyValue('--orange'));
                 grd.addColorStop(1, style.getPropertyValue('--lightRed'));
 
@@ -176,7 +176,7 @@
 
                 const stack100 = () => {
                     //assumed max value for exams per week: 6 (counting factor)
-                    const data = [{ color: style.getPropertyValue('--green'), percent: Math.round(((6 - [[${ xFactor }]]) / 6) * 100) }, { color: style.getPropertyValue('--lightRed'), percent: Math.round(([[${ xFactor }]] / 6) * 100) }];
+                    const data = [{ color: style.getPropertyValue('--lightGreen'), percent: Math.round(((6 - [[${ xFactor }]]) / 6) * 100) }, { color: style.getPropertyValue('--lightRed'), percent: Math.round(([[${ xFactor }]] / 6) * 100) }];
                     return /*#__PURE__*/ (
                         React.createElement("div", { className: "stack100" }, /*#__PURE__*/
                             React.createElement(Bar, { data: data })));
