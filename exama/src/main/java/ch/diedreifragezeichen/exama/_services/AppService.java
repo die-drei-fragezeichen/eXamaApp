@@ -59,34 +59,7 @@ public class AppService {
     @PersistenceContext
     private EntityManager em;
 
-    /** Service 1 */
-    public Model calculateNumberOfExams(Model model, List<Exam> listExams) {
-        model.addAttribute("msg", "Anzahl Leistungsmessungen diese Woche: ");
-        long anzahlExamen = listExams.stream().count();
-        model.addAttribute("anzpr", anzahlExamen);
-        // Schreibe im html zum Beispiel: <h1 data-th-text="${anzpr}" />
-        return model;
-    }
-
-    /** Hilfsmethode 2 */
-    public Model calculateExamFactor(Model model, List<Exam> listExams) {
-        model.addAttribute("msg2", "Insgesamt zählt das mit einem Belastungsfaktor von: ");
-        double ExamFactor = listExams.stream().mapToDouble(exam -> exam.getCountingFactor()).sum();
-        model.addAttribute("xFactor", ExamFactor);
-        // Schreibe im html: <h1 data-th-text="${anzpr}" />
-        return model;
-    }
-
-    /** Hilfsmethode 3 */
-    public ModelAndView calculateNumberOfSubjects(ModelAndView mav, List<Subject> allSubjects) {
-        long numberOfSubjects = allSubjects.stream().count();
-        mav.addObject("numberOfSubjects", numberOfSubjects);
-        return mav;
-    }
-
-
-    //* WORKLOAD SERVICES */
-
+    // * WORKLOAD RELATED SERVICES */
 
     /**
      * Service 5 - Returns a list of weekly Workload values for every Monday of the
@@ -162,27 +135,54 @@ public class AppService {
         return workloadTotalSevenDaysArray;
     }
 
-    //* ASSIGNMENT RELATED SERVICES */
+    // * ASSIGNMENT RELATED SERVICES */
 
-    /** Service 4a */
-    public int calculateNumberOfExams(List<List<Exam>> allExams) {
-        int sum = 0;
-        Iterator<List<Exam>> iter = allExams.iterator();
-        while (iter.hasNext()) {
-            Iterator<Exam> innerIter = iter.next().iterator();
-            while (innerIter.hasNext()) {
-                sum++;
-            }
-        }
-        return sum;
+    /** Service 1a */
+
+    public long calculateNumberOfExam(List<Exam> allExams) {
+
+        return allExams.stream().filter(e -> Objects.nonNull(e.getId())).map(e -> e.getId()).distinct().count();
     }
 
-    // public int calculateNumberOfExams(List<Exam> allExams) {
-        
-    //     allExams.stream().map
-    //     }
-    //     return sum;
-    // }
+    /** Service 1b */
+    public long calculateNumberOfExams(List<List<Exam>> allExams) {
+
+        return allExams.stream().flatMap(List::stream).filter(e -> Objects.nonNull(e.getId())).map(e -> e.getId())
+                .distinct().count();
+    }
+
+    public Model calculateNumberOfExams(Model model, List<Exam> listExams) {
+        long anzahlExamen = calculateNumberOfExam(listExams);
+        model.addAttribute("anzpr", anzahlExamen);
+        // Schreibe im html zum Beispiel: <h1 data-th-text="${anzpr}" />
+        return model;
+    }
+
+    /** Hilfsmethode 2a */
+    public double calculateExamFactor(List<Exam> listExams) {
+        return listExams.stream().filter(e -> Objects.nonNull(e.getCountingFactor()))
+                .mapToDouble(exam -> exam.getCountingFactor()).sum();
+    }
+
+    /** Hilfsmethode 2b */
+    public Model calculateExamFactor(Model model, List<Exam> listExams) {
+        double ExamFactor = calculateExamFactor(listExams);
+        model.addAttribute("xFactor", ExamFactor);
+        // Schreibe im html: <h1 data-th-text="${anzpr}" />
+        return model;
+    }
+
+    /** Hilfsmethode 3a */
+    public long calculateNumberOfSubjects(List<Subject> allSubjects) {
+        return allSubjects.stream().filter(s -> Objects.nonNull(s.getId())).map(s -> s.getId()).distinct().count();
+    }
+
+    /** Hilfsmethode 3b */
+    public ModelAndView calculateNumberOfSubjects(ModelAndView mav, List<Subject> allSubjects) {
+        long numberOfSubjects = calculateNumberOfSubjects(allSubjects);
+        mav.addObject("numberOfSubjects", numberOfSubjects);
+        return mav;
+    }
 
     /** Service 9a - return all the Assignments for a week of a number of courses */
     public List<Assignment> getAssignmentsForSevenDaysList(List<Course> courses, LocalDate monday) {
@@ -211,7 +211,7 @@ public class AppService {
         return getAssignmentsForSevenDaysList(courses, monday);
     }
 
-    /** Service 10a - Get every exam for a particular week */
+    /** Service 10a - Get every exam for a particular week for List of courses*/
     public List<Assignment> getExamsForSevenDaysList(List<Course> courses, LocalDate monday) {
         List<Assignment> exams = new ArrayList<>();
         // add every exam for the week
@@ -222,14 +222,14 @@ public class AppService {
         return exams;
     }
 
-    // repeat for single course
+    /** Service 10b - Get every exam for a particular week for single course*/
     public List<Assignment> getExamsForSevenDaysList(Course course, LocalDate monday) {
         List<Course> courses = new ArrayList<>();
         courses.add(course);
         return getExamsForSevenDaysList(courses, monday);
     }
 
-    /** Service 10b - Get every homework for a particular week */
+    /** Service 10c - Get every homework for a particular week for list of courses */
     public List<Assignment> getHomeworkForSevenDaysList(List<Course> coreCourses, LocalDate monday) {
         List<Assignment> homework = new ArrayList<>();
         // add every homework for the week
@@ -241,13 +241,14 @@ public class AppService {
         return homework;
     }
 
+    /** Service 10d - Get every homework for a particular week for single course*/
     public List<Assignment> getHomeworkForSevenDaysList(Course course, LocalDate monday) {
         List<Course> courses = new ArrayList<>();
         courses.add(course);
         return getHomeworkForSevenDaysList(courses, monday);
     }
 
-    //* HOLIDAY RELATED SERVICES */
+    // * HOLIDAY RELATED SERVICES */
 
     /** Service 11a - Get List of Holidays */
     public List<Holiday> getSemesterHolidayList(Semester semester) {
