@@ -12,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import ch.diedreifragezeichen.exama.assignments.assignment.*;
 import ch.diedreifragezeichen.exama.assignments.exams.Exam;
 import ch.diedreifragezeichen.exama.assignments.exams.ExamRepository;
 import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
@@ -20,7 +19,6 @@ import ch.diedreifragezeichen.exama.assignments.homeworks.HomeworkRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.users.User;
 import ch.diedreifragezeichen.exama.users.UserRepository;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 @Controller
