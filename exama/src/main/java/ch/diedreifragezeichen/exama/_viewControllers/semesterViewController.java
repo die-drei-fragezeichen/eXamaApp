@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
 import ch.diedreifragezeichen.exama.assignments.exams.*;
-import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
 import ch.diedreifragezeichen.exama.courses.CoreCourse;
 import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
@@ -338,6 +337,9 @@ public class semesterViewController {
     private List<Integer> workloadTotalWeekList (Long coreCourseId, LocalDate monday, List<LocalDate> allMondays){
 
     // ... for all Mondays, call Hilfsmethode 5 and add to list.
+        return null;
+
+    }
 
     /** Hilfsmethode 5 - Calculate Workload Value */
     private int workloadTotalWeek(Long coreCourseId, LocalDate monday) {
@@ -375,9 +377,9 @@ public class semesterViewController {
 
         if (assignments != null) {
             for (int i = 0; i < 7; i++) {
-
+                int j = i;
                 workloadTotalDaysArray[i] = Math.min(
-                        assignments.stream().map(c -> c.getWorkloadValue(monday.plusDays(i))).mapToDouble(w -> w).sum(),
+                        assignments.stream().map(c -> c.getWorkloadValue(monday.plusDays(j))).mapToDouble(w -> w).sum(),
                         1);
             }
         }
