@@ -1,3 +1,4 @@
+package ch.diedreifragezeichen.exama._tobetrashed;
 // package ch.diedreifragezeichen.exama._unused;
 
 // import java.util.List;

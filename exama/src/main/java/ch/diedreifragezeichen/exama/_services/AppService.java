@@ -15,16 +15,19 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException.NotFound;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
 import ch.diedreifragezeichen.exama.assignments.exams.*;
+import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
 import ch.diedreifragezeichen.exama.courses.CoreCourse;
 import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.operator.*;
 import ch.diedreifragezeichen.exama.semesters.*;
 import ch.diedreifragezeichen.exama.subjects.*;
+import ch.diedreifragezeichen.exama.users.Role;
 import ch.diedreifragezeichen.exama.users.RoleRepository;
 import ch.diedreifragezeichen.exama.users.User;
 import ch.diedreifragezeichen.exama.users.UserRepository;
@@ -59,13 +62,105 @@ public class AppService {
     @PersistenceContext
     private EntityManager em;
 
-    // * WORKLOAD RELATED SERVICES */
+    /** USER RELATED SERVICES */
+
+    /** Service 1a - Get current User */
+    public User getCurrentUser() {
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        return userRepo.findUserByEmail(authLoggedInUser.getName());
+    }
+
+    /** Service 1b - Get name of current User */
+    public String getCurrentUserName() {
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        return authLoggedInUser.getName();
+    }
+
+    /** Service 1c - Get roles of current User */
+    public Set<Role> getCurrentUserRoles() {
+        return getCurrentUser().getRoles();
+    }
+
+    /** Service 1d - Check role of current User by String */
+    public boolean currentUserIsA(String name) {
+
+        return getCurrentUserRoles().contains(roleRepo.findRoleByName(name));
+    }
+
+    /** Service 1d - Check role of current User by String */
+    public boolean currentUserIsA(Long id) {
+
+        return getCurrentUserRoles().contains(roleRepo.findRoleById(id));
+    }
+
+    /** ROLE RELATED SERVICES */
+
+    /** Service 2a for student users */
+    public List<Subject> getSubjectsOfAStudentUser() {
+        User user = getCurrentUser();
+        return user.getCourses().stream().filter(c -> Objects.nonNull(c.getSubject())).map(Course::getSubject)
+                .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
+    }
 
     /**
-     * Service 5 - Returns a list of weekly Workload values for every Monday of the
+     * Sevice 2b for teacher users and above. Returns all the coreCourses of all the
+     * students that a teacher has. This is used for the Teacher navBar
+     */
+    public List<CoreCourse> getAllTeacherStudentCoreCourses() {
+        User user = getCurrentUser();
+        return user.getCourses().stream().map(Course::getUsersList).flatMap(List::stream).distinct()
+                .filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoreCourse).distinct()
+                .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
+    }
+
+    /** DATE RELATED SERVICES */
+
+    /** Service 11d - Return a list of all Dates between two dates */
+    public List<LocalDate> getAllDatesBetweenAndWith(LocalDate start, LocalDate end) {
+        long length = ChronoUnit.DAYS.between(start, end);
+        return Stream.iterate(start, date -> date.plusDays(1)).limit(length + 1).collect(Collectors.toList());
+    }
+
+    /** Service 12 - returns the school semester of any given date */
+    public Semester getCurrentSemesterBasedOnDate(LocalDate date) throws NotFoundException {
+        LocalDate SemesterStartBasedOnDate = semesterRepo.findAll().stream()
+                .filter(u -> Objects.nonNull(u.getStartDate())).map(Semester::getStartDate)
+                .filter(u -> Objects.nonNull(u.isBefore(date))).filter(d -> d.isBefore(date))
+                .sorted((c1, c2) -> c1.compareTo(c2)).reduce((first, second) -> second).get();
+        if (SemesterStartBasedOnDate == null) {
+            throw new NotFoundException("No Semester has been assigned");
+        }
+        List<Semester> semesters = semesterRepo.findAll().stream()
+                .filter(s -> s.getStartDate() == SemesterStartBasedOnDate).collect(Collectors.toList());
+        return semesters.get(0);
+    }
+
+    public List<LocalDate> getAllMondaysOfSemester(Semester semester) {
+        /** retrieve semester Information and first / last day of Semester */
+        LocalDate semesterStart = semester.getStartDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate monday = semesterStart;
+        LocalDate semesterEnd = semester.getEndDate().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
+        /** create a list of all Mondays */
+        List<LocalDate> allMondays = new ArrayList<>();
+        while (monday.isBefore(semesterEnd)) {
+            allMondays.add(monday);
+            // Set up the loop.
+            monday = monday.plusWeeks(1);
+        }
+        return allMondays;
+    }
+
+    /** WORKLOAD RELATED SERVICES */
+
+    /**
+     * Service 5 - Returns a list of weekly Workload values for every week of the
      * semester
      */
-    public List<Double> getSemesterWorkloadList(Long coreCourseId, LocalDate monday, List<LocalDate> allMondays) {
+    public List<Double> getSemesterWorkloadList(Long coreCourseId, Long semesterId) {
+        Semester semester = semesterRepo.findSemesterById(semesterId);
+        List<LocalDate> allMondays = getAllMondaysOfSemester(semester);
+        
         Iterator<LocalDate> allMondaysIterator = allMondays.iterator();
         // For every single Monday of the semester, call getWorkloadTotalWeek and add to
         // list.
@@ -138,7 +233,6 @@ public class AppService {
     // * ASSIGNMENT RELATED SERVICES */
 
     /** Service 1a */
-
     public long calculateNumberOfExam(List<Exam> allExams) {
 
         return allExams.stream().filter(e -> Objects.nonNull(e.getId())).map(e -> e.getId()).distinct().count();
@@ -158,30 +252,18 @@ public class AppService {
         return model;
     }
 
-    /** Hilfsmethode 2a */
+    /** Service 2a */
     public double calculateExamFactor(List<Exam> listExams) {
         return listExams.stream().filter(e -> Objects.nonNull(e.getCountingFactor()))
                 .mapToDouble(exam -> exam.getCountingFactor()).sum();
     }
 
-    /** Hilfsmethode 2b */
+    /** Service 2b */
     public Model calculateExamFactor(Model model, List<Exam> listExams) {
         double ExamFactor = calculateExamFactor(listExams);
         model.addAttribute("xFactor", ExamFactor);
         // Schreibe im html: <h1 data-th-text="${anzpr}" />
         return model;
-    }
-
-    /** Hilfsmethode 3a */
-    public long calculateNumberOfSubjects(List<Subject> allSubjects) {
-        return allSubjects.stream().filter(s -> Objects.nonNull(s.getId())).map(s -> s.getId()).distinct().count();
-    }
-
-    /** Hilfsmethode 3b */
-    public ModelAndView calculateNumberOfSubjects(ModelAndView mav, List<Subject> allSubjects) {
-        long numberOfSubjects = calculateNumberOfSubjects(allSubjects);
-        mav.addObject("numberOfSubjects", numberOfSubjects);
-        return mav;
     }
 
     /** Service 9a - return all the Assignments for a week of a number of courses */
@@ -211,9 +293,9 @@ public class AppService {
         return getAssignmentsForSevenDaysList(courses, monday);
     }
 
-    /** Service 10a - Get every exam for a particular week for List of courses*/
-    public List<Assignment> getExamsForSevenDaysList(List<Course> courses, LocalDate monday) {
-        List<Assignment> exams = new ArrayList<>();
+    /** Service 10a - Get every exam for a particular week for List of courses */
+    public List<Exam> getExamsForSevenDaysList(List<Course> courses, LocalDate monday) {
+        List<Exam> exams = new ArrayList<>();
         // add every exam for the week
         courses.stream().filter(c -> Objects.nonNull(c.getExams())).map(c -> c.getExams()).flatMap(List::stream)
                 .distinct().filter(e -> e.getDueDate().isAfter(monday.minusDays(1)))
@@ -222,16 +304,23 @@ public class AppService {
         return exams;
     }
 
-    /** Service 10b - Get every exam for a particular week for single course*/
-    public List<Assignment> getExamsForSevenDaysList(Course course, LocalDate monday) {
+    public HashMap<String, Exam> getWeeklySemesterExamMap(Semester semester) {
+
+        return null;
+    }
+
+    /** Service 10b - Get every exam for a particular week for single course */
+    public List<Exam> getExamsForSevenDaysList(Course course, LocalDate monday) {
         List<Course> courses = new ArrayList<>();
         courses.add(course);
         return getExamsForSevenDaysList(courses, monday);
     }
 
-    /** Service 10c - Get every homework for a particular week for list of courses */
-    public List<Assignment> getHomeworkForSevenDaysList(List<Course> coreCourses, LocalDate monday) {
-        List<Assignment> homework = new ArrayList<>();
+    /**
+     * Service 10c - Get every homework for a particular week for list of courses
+     */
+    public List<Homework> getHomeworkForSevenDaysList(List<Course> coreCourses, LocalDate monday) {
+        List<Homework> homework = new ArrayList<>();
         // add every homework for the week
         coreCourses.stream().filter(c -> Objects.nonNull(c.getHomeworks())).map(c -> c.getHomeworks())
                 .flatMap(List::stream).distinct().filter(e -> e.getDueDate().isAfter(monday.minusDays(1)))
@@ -241,8 +330,8 @@ public class AppService {
         return homework;
     }
 
-    /** Service 10d - Get every homework for a particular week for single course*/
-    public List<Assignment> getHomeworkForSevenDaysList(Course course, LocalDate monday) {
+    /** Service 10d - Get every homework for a particular week for single course */
+    public List<Homework> getHomeworkForSevenDaysList(Course course, LocalDate monday) {
         List<Course> courses = new ArrayList<>();
         courses.add(course);
         return getHomeworkForSevenDaysList(courses, monday);
@@ -276,4 +365,35 @@ public class AppService {
         return allHolidaysMap;
 
     }
+
+    /** ORGANISATIONAL SERVICES */
+
+    /** Service 13a */
+    public List<Course> getAllCoursesOfACoreCourse(CoreCourse coreCourse) {
+
+        return coreCourse.getStudents().stream().filter(u -> Objects.nonNull(u.getCourses())).map(User::getCoursesList)
+                .flatMap(List::stream).distinct().collect(Collectors.toList());
+
+    }
+
+    /** Service 13b */
+    public List<Subject> getAllSubjectsOfACoreCourse(CoreCourse coreCourse) {
+        List<Course> coursesOfCourseCourse = getAllCoursesOfACoreCourse(coreCourse);
+        return coursesOfCourseCourse.stream().map(Course::getSubject).distinct()
+                .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
+
+    }
+
+    /** Service 3a */
+    public long calculateNumberOfSubjects(List<Subject> allSubjects) {
+        return allSubjects.stream().filter(s -> Objects.nonNull(s.getId())).map(s -> s.getId()).distinct().count();
+    }
+
+    /** Service 3b */
+    public ModelAndView calculateNumberOfSubjects(ModelAndView mav, List<Subject> allSubjects) {
+        long numberOfSubjects = calculateNumberOfSubjects(allSubjects);
+        mav.addObject("numberOfSubjects", numberOfSubjects);
+        return mav;
+    }
+
 }
