@@ -25,7 +25,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th></th>
+                    
                         <th>Schulwoche</th>
                         <th th:each="subject: ${userSubjects}" class="column-title" th:text="${subject.getTag()}" />
                         <th>Kommentar</th>
@@ -38,11 +38,11 @@
                 <tbody>
                     <!-- check if week is holiday, change background-->
                     <tr th:each="monday, iStat : ${allMondays}" th:style="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--lightGray);' : 'background-color:var(--green);'">
-                        <td th:text="${iStat.count}" </td>
                             <!--Write school week date-->
-                            <td th:text="'(' + ${#temporals.format(monday, 'dd.MM')} + '-' + ${#temporals.format(monday.plusDays(4), 'dd.MM')} + ')'"></td>
+                            <td th:if="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" colspan="100%" th:text="${iStat.count} + ' ' + ${alleTageMap.get(monday)}" th:style="'font-weight: light;'">
+                            <td th:unless="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:text="${iStat.count}+ ' (' + ${#temporals.format(monday, 'dd.MM')} + '-' + ${#temporals.format(monday.plusDays(4), 'dd.MM')} + ')'"></td>
                             <!-- Week is holiday -->
-                            <td th:if="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" colspan="100%" th:text="${alleTageMap.get(monday)}" th:style="'font-weight: light;'">
+                            
                                 <!-- Make an empty box for each subject-->
                                 <td th:unless="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:each="subject: ${userSubjects}" th:text="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? (${allExams.get(iStat.index).get(subject.getTag()).countingFactor} >= 1 ? ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)} : (('(' + ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)} + ')')))"
                                 />
