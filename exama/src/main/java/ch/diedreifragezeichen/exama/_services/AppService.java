@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException.NotFound;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
@@ -25,6 +26,7 @@ import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.operator.*;
 import ch.diedreifragezeichen.exama.semesters.*;
 import ch.diedreifragezeichen.exama.subjects.*;
+import ch.diedreifragezeichen.exama.users.Role;
 import ch.diedreifragezeichen.exama.users.RoleRepository;
 import ch.diedreifragezeichen.exama.users.User;
 import ch.diedreifragezeichen.exama.users.UserRepository;
@@ -59,7 +61,44 @@ public class AppService {
     @PersistenceContext
     private EntityManager em;
 
-    // * WORKLOAD RELATED SERVICES */
+    /** USER RELATED SERVICES */
+
+    /** Service 1a - Get current User */
+    public User getCurrentUser() {
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        return userRepo.findUserByEmail(authLoggedInUser.getName());
+    }
+
+    /** Service 1b - Get name of current */
+    public String getCurrentUserName() {
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        return authLoggedInUser.getName();
+    }
+
+    /** Service 1c - Get name of current */
+    public Set<Role> getCurrentUserRoles() {
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepo.findUserByEmail(authLoggedInUser.getName());
+        return user.getRoles();
+    }
+
+    /** DATE RELATED SERVICES */
+
+    /** Service 12 - returns the school semester of any given date */
+    public Semester getCurrentSemesterBasedOnDate(LocalDate date) throws NotFoundException {
+        LocalDate SemesterStartBasedOnDate = semesterRepo.findAll().stream()
+                .filter(u -> Objects.nonNull(u.getStartDate())).map(Semester::getStartDate)
+                .filter(u -> Objects.nonNull(u.isBefore(date))).filter(d -> d.isBefore(date))
+                .sorted((c1, c2) -> c1.compareTo(c2)).reduce((first, second) -> second).get();
+        if (SemesterStartBasedOnDate == null) {
+            throw new NotFoundException("No Semester has been assigned");
+        }
+        List<Semester> semesters = semesterRepo.findAll().stream()
+                .filter(s -> s.getStartDate() == SemesterStartBasedOnDate).collect(Collectors.toList());
+        return semesters.get(0);
+    }
+
+    /** WORKLOAD RELATED SERVICES */
 
     /**
      * Service 5 - Returns a list of weekly Workload values for every Monday of the
@@ -211,7 +250,7 @@ public class AppService {
         return getAssignmentsForSevenDaysList(courses, monday);
     }
 
-    /** Service 10a - Get every exam for a particular week for List of courses*/
+    /** Service 10a - Get every exam for a particular week for List of courses */
     public List<Assignment> getExamsForSevenDaysList(List<Course> courses, LocalDate monday) {
         List<Assignment> exams = new ArrayList<>();
         // add every exam for the week
@@ -222,14 +261,16 @@ public class AppService {
         return exams;
     }
 
-    /** Service 10b - Get every exam for a particular week for single course*/
+    /** Service 10b - Get every exam for a particular week for single course */
     public List<Assignment> getExamsForSevenDaysList(Course course, LocalDate monday) {
         List<Course> courses = new ArrayList<>();
         courses.add(course);
         return getExamsForSevenDaysList(courses, monday);
     }
 
-    /** Service 10c - Get every homework for a particular week for list of courses */
+    /**
+     * Service 10c - Get every homework for a particular week for list of courses
+     */
     public List<Assignment> getHomeworkForSevenDaysList(List<Course> coreCourses, LocalDate monday) {
         List<Assignment> homework = new ArrayList<>();
         // add every homework for the week
@@ -241,7 +282,7 @@ public class AppService {
         return homework;
     }
 
-    /** Service 10d - Get every homework for a particular week for single course*/
+    /** Service 10d - Get every homework for a particular week for single course */
     public List<Assignment> getHomeworkForSevenDaysList(Course course, LocalDate monday) {
         List<Course> courses = new ArrayList<>();
         courses.add(course);
