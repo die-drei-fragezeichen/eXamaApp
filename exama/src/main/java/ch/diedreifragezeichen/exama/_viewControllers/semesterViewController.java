@@ -123,32 +123,17 @@ public class semesterViewController {
         // check if current user is a student
         if (helper.currentUserIsA("Student")) {
             // ** add all the subjects */
-            mav.addObject("userSubjects", helper.getSubjectsOfAStudentUser(user));
+            mav.addObject("userSubjects", helper.getSubjectsOfAStudentUser());
         } else {
             /**
-             * Else user is not a student. User will see the actual coreCourse subject list
+             * Else user is not a student. Teacher will see the actual coreCourse subject list
              */
-            CoreCourse coreCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
-            mav.addObject("userSubjects", helper.getAllSubjectsOfACoreCourse(coreCourse));
+            mav.addObject("userSubjects", helper.getAllSubjectsOfACoreCourse(coreCourseRepo.findCoreCourseById(coreCourseId)));
         }
 
         /** Create the user's CoreCourses for the Navbar List */
-        List<CoreCourse> teacherStudentCoreCourses = user.getCourses().stream().map(Course::getUsersList)
-                .flatMap(List::stream).distinct().filter(u -> Objects.nonNull(u.getCoreCourse()))
-                .map(User::getCoreCourse).distinct().sorted((c1, c2) -> c1.getId().compareTo(c2.getId()))
-                .collect(Collectors.toList());
-        mav.addObject("teachersCoreCourses", teacherStudentCoreCourses);
-
-        // Elaboration:
-        // List <Course> userCourseList = new ArrayList<Course>(user.getCourses());
-
-        // List<User> userStudentList =
-        // userCourseList.stream().map(Course::getUsersList).flatMap(List::stream).distinct().collect(Collectors.toList());
-
-        // List<CoreCourse> teacherStudentCoreCourses =
-        // userStudentList.stream().filter(u ->
-        // Objects.nonNull(u.getCoreCourse())).map(User::getCoreCourse).distinct().sorted((c1,
-        // c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
+        
+        mav.addObject("teachersCoreCourses", helper.getAllTeacherStudentCoreCourses());
 
         /** The following parts deal with exam information */
         /**
@@ -157,7 +142,10 @@ public class semesterViewController {
          * useability restrictions dead code: List<List<Exam>> allExams = new
          * ArrayList<>();
          */
-        monday = semesterStart;
+        Semester currentSemester = helper.getCurrentSemesterBasedOnDate(LocalDate.now());
+        LocalDate semesterStart = currentSemester.getStartDate();
+        LocalDate semesterEnd = currentSemester.getEndDate();
+        LocalDate monday = semesterStart;
         List<HashMap<String, Exam>> allExams = new ArrayList<>();
         if (user.getRoles().contains(roleRepo.findRoleById(39l))) {
             while (monday.isBefore(semesterEnd)) {

@@ -92,8 +92,23 @@ public class AppService {
         return getCurrentUserRoles().contains(roleRepo.findRoleById(id));
     }
 
-    public List<Subject> getSubjectsOfAStudentUser(User user) {
+    /** ROLE RELATED SERVICES */
+
+    /** Service 2a for student users */
+    public List<Subject> getSubjectsOfAStudentUser() {
+        User user = getCurrentUser();
         return user.getCourses().stream().filter(c -> Objects.nonNull(c.getSubject())).map(Course::getSubject)
+                .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
+    }
+
+    /**
+     * Sevice 2b for teacher users and above. Returns all the coreCourses of all the
+     * students that a teacher has. This is used for the Teacher navBar
+     */
+    public List<CoreCourse> getAllTeacherStudentCoreCourses() {
+        User user = getCurrentUser();
+        return user.getCourses().stream().map(Course::getUsersList).flatMap(List::stream).distinct()
+                .filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoreCourse).distinct()
                 .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
     }
 
