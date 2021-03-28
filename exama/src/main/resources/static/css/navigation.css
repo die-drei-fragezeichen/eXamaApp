@@ -69,6 +69,16 @@
     background-image:url(img/navigation-icons/home-r.svg);
 }
 
+.nav-teacher{
+    background-image:url(img/navigation-icons/teacher-w.svg);
+}
+.nav-teacher:hover{
+    background-image:url(img/navigation-icons/teacher-r2.svg);
+}
+.nav-teacher:active{
+    background-image:url(img/navigation-icons/teacher-r.svg);
+}
+
 .nav-diagram{
     background-image:url(img/navigation-icons/diagram-w.svg);
 }
@@ -118,8 +128,8 @@
 
 
 .nav-logout{
-    width: var(--naviHeight);
-    height: var(--naviHeight);
+    width: calc(var(--naviHeight) * 0.9);
+    height: calc(var(--naviHeight) * 0.9);
     margin: 0;
     background-image:url(img/navigation-icons/logout-w.svg);
     background-size: contain;
@@ -172,7 +182,6 @@
     width: calc(var(--naviHeight) * 2.5);
     height: var(--naviHeight);
 }
-
 
 /* ---------- navigation bottom ---------- */
 #footer {

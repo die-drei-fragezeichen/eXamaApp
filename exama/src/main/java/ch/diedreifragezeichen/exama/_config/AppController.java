@@ -58,29 +58,24 @@ public class AppController {
         for (SimpleGrantedAuthority role : roleList) {
             roles.add(role.getAuthority());
         }
-        if (roles.contains("SYSTEMADMIN")) {
-            return "systemadminTemplates/index";
-        } else if (roles.contains("ADMIN")) {
-            return "adminTemplates/index";
-        } else if (roles.contains("TEACHER")) {
-            LocalDate today = LocalDate.now();
-            model.addAttribute("today", today);
-            LocalDate monday = today.with(previousOrSame(MONDAY));
-            model.addAttribute("monday", monday);
-            LocalDate tuesday = monday.with(nextOrSame(TUESDAY));
-            model.addAttribute("tuesday", tuesday);
-            LocalDate wednesday = monday.with(nextOrSame(WEDNESDAY));
-            model.addAttribute("wednesday", wednesday);
-            LocalDate thursday = monday.with(nextOrSame(THURSDAY));
-            model.addAttribute("thursday", thursday);
-            LocalDate friday = monday.with(nextOrSame(FRIDAY));
-            model.addAttribute("friday", friday);
 
-            return "teacherTemplates/index";
-        } else if (roles.contains("REFERENCESTUDENT")) {
-            return "rstudentTemplates/index";
-        } else if (roles.contains("STUDENT")) {
-            return "studentTemplates/index";
+        // Systemadmins or admins, that are also teachers will choose there Landing (teacher or admin)
+        if ((roles.contains("SYSTEMADMIN") || roles.contains("ADMIN")) && roles.contains("TEACHER")) {
+            return "adminTemplates/chooseLanding";
+        
+        //only Admins will land on adminLanding
+        } else if(roles.contains("ADMIN")){
+            return "redirect:admin";
+        
+        // only Teachers will land on teacherLanding
+        } else if (roles.contains("TEACHER")) {
+            return "redirect:teacher";
+        
+        //students or ReferenceStudents will land on studentLanding
+        } else if (roles.contains("REFERENCESTUDENT") || roles.contains("STUDENT")) {
+            return "redirect:student";
+        
+        //everyone without any of the defined autorities
         } else {
             return "index";
         }
@@ -126,7 +121,7 @@ public class AppController {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         model.addAttribute("user", user);
-        return "generalTemplates/profile";
+        return "generalTemplates/profile2";
     }
 
 }

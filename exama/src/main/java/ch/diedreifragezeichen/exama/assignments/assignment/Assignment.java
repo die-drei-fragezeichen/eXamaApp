@@ -55,7 +55,7 @@ public class Assignment {
     private String description;
 
     @Column(nullable = true)
-    private double workloadMinutesTotal;
+    private Double workloadMinutesTotal;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
@@ -103,11 +103,11 @@ public class Assignment {
         return realStartDate;
     }
 
-    public double getWorkloadMinutesOnDayX(LocalDate startDate, LocalDate dayX, LocalDate dueDate) {
+    public Double getWorkloadMinutesOnDayX(LocalDate startDate, LocalDate dayX, LocalDate dueDate) {
         int daysToGo = this.getAvailableDaysToGo(dayX);
         if (daysToGo == -1
                 || (daysToGo > this.getAvailablePrepTime().getDays() && this.getAvailablePrepTime().getDays() != -1)) {
-            return 0;
+            return 0.0;
         }
 
         // dayNumberInProcess is the n-th day of working on the assignment
@@ -215,11 +215,11 @@ public class Assignment {
         this.description = description;
     }
 
-    public double getWorkloadMinutesTotal() {
+    public Double getWorkloadMinutesTotal() {
         return workloadMinutesTotal;
     }
 
-    public void setWorkloadMinutesTotal(double workloadMinutesTotal) {
+    public void setWorkloadMinutesTotal(Double workloadMinutesTotal) {
         this.workloadMinutesTotal = workloadMinutesTotal;
     }
 

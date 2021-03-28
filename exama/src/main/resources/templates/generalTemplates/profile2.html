@@ -1,0 +1,87 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/head :: head"></head>
+
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="fragments/header :: header"></div>
+
+        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+
+            <div class="content-box-full">
+                <div class="content-box-header">
+                    Mein Profil
+                </div>
+            </div>
+            <div class="column col-1">
+                <div class="content-box-header">
+                    Persönliche Daten
+                </div>
+                <div class="content-box-content">
+                    <div> 
+                        
+                    </div>
+                </div>
+                <div class="content-box-content">
+                    
+                    <div> 
+                        <div>
+                            <img class="picture" src=https://cdn.pixabay.com/photo/2021/01/08/17/02/old-man-5900410_960_720.jpg alt="Profilbild">
+                        </div>
+                        <br>
+                        <div class="p1">Name:</div>
+                        <span th:text="${user.getFirstName()}"></span> <span th:text="${user.getLastName()}"></span><br><br>
+                        <div class="p1">Email:</div>
+                        <span th:text="${user.getEmail()}"></span><br><br>
+                        <div class="p1">Nutzungsrechte:</div>
+                        <span sec:authentication="principal.authorities"></span><br><br>
+                        <div class="grid-container">
+                        <a class="grid-item" href="users/changePassword">Password ändern</a><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column col-2">
+                <div class="content-box-header">
+                    Benutzeraktionen
+                </div>
+                <div class="grid-container">
+                    
+                    <a class="grid-item" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')" href="users/show">User</a>
+                    
+                    <a class="grid-item" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')" href="coreCourses/show">Stammklassen</a>
+                   
+                    <a class="grid-item" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')" href="courses/show">Kurse</a>
+            
+                    <a class="grid-item" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')" href="subjects/show">Fächer</a>
+                
+                    <a class="grid-item" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')" href="semesters/show">Semester</a>
+            
+                    <a class="grid-item" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')" href="holidays/show">Ferienzeiten/Sonderwochen</a>
+            
+                    <a class="grid-item" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')" href="examtypes/show">Prüfungstypen</a>
+                
+                    <a class="grid-item" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')" href="preptimes/show">Vorbereitungsintervalle</a>
+                
+                    <a class="grid-item" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')" href="exams/show">Leistungsbeurteilungen</a>
+                
+                    <a class="grid-item" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')" href="homeworks/show">Hausaufgaben</a>
+                
+                    <a class="grid-item" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN', 'TEACHER', 'STUDENT')" href="semesterView/choose"> Semesterübersicht</a>
+                   
+                </div>
+            </div>
+        
+        
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="fragments/footer :: footer">
+        </div>
+    </div>
+</body>
+
+</html>

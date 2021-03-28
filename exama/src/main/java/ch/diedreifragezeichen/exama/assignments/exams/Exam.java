@@ -19,7 +19,7 @@ public class Exam extends Assignment {
      * Fields
      */
     @Column(nullable = false)
-    private double countingFactor;
+    private Double countingFactor;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
@@ -33,11 +33,11 @@ public class Exam extends Assignment {
      * Methods
      */
     @Override
-    public double getWorkloadMinutesOnDayX(LocalDate startDate, LocalDate dayX, LocalDate dueDate) {
+    public Double getWorkloadMinutesOnDayX(LocalDate startDate, LocalDate dayX, LocalDate dueDate) {
         int daysToGo = this.getAvailableDaysToGo(dayX);
         if (daysToGo == -1
                 || (daysToGo > this.getAvailablePrepTime().getDays() && this.getAvailablePrepTime().getDays() != -1)) {
-            return 0;
+            return 0.0;
         }
 
         // dayNumberInProcess is the n-th day of working on the assignment
@@ -47,7 +47,7 @@ public class Exam extends Assignment {
 
         // if workloadminutes are not set by the user, take the timevalue of the
         // examtype as workloadminutes
-        double workloadMinutes = 0;
+        Double workloadMinutes = 0.0;
         if (this.getWorkloadMinutesTotal() == 0) {
             workloadMinutes = this.getExamType().getTimeValue() * 60.0;
         } else {
@@ -81,11 +81,11 @@ public class Exam extends Assignment {
      * Getters and Setters only
      */
 
-    public double getCountingFactor() {
+    public Double getCountingFactor() {
         return countingFactor;
     }
 
-    public void setCountingFactor(double countingFactor) {
+    public void setCountingFactor(Double countingFactor) {
         this.countingFactor = countingFactor;
     }
 

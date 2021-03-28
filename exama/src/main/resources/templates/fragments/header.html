@@ -4,15 +4,16 @@
         <div id="header">
             <div id="navigation-header">
                 <div class="navigation-header-item nav-burgermenu"></div>
-                <a th:href="@{/}"><div class="navigation-header-item nav-home"></div></a>
-                <a th:href="@{/calendarchoose?view=1&coreCourse={cc}(cc=${coreCoursesCurrentUser.get(0).id})}"><div class="navigation-header-item nav-diagram"></div></a>
-                <a th:href="@{/exams/create}"><div class="navigation-header-item nav-addexam"></div></a>
-                <a th:href="@{/profile}"><div class="navigation-header-item nav-schoolsettings"></div></a>
+                <!-- <a th:href="@{/}"><div class="navigation-header-item nav-home"></div></a> -->
+                <a th:href="@{/teacher}" sec:authorize="hasAnyAuthority('TEACHER')"><div class="navigation-header-item nav-teacher"></div></a>
+                <a th:href="@{/calendarchoose?view=1&coreCourse={cc}(cc=${coreCoursesCurrentUser.get(0).id})}" sec:authorize="hasAnyAuthority('TEACHER', 'STUDENT')"><div class="navigation-header-item nav-diagram"></div></a>
+                <a th:href="@{/exams/create}" sec:authorize="hasAnyAuthority('TEACHER')"><div class="navigation-header-item nav-addexam"></div></a>
+                <a th:href="@{/profile}" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')"><div class="navigation-header-item nav-schoolsettings"></div></a>
             </div>
             <div id="title">eXama</div>
             <div id="logout-profile">
                 <a th:href="@{/profile}"><div class="nav-profile"></div></a>
-                <form th:action="@{/logout}" method="post">
+                <form class="nav-logout-form" th:action="@{/logout}" method="post">
                     <button type="submit" class="navigation-header-item nav-logout" />
                 </form>
             </div>
