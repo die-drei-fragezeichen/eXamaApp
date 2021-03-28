@@ -1,10 +1,7 @@
 package ch.diedreifragezeichen.exama._viewControllers;
 
 import java.time.*;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAdjusters;
 import java.util.*;
-import java.util.stream.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,13 +19,9 @@ import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.operator.*;
 import ch.diedreifragezeichen.exama.semesters.*;
-import ch.diedreifragezeichen.exama.subjects.*;
-import ch.diedreifragezeichen.exama.users.RoleRepository;
 import ch.diedreifragezeichen.exama.users.User;
-import ch.diedreifragezeichen.exama.users.UserRepository;
+
 import javassist.NotFoundException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 @Controller
 public class semesterViewController {
@@ -37,18 +30,6 @@ public class semesterViewController {
 
     @Autowired
     private HolidayRepository holidayRepo;
-
-    @Autowired
-    private ExamRepository examRepo;
-
-    @Autowired
-    private SubjectRepository subjectRepo;
-
-    @Autowired
-    private UserRepository userRepo;
-
-    @Autowired
-    private RoleRepository roleRepo;
 
     @Autowired
     private CoreCourseRepository coreCourseRepo;

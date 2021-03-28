@@ -1,3 +1,4 @@
+package ch.diedreifragezeichen.exama._tobetrashed;
 /* package ch.diedreifragezeichen.exama.assignments.workloadDistributions;
 
 import javax.persistence.EntityManager;

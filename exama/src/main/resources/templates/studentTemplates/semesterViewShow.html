@@ -37,10 +37,10 @@
 
                 <tbody>
                     <!-- check if week is holiday, change background-->
-                    <tr th:each="monday, iStat : ${allMondays}" th:style="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--lightGray);' : 'background-color:var(--green);'">
+                    <tr th:each="monday, iStat : ${allMondays}" th:style="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--lightGray);' : (${weeklyWorkload.get(iStat.index)} >= 3.2 ? 'background-color:var(--red);' : ((${weeklyWorkload.get(iStat.index)} < 1) ? 'background-color:var(--green);' : ('background-color:var(--orange);')))">
                             <!--Write school week date-->
                             <td th:if="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" colspan="100%" th:text="${iStat.count} + ' ' + ${allHolidayDates.get(monday)}" th:style="'font-weight: light;'">
-                            <td th:unless="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:text="${iStat.count}+ ' <b>(</b>' + ${#temporals.format(monday, 'dd.MM')} + '-' + ${#temporals.format(monday.plusDays(4), 'dd.MM')} + ')'"></td>
+                            <td th:unless="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:text="${iStat.count}+ ' (' + ${#temporals.format(monday, 'dd.MM')} + '-' + ${#temporals.format(monday.plusDays(4), 'dd.MM')} + ')'"></td>
                             <!-- Week is holiday -->
                             
                                 <!-- Make an empty box for each subject-->
