@@ -110,10 +110,11 @@ public class semesterViewController {
         ModelAndView mav = new ModelAndView("studentTemplates/semesterViewShow");
         
         /** The following parts deal with time parameters */
-        Semester semester = semesterRepo.findSemesterById(semesterId);
-        mav.addObject("semester", semester);
-
-        mav.addObject("allMondays", helper.getAllMondaysOfSemester(semester));
+        Semester chosenSemester = semesterRepo.findSemesterById(semesterId);
+        mav.addObject("semester", chosenSemester);
+        
+        List<LocalDate> allMondays = helper.getAllMondaysOfSemester(chosenSemester);
+        mav.addObject("allMondays", allMondays);
 
         // ** retrieve current user name */
         User user = helper.getCurrentUser();       
@@ -141,8 +142,8 @@ public class semesterViewController {
          * useability restrictions dead code: List<List<Exam>> allExams = new
          * ArrayList<>();
          */
-        LocalDate semesterStart = semester.getStartDate();
-        LocalDate semesterEnd = semester.getEndDate();
+        LocalDate semesterStart = chosenSemester.getStartDate();
+        LocalDate semesterEnd = chosenSemester.getEndDate();
         LocalDate monday = semesterStart;
         List<HashMap<String, Exam>> allExams = new ArrayList<>();
         if (helper.currentUserIsA("Student")) {
@@ -175,20 +176,17 @@ public class semesterViewController {
         List<Holiday> listHolidays = holidayRepo.findAllByStartDateBetween(semesterStart, semesterEnd);
         HashMap<LocalDate, Holiday> allHolidayDates = new HashMap<>();
         for (Holiday holiday : listHolidays) {
-            List<LocalDate> allHolidayDays = helper.getAllDatesBetweenAndWith(holiday.getStartDate(), holiday.getEndDate());
-            for (LocalDate date : allHolidayDays) {
+            List<LocalDate> allHolyDates = helper.getAllDatesBetweenAndWith(holiday.getStartDate(), holiday.getEndDate());
+            for (LocalDate date : allHolyDates) {
                 allHolidayDates.put(date, holiday);
             }
         }
 
         mav.addObject("allHolidayDates", allHolidayDates);
 
-        List<Subject> allSubjects = subjectRepo.findAll();
-        mav.addObject("allSubjects", allSubjects);
-        // count all the subjects, method returns "numberOfSubjects"
-        helper.calculateNumberOfSubjects(mav, allSubjects);
-
-        /** The following parts deal with exam information */
+        //get a list of all the weekly workloads for every week
+        List<Double> weeklyWorkload = helper.getSemesterWorkloadList(coreCourseId, semesterId);
+        mav.addObject("weeklyWorkload", weeklyWorkload);
 
         return mav;
 
@@ -205,35 +203,4 @@ public class semesterViewController {
 
         return mav;
     }
-
-    /**
-     * Sample Code
-     * 
-     * // Sample code 1: How to create a Holiday Hashmap // monday = semesterStart;
-     * // List<Holiday> allHolidays =
-     * holidayRepo.findAllByStartDateBetween(semesterStart, semesterEnd); //
-     * mav.addObject("allHolidays", allHolidays); // HashMap<LocalDate, Holiday>
-     * allHolidaysMap = new HashMap<>(); // for (Holiday holiday : allHolidays) {
-     * 
-     * // allHolidaysMap.put(holiday.getStartDate(), holiday); // } //
-     * mav.addObject("allHolidaysMap", allHolidaysMap);
-     * 
-     * // Sample code 2: How to create a List containing all the days of all the
-     * holidays // this allows catching holidays that are wrongly set, or begin
-     * mid-week -> // TemporalAdjusters then sets start to following Monday. //
-     * List<Holiday> allHolidaysList =
-     * holidayRepo.findAllByStartDateBetween(semesterStart, semesterEnd); //
-     * List<LocalDate> allHolidaysDays = new ArrayList<>(); // for (Holiday holiday
-     * : allHolidaysList) { // long numOfDays = ChronoUnit.DAYS.between( //
-     * holiday.getStartDate().with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY)),
-     * holiday.getEndDate()); // List<LocalDate> allDays =
-     * Stream.iterate(holiday.getStartDate(), date ->
-     * date.plusDays(1)).limit(numOfDays) // .collect(Collectors.toList()); //
-     * allHolidaysDays.addAll(allDays); // } // mav.addObject("allHolidaysList",
-     * allHolidaysDays);
-     * 
-     * /** Hilfsmethoden
-     * 
-     */
-
 }

@@ -154,10 +154,13 @@ public class AppService {
     /** WORKLOAD RELATED SERVICES */
 
     /**
-     * Service 5 - Returns a list of weekly Workload values for every Monday of the
+     * Service 5 - Returns a list of weekly Workload values for every week of the
      * semester
      */
-    public List<Double> getSemesterWorkloadList(Long coreCourseId, LocalDate monday, List<LocalDate> allMondays) {
+    public List<Double> getSemesterWorkloadList(Long coreCourseId, Long semesterId) {
+        Semester semester = semesterRepo.findSemesterById(semesterId);
+        List<LocalDate> allMondays = getAllMondaysOfSemester(semester);
+        
         Iterator<LocalDate> allMondaysIterator = allMondays.iterator();
         // For every single Monday of the semester, call getWorkloadTotalWeek and add to
         // list.
