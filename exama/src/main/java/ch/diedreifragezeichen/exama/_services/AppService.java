@@ -35,7 +35,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @Service("AppService")
 public class AppService {
 
-
     @Autowired
     private SemesterRepository semesterRepo;
 
@@ -60,8 +59,8 @@ public class AppService {
     @PersistenceContext
     private EntityManager em;
 
-       /** Service 1 */
-       public Model calculateNumberOfExams(Model model, List<Exam> listExams) {
+    /** Service 1 */
+    public Model calculateNumberOfExams(Model model, List<Exam> listExams) {
         model.addAttribute("msg", "Anzahl Leistungsmessungen diese Woche: ");
         long anzahlExamen = listExams.stream().count();
         model.addAttribute("anzpr", anzahlExamen);
@@ -85,18 +84,9 @@ public class AppService {
         return mav;
     }
 
-    /** Service 4 */
-    public int calculateNumberOfExams(List<List<Exam>> allExams) {
-        int sum = 0;
-        Iterator<List<Exam>> iter = allExams.iterator();
-        while (iter.hasNext()) {
-            Iterator<Exam> innerIter = iter.next().iterator();
-            while (innerIter.hasNext()) {
-                sum++;
-            }
-        }
-        return sum;
-    }
+
+    //* WORKLOAD SERVICES */
+
 
     /**
      * Service 5 - Returns a list of weekly Workload values for every Monday of the
@@ -149,7 +139,7 @@ public class AppService {
 
     /** Service 6c - get a Workload Array for the week */
     public Double[] getWorkloadValueForSevenDaysArray(User user, LocalDate monday) {
-        
+
         List<Course> allCourses = new ArrayList<>(user.getCourses());
         List<Assignment> assignments = getAssignmentsForSevenDaysList(allCourses, monday);
         return getWorkloadValueForEachDayofWeek(assignments, monday);
@@ -172,7 +162,29 @@ public class AppService {
         return workloadTotalSevenDaysArray;
     }
 
-    /** Service 9a - return all the Assignments of a number of courses */
+    //* ASSIGNMENT RELATED SERVICES */
+
+    /** Service 4a */
+    public int calculateNumberOfExams(List<List<Exam>> allExams) {
+        int sum = 0;
+        Iterator<List<Exam>> iter = allExams.iterator();
+        while (iter.hasNext()) {
+            Iterator<Exam> innerIter = iter.next().iterator();
+            while (innerIter.hasNext()) {
+                sum++;
+            }
+        }
+        return sum;
+    }
+
+    // public int calculateNumberOfExams(List<Exam> allExams) {
+        
+    //     allExams.stream().map
+    //     }
+    //     return sum;
+    // }
+
+    /** Service 9a - return all the Assignments for a week of a number of courses */
     public List<Assignment> getAssignmentsForSevenDaysList(List<Course> courses, LocalDate monday) {
         List<Assignment> assignments = new ArrayList<>();
         // add every exam for the week
@@ -185,14 +197,14 @@ public class AppService {
                 .collect(Collectors.toList());
     }
 
-    /** Service 9b - return all the Assignments of a particular course */
+    /** Service 9b - return all the Assignments for a week of a particular course */
     public List<Assignment> getAssignmentsForSevenDaysList(Course course, LocalDate monday) {
         List<Course> courses = new ArrayList<>();
         courses.add(course);
         return getAssignmentsForSevenDaysList(courses, monday);
     }
 
-    /** Service 9c */
+    /** Service 9c - return all the Assignments for a week of a particular user */
     public List<Assignment> getAssignmentsForSevenDaysList(User user, LocalDate monday) {
 
         List<Course> courses = new ArrayList<>(user.getCourses());
@@ -210,7 +222,12 @@ public class AppService {
         return exams;
     }
 
-    //repeat for single course
+    // repeat for single course
+    public List<Assignment> getExamsForSevenDaysList(Course course, LocalDate monday) {
+        List<Course> courses = new ArrayList<>();
+        courses.add(course);
+        return getExamsForSevenDaysList(courses, monday);
+    }
 
     /** Service 10b - Get every homework for a particular week */
     public List<Assignment> getHomeworkForSevenDaysList(List<Course> coreCourses, LocalDate monday) {
@@ -224,7 +241,13 @@ public class AppService {
         return homework;
     }
 
-    //repeat for single course
+    public List<Assignment> getHomeworkForSevenDaysList(Course course, LocalDate monday) {
+        List<Course> courses = new ArrayList<>();
+        courses.add(course);
+        return getHomeworkForSevenDaysList(courses, monday);
+    }
+
+    //* HOLIDAY RELATED SERVICES */
 
     /** Service 11a - Get List of Holidays */
     public List<Holiday> getSemesterHolidayList(Semester semester) {
@@ -232,17 +255,24 @@ public class AppService {
         return holidayRepo.findAllByStartDateBetween(semester.getStartDate(), semester.getStartDate());
     }
 
-    /** Service 11b - Get Hashmap of Holidays */
-    public HashMap<LocalDate, Holiday> getSemesterHolidayMap(LocalDate Monday) {
-        // TODO
-        // List<Holiday> allHolidays = getSemesterHolidayList(semester);
-        // HashMap<LocalDate, Holiday> allHolidaysMap = new HashMap<>();
+    /** Service 11b - Get List of Holidays that start during this week */
+    public List<Holiday> getHolidayStartDuringWeekList(LocalDate date) {
+        LocalDate monday = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate sunday = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+        return holidayRepo.findAllByStartDateBetween(monday, sunday);
+    }
 
-        // for (Holiday holiday : allHolidays) {
-        //     allHolidaysMap.put(holiday.getStartDate(), holiday);
+    /** Service 11c - Get List of Holidays that start during this week */
+    public HashMap<LocalDate, Holiday> getHolidayStartDuringWeekMap(LocalDate date) {
 
-        // }
-         return null;
+        List<Holiday> allHolidaysStartingThisWeek = getHolidayStartDuringWeekList(date);
+        HashMap<LocalDate, Holiday> allHolidaysMap = new HashMap<>();
+
+        for (Holiday holiday : allHolidaysStartingThisWeek) {
+            allHolidaysMap.put(holiday.getStartDate(), holiday);
+
+        }
+        return allHolidaysMap;
 
     }
 }
