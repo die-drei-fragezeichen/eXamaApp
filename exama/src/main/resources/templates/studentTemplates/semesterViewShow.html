@@ -23,28 +23,35 @@
                         th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
                         th:href="${urlBuilder.replaceQueryParam('view', '1').toUriString()}">Liste</th:with=> | <b>Semesterplan</b>
             <table>
-                <thead>
+                <thead style="background-color:var(--darkerRed)">
                     <tr>
-                    
                         <th>Schulwoche</th>
-                        <th th:each="subject: ${userSubjects}" class="column-title" th:text="${subject.getTag()}" />
+                        <th th:each="subject: ${userSubjects}" class="column-title" style ="text-align:center" th:text="${subject.getTag()}"/>
                         <th>Kommentar</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- check if week is holiday, change background-->
-                    <tr th:each="monday, iStat : ${allMondays}" th:style="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--lightGray);' : (${weeklyWorkload.get(iStat.index)} >= 3.2 ? 'background-color:var(--red);' : ((${weeklyWorkload.get(iStat.index)} < 1) ? 'background-color:var(--green);' : ('background-color:var(--orange);')))">
-                            <!--Write school week date-->
-                            <td th:if="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" colspan="100%" th:text="${iStat.count} + ' ' + ${allHolidayDates.get(monday)}" th:style="'font-weight: light;'">
-                            <td th:unless="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:text="${iStat.count}+ ' (' + ${#temporals.format(monday, 'dd.MM')} + '-' + ${#temporals.format(monday.plusDays(4), 'dd.MM')} + ')'"></td>
-                            <!-- Week is holiday -->
+                    <tr th:each="monday, iStat : ${allMondays}" th:style="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--gray);' : (${weeklyWorkload.get(iStat.index)} >= 3.2 ? 'background-color:var(--lighterRed);' : ((${weeklyWorkload.get(iStat.index)} < 1) ? 'background-color:var(--lighterGreen);' : ('background-color:var(--lightOrange);')))">
+                            <!-- If the school week is a holiday, print the holiday name, collapse row -->
+                            <td th:if="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" 
+                            colspan="100%" 
+                            th:text="${iStat.count} + ' ' + ${allHolidayDates.get(monday)}" th:style="'font-weight: light;'">
+                            <!-- Else write the Monday and Date.-->
+                            <td th:unless="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" 
+                            th:text="${iStat.count} + ' ' + ${#temporals.dayOfWeekNameShort(monday)} +', ' + ${#temporals.format(monday, 'dd.MM')}"></td>
                             
-                                <!-- Make an empty box for each subject-->
-                                <td th:unless="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:each="subject: ${userSubjects}" th:text="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? (${allExams.get(iStat.index).get(subject.getTag()).countingFactor} >= 1 ? ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)} : (('(' + ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)} + ')')))"
-                                />
+                                <!-- Unless we have a holiday week, make an empty box for each subject-->
+                                <!-- If there is an exam in one of the subjects, check the counting factor and write the weekday tag accordingly-->
+                                <td th:unless="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" 
+                                th:each="subject: ${userSubjects}"
+                                th:text="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? (${allExams.get(iStat.index).get(subject.getTag()).countingFactor} >= 1 ? ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)} : (('(' + ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)} + ')')))"
+                                th:style="'text-align:center;'"/>
 
-                                <td th:unless="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:text="${#maps.containsKey(allHolidayDates, monday)} ? ${allHolidayDates.get(monday).getName()} : (${#maps.containsKey(allHolidayDates, monday.plusDays(1))} ? ${allHolidayDates.get(monday.plusDays(1)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(2))} ? ${allHolidayDates.get(monday.plusDays(2)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(3))} ? ${allHolidayDates.get(monday.plusDays(3)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(4))} ? ${allHolidayDates.get(monday.plusDays(4)).getName()}))))"
-                                    th:style="${#maps.containsKey(allHolidayDates, monday)} ?'background-color:var(--lightGray);': (${#maps.containsKey(allHolidayDates, monday.plusDays(1))} ?'background-color:var(--lightGray);': (${#maps.containsKey(allHolidayDates, monday.plusDays(2))} ?'background-color:var(--lightGray);' :(${#maps.containsKey(allHolidayDates, monday.plusDays(3))} ?'background-color:var(--lightGray);':(${#maps.containsKey(allHolidayDates, monday.plusDays(4))} ?'background-color:var(--lightGray);'))))">Kommentarzeile</td>
+
+                                <!-- Only if some of the days of the week are holidays, change the background color and write a comment -->
+                            <td th:unless="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:text="${#maps.containsKey(allHolidayDates, monday)} ? ${allHolidayDates.get(monday).getName()} : (${#maps.containsKey(allHolidayDates, monday.plusDays(1))} ? ${allHolidayDates.get(monday.plusDays(1)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(2))} ? ${allHolidayDates.get(monday.plusDays(2)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(3))} ? ${allHolidayDates.get(monday.plusDays(3)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(4))} ? ${allHolidayDates.get(monday.plusDays(4)).getName()}))))"
+                                    th:style="${#maps.containsKey(allHolidayDates, monday)} ?'background-color:var(--gray);': (${#maps.containsKey(allHolidayDates, monday.plusDays(1))} ?'background-color:var(--gray);': (${#maps.containsKey(allHolidayDates, monday.plusDays(2))} ?'background-color:var(--gray);' :(${#maps.containsKey(allHolidayDates, monday.plusDays(3))} ?'background-color:var(--gray);':(${#maps.containsKey(allHolidayDates, monday.plusDays(4))} ?'background-color:var(--gray);'))))"></td>
                 </tbody>
                 </table>
                 <a href="/semesterView/choose">>Semester wechseln</a><br><br>
