@@ -31,10 +31,6 @@
                         <th>Kommentar</th>
                     </tr>
                 </thead>
-
-                <!-- potential workload colour code <td th:style="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--lightGray);' : 
-                (${allWorkloads.get(iStat.index)} >= 99 ? 'background-color:var(--red);' : ((${allWorkloads.get(iStat.index)} < 30) ? 'background-color:var(--green);' : ('background-color:var(--orange);')))"/>  end code-->
-
                 <tbody>
                     <!-- check if week is holiday, change background-->
                     <tr th:each="monday, iStat : ${allMondays}" th:style="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--lightGray);' : (${weeklyWorkload.get(iStat.index)} >= 3.2 ? 'background-color:var(--red);' : ((${weeklyWorkload.get(iStat.index)} < 1) ? 'background-color:var(--green);' : ('background-color:var(--orange);')))">
