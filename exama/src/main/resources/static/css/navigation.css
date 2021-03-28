@@ -128,8 +128,8 @@
 
 
 .nav-logout{
-    width: var(--naviHeight);
-    height: var(--naviHeight);
+    width: calc(var(--naviHeight) * 0.6);
+    height: calc(var(--naviHeight) * 0.6);
     margin: 0;
     background-image:url(img/navigation-icons/logout-w.svg);
     background-size: contain;
@@ -182,7 +182,6 @@
     width: calc(var(--naviHeight) * 2.5);
     height: var(--naviHeight);
 }
-
 
 /* ---------- navigation bottom ---------- */
 #footer {

@@ -337,9 +337,9 @@ public class semesterViewController {
     // private List<Integer> workloadTotalWeekList (Long coreCourseId, LocalDate monday, List<LocalDate> allMondays)
 
     // ... for all Mondays, call Hilfsmethode 5 and add to list.
-        return null;
+    //     return null;
 
-    }
+    // }
 
     /** Hilfsmethode 5 - Calculate Workload Value */
     // private int workloadTotalWeek(Long coreCourseId, LocalDate monday) {
