@@ -12,12 +12,10 @@ import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.*;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama._services.AppService;
-import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
 import ch.diedreifragezeichen.exama.assignments.exams.*;
 import ch.diedreifragezeichen.exama.courses.CoreCourse;
 import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
@@ -69,17 +67,8 @@ public class semesterViewController {
 
     @GetMapping("/semesterView")
     public ModelAndView initializeView() throws NotFoundException {
-        LocalDate today = LocalDate.now();
-        LocalDate currentSemesterStart = semesterRepo.findAll().stream().filter(u -> Objects.nonNull(u.getStartDate()))
-                .map(Semester::getStartDate).filter(u -> Objects.nonNull(u.isBefore(today)))
-                .filter(date -> date.isBefore(today)).sorted((c1, c2) -> c1.compareTo(c2))
-                .reduce((first, second) -> second).get();
-        if (currentSemesterStart == null) {
-            throw new NotFoundException("No Semester has been assigned");
-        }
-        List<Semester> currentSem = semesterRepo.findAll().stream()
-                .filter(s -> s.getStartDate() == currentSemesterStart).collect(Collectors.toList());
-        Semester currentSemester = currentSem.get(0);
+
+        Semester currentSemester = helper.getCurrentSemesterBasedOnDate(LocalDate.now());
 
         return selectSemesterView(currentSemester.getId());
     }
@@ -88,13 +77,10 @@ public class semesterViewController {
     @GetMapping("/semesterView/select")
     public ModelAndView selectSemesterView(@RequestParam(name = "selectedSemester") Long semesterId)
             throws NotFoundException {
-
-        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = authLoggedInUser.getName();
-        User user = userRepo.findUserByEmail(currentUserName);
-        // if user is student get student's coreCourse id and redirect accordingly.
-        if (user.getRoles().contains(roleRepo.findRoleById(39l))) {
-            // ** retrieve courses of current user if student */
+        // get current User
+        User user = helper.getCurrentUser();
+        // if user is student get coreCourse id and redirect accordingly
+        if (helper.currentUserIsA(39l)) {
             CoreCourse userCoreCourse = user.getCoreCourse();
             if (userCoreCourse == null) {
                 throw new NotFoundException("CoreCourse not assigned");

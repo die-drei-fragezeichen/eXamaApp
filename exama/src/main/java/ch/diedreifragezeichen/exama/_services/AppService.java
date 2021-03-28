@@ -69,17 +69,27 @@ public class AppService {
         return userRepo.findUserByEmail(authLoggedInUser.getName());
     }
 
-    /** Service 1b - Get name of current */
+    /** Service 1b - Get name of current User */
     public String getCurrentUserName() {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         return authLoggedInUser.getName();
     }
 
-    /** Service 1c - Get name of current */
+    /** Service 1c - Get roles of current User */
     public Set<Role> getCurrentUserRoles() {
-        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepo.findUserByEmail(authLoggedInUser.getName());
-        return user.getRoles();
+        return getCurrentUser().getRoles();
+    }
+
+    /** Service 1d - Check role of current User by String */
+    public boolean currentUserIsA(String name){
+        
+        return getCurrentUserRoles().contains(roleRepo.findRoleByName(name));
+    }
+
+    /** Service 1d - Check role of current User by String */
+    public boolean currentUserIsA(Long id){
+        
+        return getCurrentUserRoles().contains(roleRepo.findRoleById(id));
     }
 
     /** DATE RELATED SERVICES */
