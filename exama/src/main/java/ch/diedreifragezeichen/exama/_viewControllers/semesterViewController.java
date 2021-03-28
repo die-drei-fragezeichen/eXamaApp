@@ -87,18 +87,22 @@ public class semesterViewController {
     @GetMapping("/semesterView/show")
     public ModelAndView showSemesterView(@RequestParam(name = "selectedSemester") Long semesterId,
             @RequestParam(name = "selectedCoreCourse") Long coreCourseId) throws NotFoundException {
-
-        ModelAndView mav = new ModelAndView("studentTemplates/semesterViewShow");
         
+        ModelAndView mav;
+        if (helper.currentUserIsA("Student")) {
+            mav = new ModelAndView("studentTemplates/semesterViewShow");
+        } else {
+            mav = new ModelAndView("teacherTemplates/semesterViewShow");
+        }
         /** The following parts deal with time parameters */
         Semester chosenSemester = semesterRepo.findSemesterById(semesterId);
         mav.addObject("semester", chosenSemester);
-        
+
         List<LocalDate> allMondays = helper.getAllMondaysOfSemester(chosenSemester);
         mav.addObject("allMondays", allMondays);
 
         // ** retrieve current user name */
-        User user = helper.getCurrentUser();       
+        User user = helper.getCurrentUser();
         mav.addObject("userName", user.getFirstName());
 
         List<Course> userCourses = new ArrayList<Course>(user.getCourses());
@@ -108,9 +112,11 @@ public class semesterViewController {
             mav.addObject("userSubjects", helper.getSubjectsOfAStudentUser());
         } else {
             /**
-             * Else user is not a student. Teacher will see the actual coreCourse subject list
+             * Else user is not a student. Teacher will see the actual coreCourse subject
+             * list
              */
-            mav.addObject("userSubjects", helper.getAllSubjectsOfACoreCourse(coreCourseRepo.findCoreCourseById(coreCourseId)));
+            mav.addObject("userSubjects",
+                    helper.getAllSubjectsOfACoreCourse(coreCourseRepo.findCoreCourseById(coreCourseId)));
         }
 
         /** Add user's CoreCourses for the Navbar List */
@@ -157,7 +163,8 @@ public class semesterViewController {
         List<Holiday> listHolidays = holidayRepo.findAllByStartDateBetween(semesterStart, semesterEnd);
         HashMap<LocalDate, Holiday> allHolidayDates = new HashMap<>();
         for (Holiday holiday : listHolidays) {
-            List<LocalDate> allHolyDates = helper.getAllDatesBetweenAndWith(holiday.getStartDate(), holiday.getEndDate());
+            List<LocalDate> allHolyDates = helper.getAllDatesBetweenAndWith(holiday.getStartDate(),
+                    holiday.getEndDate());
             for (LocalDate date : allHolyDates) {
                 allHolidayDates.put(date, holiday);
             }
@@ -165,7 +172,7 @@ public class semesterViewController {
 
         mav.addObject("allHolidayDates", allHolidayDates);
 
-        //get a list of all the weekly workloads for every week
+        // get a list of all the weekly workloads for every week
         List<Double> weeklyWorkload = helper.getSemesterWorkloadList(coreCourseId, semesterId);
         mav.addObject("weeklyWorkload", weeklyWorkload);
 
