@@ -38,41 +38,35 @@
                 </div>
                 <div class="content-box-content">
                     <form th:action="@{/exams/modified}" th:object="${exam}" method="post">
-                        <!-- <input type="hidden" th:field="*{semester}" th:value="${currentSemester}" /> -->
 
                         <div class="exam-start exam-start-course">
-                            <select class="form-control" required>
-                                <!--th:field="*{course}"-->
-                                <!-- <option th:each="course : ${allCourses}" th:text="${course.name}"
-                                    th:value="${course.id}" th:selected="(${course} == *{course})" /> -->
-                                <option selected="true" disabled="disabled">Kurs*</option>
-                                <option>blabla</option>
+                            <select class="form-control" id="course" name="course" th:with="course=*{course}" required>
+                                <option th:selected="true" th:disabled="disabled" value="0">Kurs*</option>
+                                <option th:each="course : ${allCourses}" th:text="${course.name}"
+                                    th:value="${course.id}" th:selected="false" />
                             </select>
                         </div>
 
 
                         <div class="exam-start exam-start-duedate">
                             <input type="text" id="toDate" class="form-control" required
-                                placeholder="Prüfungs-/Abgabedatum*" />
-                            <!--th:field="*{dueDate}"-->
+                                placeholder="Prüfungs-/Abgabedatum*" th:field="*{dueDate}" />
                         </div>
 
 
                         <div class="exam-start exam-start-type">
-                            <select class="form-control" required>
-                                <!--th:field="*{examType}" -->
-                                <!-- <option th:each="type : ${allExamTypes}"
-                                    th:text="${type.name + ' (' + type.timeValue + ' h)'}" th:value="${type.id}"
-                                    th:selected="(${type} == *{examType})" /> -->
-                                <option selected="true" disabled="disabled">Prüfungstyp*</option>
-                                <option>blabla</option>
+                            <select class="form-control" id="examType" name="examType" th:with="examType=*{examType}"
+                                required>
+                                <option th:selected="true" th:disabled="disabled" value="0">Prüfungstyp*</option>
+                                <option th:each="type : ${allExamTypes}"
+                                    th:text="${type.name + ' (' + type.timeValue + ' h)'}" th:value="${type.id}" />
                             </select>
                         </div>
 
 
                         <div class="exam-start exam-start-name">
-                            <input type="text" class="form-control" maxlength="20" required placeholder="Name/Thema*" />
-                            <!--th:field="*{name}"-->
+                            <input type="text" class="form-control" maxlength="20" required placeholder="Name/Thema*"
+                                th:field="*{name}" />
                         </div>
 
 
@@ -82,23 +76,22 @@
                         </div>
 
                         <div class="exam-start exam-start-preptime">
-                            <select class="form-control" required>
-                                <!--th:field="*{availablePrepTime}"-->
-                                <!-- <option th:each="preptime : ${allPrepTimes}" th:text="${preptime.name}"
-                                    th:value="${preptime.id}" th:selected="(${preptime} == *{availablePrepTime})" /> -->
-                                <option selected="true" disabled="disabled">Vorbereitungszeit*</option>
-                                <option>blabla</option>
+                            <select class="form-control" id="availablePrepTime" name="availablePrepTime"
+                                th:with="availablePrepTime=*{availablePrepTime}" required>
+                                <option th:selected="true" th:disabled="disabled" value="0">Vorbereitungszeit*</option>
+                                <option th:each="preptime : ${allPrepTimes}" th:text="${preptime.name}"
+                                    th:value="${preptime.id}" />
                             </select>
                         </div>
 
 
                         <div class="exam-start exam-start-distribution">
-                            <select class="form-control" required>
-                                <!--th:field="*{workloadDistribution}"-->
-                                <!-- <option th:each="dist : ${allWorkloadDistributions}" th:text="${dist.name}"
-                                            th:value="${dist.id}" th:selected="(${dist} == *{workloadDistribution})" /> -->
-                                <option selected="true" disabled="disabled">Verteilung des Aufwands*</option>
-                                <option>blabla</option>
+                            <select class="form-control" id="workloadDistribution" name="workloadDistribution"
+                                th:with="workloadDistribution=*{workloadDistribution}" required>
+                                <option th:selected="true" th:disabled="disabled" value="0">Verteilung des Aufwands*
+                                </option>
+                                <option th:each="dist : ${allWorkloadDistributions}" th:text="${dist.name}"
+                                    th:value="${dist.id}" />
                             </select>
                             </label>
                         </div>
@@ -106,26 +99,26 @@
 
                         <div class="exam-start exam-start-factor">
                             <input placeholder="Gewichtung" type="number" class="form-control" min="0.5" max="3.0"
-                                step="0.5" required />
-                            <!--th:field="*{countingFactor}"-->
+                                step="0.5" required th:field="*{countingFactor}" />
                         </div>
 
+                        <div class="optionalParametersTitle">> Startdatum / Arbeitsaufwand selbst festlegen</div>
+                        <div class="optionalParameters">
+                            <div class="exam-start exam-start-startdate">
+                                <input type="text" id="fromDate" class="form-control" th:attr="placeholder='Startdatum'"
+                                    th:field="*{startDate}" />
+                            </div>
 
-                        <div class="exam-start exam-start-startdate">
-                            <input type="text" id="fromDate" class="form-control" placeholder="Startdatum" />
-                            <!--th:field="*{startDate}"-->
-                        </div>
-
-
-                        <div class="exam-start exam-start-workloadminutes">
-                            <input type="text" class="form-control" minlength="1" maxlength="4"
-                                placeholder="Arbeitsaufwand (Minuten)" />
-                            <!--th:field="*{workloadMinutesTotal}"-->
+                            <div class="exam-start exam-start-workloadminutes">
+                                <input type="text" class="form-control" th:minlength="1" th:maxlength="4"
+                                    th:attr="placeholder='Arbeitsaufwand (Minuten)'"
+                                    th:field="*{workloadMinutesTotal}" />
+                            </div>
                         </div>
 
 
                         <div>
-                            <button type="submit" class="login-button">Leistungsüberprüfung setzen</button>
+                            <button type="submit" class="save-button">Leistungsüberprüfung setzen</button>
                         </div>
                     </form>
                 </div>
@@ -135,7 +128,11 @@
 
         </div>
 
-
+        <script>
+            $(".optionalParametersTitle").click(function () {
+                $(".optionalParameters").slideToggle();
+            });
+        </script>
         <!-- footer with navigation (only mobile) -->
         <div th:include="fragments/footer :: footer">
         </div>
