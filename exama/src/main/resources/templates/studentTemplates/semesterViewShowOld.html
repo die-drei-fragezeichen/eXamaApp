@@ -1,0 +1,69 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/head :: head"></head>
+
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="fragments/header :: header"></div>
+        <div th:fragment="coursenavigation">
+            <div sec:authorize="hasAnyAuthority('TEACHER')" id="course-navigation">
+                <a th:each="coreCourse: ${teachersCoreCourses}" th:href="@{/semesterView/show?selectedSemester={sId}&selectedCoreCourse={ccId}(sId=${semester.id}, ccId=${coreCourse.id})}">
+                    <div class="course-navigation-item">
+                        <p data-th-text="${coreCourse}"> </p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- content displayed in the center of the window -->
+            <div class="content-box-full">
+                <div class="content-box-header">
+                    Das ist deine Semesterübersicht für das [[${semester.name}]], [[${#request.userPrincipal.principal.getFirstName}]]
+                </div>
+                <div class="content-box-content">
+                    <!-- Organise links -->
+                        <b>Diagramm</b> | <a
+                        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                        th:href="${urlBuilder.replaceQueryParam('view', '1').toUriString()}">Liste</th:with=> | <b>Semesterplan</b>
+                <br><br>
+                <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Schulwoche</th>
+                        <th th:each="subject: ${userSubjects}" class="column-title" th:text="${subject.getTag()}" />
+                        <th>Kommentar</th>
+                    </tr>
+                </thead>
+            
+    
+                <tbody>
+                    <!-- check if week is holiday, change background-->
+                    <tr th:each="monday, iStat : ${allMondays}" th:style="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--lightGray);' : 'background-color:var(--green);'">
+                        <td th:text="${iStat.count}" </td>
+                            <!--Write school week date-->
+                            <td th:text="'(' + ${#temporals.format(monday, 'dd.MM')} + '-' + ${#temporals.format(monday.plusDays(4), 'dd.MM')} + ')'"></td>
+                            <!-- Week is holiday -->
+                            <td th:if="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" colspan="100%" th:text="${alleTageMap.get(monday)}" th:style="'font-weight: light;'">
+                                <!-- Make an empty box for each subject-->
+                                <td th:unless="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:each="subject: ${userSubjects}" th:text="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? (${allExams.get(iStat.index).get(subject.getTag()).countingFactor} >= 1 ? ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)} : (('(' + ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)} + ')')))"
+                                />
+
+                                <td th:unless="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:text="${#maps.containsKey(alleTageMap, monday)} ? ${alleTageMap.get(monday).getName()} : (${#maps.containsKey(alleTageMap, monday.plusDays(1))} ? ${alleTageMap.get(monday.plusDays(1)).getName()}: (${#maps.containsKey(alleTageMap, monday.plusDays(2))} ? ${alleTageMap.get(monday.plusDays(2)).getName()}: (${#maps.containsKey(alleTageMap, monday.plusDays(3))} ? ${alleTageMap.get(monday.plusDays(3)).getName()}: (${#maps.containsKey(alleTageMap, monday.plusDays(4))} ? ${alleTageMap.get(monday.plusDays(4)).getName()}))))"
+                                    th:style="${#maps.containsKey(alleTageMap, monday)} ?'background-color:var(--lightGray);': (${#maps.containsKey(alleTageMap, monday.plusDays(1))} ?'background-color:var(--lightGray);': (${#maps.containsKey(alleTageMap, monday.plusDays(2))} ?'background-color:var(--lightGray);' :(${#maps.containsKey(alleTageMap, monday.plusDays(3))} ?'background-color:var(--lightGray);':(${#maps.containsKey(alleTageMap, monday.plusDays(4))} ?'background-color:var(--lightGray);'))))">Kommentarzeile</td>
+                </tbody>
+
+                <!-- potential workload colour code <td th:style="${#maps.containsAllKeys(alleTageMap, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--lightGray);' : 
+                (${allWorkloads.get(iStat.index)} >= 99 ? 'background-color:var(--red);' : ((${allWorkloads.get(iStat.index)} < 30) ? 'background-color:var(--green);' : ('background-color:var(--orange);')))"/>  end code-->
+
+            </table>
+            <a href="/semesterView/choose">>Semester wechseln</a><br><br>
+            </div>
+        </div>
+
+        <div th:include="fragments/footer :: footer"></div>
+
+</body>
+
+</html>
