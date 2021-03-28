@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import ch.diedreifragezeichen.exama._services.AppService;
 import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
 import ch.diedreifragezeichen.exama.assignments.exams.*;
 import ch.diedreifragezeichen.exama.courses.CoreCourse;
@@ -56,6 +57,9 @@ public class semesterViewController {
 
     @PersistenceContext
     private EntityManager em;
+
+    @Autowired
+    private AppService helper;
 
     /**
      * The following methods handle the Semester view creation
@@ -239,7 +243,7 @@ public class semesterViewController {
         List<Subject> allSubjects = subjectRepo.findAll();
         mav.addObject("allSubjects", allSubjects);
         // count all the subjects, method returns "numberOfSubjects"
-        calculateNumberOfSubjects(mav, allSubjects);
+        helper.calculateNumberOfSubjects(mav, allSubjects);
 
         /** The following parts deal with exam information */
 
@@ -289,100 +293,4 @@ public class semesterViewController {
      * 
      */
 
-    /** Hilfsmethode 1 */
-    public Model calculateNumberOfExams(Model model, List<Exam> listExams) {
-        // NOTE: Thymeleaf isn't Velocity or Freemarker and doesn't replace expressions
-        // blindly. You need the expression in an appropriate tag attribute, such as
-        // <h1 data-th-text="${data}" />
-
-        model.addAttribute("msg", "Anzahl Leistungsmessungen diese Woche: ");
-        long anzahlExamen = listExams.stream().count();
-        model.addAttribute("anzpr", anzahlExamen);
-        // Schreibe im html: <h1 data-th-text="${anzpr}" />
-        return model;
-    }
-
-    /** Hilfsmethode 2 */
-    public Model calculateExamFactor(Model model, List<Exam> listExams) {
-
-        model.addAttribute("msg2", "Insgesamt zählt das mit einem Belastungsfaktor von: ");
-        double ExamFactor = listExams.stream().mapToDouble(exam -> exam.getCountingFactor()).sum();
-        model.addAttribute("xFactor", ExamFactor);
-        // Schreibe im html: <h1 data-th-text="${anzpr}" />
-        return model;
-    }
-
-    /** Hilfsmethode 3 */
-    public ModelAndView calculateNumberOfSubjects(ModelAndView mav, List<Subject> allSubjects) {
-        long numberOfSubjects = allSubjects.stream().count();
-        mav.addObject("numberOfSubjects", numberOfSubjects);
-        return mav;
-    }
-
-    /** Hilfsmethode 4 */
-    @SuppressWarnings("unused")
-    private int calculateNumberOfExams(List<List<Exam>> allExams) {
-        int sum = 0;
-        Iterator<List<Exam>> iter = allExams.iterator();
-        while (iter.hasNext()) {
-            Iterator<Exam> innerIter = iter.next().iterator();
-            while (innerIter.hasNext()) {
-                sum++;
-            }
-        }
-        return sum;
-    }
-
-    /** Hilfsmethode 4 - Calculate List of Weekly Workload Values */
-    // private List<Integer> workloadTotalWeekList (Long coreCourseId, LocalDate monday, List<LocalDate> allMondays)
-
-    // ... for all Mondays, call Hilfsmethode 5 and add to list.
-    //     return null;
-
-    // }
-
-    /** Hilfsmethode 5 - Calculate Workload Value */
-    // private int workloadTotalWeek(Long coreCourseId, LocalDate monday) {
-
-    //     Double[] workloadTotalDaysArray = workloadTotalDaysArray(coreCourseId, monday);
-
-    //     // this method is not finished, but the value will define the background color
-
-    //     return 0;
-    // }
-
-    /** Hilfsmethode 6 - Calculate Workload Value */
-    private Double[] workloadTotalDaysArray(Long coreCourseId, LocalDate monday) {
-        List<Course> ccCourses = coreCourseRepo.findCoreCourseById(coreCourseId).getCourses();
-
-        List<Assignment> assignments = new ArrayList<>();
-
-        // add every exam for the week
-        ccCourses.stream().filter(c -> Objects.nonNull(c.getExams())).map(c -> c.getExams()).flatMap(List::stream)
-                .distinct().filter(e -> e.getDueDate().isAfter(monday.minusDays(1)))
-                .filter(e -> e.getDueDate().isBefore(monday.plusDays(7)))
-                .collect(Collectors.toCollection(() -> assignments));
-
-        // add every homework for the week
-        ccCourses.stream().filter(c -> Objects.nonNull(c.getHomeworks())).map(c -> c.getHomeworks())
-                .flatMap(List::stream).distinct().filter(e -> e.getDueDate().isAfter(monday.minusDays(1)))
-                .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
-                .collect(Collectors.toCollection(() -> assignments));
-
-        assignments.stream().sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
-                .collect(Collectors.toList());
-
-        // Calculate Workload Value
-        Double[] workloadTotalDaysArray = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-
-        if (assignments != null) {
-            for (int i = 0; i < 7; i++) {
-                int j = i;
-                workloadTotalDaysArray[i] = Math.min(
-                        assignments.stream().map(c -> c.getWorkloadValue(monday.plusDays(j))).mapToDouble(w -> w).sum(),
-                        1);
-            }
-        }
-        return workloadTotalDaysArray;
-    }
 }

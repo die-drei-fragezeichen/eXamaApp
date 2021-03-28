@@ -56,31 +56,3 @@ public class ExamService {
         return allExamsOfThisWeek;
     }
 }
-
-// For further inspiration:
-
-/*
- * // // Count number of subjects
- */
-
-// long countSubjects = subjectRepo.count();
-// System.out.println("Number of customers: " + countSubjects);
-
-/*
- * // // Find a subject by Id
- *
- * 
- * // Optional<Subject> result = subjectRepo.findById(1L); //
- * result.ifPresent(subject -> System.out.println(subject.getSubjectName()));
- * 
- * /* // // Find a subject by Tag
- */
-
-// Subject wanted = subjectRepo.findSubjectByName("English");
-// System.out.println(wanted.getSubjectName());
-
-/*
- * // Find subject by tag (lambda)
- */
-// List<Subject> allSubjects = subjectRepo.findSubjectByTag("ENG");
-// allSubjects.forEach(subject -> System.out.println(subject.getId()));
