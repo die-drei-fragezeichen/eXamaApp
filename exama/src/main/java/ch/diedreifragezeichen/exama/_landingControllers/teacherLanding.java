@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.*;
 import ch.diedreifragezeichen.exama.assignments.examTypes.*;
 import ch.diedreifragezeichen.exama.assignments.exams.*;
+import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
 import ch.diedreifragezeichen.exama.assignments.workloadDistributions.*;
 import ch.diedreifragezeichen.exama.assignments.*;
 import ch.diedreifragezeichen.exama.courses.*;
@@ -51,6 +52,10 @@ public class teacherLanding {
 
         Exam exam = new Exam();
         mav.addObject("exam", exam);
+
+        
+        Homework homework = new Homework();
+        mav.addObject("homework", homework);
 
         Semester semester = semesterRepo.findAll().stream().filter(s -> s.getStartDate().isBefore(LocalDate.now()) && s.getEndDate().isAfter(LocalDate.now())).collect(Collectors.toList()).get(0);
         exam.setSemester(semester);

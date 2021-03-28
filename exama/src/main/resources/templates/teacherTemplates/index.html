@@ -19,16 +19,54 @@
                     Hausaufgabe setzen
                 </div>
                 <div class="content-box-content">
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                    labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-                    et
-                    ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem
-                    ipsum
-                    dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-                    dolore
-                    magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-                    Stet
-                    clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                    <form th:action="@{/homeworks/modified}" th:object="${homework}" method="post">
+
+                        <div class="homework-start homework-start-course">
+                            <select class="form-control" id="course" name="course" th:with="course=*{course}" required>
+                                <option th:selected="true" th:disabled="disabled" value="0">Kurs*</option>
+                                <option th:each="course : ${allCourses}" th:text="${course.name}"
+                                    th:value="${course.id}" th:selected="false" />
+                            </select>
+                        </div>
+
+                        <div class="homework-start homework-start-duedate">
+                            <input type="text" id="toDate" class="form-control" required placeholder="zu erledigen bis*"
+                                th:field="*{dueDate}" />
+                        </div>
+
+
+
+                        <div class="homework-start exam-start-name">
+                            <input type="text" class="form-control" maxlength="20" required
+                                placeholder="Kurzbeschreibung*" th:field="*{name}" />
+                        </div>
+
+
+                        <div class="homework-start exam-start-description">
+                            <textarea class="form-control" rows="5" placeholder="zusätzliche Informationen"
+                                maxlength="4095"></textarea>
+                        </div>
+
+                        <div class="homework-start homework-start-workloadminutes">
+                            <input type="text" class="form-control" th:minlength="1" th:maxlength="4"
+                                th:attr="placeholder='Arbeitsaufwand (Minuten)*'" th:field="*{workloadMinutesTotal}"
+                                required />
+                        </div>
+
+                        <div class="homework-start homework-start-distribution">
+                            <select class="form-control" id="workloadDistribution" name="workloadDistribution"
+                                th:with="workloadDistribution=*{workloadDistribution}" required>
+                                <option th:selected="true" th:disabled="disabled" value="0">Verteilung des Aufwands*
+                                </option>
+                                <option th:each="dist : ${allWorkloadDistributions}" th:text="${dist.name}"
+                                    th:value="${dist.id}" />
+                            </select>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="save-button">Hausaufgabe setzen</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -38,6 +76,7 @@
                 </div>
                 <div class="content-box-content">
                     <form th:action="@{/exams/modified}" th:object="${exam}" method="post">
+                        <input type="hidden" th:field="*{semester}" th:value="${exam.semester}" />
 
                         <div class="exam-start exam-start-course">
                             <select class="form-control" id="course" name="course" th:with="course=*{course}" required>
@@ -49,8 +88,8 @@
 
 
                         <div class="exam-start exam-start-duedate">
-                            <input type="text" id="toDate" class="form-control" required
-                                placeholder="Prüfungs-/Abgabedatum*" th:field="*{dueDate}" />
+                            <input type="text" id="toDate2" class="form-control" required
+                                placeholder="Abgabe-/Prüfungsdatum*" th:field="*{dueDate}" />
                         </div>
 
 
@@ -93,7 +132,6 @@
                                 <option th:each="dist : ${allWorkloadDistributions}" th:text="${dist.name}"
                                     th:value="${dist.id}" />
                             </select>
-                            </label>
                         </div>
 
 
@@ -131,6 +169,19 @@
         <script>
             $(".optionalParametersTitle").click(function () {
                 $(".optionalParameters").slideToggle();
+            });
+
+            var startdate = $("#fromDate");
+            var preptime = $("#availablePrepTime");
+            $(startdate).change(function () {
+                if (startdate.val()) {
+                    preptime.val(1);
+                }
+            });
+            $(preptime).change(function () {
+                if (preptime.val()!=1) {
+                    startdate.val(null);
+                }
             });
         </script>
         <!-- footer with navigation (only mobile) -->

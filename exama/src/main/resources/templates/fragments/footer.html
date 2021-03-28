@@ -83,6 +83,20 @@
         })
           .on("change", function () {
             from.datepicker("option", "maxDate", getDate(this));
+          }),
+        //creates the second date (id="toDate") (see html code above)
+        to = $("#toDate2").datepicker({
+          dateFormat: "yy-mm-dd",
+          firstDay: 1,
+          numberOfMonths: 2,
+          beforeShowDay: DisableDates,
+          changeMonth: true,
+          changeYear: true,
+          minDate: semesterStart,
+          maxDate: semesterEnd,
+        })
+          .on("change", function () {
+            from.datepicker("option", "maxDate", getDate(this));
           });
 
       var dates = "[" + [[${ allHolidayDays }]] + "]";

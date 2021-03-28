@@ -338,6 +338,9 @@ textarea {
     color: var(--white);
     margin:0;
 }
+.save-button:hover{
+    background-color: var(--lightRed);
+}
 /* ---------- boxes ---------- */
 
 

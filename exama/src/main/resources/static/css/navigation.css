@@ -128,8 +128,8 @@
 
 
 .nav-logout{
-    width: calc(var(--naviHeight) * 0.6);
-    height: calc(var(--naviHeight) * 0.6);
+    width: calc(var(--naviHeight) * 0.9);
+    height: calc(var(--naviHeight) * 0.9);
     margin: 0;
     background-image:url(img/navigation-icons/logout-w.svg);
     background-size: contain;
