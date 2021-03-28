@@ -20,6 +20,7 @@
                     <th>Datum</th>  
                     <th>Prüfungen</th>
                     <th>Hausaufgaben</th>
+                    <th>test</th>
                     </tr>
                   </thead>
                                       <!--     
@@ -29,12 +30,13 @@
                   <tbody >
                     <tr th:each="date :${dates}">
                     <td th:text="${date}"></td>
-                    <td td:each="exam :${allExams}" td:if="${exam.dueDate == exam.dueDate}" td:text="${exam.name}" >
+                    <td td:each="exam :${allExams}" td:if="${exam.dueDate == date}" td:text="${exam.name}" >
                     <td:unless="${exam.dueDate == date}">kein Exam
                     </td>
                     <td td:each="homework :${allHomework}" td:if="${homework.dueDate == date}" td:text="${homework.name}">
                     <td:unless="${homework.dueDate == date}">keine Hausaufgaben
                     </td>
+                    <td th:text="${date}"></td>
                     </tr>
                   </tbody>
                   
