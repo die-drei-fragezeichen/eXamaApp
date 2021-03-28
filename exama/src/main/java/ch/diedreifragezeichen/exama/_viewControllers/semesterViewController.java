@@ -80,7 +80,7 @@ public class semesterViewController {
         // get current User
         User user = helper.getCurrentUser();
         // if user is student get coreCourse id and redirect accordingly
-        if (helper.currentUserIsA(39l)) {
+        if (helper.currentUserIsA("Student")) {
             CoreCourse userCoreCourse = user.getCoreCourse();
             if (userCoreCourse == null) {
                 throw new NotFoundException("CoreCourse not assigned");
@@ -96,7 +96,7 @@ public class semesterViewController {
                     .distinct().filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoreCourse).distinct()
                     .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).findFirst().orElse(null);
             if (firstCoreCourse == null) {
-                throw new NotFoundException("no Courses or CoreCourses have been assigned");
+                throw new NotFoundException("no Courses or CoreCourses have been assigned, so no view can be shown");
             }
             return showSemesterView(semesterId, firstCoreCourse.getId());
         }
@@ -108,50 +108,28 @@ public class semesterViewController {
             @RequestParam(name = "selectedCoreCourse") Long coreCourseId) throws NotFoundException {
 
         ModelAndView mav = new ModelAndView("studentTemplates/semesterViewShow");
+        
         /** The following parts deal with time parameters */
         Semester semester = semesterRepo.findSemesterById(semesterId);
         mav.addObject("semester", semester);
 
-        /** retrieve semester Information and first / last day of Semester */
-        LocalDate semesterStart = semester.getStartDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate monday = semesterStart;
-        LocalDate semesterEnd = semester.getEndDate().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+        mav.addObject("allMondays", helper.getAllMondaysOfSemester(semester));
 
-        /** create a list of all Mondays */
-        List<LocalDate> mondays = new ArrayList<>();
-        while (monday.isBefore(semesterEnd)) {
-            mondays.add(monday);
-            // Set up the loop.
-            monday = monday.plusWeeks(1);
-        }
-        mav.addObject("allMondays", mondays);
-
-        /** The following parts deal with user information */
-        // ** retrieve current user */
-        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = authLoggedInUser.getName();
-        User user = userRepo.findUserByEmail(currentUserName);
-        String userName = user.getFirstName();
-        mav.addObject("userName", userName);
+        // ** retrieve current user name */
+        User user = helper.getCurrentUser();       
+        mav.addObject("userName", user.getFirstName());
 
         List<Course> userCourses = new ArrayList<Course>(user.getCourses());
         // check if current user is a student
-        if (user.getRoles().contains(roleRepo.findRoleById(39l))) {
-            // ** retrieve courses of current user if student */
-            List<Subject> currentStudentSubjects = user.getCourses().stream()
-                    .filter(c -> Objects.nonNull(c.getSubject())).map(Course::getSubject)
-                    .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
-            mav.addObject("userSubjects", currentStudentSubjects);
+        if (helper.currentUserIsA("Student")) {
+            // ** add all the subjects */
+            mav.addObject("userSubjects", helper.getSubjectsOfAStudentUser(user));
         } else {
             /**
              * Else user is not a student. User will see the actual coreCourse subject list
              */
             CoreCourse coreCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
-            List<Subject> studentsSubjects = coreCourse.getStudents().stream()
-                    .filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoursesList).flatMap(List::stream)
-                    .distinct().map(Course::getSubject).distinct().sorted((c1, c2) -> c1.getId().compareTo(c2.getId()))
-                    .collect(Collectors.toList());
-            mav.addObject("userSubjects", studentsSubjects);
+            mav.addObject("userSubjects", helper.getAllSubjectsOfACoreCourse(coreCourse));
         }
 
         /** Create the user's CoreCourses for the Navbar List */

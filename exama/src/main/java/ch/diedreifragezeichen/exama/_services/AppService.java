@@ -81,15 +81,28 @@ public class AppService {
     }
 
     /** Service 1d - Check role of current User by String */
-    public boolean currentUserIsA(String name){
-        
+    public boolean currentUserIsA(String name) {
+
         return getCurrentUserRoles().contains(roleRepo.findRoleByName(name));
     }
 
     /** Service 1d - Check role of current User by String */
-    public boolean currentUserIsA(Long id){
-        
+    public boolean currentUserIsA(Long id) {
+
         return getCurrentUserRoles().contains(roleRepo.findRoleById(id));
+    }
+
+    public List<Subject> getSubjectsOfAStudentUser(User user) {
+        return user.getCourses().stream().filter(c -> Objects.nonNull(c.getSubject())).map(Course::getSubject)
+                .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
+    }
+
+    public List<Subject> getAllSubjectsOfACoreCourse(CoreCourse coreCourse) {
+
+        return coreCourse.getStudents().stream().filter(u -> Objects.nonNull(u.getCoreCourse()))
+                .map(User::getCoursesList).flatMap(List::stream).distinct().map(Course::getSubject).distinct()
+                .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
+
     }
 
     /** DATE RELATED SERVICES */
@@ -106,6 +119,22 @@ public class AppService {
         List<Semester> semesters = semesterRepo.findAll().stream()
                 .filter(s -> s.getStartDate() == SemesterStartBasedOnDate).collect(Collectors.toList());
         return semesters.get(0);
+    }
+
+    public List<LocalDate> getAllMondaysOfSemester(Semester semester) {
+        /** retrieve semester Information and first / last day of Semester */
+        LocalDate semesterStart = semester.getStartDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate monday = semesterStart;
+        LocalDate semesterEnd = semester.getEndDate().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
+        /** create a list of all Mondays */
+        List<LocalDate> allMondays = new ArrayList<>();
+        while (monday.isBefore(semesterEnd)) {
+            allMondays.add(monday);
+            // Set up the loop.
+            monday = monday.plusWeeks(1);
+        }
+        return allMondays;
     }
 
     /** WORKLOAD RELATED SERVICES */
