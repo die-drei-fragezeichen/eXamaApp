@@ -334,7 +334,7 @@ public class semesterViewController {
     }
 
     /** Hilfsmethode 4 - Calculate List of Weekly Workload Values */
-    private List<Integer> workloadTotalWeekList (Long coreCourseId, LocalDate monday, List<LocalDate> allMondays){
+    // private List<Integer> workloadTotalWeekList (Long coreCourseId, LocalDate monday, List<LocalDate> allMondays)
 
     // ... for all Mondays, call Hilfsmethode 5 and add to list.
         return null;
@@ -342,14 +342,14 @@ public class semesterViewController {
     }
 
     /** Hilfsmethode 5 - Calculate Workload Value */
-    private int workloadTotalWeek(Long coreCourseId, LocalDate monday) {
+    // private int workloadTotalWeek(Long coreCourseId, LocalDate monday) {
 
-        Double[] workloadTotalDaysArray = workloadTotalDaysArray(coreCourseId, monday);
+    //     Double[] workloadTotalDaysArray = workloadTotalDaysArray(coreCourseId, monday);
 
-        // this method is not finished, but the value will define the background color
+    //     // this method is not finished, but the value will define the background color
 
-        return 0;
-    }
+    //     return 0;
+    // }
 
     /** Hilfsmethode 6 - Calculate Workload Value */
     private Double[] workloadTotalDaysArray(Long coreCourseId, LocalDate monday) {

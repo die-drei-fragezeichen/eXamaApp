@@ -41,6 +41,7 @@
 @import url('pagespecific/settings.css');
 @import url('pagespecific/createAssignmentIndex.css');
 @import url('pagespecific/profile.css');
+@import url('pagespecific/profile2.css');
 
 /* ------------------------------- */
 
@@ -134,7 +135,7 @@ name {
 */
 
 /* ---------- preset ---------- */
-html,body,p,h1,h2,h3,h4,h5,h6,img,table,td,th{
+html,body,p,h1,h2,h3,h4,h5,h6,img,table,td,th,form{
    margin:0;
    padding:0;
    border:none;
@@ -284,6 +285,58 @@ textarea {
     clear: left;
     float: left;
     margin-bottom: 2em;
+}
+
+.landingOption{
+    width:30%;
+    height: 30%;
+    margin: 0;
+    clear: none;
+    float: left;
+    background-size: contain;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+.landingOptionTeacher{
+    margin: 0 2em 0 calc(20% - 2em);
+    background-image: url(img/navigation-icons/teacher-b.svg);
+}
+.landingOptionTeacher:hover{
+    background-image: url(img/navigation-icons/teacher-r.svg);
+}
+.landingOptionAdmin{
+    margin: 0 calc(20% - 2em) 0 2em;
+    background-image: url(img/navigation-icons/school-b.svg);
+}
+.landingOptionAdmin:hover{
+    background-image: url(img/navigation-icons/school-r.svg);
+}
+
+.optionalParametersTitle{
+    width: 100%;
+    clear: left;
+    float: left;
+    font-size: 0.8em;
+    color: var(--red);
+    cursor: pointer;
+    margin: 0.5em 0 0.75em 0;
+}
+.optionalParameters{
+    width: 100%;
+    clear: left;
+    float: left;
+    display: none;
+    margin: 0 0 0.4em 0;
+}
+.save-button{
+    width: auto;
+    height: auto;
+    padding: 0.25em 0.5em;
+    background-color: var(--red);
+    border-radius: 0.5em;
+    font-size: 0.8em;
+    color: var(--white);
+    margin:0;
 }
 /* ---------- boxes ---------- */
 

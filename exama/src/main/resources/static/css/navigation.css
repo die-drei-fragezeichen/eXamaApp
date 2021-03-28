@@ -69,6 +69,16 @@
     background-image:url(img/navigation-icons/home-r.svg);
 }
 
+.nav-teacher{
+    background-image:url(img/navigation-icons/teacher-w.svg);
+}
+.nav-teacher:hover{
+    background-image:url(img/navigation-icons/teacher-r2.svg);
+}
+.nav-teacher:active{
+    background-image:url(img/navigation-icons/teacher-r.svg);
+}
+
 .nav-diagram{
     background-image:url(img/navigation-icons/diagram-w.svg);
 }
