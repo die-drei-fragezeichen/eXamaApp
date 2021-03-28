@@ -131,8 +131,7 @@ public class semesterViewController {
             mav.addObject("userSubjects", helper.getAllSubjectsOfACoreCourse(coreCourseRepo.findCoreCourseById(coreCourseId)));
         }
 
-        /** Create the user's CoreCourses for the Navbar List */
-        
+        /** Add user's CoreCourses for the Navbar List */
         mav.addObject("teachersCoreCourses", helper.getAllTeacherStudentCoreCourses());
 
         /** The following parts deal with exam information */
@@ -142,15 +141,13 @@ public class semesterViewController {
          * useability restrictions dead code: List<List<Exam>> allExams = new
          * ArrayList<>();
          */
-        Semester currentSemester = helper.getCurrentSemesterBasedOnDate(LocalDate.now());
-        LocalDate semesterStart = currentSemester.getStartDate();
-        LocalDate semesterEnd = currentSemester.getEndDate();
+        LocalDate semesterStart = semester.getStartDate();
+        LocalDate semesterEnd = semester.getEndDate();
         LocalDate monday = semesterStart;
         List<HashMap<String, Exam>> allExams = new ArrayList<>();
-        if (user.getRoles().contains(roleRepo.findRoleById(39l))) {
+        if (helper.currentUserIsA("Student")) {
             while (monday.isBefore(semesterEnd)) {
-                List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY))
-                        .stream().filter(e -> userCourses.contains(e.getCourse())).collect(Collectors.toList());
+                List<Exam> examsByWeek = helper.getExamsForSevenDaysList(userCourses, monday);
                 HashMap<String, Exam> map = new HashMap<>();
                 for (Exam exam : examsByWeek) {
                     map.put(exam.getCourse().getSubject().getTag(), exam);
@@ -158,14 +155,11 @@ public class semesterViewController {
                 allExams.add(map);
                 monday = monday.plusWeeks(1);
             }
-        } else {
+        } else { // user is teacher or above
             CoreCourse coreCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
-            List<Course> coreCourseCourses = coreCourse.getStudents().stream()
-                    .filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoursesList).flatMap(List::stream)
-                    .distinct().collect(Collectors.toList());
+            List<Course> coreCourseCourses = helper.getAllCoursesOfACoreCourse(coreCourse);
             while (monday.isBefore(semesterEnd)) {
-                List<Exam> examsByWeek = examRepo.findAllByDueDateBetween(monday, monday.with(DayOfWeek.SUNDAY))
-                        .stream().filter(e -> coreCourseCourses.contains(e.getCourse())).collect(Collectors.toList());
+                List<Exam> examsByWeek = helper.getExamsForSevenDaysList(coreCourseCourses, monday);
                 HashMap<String, Exam> map = new HashMap<>();
                 for (Exam exam : examsByWeek) {
                     map.put(exam.getCourse().getSubject().getTag(), exam);
@@ -179,18 +173,15 @@ public class semesterViewController {
         /** create Hashmap mapping every single day of the holiday with holiday */
         monday = semesterStart;
         List<Holiday> listHolidays = holidayRepo.findAllByStartDateBetween(semesterStart, semesterEnd);
-        HashMap<LocalDate, Holiday> alleTageMap = new HashMap<>();
+        HashMap<LocalDate, Holiday> allHolidayDates = new HashMap<>();
         for (Holiday holiday : listHolidays) {
-            long holidayLength = ChronoUnit.DAYS.between(holiday.getStartDate(), holiday.getEndDate());
-            List<LocalDate> allHolidayDays = Stream.iterate(holiday.getStartDate(), date -> date.plusDays(1))
-                    .limit(holidayLength + 1).collect(Collectors.toList());
+            List<LocalDate> allHolidayDays = helper.getAllDatesBetweenAndWith(holiday.getStartDate(), holiday.getEndDate());
             for (LocalDate date : allHolidayDays) {
-
-                alleTageMap.put(date, holiday);
+                allHolidayDates.put(date, holiday);
             }
         }
 
-        mav.addObject("alleTageMap", alleTageMap);
+        mav.addObject("allHolidayDates", allHolidayDates);
 
         List<Subject> allSubjects = subjectRepo.findAll();
         mav.addObject("allSubjects", allSubjects);

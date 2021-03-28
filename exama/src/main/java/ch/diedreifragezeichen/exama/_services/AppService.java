@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
 import ch.diedreifragezeichen.exama.assignments.exams.*;
+import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
 import ch.diedreifragezeichen.exama.courses.CoreCourse;
 import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
@@ -112,15 +113,13 @@ public class AppService {
                 .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
     }
 
-    public List<Subject> getAllSubjectsOfACoreCourse(CoreCourse coreCourse) {
-
-        return coreCourse.getStudents().stream().filter(u -> Objects.nonNull(u.getCoreCourse()))
-                .map(User::getCoursesList).flatMap(List::stream).distinct().map(Course::getSubject).distinct()
-                .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
-
-    }
-
     /** DATE RELATED SERVICES */
+
+    /** Service 11d - Return a list of all Dates between two dates */
+    public List<LocalDate> getAllDatesBetweenAndWith(LocalDate start, LocalDate end) {
+        long length = ChronoUnit.DAYS.between(start, end);
+        return Stream.iterate(start, date -> date.plusDays(1)).limit(length + 1).collect(Collectors.toList());
+    }
 
     /** Service 12 - returns the school semester of any given date */
     public Semester getCurrentSemesterBasedOnDate(LocalDate date) throws NotFoundException {
@@ -231,7 +230,6 @@ public class AppService {
     // * ASSIGNMENT RELATED SERVICES */
 
     /** Service 1a */
-
     public long calculateNumberOfExam(List<Exam> allExams) {
 
         return allExams.stream().filter(e -> Objects.nonNull(e.getId())).map(e -> e.getId()).distinct().count();
@@ -251,30 +249,18 @@ public class AppService {
         return model;
     }
 
-    /** Hilfsmethode 2a */
+    /** Service 2a */
     public double calculateExamFactor(List<Exam> listExams) {
         return listExams.stream().filter(e -> Objects.nonNull(e.getCountingFactor()))
                 .mapToDouble(exam -> exam.getCountingFactor()).sum();
     }
 
-    /** Hilfsmethode 2b */
+    /** Service 2b */
     public Model calculateExamFactor(Model model, List<Exam> listExams) {
         double ExamFactor = calculateExamFactor(listExams);
         model.addAttribute("xFactor", ExamFactor);
         // Schreibe im html: <h1 data-th-text="${anzpr}" />
         return model;
-    }
-
-    /** Hilfsmethode 3a */
-    public long calculateNumberOfSubjects(List<Subject> allSubjects) {
-        return allSubjects.stream().filter(s -> Objects.nonNull(s.getId())).map(s -> s.getId()).distinct().count();
-    }
-
-    /** Hilfsmethode 3b */
-    public ModelAndView calculateNumberOfSubjects(ModelAndView mav, List<Subject> allSubjects) {
-        long numberOfSubjects = calculateNumberOfSubjects(allSubjects);
-        mav.addObject("numberOfSubjects", numberOfSubjects);
-        return mav;
     }
 
     /** Service 9a - return all the Assignments for a week of a number of courses */
@@ -305,8 +291,8 @@ public class AppService {
     }
 
     /** Service 10a - Get every exam for a particular week for List of courses */
-    public List<Assignment> getExamsForSevenDaysList(List<Course> courses, LocalDate monday) {
-        List<Assignment> exams = new ArrayList<>();
+    public List<Exam> getExamsForSevenDaysList(List<Course> courses, LocalDate monday) {
+        List<Exam> exams = new ArrayList<>();
         // add every exam for the week
         courses.stream().filter(c -> Objects.nonNull(c.getExams())).map(c -> c.getExams()).flatMap(List::stream)
                 .distinct().filter(e -> e.getDueDate().isAfter(monday.minusDays(1)))
@@ -315,8 +301,13 @@ public class AppService {
         return exams;
     }
 
+    public HashMap<String, Exam> getWeeklySemesterExamMap(Semester semester) {
+
+        return null;
+    }
+
     /** Service 10b - Get every exam for a particular week for single course */
-    public List<Assignment> getExamsForSevenDaysList(Course course, LocalDate monday) {
+    public List<Exam> getExamsForSevenDaysList(Course course, LocalDate monday) {
         List<Course> courses = new ArrayList<>();
         courses.add(course);
         return getExamsForSevenDaysList(courses, monday);
@@ -325,8 +316,8 @@ public class AppService {
     /**
      * Service 10c - Get every homework for a particular week for list of courses
      */
-    public List<Assignment> getHomeworkForSevenDaysList(List<Course> coreCourses, LocalDate monday) {
-        List<Assignment> homework = new ArrayList<>();
+    public List<Homework> getHomeworkForSevenDaysList(List<Course> coreCourses, LocalDate monday) {
+        List<Homework> homework = new ArrayList<>();
         // add every homework for the week
         coreCourses.stream().filter(c -> Objects.nonNull(c.getHomeworks())).map(c -> c.getHomeworks())
                 .flatMap(List::stream).distinct().filter(e -> e.getDueDate().isAfter(monday.minusDays(1)))
@@ -337,7 +328,7 @@ public class AppService {
     }
 
     /** Service 10d - Get every homework for a particular week for single course */
-    public List<Assignment> getHomeworkForSevenDaysList(Course course, LocalDate monday) {
+    public List<Homework> getHomeworkForSevenDaysList(Course course, LocalDate monday) {
         List<Course> courses = new ArrayList<>();
         courses.add(course);
         return getHomeworkForSevenDaysList(courses, monday);
@@ -371,4 +362,35 @@ public class AppService {
         return allHolidaysMap;
 
     }
+
+    /** ORGANISATIONAL SERVICES */
+
+    /** Service 13a */
+    public List<Course> getAllCoursesOfACoreCourse(CoreCourse coreCourse) {
+
+        return coreCourse.getStudents().stream().filter(u -> Objects.nonNull(u.getCourses())).map(User::getCoursesList)
+                .flatMap(List::stream).distinct().collect(Collectors.toList());
+
+    }
+
+    /** Service 13b */
+    public List<Subject> getAllSubjectsOfACoreCourse(CoreCourse coreCourse) {
+        List<Course> coursesOfCourseCourse = getAllCoursesOfACoreCourse(coreCourse);
+        return coursesOfCourseCourse.stream().map(Course::getSubject).distinct()
+                .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
+
+    }
+
+    /** Service 3a */
+    public long calculateNumberOfSubjects(List<Subject> allSubjects) {
+        return allSubjects.stream().filter(s -> Objects.nonNull(s.getId())).map(s -> s.getId()).distinct().count();
+    }
+
+    /** Service 3b */
+    public ModelAndView calculateNumberOfSubjects(ModelAndView mav, List<Subject> allSubjects) {
+        long numberOfSubjects = calculateNumberOfSubjects(allSubjects);
+        mav.addObject("numberOfSubjects", numberOfSubjects);
+        return mav;
+    }
+
 }
