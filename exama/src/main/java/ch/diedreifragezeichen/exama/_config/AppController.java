@@ -121,7 +121,7 @@ public class AppController {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         model.addAttribute("user", user);
-        return "generalTemplates/profile";
+        return "generalTemplates/profile2";
     }
 
 }

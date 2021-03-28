@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
 import ch.diedreifragezeichen.exama.assignments.exams.*;
-import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
 import ch.diedreifragezeichen.exama.courses.CoreCourse;
 import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
@@ -338,6 +337,9 @@ public class semesterViewController {
     // private List<Integer> workloadTotalWeekList (Long coreCourseId, LocalDate monday, List<LocalDate> allMondays)
 
     // ... for all Mondays, call Hilfsmethode 5 and add to list.
+        return null;
+
+    }
 
     /** Hilfsmethode 5 - Calculate Workload Value */
     // private int workloadTotalWeek(Long coreCourseId, LocalDate monday) {
@@ -350,37 +352,37 @@ public class semesterViewController {
     // }
 
     /** Hilfsmethode 6 - Calculate Workload Value */
-    // private Double[] workloadTotalDaysArray(Long coreCourseId, LocalDate monday) {
-    //     List<Course> ccCourses = coreCourseRepo.findCoreCourseById(coreCourseId).getCourses();
+    private Double[] workloadTotalDaysArray(Long coreCourseId, LocalDate monday) {
+        List<Course> ccCourses = coreCourseRepo.findCoreCourseById(coreCourseId).getCourses();
 
-    //     List<Assignment> assignments = new ArrayList<>();
+        List<Assignment> assignments = new ArrayList<>();
 
-    //     // add every exam for the week
-    //     ccCourses.stream().filter(c -> Objects.nonNull(c.getExams())).map(c -> c.getExams()).flatMap(List::stream)
-    //             .distinct().filter(e -> e.getDueDate().isAfter(monday.minusDays(1)))
-    //             .filter(e -> e.getDueDate().isBefore(monday.plusDays(7)))
-    //             .collect(Collectors.toCollection(() -> assignments));
+        // add every exam for the week
+        ccCourses.stream().filter(c -> Objects.nonNull(c.getExams())).map(c -> c.getExams()).flatMap(List::stream)
+                .distinct().filter(e -> e.getDueDate().isAfter(monday.minusDays(1)))
+                .filter(e -> e.getDueDate().isBefore(monday.plusDays(7)))
+                .collect(Collectors.toCollection(() -> assignments));
 
-    //     // add every homework for the week
-    //     ccCourses.stream().filter(c -> Objects.nonNull(c.getHomeworks())).map(c -> c.getHomeworks())
-    //             .flatMap(List::stream).distinct().filter(e -> e.getDueDate().isAfter(monday.minusDays(1)))
-    //             .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
-    //             .collect(Collectors.toCollection(() -> assignments));
+        // add every homework for the week
+        ccCourses.stream().filter(c -> Objects.nonNull(c.getHomeworks())).map(c -> c.getHomeworks())
+                .flatMap(List::stream).distinct().filter(e -> e.getDueDate().isAfter(monday.minusDays(1)))
+                .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
+                .collect(Collectors.toCollection(() -> assignments));
 
-    //     assignments.stream().sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
-    //             .collect(Collectors.toList());
+        assignments.stream().sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
+                .collect(Collectors.toList());
 
-    //     // Calculate Workload Value
-    //     Double[] workloadTotalDaysArray = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+        // Calculate Workload Value
+        Double[] workloadTotalDaysArray = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
-    //     if (assignments != null) {
-    //         for (int i = 0; i < 7; i++) {
-
-    //             workloadTotalDaysArray[i] = Math.min(
-    //                     assignments.stream().map(c -> c.getWorkloadValue(monday.plusDays(i))).mapToDouble(w -> w).sum(),
-    //                     1);
-    //         }
-    //     }
-    //     return workloadTotalDaysArray;
-    // }
+        if (assignments != null) {
+            for (int i = 0; i < 7; i++) {
+                int j = i;
+                workloadTotalDaysArray[i] = Math.min(
+                        assignments.stream().map(c -> c.getWorkloadValue(monday.plusDays(j))).mapToDouble(w -> w).sum(),
+                        1);
+            }
+        }
+        return workloadTotalDaysArray;
+    }
 }
