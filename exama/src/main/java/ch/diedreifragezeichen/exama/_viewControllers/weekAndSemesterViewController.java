@@ -1,21 +1,17 @@
 package ch.diedreifragezeichen.exama._viewControllers;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.time.*;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama._services.AppService;
 import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
 import ch.diedreifragezeichen.exama.assignments.exams.Exam;
-import ch.diedreifragezeichen.exama.courses.CoreCourse;
-import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
-import ch.diedreifragezeichen.exama.courses.Course;
+import ch.diedreifragezeichen.exama.courses.*;
 import ch.diedreifragezeichen.exama.users.User;
 
 @Controller
@@ -73,15 +69,20 @@ public class weekAndSemesterViewController {
                 mav.addObject("nextMonday", monday.plusWeeks(1));
                 mav.addObject("lastMonday", monday.minusWeeks(1));
 
-                if (viewId == 2) { // add all ASSIGNMENTS for ONE weekView
+                if (viewId == 2) {
+                        // add all ASSIGNMENTS for ONE weekView
                         List<Assignment> assignments = helper.getAssignmentsForSevenDaysList(selectedCourses, monday);
                         mav.addObject("assignments", assignments);
-
                         // add ALL EXAMS for examBar
                         List<Exam> exams = helper.getExamsForSevenDaysList(selectedCourses, monday);
                         mav.addObject("allWeekExams", exams);
 
-                } else {// For WORKLOAD DIAGRAM all EXAMS for two weeks so TWO weeks can be displayed
+                } else {
+                        // For WORKLOAD DIAGRAM add all workload, the eXam Factor and Exams for two
+                        // weeks (all of which will be displayed)
+                        Double[] workloadTotalDaysList = helper.getWorkloadValueForSevenDaysArray(coreCourseId, monday);
+                        mav.addObject("workloadValueList", workloadTotalDaysList);
+
                         List<Exam> examsThisWeek = helper.getExamsForSevenDaysList(selectedCourses, monday);
                         mav.addObject("examsThisWeek", examsThisWeek);
                         List<Exam> examsNextWeek = helper.getExamsForSevenDaysList(selectedCourses, monday.plusDays(7));
@@ -89,10 +90,6 @@ public class weekAndSemesterViewController {
 
                         // add the exam factor (i.e., exam count for ONE week based on counting Factor)
                         mav.addObject("xFactor", helper.calculateExamFactor(examsThisWeek));
-
-                        // add the total Workload for each day of the week for the diagram
-                        Double[] workloadTotalDaysList = helper.getWorkloadValueForSevenDaysArray(coreCourseId, monday);
-                        mav.addObject("workloadValueList", workloadTotalDaysList);
                 }
                 return mav;
         }
