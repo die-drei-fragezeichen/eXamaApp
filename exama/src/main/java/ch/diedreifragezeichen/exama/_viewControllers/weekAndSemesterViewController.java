@@ -27,9 +27,9 @@ public class weekAndSemesterViewController {
 
                 if (viewId == 1) {// if viewId = 1: redirect User to Workloaddiagram
 
-                        LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
-                        return "redirect:/calendar?view=" + viewId + "&monday=" + monday + "&coreCourse="
-                                        + coreCourseId;
+                        return "redirect:/calendar?view=" + viewId + "&monday=" + LocalDate.now().with(DayOfWeek.MONDAY)
+                                        + "&coreCourse=" + coreCourseId;
+
                 } else if (viewId == 3) { // if viewID = 3: redirect User to SemesterView
                         return "redirect:/semesterView/show?selectedSemester=1&selectedCoreCourse=" + coreCourseId;
                 }
@@ -40,13 +40,12 @@ public class weekAndSemesterViewController {
         public ModelAndView workloadDiagram(@RequestParam(name = "view") Long viewId,
                         @RequestParam(name = "monday") String mondayString,
                         @RequestParam(name = "coreCourse") Long coreCourseId) {
-                // retrieve List of coreCourses form current user
+                /** Security Check */ 
                 User user = helper.getCurrentUser();
                 List<CoreCourse> userCoreCourses = user.getCoreCourses();
                 CoreCourse selectedCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
-                // if chosen CoreCourse empty -> redirect to home
-                // (security check) if coreCourse is not assigned to user in any way -> redirect
-                // to home (TODO: later errorpage)
+                // if chosen CoreCourse empty, if coreCourse wrong -> redirect home
+                //TODO: later errorpage
                 if (selectedCourse == null
                                 || (helper.currentUserIsA("Student") && !user.getCoreCourse().equals(selectedCourse))
                                 || (helper.currentUserIsA("Teacher") && !userCoreCourses.contains(selectedCourse))) {
