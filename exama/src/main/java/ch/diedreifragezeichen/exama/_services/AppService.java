@@ -115,6 +115,11 @@ public class AppService {
 
     /** DATE RELATED SERVICES */
 
+    /** DateService 1 */
+    public LocalDate getLocaldateFromString(String dateString) {
+        return LocalDate.parse(dateString).with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+    }
+
     /** Service 11d - Return a list of all Dates between two dates */
     public List<LocalDate> getAllDatesBetweenAndWith(LocalDate start, LocalDate end) {
         long length = ChronoUnit.DAYS.between(start, end);
@@ -135,6 +140,7 @@ public class AppService {
         return semesters.get(0);
     }
 
+    /** Service 11 */
     public List<LocalDate> getAllMondaysOfSemester(Semester semester) {
         /** retrieve semester Information and first / last day of Semester */
         LocalDate semesterStart = semester.getStartDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
@@ -160,7 +166,7 @@ public class AppService {
     public List<Double> getSemesterWorkloadList(Long coreCourseId, Long semesterId) {
         Semester semester = semesterRepo.findSemesterById(semesterId);
         List<LocalDate> allMondays = getAllMondaysOfSemester(semester);
-        
+
         Iterator<LocalDate> allMondaysIterator = allMondays.iterator();
         // For every single Monday of the semester, call getWorkloadTotalWeek and add to
         // list.
