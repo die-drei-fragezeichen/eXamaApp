@@ -18,12 +18,10 @@ import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.users.User;
 
-
 @Controller
 public class weekAndSemesterViewController {
         @Autowired
         CoreCourseRepository coreCourseRepo;
-
         @Autowired
         AppService helper;
 
@@ -31,14 +29,12 @@ public class weekAndSemesterViewController {
         public String calendarChoose(@RequestParam(name = "view") Long viewId,
                         @RequestParam(name = "coreCourse") Long coreCourseId) {
 
-                // View 1: Direct User to Workloaddiagram
-                if (viewId == 1) {
+                if (viewId == 1) {// if viewId = 1: redirect User to Workloaddiagram
+
                         LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
                         return "redirect:/calendar?view=" + viewId + "&monday=" + monday + "&coreCourse="
                                         + coreCourseId;
-                }
-                // View 3: Direct User to SemesterView
-                else if (viewId == 3) {
+                } else if (viewId == 3) { // if viewID = 3: redirect User to SemesterView
                         return "redirect:/semesterView/show?selectedSemester=1&selectedCoreCourse=" + coreCourseId;
                 }
                 return "redirect:/";
@@ -63,48 +59,41 @@ public class weekAndSemesterViewController {
 
                 List<Course> selectedCourses = selectedCourse.getCourses();
                 final LocalDate monday = helper.getLocaldateFromString(mondayString);
+
                 ModelAndView mav;
-
-                // View 2: Direct User to WeekView
                 if (viewId == 2) {
+                        // direct to weeklyView
                         mav = new ModelAndView("teacherTemplates/weeklyView.html");
-                        mav.addObject("coreCourse", selectedCourse);
+                } else {// direct to workloadDiagram
+                        mav = new ModelAndView("teacherTemplates/workloadDiagram.html");
+                }
+                mav.addObject("coreCourse", selectedCourse);
+                // add all necessary dates
+                mav.addObject("monday", monday);
+                mav.addObject("nextMonday", monday.plusWeeks(1));
+                mav.addObject("lastMonday", monday.minusWeeks(1));
 
-                        mav.addObject("monday", monday);
-                        mav.addObject("nextMonday", monday.plusWeeks(1));
-                        mav.addObject("lastMonday", monday.minusWeeks(1));
-
-                        // add all assignments for weekView
+                if (viewId == 2) { // add all ASSIGNMENTS for ONE weekView
                         List<Assignment> assignments = helper.getAssignmentsForSevenDaysList(selectedCourses, monday);
-                        // add all assignments for weekView
                         mav.addObject("assignments", assignments);
 
-                        // add exams for examBar
+                        // add ALL EXAMS for examBar
                         List<Exam> exams = helper.getExamsForSevenDaysList(selectedCourses, monday);
                         mav.addObject("allWeekExams", exams);
-                        return mav;
-                }
-                // else show Workload Diagram
-                else {
 
-                        mav = new ModelAndView("teacherTemplates/workloadDiagram.html");
-                        mav.addObject("coreCourse", selectedCourse);
-                        mav.addObject("monday", monday);
-                        mav.addObject("nextMonday", monday.plusWeeks(1));
-                        mav.addObject("lastMonday", monday.minusWeeks(1));
-                        // add all exams for two weeks so two weeks can be displayed
+                } else {// For WORKLOAD DIAGRAM all EXAMS for two weeks so TWO weeks can be displayed
                         List<Exam> examsThisWeek = helper.getExamsForSevenDaysList(selectedCourses, monday);
                         mav.addObject("examsThisWeek", examsThisWeek);
                         List<Exam> examsNextWeek = helper.getExamsForSevenDaysList(selectedCourses, monday.plusDays(7));
                         mav.addObject("examsNextWeek", examsNextWeek);
 
-                        // uses Hilfsmethode 2 below - calculates how much the actual exams "count"
+                        // add the exam factor (i.e., exam count for ONE week based on counting Factor)
                         mav.addObject("xFactor", helper.calculateExamFactor(examsThisWeek));
 
+                        // add the total Workload for each day of the week for the diagram
                         Double[] workloadTotalDaysList = helper.getWorkloadValueForSevenDaysArray(coreCourseId, monday);
                         mav.addObject("workloadValueList", workloadTotalDaysList);
-
-                        return mav;
                 }
+                return mav;
         }
 }
