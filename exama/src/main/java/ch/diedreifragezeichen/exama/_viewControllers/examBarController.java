@@ -1,39 +1,26 @@
 package ch.diedreifragezeichen.exama._viewControllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+
 import java.time.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTime;
-import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTimeRepository;
-import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
-import ch.diedreifragezeichen.exama.assignments.examTypes.ExamTypeRepository;
+
 import ch.diedreifragezeichen.exama.assignments.exams.Exam;
 import ch.diedreifragezeichen.exama.assignments.exams.ExamRepository;
 import ch.diedreifragezeichen.exama.assignments.exams.ExamService;
-import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDistribution;
-import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDistributionRepository;
-import ch.diedreifragezeichen.exama.courses.Course;
-import ch.diedreifragezeichen.exama.courses.CourseRepository;
+
 import ch.diedreifragezeichen.exama.operator.Operator;
 import ch.diedreifragezeichen.exama.operator.OperatorRepository;
-import ch.diedreifragezeichen.exama.semesters.Semester;
-import ch.diedreifragezeichen.exama.semesters.SemesterRepository;
 import ch.diedreifragezeichen.exama.subjects.Subject;
-import ch.diedreifragezeichen.exama.users.User;
-import ch.diedreifragezeichen.exama.users.UserRepository;
+
 
 @Controller
 public class examBarController {
@@ -42,25 +29,8 @@ public class examBarController {
     private ExamRepository examRepo;
 
     @Autowired
-    private ExamTypeRepository examtypeRepo;
-
-    @Autowired
-    private AvailablePrepTimeRepository availablePrepTimeRepo;
-
-    @Autowired
-    private CourseRepository courseRepo;
-
-    @Autowired
-    private UserRepository userRepo;
-
-    @Autowired
-    private WorkloadDistributionRepository distributionRepo;
-
-    @Autowired
     private OperatorRepository operatorRepo;
 
-    @Autowired
-    private SemesterRepository semesterRepo;
 
     @PersistenceContext
     private EntityManager em;

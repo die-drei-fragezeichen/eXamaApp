@@ -12,10 +12,7 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.*;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException.NotFound;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
@@ -24,7 +21,6 @@ import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
 import ch.diedreifragezeichen.exama.courses.CoreCourse;
 import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
-import ch.diedreifragezeichen.exama.operator.*;
 import ch.diedreifragezeichen.exama.semesters.*;
 import ch.diedreifragezeichen.exama.subjects.*;
 import ch.diedreifragezeichen.exama.users.Role;
@@ -43,12 +39,6 @@ public class AppService {
 
     @Autowired
     private HolidayRepository holidayRepo;
-
-    @Autowired
-    private ExamRepository examRepo;
-
-    @Autowired
-    private SubjectRepository subjectRepo;
 
     @Autowired
     private UserRepository userRepo;
