@@ -8,10 +8,12 @@
         <!-- header with navigation (only desktop and tablet), title and logout-button -->
         <div th:include="fragments/header :: header"></div>
 
+
         <div th:include="fragments/coursenavigation :: coursenavigation"></div>
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
+
 
         <div class="content-box-full">
             <div class="content-box-header">
@@ -46,37 +48,26 @@
                                 <td th:unless="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" 
                                 th:each="subject: ${userSubjects}"
                                 th:text="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? (${allExams.get(iStat.index).get(subject.getTag()).countingFactor} >= 1 ? ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)} : (('(' + ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)} + ')')))"
-                                th:style="'text-align:center;'"/>
+                                th:style="'text-align:center;'"</td>
 
 
                                 <!-- Only if some of the days of the week are holidays, change the background color and write a comment -->
-                            <td th:unless="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" th:text="${#maps.containsKey(allHolidayDates, monday)} ? ${allHolidayDates.get(monday).getName()} : (${#maps.containsKey(allHolidayDates, monday.plusDays(1))} ? ${allHolidayDates.get(monday.plusDays(1)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(2))} ? ${allHolidayDates.get(monday.plusDays(2)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(3))} ? ${allHolidayDates.get(monday.plusDays(3)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(4))} ? ${allHolidayDates.get(monday.plusDays(4)).getName()}))))"
-                                    th:style="${#maps.containsKey(allHolidayDates, monday)} ?'background-color:var(--gray);': (${#maps.containsKey(allHolidayDates, monday.plusDays(1))} ?'background-color:var(--gray);': (${#maps.containsKey(allHolidayDates, monday.plusDays(2))} ?'background-color:var(--gray);' :(${#maps.containsKey(allHolidayDates, monday.plusDays(3))} ?'background-color:var(--gray);':(${#maps.containsKey(allHolidayDates, monday.plusDays(4))} ?'background-color:var(--gray);'))))"></td>
+                            <td th:unless="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" 
+                            th:text="${#maps.containsKey(allHolidayDates, monday)} ? ${allHolidayDates.get(monday).getName()} : (${#maps.containsKey(allHolidayDates, monday.plusDays(1))} ? ${allHolidayDates.get(monday.plusDays(1)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(2))} ? ${allHolidayDates.get(monday.plusDays(2)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(3))} ? ${allHolidayDates.get(monday.plusDays(3)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(4))} ? ${allHolidayDates.get(monday.plusDays(4)).getName()}))))"
+                            th:style="${#maps.containsKey(allHolidayDates, monday)} ?'background-color:var(--gray);': (${#maps.containsKey(allHolidayDates, monday.plusDays(1))} ?'background-color:var(--gray);': (${#maps.containsKey(allHolidayDates, monday.plusDays(2))} ?'background-color:var(--gray);' :(${#maps.containsKey(allHolidayDates, monday.plusDays(3))} ?'background-color:var(--gray);':(${#maps.containsKey(allHolidayDates, monday.plusDays(4))} ?'background-color:var(--gray);'))))"></td>
+                
+                </tr>
                 </tbody>
                 </table>
-                <a href="/semesterView/choose">>Semester wechseln</a><br><br>
             </div>
+            
+            <a href="/semesterView/choose">Semester wechseln</a><br><br>
+
         </div>
-       
-        
         <!-- footer with navigation (only mobile) -->
         <div th:include="fragments/footer :: footer">
         </div>
     </div>
 </body>
-<!-- Removed Formatting Fragments-->
-<!--th:alt-title="${iStat.even}? 'even' : 'odd'" th:style="${iStat.odd} ? 'font-weight: bold;'" ${#temporals.dayOfWeekNameShort(monday)}-->
-<!--th:style="${#maps.containsKey(allHolidayDates, monday)} ? 'font-weight:bold;' : (${#maps.containsKey(allHolidayDates, monday.plusDays(1))} ? 'font-weight:bold;': (${#maps.containsKey(allHolidayDates, monday.plusDays(2))} ? 'font-weight:bold;': (${#maps.containsKey(allHolidayDates, monday.plusDays(3))} ? 'font-weight:bold;': (${#maps.containsKey(allHolidayDates, monday.plusDays(4))} ? 'font-weight:bold;'))))"-->           
-<!--th:style="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? 'font-weight: bold;'"-->
-<!--th:styleappend="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? (${allExams.get(iStat.index).get(subject.getTag()).countingFactor} >= 1 ? 'background-color:var(--red);' : 'background-color:var(--orange);')"/>-->
-<!-- be aware that the above lines could also contain nested conditionals cond1 ? do1 : (cond2 ? do2 : do3)
-alternative code: : (${#lists.contains(allHolidaysList, monday)} ? 'Ferien' : ' ')-->
-
-<!-- Funktionierende Befehle für die Tabelle -->
-<!-- <td th:each="subject: ${allSubjects}" th:text="${#lists.isEmpty(allExams)}" />-->
-<!-- <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).size} == 0 ? 'Yes' : 'No'"/>-->
-<!-- <td th:each="subject: ${allSubjects}" th:text="${#lists.size(allExams.get(iStat.index))}"/> -->
-<!-- <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).stream().count()}"/> -->
-<!-- <td th:each="subject: ${allSubjects}" th:text="${allExams.get(iStat.index).stream().filter(c -> c.getCountingFactor() > 1).count()}"/>-->
 
 </html>

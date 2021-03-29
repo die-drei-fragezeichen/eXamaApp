@@ -37,6 +37,7 @@
 @import url('100stack.css');
 
 /* pagespecific */
+
 @import url('pagespecific/login.css');
 @import url('pagespecific/settings.css');
 @import url('pagespecific/createAssignmentIndex.css');
@@ -58,19 +59,20 @@
     --lighterGray: #EAEAEA;
     --lightGray: #DBDBDB;
     --black: #000000;
-
     --green: #044B1C;
-    --lightGreen:#089739;
-    --lighterGreen: #9CD5B0;
+    --lightGreen: #089739;
+    --lighterGreen: #74D693;
     --blue: #063A75;
     --lightBlue: #3C8FEF;
     --lighterBlue: #CEE3FB;
     --orange: #DE7A16;
-    --lightOrange: #EBAF73;
+    --lightOrange: #F7CA86;
     --lighterOrange: #F8E4D0;
     --red: #8A0500;
     --lightRed: #A13733;
+    --darkerRed: #C19698;
     --lighterRed: #E8CDCC;
+    --examRed: #FF7F86;
 }
 
 
@@ -134,17 +136,31 @@ name {
 }
 */
 
+
 /* ---------- preset ---------- */
-html,body,p,h1,h2,h3,h4,h5,h6,img,table,td,th,form{
-   margin:0;
-   padding:0;
-   border:none;
-   font-family: 'Montserrat';
-   font-size:20px;
+
+html,
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+img,
+table,
+td,
+th,
+form {
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-family: 'Montserrat';
+    font-size: 20px;
 }
 
 */
-
 /* ---------- overall styles ---------- */
 
 * {
@@ -168,10 +184,13 @@ body {
 a {
     color: var(--lightRed);
 }
-a:hover{
+
+a:hover {
     color: var(--red);
     text-decoration: none;
 }
+
+
 /*provisorisch*/
 
 #myBtn {
@@ -279,7 +298,7 @@ textarea {
     display: none;
 }
 
-.welcome-text{
+.welcome-text {
     width: 100%;
     text-align: center;
     clear: left;
@@ -287,8 +306,8 @@ textarea {
     margin-bottom: 2em;
 }
 
-.landingOption{
-    width:30%;
+.landingOption {
+    width: 30%;
     height: 30%;
     margin: 0;
     clear: none;
@@ -297,22 +316,26 @@ textarea {
     background-repeat: no-repeat;
     overflow: hidden;
 }
-.landingOptionTeacher{
+
+.landingOptionTeacher {
     margin: 0 2em 0 calc(20% - 2em);
     background-image: url(img/navigation-icons/teacher-b.svg);
 }
-.landingOptionTeacher:hover{
+
+.landingOptionTeacher:hover {
     background-image: url(img/navigation-icons/teacher-r.svg);
 }
-.landingOptionAdmin{
+
+.landingOptionAdmin {
     margin: 0 calc(20% - 2em) 0 2em;
     background-image: url(img/navigation-icons/school-b.svg);
 }
-.landingOptionAdmin:hover{
+
+.landingOptionAdmin:hover {
     background-image: url(img/navigation-icons/school-r.svg);
 }
 
-.optionalParametersTitle{
+.optionalParametersTitle {
     width: 100%;
     clear: left;
     float: left;
@@ -321,14 +344,16 @@ textarea {
     cursor: pointer;
     margin: 0.5em 0 0.75em 0;
 }
-.optionalParameters{
+
+.optionalParameters {
     width: 100%;
     clear: left;
     float: left;
     display: none;
     margin: 0 0 0.4em 0;
 }
-.save-button{
+
+.save-button {
     width: auto;
     height: auto;
     padding: 0.25em 0.5em;
@@ -336,32 +361,44 @@ textarea {
     border-radius: 0.5em;
     font-size: 0.8em;
     color: var(--white);
-    margin:0;
+    margin: 0;
 }
-.save-button:hover{
+
+.save-button:hover {
     background-color: var(--lightRed);
 }
+
+
 /* ---------- boxes ---------- */
 
 
 /* 100% of parent div */
-.content-box-full{
+
+.content-box-full {
     float: left;
     clear: left;
     width: 100%;
 }
+
+
 /* 50% of parent div minus margin */
-.content-box-half{
+
+.content-box-half {
     float: left;
     clear: left;
     width: calc(50% - 0.5em);
 }
-.content-box-half-even{
+
+.content-box-half-even {
     clear: none;
     margin: 0 0 1em 1em !important;
 }
+
+
 /* general */
-.content-box-full, .content-box-half {
+
+.content-box-full,
+.content-box-half {
     position: relative;
     height: auto;
     margin: 0 0 1em 0;
@@ -381,12 +418,13 @@ textarea {
     text-transform: uppercase;
 }
 
-.content-box-content{
+.content-box-content {
     width: 100%;
     height: auto;
-    margin:0;
+    margin: 0;
     padding: 0.5em;
 }
+
 
 /* --------------------------------------- */
 
@@ -426,7 +464,8 @@ textarea {
         width: calc(100% - 2em);
         height: calc(100% - 10em);
     }
-    .content-box-half, .content-box-half-even{
+    .content-box-half,
+    .content-box-half-even {
         clear: left;
         margin: 0 0 1em 0 !important;
         width: 100%;
