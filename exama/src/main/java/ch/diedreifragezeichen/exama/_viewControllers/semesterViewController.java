@@ -146,7 +146,7 @@ public class semesterViewController {
         } else { // user is teacher or above
             CoreCourse coreCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
             List<Course> coreCourseCourses = helper.getAllCoursesOfACoreCourse(coreCourse);
-            while (monday.isBefore(semesterEnd)) {
+            while (monday.isBefore(semesterEnd.plusDays(1))) {
                 List<Exam> examsByWeek = helper.getExamsForSevenDaysList(coreCourseCourses, monday);
                 HashMap<String, Exam> map = new HashMap<>();
                 for (Exam exam : examsByWeek) {
