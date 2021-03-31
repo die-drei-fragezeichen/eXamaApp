@@ -92,7 +92,7 @@ public class AppController {
     /**
      * Error Mappings
      */
-    @GetMapping("/error")
+    @GetMapping("errorTempates/error")
     public String handleErrorString() {
         return "403";
     }
