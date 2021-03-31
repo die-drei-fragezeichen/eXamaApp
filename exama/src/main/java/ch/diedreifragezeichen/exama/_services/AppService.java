@@ -21,6 +21,7 @@ import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
 import ch.diedreifragezeichen.exama.courses.CoreCourse;
 import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
+import ch.diedreifragezeichen.exama.courses.CourseRepository;
 import ch.diedreifragezeichen.exama.semesters.*;
 import ch.diedreifragezeichen.exama.subjects.*;
 import ch.diedreifragezeichen.exama.users.Role;
@@ -48,6 +49,9 @@ public class AppService {
 
     @Autowired
     private CoreCourseRepository coreCourseRepo;
+
+    @Autowired
+    private CourseRepository courseRepo;
 
     @PersistenceContext
     private EntityManager em;
@@ -101,6 +105,16 @@ public class AppService {
         return user.getCourses().stream().map(Course::getUsersList).flatMap(List::stream).distinct()
                 .filter(u -> Objects.nonNull(u.getCoreCourse())).map(User::getCoreCourse).distinct()
                 .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
+    }
+
+    /**
+     * Service 2c for teacher users and above. Return all the courss of all the the
+     * students that a teacher has. This is useful for exam setting
+     */
+    public List<Course> getAllTeacherStudentCourses() {
+        User user = getCurrentUser();
+        List<Course> listCourses = courseRepo.findAll();
+        return listCourses.stream().filter(c -> c.getUsers().contains(user)).collect(Collectors.toList());
     }
 
     /** DATE RELATED SERVICES */
