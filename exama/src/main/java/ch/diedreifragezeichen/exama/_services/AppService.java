@@ -12,10 +12,7 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.*;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException.NotFound;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
@@ -24,7 +21,6 @@ import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
 import ch.diedreifragezeichen.exama.courses.CoreCourse;
 import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
-import ch.diedreifragezeichen.exama.operator.*;
 import ch.diedreifragezeichen.exama.semesters.*;
 import ch.diedreifragezeichen.exama.subjects.*;
 import ch.diedreifragezeichen.exama.users.Role;
@@ -43,12 +39,6 @@ public class AppService {
 
     @Autowired
     private HolidayRepository holidayRepo;
-
-    @Autowired
-    private ExamRepository examRepo;
-
-    @Autowired
-    private SubjectRepository subjectRepo;
 
     @Autowired
     private UserRepository userRepo;
@@ -115,6 +105,11 @@ public class AppService {
 
     /** DATE RELATED SERVICES */
 
+    /** DateService 1 */
+    public LocalDate getLocaldateFromString(String dateString) {
+        return LocalDate.parse(dateString).with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+    }
+
     /** Service 11d - Return a list of all Dates between two dates */
     public List<LocalDate> getAllDatesBetweenAndWith(LocalDate start, LocalDate end) {
         long length = ChronoUnit.DAYS.between(start, end);
@@ -135,6 +130,7 @@ public class AppService {
         return semesters.get(0);
     }
 
+    /** Service 11 */
     public List<LocalDate> getAllMondaysOfSemester(Semester semester) {
         /** retrieve semester Information and first / last day of Semester */
         LocalDate semesterStart = semester.getStartDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
@@ -160,7 +156,7 @@ public class AppService {
     public List<Double> getSemesterWorkloadList(Long coreCourseId, Long semesterId) {
         Semester semester = semesterRepo.findSemesterById(semesterId);
         List<LocalDate> allMondays = getAllMondaysOfSemester(semester);
-        
+
         Iterator<LocalDate> allMondaysIterator = allMondays.iterator();
         // For every single Monday of the semester, call getWorkloadTotalWeek and add to
         // list.

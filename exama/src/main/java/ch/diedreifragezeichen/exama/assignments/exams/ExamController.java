@@ -23,11 +23,8 @@ import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDi
 import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDistributionRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.courses.CourseRepository;
-import ch.diedreifragezeichen.exama.operator.Operator;
-import ch.diedreifragezeichen.exama.operator.OperatorRepository;
 import ch.diedreifragezeichen.exama.semesters.Semester;
 import ch.diedreifragezeichen.exama.semesters.SemesterRepository;
-import ch.diedreifragezeichen.exama.subjects.Subject;
 import ch.diedreifragezeichen.exama.users.User;
 import ch.diedreifragezeichen.exama.users.UserRepository;
 
@@ -50,9 +47,6 @@ public class ExamController {
 
     @Autowired
     private WorkloadDistributionRepository distributionRepo;
-
-    @Autowired
-    private OperatorRepository operatorRepo;
 
     @Autowired
     private SemesterRepository semesterRepo;
