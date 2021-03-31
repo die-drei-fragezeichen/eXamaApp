@@ -32,7 +32,7 @@
                 </thead>
                 <tbody>
                     <!-- check if week is holiday, change background-->
-                    <tr th:each="monday, iStat : ${allMondays}" th:style="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--gray);' : (${weeklyWorkload.get(iStat.index)} >= 3.2 ? 'background-color:var(--examRed);' : ((${weeklyWorkload.get(iStat.index)} < 1) ? 'background-color:var(--lighterGreen);' : ('background-color:var(--lightOrange);')))">
+                    <tr th:each="monday, iStat : ${allMondays}" th:style="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--gray);' : (${weeklyWorkload.get(iStat.index)} >= 2.4 ? 'background-color:var(--examRed);' : ((${weeklyWorkload.get(iStat.index)} < 0.6) ? 'background-color:var(--lighterGreen);' : ('background-color:var(--lightOrange);')))">
                             <!-- If the school week is a holiday, print the holiday name, collapse row -->
                             <td th:if="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}" 
                             colspan="100%" 
