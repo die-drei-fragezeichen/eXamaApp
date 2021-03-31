@@ -13,20 +13,18 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-
-
         <div class="content-box-full">
             <div class="content-box-header">
-                Das ist deine Semesterübersicht für das [[${semester.name}]], [[${#request.userPrincipal.principal.getFirstName}]]
-
+                Das ist deine Semesterübersicht für das [[${semester.name}]]
+                <!-- Dead Code , [[${#request.userPrincipal.principal.getFirstName}]]-->
             </div>
             <div class="content-box-content">
             <b>Diagramm</b> | <a
                         th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
                         th:href="${urlBuilder.replaceQueryParam('view', '1').toUriString()}">Liste</th:with=> | <b>Semesterplan</b>
-            <table>
+            <table id="thetable" cellspacing="0">
                 <thead style="background-color:var(--darkerRed)">
-                    <tr>
+                    <tr class="first">
                         <th>Schulwoche</th>
                         <th th:each="subject: ${userSubjects}" class="column-title" style ="text-align:center" th:text="${subject.getTag()}"/>
                         <th>Kommentar</th>
@@ -60,14 +58,265 @@
                 </tbody>
                 </table>
             </div>
-            
-            <a href="/semesterView/choose">Semester wechseln</a><br><br>
 
-        </div>
+            <a href="/semesterView/choose">Semester wechseln</a><br><br>
+            
+            <div class="content-box-half">
+                <div class="content-box-header">
+                    Hausaufgabe setzen
+                </div>
+                <div class="content-box-content">
+                    <form th:action="@{/homeworks/modified}" th:object="${homework}" method="post">
+
+                        <div class="homework-start homework-start-course">
+                            <select class="form-control" id="course" name="course" th:with="course=*{course}" required>
+                                <option th:selected="true" th:disabled="disabled" value="0">Kurs*</option>
+                                <option th:each="course : ${allCourses}" th:text="${course.name}"
+                                    th:value="${course.id}" th:selected="false" />
+                            </select>
+                        </div>
+
+                        <div class="homework-start homework-start-duedate">
+                            <input type="text" id="toDate" class="form-control" required placeholder="zu erledigen bis*"
+                                th:field="*{dueDate}" />
+                        </div>
+
+
+
+                        <div class="homework-start exam-start-name">
+                            <input type="text" class="form-control" maxlength="20" required
+                                placeholder="Kurzbeschreibung*" th:field="*{name}" />
+                        </div>
+
+
+                        <div class="homework-start exam-start-description">
+                            <textarea class="form-control" rows="5" placeholder="zusätzliche Informationen"
+                                maxlength="4095"></textarea>
+                        </div>
+
+                        <div class="homework-start homework-start-workloadminutes">
+                            <input type="text" class="form-control" th:minlength="1" th:maxlength="4"
+                                th:attr="placeholder='Arbeitsaufwand (Minuten)*'" th:field="*{workloadMinutesTotal}"
+                                required />
+                        </div>
+
+                        <div class="homework-start homework-start-distribution">
+                            <select class="form-control" id="workloadDistribution" name="workloadDistribution"
+                                th:with="workloadDistribution=*{workloadDistribution}" required>
+                                <option th:selected="true" th:disabled="disabled" value="0">Verteilung des Aufwands*
+                                </option>
+                                <option th:each="dist : ${allWorkloadDistributions}" th:text="${dist.name}"
+                                    th:value="${dist.id}" />
+                            </select>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="save-button">Hausaufgabe setzen</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        <div class="content-box-half">
+                <div class="content-box-header">
+                    Leistungsüberprüfung setzen
+                </div>
+                <div class="content-box-content">
+                    <form th:action="@{/exams/modified}" th:object="${exam}" method="post">
+                        <input type="hidden" th:field="*{semester}" th:value="${exam.semester}" />
+
+                        <div class="exam-start exam-start-course">
+                            <select class="form-control" id="course" name="course" th:with="course=*{course}" required>
+                                <option th:selected="true" th:disabled="disabled" value="0">Kurs*</option>
+                                <option th:each="course : ${allCourses}" th:text="${course.name}"
+                                    th:value="${course.id}" th:selected="false" />
+                            </select>
+
+
+                        </div>                       
+                    </form>
+                </div>
+            </div>
+                    </div>
+            
+
+
+                    <a href="/semesterView/choose">Semester wechseln</a><br><br>
+
+        
         <!-- footer with navigation (only mobile) -->
         <div th:include="fragments/footer :: footer">
         </div>
     </div>
+
+    <script>
+    ;(function($){
+
+	var scrollbarWidth = 0;
+
+	// http://jdsharp.us/jQuery/minute/calculate-scrollbar-width.php
+	function getScrollbarWidth() 
+	{
+		if (scrollbarWidth) return scrollbarWidth;
+		var div = $('<div style="width:50px;height:50px;overflow:hidden;position:absolute;top:-200px;left:-200px;"><div style="height:100px;"></div></div>'); 
+		$('body').append(div); 
+		var w1 = $('div', div).innerWidth(); 
+		div.css('overflow-y', 'auto'); 
+		var w2 = $('div', div).innerWidth(); 
+		$(div).remove(); 
+		scrollbarWidth = (w1 - w2);
+		return scrollbarWidth;
+	}
+	
+	$.fn.tableScroll = function(options)
+	{
+		if (options == 'undo')
+		{
+			var container = $(this).parent().parent();
+			if (container.hasClass('tablescroll_wrapper')) 
+			{
+				container.find('.tablescroll_head thead').prependTo(this);
+				container.find('.tablescroll_foot tfoot').appendTo(this);
+				container.before(this);
+				container.empty();
+			}
+			return;
+		}
+
+		var settings = $.extend({},$.fn.tableScroll.defaults,options);
+		
+		// Bail out if there's no vertical overflow
+		//if ($(this).height() <= settings.height)
+		//{
+		//  return this;
+		//}
+
+		settings.scrollbarWidth = getScrollbarWidth();
+
+		this.each(function()
+		{
+			var flush = settings.flush;
+			
+			var tb = $(this).addClass('tablescroll_body');
+
+            // find or create the wrapper div (allows tableScroll to be re-applied)
+            var wrapper;
+            if (tb.parent().hasClass('tablescroll_wrapper')) {
+                wrapper = tb.parent();
+            }
+            else {
+                wrapper = $('<div class="tablescroll_wrapper"></div>').insertBefore(tb).append(tb);
+            }
+
+			// check for a predefined container
+			if (!wrapper.parent('div').hasClass(settings.containerClass))
+			{
+				$('<div></div>').addClass(settings.containerClass).insertBefore(wrapper).append(wrapper);
+			}
+
+			var width = settings.width ? settings.width : tb.outerWidth();
+
+			wrapper.css
+			({
+				'width': width+'px',
+				'height': settings.height+'px',
+				'overflow': 'auto'
+			});
+
+			tb.css('width',width+'px');
+
+			// with border difference
+			var wrapper_width = wrapper.outerWidth();
+			var diff = wrapper_width-width;
+
+			// assume table will scroll
+			wrapper.css({width:((width-diff)+settings.scrollbarWidth)+'px'});
+			tb.css('width',(width-diff)+'px');
+
+			if (tb.outerHeight() <= settings.height)
+			{
+				wrapper.css({height:'auto',width:(width-diff)+'px'});
+				flush = false;
+			}
+
+			// using wrap does not put wrapper in the DOM right 
+			// away making it unavailable for use during runtime
+			// tb.wrap(wrapper);
+
+			// possible speed enhancements
+			var has_thead = $('thead',tb).length ? true : false ;
+			var has_tfoot = $('tfoot',tb).length ? true : false ;
+			var thead_tr_first = $('thead tr:first',tb);
+			var tbody_tr_first = $('tbody tr:first',tb);
+			var tfoot_tr_first = $('tfoot tr:first',tb);
+
+			// remember width of last cell
+			var w = 0;
+
+			$('th, td',thead_tr_first).each(function(i)
+			{
+				w = $(this).width();
+
+				$('th:eq('+i+'), td:eq('+i+')',thead_tr_first).css('width',w+'px');
+				$('th:eq('+i+'), td:eq('+i+')',tbody_tr_first).css('width',w+'px');
+				if (has_tfoot) $('th:eq('+i+'), td:eq('+i+')',tfoot_tr_first).css('width',w+'px');
+			});
+
+			if (has_thead) 
+			{
+				var tbh = $('<table class="tablescroll_head" cellspacing="0"></table>').insertBefore(wrapper).prepend($('thead',tb));
+			}
+
+			if (has_tfoot) 
+			{
+				var tbf = $('<table class="tablescroll_foot" cellspacing="0"></table>').insertAfter(wrapper).prepend($('tfoot',tb));
+			}
+
+			if (tbh != undefined)
+			{
+				tbh.css('width',width+'px');
+				
+				if (flush)
+				{
+					$('tr:first th:last, tr:first td:last',tbh).css('width',(w+settings.scrollbarWidth)+'px');
+					tbh.css('width',wrapper.outerWidth() + 'px');
+				}
+			}
+
+			if (tbf != undefined)
+			{
+				tbf.css('width',width+'px');
+
+				if (flush)
+				{
+					$('tr:first th:last, tr:first td:last',tbf).css('width',(w+settings.scrollbarWidth)+'px');
+					tbf.css('width',wrapper.outerWidth() + 'px');
+				}
+			}
+		});
+
+		return this;
+	};
+
+	// public
+	$.fn.tableScroll.defaults =
+	{
+		flush: true, // makes the last thead and tbody column flush with the scrollbar
+		width: null, // width of the table (head, body and foot), null defaults to the tables natural width
+		height: 300, // height of the scrollable area
+		containerClass: 'tablescroll' // the plugin wraps the table in a div with this css class
+	};
+
+})(jQuery);
+
+jQuery(document).ready(function($)
+{
+	$('#thetable').tableScroll({height:500});
+
+	$('#thetable2').tableScroll();
+});
+
+</script>
 </body>
 
 </html>

@@ -2,6 +2,7 @@ package ch.diedreifragezeichen.exama._viewControllers;
 
 import java.time.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,10 +14,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama._services.AppService;
+import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTime;
+import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTimeRepository;
+import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
+import ch.diedreifragezeichen.exama.assignments.examTypes.ExamTypeRepository;
 import ch.diedreifragezeichen.exama.assignments.exams.*;
+import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
+import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDistribution;
+import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDistributionRepository;
 import ch.diedreifragezeichen.exama.courses.CoreCourse;
 import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
+import ch.diedreifragezeichen.exama.courses.CourseRepository;
 import ch.diedreifragezeichen.exama.operator.*;
 import ch.diedreifragezeichen.exama.semesters.*;
 import ch.diedreifragezeichen.exama.users.User;
@@ -34,11 +43,23 @@ public class semesterViewController {
     @Autowired
     private CoreCourseRepository coreCourseRepo;
 
+    @Autowired
+    private CourseRepository courseRepo;
+
+    @Autowired
+    private ExamTypeRepository examtypeRepo;
+
+    @Autowired
+    private AvailablePrepTimeRepository availablePrepTimeRepo;
+
     @PersistenceContext
     private EntityManager em;
 
     @Autowired
     private AppService helper;
+
+    @Autowired
+    private WorkloadDistributionRepository distributionRepo;
 
     /**
      * The following methods handle the Semester view creation
@@ -175,6 +196,31 @@ public class semesterViewController {
         // get a list of all the weekly workloads for every week
         List<Double> weeklyWorkload = helper.getSemesterWorkloadList(coreCourseId, semesterId);
         mav.addObject("weeklyWorkload", weeklyWorkload);
+
+        Exam exam = new Exam();
+        mav.addObject("exam", exam);
+
+        
+        Homework homework = new Homework();
+        mav.addObject("homework", homework);
+
+        Semester semester = semesterRepo.findAll().stream().filter(s -> s.getStartDate().isBefore(LocalDate.now()) && s.getEndDate().isAfter(LocalDate.now())).collect(Collectors.toList()).get(0);
+        exam.setSemester(semester);
+
+        List<Course> listCourses = courseRepo.findAll();
+        List<Course> usersCourses = listCourses.stream().filter(c -> c.getUsers().contains(user))
+                .collect(Collectors.toList());
+        mav.addObject("allCourses", usersCourses);
+
+        List<ExamType> listTypes = examtypeRepo.findAll();
+        mav.addObject("allExamTypes", listTypes);
+
+        List<AvailablePrepTime> listPrepTimes = availablePrepTimeRepo.findAll();
+        mav.addObject("allPrepTimes", listPrepTimes);
+
+        List<WorkloadDistribution> listDist = distributionRepo.findAll();
+        mav.addObject("allWorkloadDistributions", listDist);
+
 
         return mav;
 
