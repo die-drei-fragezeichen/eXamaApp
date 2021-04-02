@@ -37,7 +37,8 @@
                 <div class="content-box-content">
                     <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
                         th:href="${urlBuilder.replaceQueryParam('view', '1').toUriString()}">Diagramm</a> | <b>Liste</b>
-                    | <a th:href="@{/calendarchoose?view=3&coreCourse={cc}(cc=${coreCourse.id})}">Semesterplan</a>
+                    | <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}" 
+                        th:href="${urlBuilder.replaceQueryParam('view', '3').toUriString()}">Semesterplan</a>
                     <br><br>
                     <span style="font-size:1.5em; font-weight:bold;" th:if="${assignments.size == 0}">Nichts zu tun
                         -

@@ -47,8 +47,8 @@
                         <td th:text="${user.lastLogin}"></td>
                         <td th:text="${user.createdOn}"></td>
                         <td th:text="${user.coreCourse}"></td>
-                        <td th:text="${user.courses}"></td>
-                        <td th:text="${user.roles}"></td>
+                        <td><p th:each="c:${user.courses}" th:text="${c}"></p></td>
+                        <td><p th:each="r:${user.roles}" th:text="${r}"></p></td>
                         <td><a th:href="@{/users/edit?id={id}(id=${user.id})}">bearbeiten</a></td>
                         <td><a th:href="@{/users/delete?id={id}(id=${user.id})}">löschen</a></td>
                         </a>

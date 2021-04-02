@@ -37,7 +37,8 @@
                     <b>Diagramm</b> | <a
                         th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
                         th:href="${urlBuilder.replaceQueryParam('view', '2').toUriString()}">Liste</a> | <a
-                        th:href="@{/calendarchoose?view=3&coreCourse={cc}(cc=${coreCourse.id})}">Semesterplan</a>
+                        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                        th:href="${urlBuilder.replaceQueryParam('view', '3').toUriString()}">Semesterplan</a>
                     <br><br>
                     <canvas id="workloadDiagram"></canvas>
                     <div id="day-buttons">

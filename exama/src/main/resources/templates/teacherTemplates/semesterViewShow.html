@@ -19,9 +19,14 @@
                 <!-- Dead Code , [[${#request.userPrincipal.principal.getFirstName}]]-->
             </div>
             <div class="content-box-content">
-            <b>Diagramm</b> | <a
+             <a
                         th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-                        th:href="${urlBuilder.replaceQueryParam('view', '1').toUriString()}">Liste</th:with=> | <b>Semesterplan</b>
+                        th:href="${urlBuilder.replaceQueryParam('view', '1').toUriString()}">Diagram</a> |
+                        <a
+                        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                        th:href="${urlBuilder.replaceQueryParam('view', '2').toUriString()}">Liste</a> |
+                        <b>Semesterplan</b>
+                        
             <table id="thetable" cellspacing="0">
                 <thead style="background-color:var(--darkerRed)">
                     <tr class="first">
