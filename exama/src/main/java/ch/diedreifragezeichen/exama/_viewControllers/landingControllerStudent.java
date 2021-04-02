@@ -1,6 +1,5 @@
 package ch.diedreifragezeichen.exama._viewControllers;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,22 +34,31 @@ public class landingControllerStudent {
     private UserRepository userRepo;
 
     @GetMapping("/weekViewStudent/show")
-    public ModelAndView showWeekStudent(){
+    //@GetMapping("/weekViewStudent/nextWeekStudent/weekViewStudent/show")
+    public ModelAndView showStudentThisWeek(){
         LocalDate today= LocalDate.now();
+        return showWeekStudent(today, "studentTemplates/weekViewShowStudent.html");
+    }
+    @GetMapping("nextWeekStudent/show")
+    public ModelAndView showStudentNextWeek(){
+        LocalDate today= LocalDate.now().plusDays(7);
+        return showWeekStudent(today, "studentTemplates/weekViewShowStudentNext.html");
+    }
+
+
+    public ModelAndView showWeekStudent(LocalDate date, String URL){
+        LocalDate today= date;
         String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepo.findUserByEmail(currentUserName);
-        String student=user.getFirstName();
         List<Exam> exams=new ArrayList<Exam>();//Liste mit Exams wird für den eingeloggten User erstellt
         List<Homework> homeworks=new ArrayList<Homework>();//Liste mit Homeowrk wird für den eingeloggten User erstellt
         for(Course course : user.getCourses()) {
             exams.addAll(examRepo.findAllByCourse(course));
             homeworks.addAll(homeworkRepo.findAllByCourse(course));
         }
-        
         List<List> allExamsByWeekday=new ArrayList<List>();//Liste für die Listen der Exams
         List<List> allHomeworkByWeekday=new ArrayList<List>();//Liste für die Listen der Homework
         List<LocalDate> dates=new ArrayList<LocalDate>();
-
         for(int i=0;i<7;i++){
             LocalDate weekday =today.with(DayOfWeek.MONDAY).plusDays(i);
             List<Exam> exam=exams.stream().filter(x->x.getDueDate().equals(weekday)).collect(Collectors.toList());
@@ -59,11 +67,12 @@ public class landingControllerStudent {
             //stream hat alle homeworks für den i-ten Wochentag in eine Liste geladen geladen
             dates.add(weekday); allExamsByWeekday.add(exam);allHomeworkByWeekday.add(homework);
         }
-        ModelAndView mav=new ModelAndView("studentTemplates/weekViewShowStudent.html");
+        ModelAndView mav=new ModelAndView(URL);
         mav.addObject("dates", dates);
         mav.addObject("allHomework", allHomeworkByWeekday);
         mav.addObject("allExams", allExamsByWeekday);
         mav.addObject("name", user);
         return mav;
     }
+
 }
