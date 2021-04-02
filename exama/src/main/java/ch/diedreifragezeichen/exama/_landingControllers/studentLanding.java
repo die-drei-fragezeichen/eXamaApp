@@ -9,13 +9,13 @@ import org.springframework.web.servlet.ModelAndView;
 public class studentLanding {
 
     @GetMapping("/student")
-    public ModelAndView studentLanding(Model model) {
+    public ModelAndView studentLandingPage(Model model) {
         ModelAndView mav = new ModelAndView("studentTemplates/index");
         return mav;
     }
 
     @GetMapping("/rstudent")
-    public ModelAndView rstudentLanding(Model model) {
+    public ModelAndView rstudentLandingPage(Model model) {
         // we dont need referencestudents yet -> same than student
         ModelAndView mav = new ModelAndView("studentTemplates/index");
         return mav;

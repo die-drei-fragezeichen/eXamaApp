@@ -1,0 +1,63 @@
+<div class="content-box-half">
+    <div class="content-box-header">
+        Hausaufgabe setzen
+        <div class="content-box-toggle homeworkToggle"></div>
+    </div>
+    <div class="content-box-content homeworkContent">
+        <form th:action="@{/homeworks/modified}" th:object="${homework}" method="post">
+
+            <div class="homework-start homework-start-course">
+                <select class="form-control" id="course" name="course" th:with="course=*{course}" required>
+                    <option th:selected="true" th:disabled="disabled" value="0">Kurs*</option>
+                    <option th:each="course : ${allCourses}" th:text="${course.name}" th:value="${course.id}"
+                        th:selected="false" />
+                </select>
+            </div>
+
+            <div class="homework-start homework-start-duedate">
+                <input type="text" id="toDate" class="form-control" required placeholder="zu erledigen bis*"
+                    th:field="*{dueDate}" />
+            </div>
+
+
+
+            <div class="homework-start exam-start-name">
+                <input type="text" class="form-control" maxlength="20" required placeholder="Kurzbeschreibung*"
+                    th:field="*{name}" />
+            </div>
+
+
+            <div class="homework-start exam-start-description">
+                <textarea class="form-control" rows="5" placeholder="zusätzliche Informationen"
+                    maxlength="4095"></textarea>
+            </div>
+
+            <div class="homework-start homework-start-workloadminutes">
+                <input type="text" class="form-control" th:minlength="1" th:maxlength="4"
+                    th:attr="placeholder='Arbeitsaufwand (Minuten)*'" th:field="*{workloadMinutesTotal}" required />
+            </div>
+
+            <div class="homework-start homework-start-distribution">
+                <select class="form-control" id="workloadDistribution" name="workloadDistribution"
+                    th:with="workloadDistribution=*{workloadDistribution}" required>
+                    <option th:selected="true" th:disabled="disabled" value="0">Verteilung des Aufwands*
+                    </option>
+                    <option th:each="dist : ${allWorkloadDistributions}" th:text="${dist.name}" th:value="${dist.id}" />
+                </select>
+            </div>
+
+            <div>
+                <button type="submit" class="save-button">Hausaufgabe setzen</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $(".homeworkContent").hide();
+        rotateArrow("homework");
+    });
+    $(".homeworkToggle").click(function () {
+        $(".homeworkContent").slideToggle(function () { rotateArrow("homework") });
+    });
+</script>

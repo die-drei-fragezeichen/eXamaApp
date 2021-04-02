@@ -44,7 +44,7 @@ public class teacherLanding {
 
     
     @GetMapping("/teacher")
-    public ModelAndView teacherLanding(Model model) {
+    public ModelAndView teacherLandingPage(Model model) {
 
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findUserByEmail(authLoggedInUser.getName());

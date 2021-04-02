@@ -21,10 +21,7 @@
 .homework-start-course, .homework-start-workloadminutes{
     clear: left;
 }
-.exam-start-type, .exam-start-factor{
-    margin: 0 0 0.5em 0;
-}
-.homework-start-dueDate, .homework-start-distribution{
+.exam-start-type, .exam-start-factor, .exam-start-distribution, .homework-start-distribution, .homework-start-duedate{
     margin: 0 0 0.5em 0;
 }
 .exam-start-name{

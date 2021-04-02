@@ -12,21 +12,29 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <div class="welcome-text">Willkommen <b><span sec:authentication="name"></span></b>!</div>
+
+            <!-- week navigation-->
+            <div th:include="fragments/workloadViews/weekNavigation"></div>
+
+
+            <!-- workload diagram -->
             <div class="content-box-full">
-                <div class="content-box-header">Die nächsten 14 Tage</div>
+                <div class="content-box-header">
+                    Klasse [[${coreCourse.name}]] | Woche vom Montag, [[${#temporals.format(monday, 'dd.MM.yyyy')}]]
+                </div>
                 <div class="content-box-content">
-                    Blabla
+                    <div th:include="fragments/workloadViews/viewNavigation"></div>
+                    <div th:include="fragments/workloadViews/assignmentsThisWeek"></div>
                 </div>
             </div>
-            <div th:include="fragments/elements/homeworkFormBox"/>
-            <div th:include="fragments/elements/examFormBox"/>
 
+
+            <div th:include="fragments/elements/homeworkFormBox"></div>
+            <div th:include="fragments/elements/examFormBox"></div>
         </div>
 
         <!-- footer with navigation (only mobile) -->
-        <div th:include="fragments/footer :: footer">
-        </div>
+        <div th:include="fragments/footer :: footer"></div>
 </body>
 
 </html>

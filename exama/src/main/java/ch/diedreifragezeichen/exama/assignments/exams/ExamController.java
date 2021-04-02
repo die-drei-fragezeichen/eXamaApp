@@ -124,13 +124,53 @@ public class ExamController {
         return mav;
     }
 
-    @PostMapping("/exams/modified")
+    /**
+     * Different redirects after exam created
+     */
+
+    // Postmapping for creation/update from exam overview page
+    @PostMapping("/exams/modified-overview")
     @Transactional
-    public String modify(Exam exam) {
+    public String modifyOverview(Exam exam) {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         exam.setCreator(user);
         exam.setEditDate(LocalDate.now());
+        if(exam.getWorkloadMinutesTotal()==null){
+            exam.setWorkloadMinutesTotal(0.0);
+        }
+        em.unwrap(org.hibernate.Session.class).saveOrUpdate(exam);
+        return "redirect:/exams/show";
+    }
+
+    // Postmapping for creation from teacher landing
+    @PostMapping("/exams/modified-start")
+    @Transactional
+    public ModelAndView modify(Exam exam) {
+        ModelAndView mav = new ModelAndView("teacherTemplates/index");
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepo.findUserByEmail(authLoggedInUser.getName());
+        exam.setCreator(user);
+        exam.setEditDate(LocalDate.now());
+        if(exam.getWorkloadMinutesTotal()==null){
+            exam.setWorkloadMinutesTotal(0.0);
+        }
+        em.unwrap(org.hibernate.Session.class).saveOrUpdate(exam);
+        mav.addObject("createdExam", exam);
+        return mav;
+    }
+
+    // Postmapping for creation from semesterview
+    @PostMapping("/exams/modified-semesterview")
+    @Transactional
+    public String modifySemesterview(Exam exam) {
+        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepo.findUserByEmail(authLoggedInUser.getName());
+        exam.setCreator(user);
+        exam.setEditDate(LocalDate.now());
+        if(exam.getWorkloadMinutesTotal()==null){
+            exam.setWorkloadMinutesTotal(0.0);
+        }
         em.unwrap(org.hibernate.Session.class).saveOrUpdate(exam);
         return "redirect:/exams/show";
     }

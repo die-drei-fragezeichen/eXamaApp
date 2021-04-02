@@ -9,14 +9,15 @@ import org.springframework.web.servlet.ModelAndView;
 public class adminLanding {
 
     @GetMapping("/admin")
-    public ModelAndView adminLanding(Model model) {
+    public ModelAndView adminLandingPage(Model model) {
         ModelAndView mav = new ModelAndView("adminTemplates/index");
         return mav;
     }
 
     @GetMapping("/systemadmin")
     public ModelAndView systemadminLanding(Model model) {
-        // we dont need systemadmin yet -> same than admin
+        // we dont need different page for systemadmin yet -> same than admin
+        // select icons to show with spring security
         ModelAndView mav = new ModelAndView("adminTemplates/index");
         return mav;
     }

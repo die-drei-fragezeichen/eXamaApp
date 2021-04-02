@@ -1,0 +1,19 @@
+<span style="font-size:1.5em; font-weight:bold;" th:if="${examsNextWeek.size == 0}">keine Prüfungen</span>
+<table th:unless="${examsNextWeek.size == 0}">
+    <thead>
+        <tr>
+            <th>Datum</th>
+            <th>Fach</th>
+            <th>Pruefungstyp</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="exam : ${examsNextWeek}">
+            <td th:text="${#temporals.format(exam.dueDate, 'dd.MM.yyyy')}"></td>
+            <td th:text="${exam.course.subject.tag}"></td>
+            <td th:text="${exam.examType.getName()}"></td>
+            <td><a href="#">ansehen</a></td>
+        </tr>
+    </tbody>
+</table>
