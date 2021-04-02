@@ -238,8 +238,9 @@ table {
 
 td,
 th {
-    border-left: 1px solid var(--black);
-    border-right: 1px solid var(--black);
+    /* border-left: 1px solid var(--black);
+    border-right: 1px solid var(--black); */
+    border: 1px solid var(--black);
     padding: 0.2em;
 }
 
@@ -360,12 +361,14 @@ textarea {
 .save-button {
     width: auto;
     height: auto;
+    float: left;
+    clear: left;
     padding: 0.25em 0.5em;
     background-color: var(--red);
     border-radius: 0.5em;
     font-size: 0.8em;
     color: var(--white);
-    margin: 0;
+    margin: 0 0 0.75em 0;
 }
 
 .save-button:hover {

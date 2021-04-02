@@ -1,5 +1,6 @@
 package ch.diedreifragezeichen.exama._landingControllers;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,11 +18,14 @@ import ch.diedreifragezeichen.exama.assignments.examTypes.*;
 import ch.diedreifragezeichen.exama.assignments.exams.*;
 import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
 import ch.diedreifragezeichen.exama.assignments.workloadDistributions.*;
+import ch.diedreifragezeichen.exama._services.AppService;
 import ch.diedreifragezeichen.exama.assignments.*;
+import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
 import ch.diedreifragezeichen.exama.courses.*;
 import ch.diedreifragezeichen.exama.operator.*;
 import ch.diedreifragezeichen.exama.semesters.*;
 import ch.diedreifragezeichen.exama.users.*;
+import javassist.NotFoundException;
 
 @Controller
 public class teacherLanding {
@@ -38,32 +42,27 @@ public class teacherLanding {
     @Autowired
     private WorkloadDistributionRepository distributionRepo;
     @Autowired
-    private OperatorRepository operatorRepo;
-    @Autowired
     private SemesterRepository semesterRepo;
+    @Autowired
+    AppService helper;
 
-    
     @GetMapping("/teacher")
-    public ModelAndView teacherLandingPage(Model model) {
+    public ModelAndView teacherLandingPage(Model model) throws NotFoundException {
 
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         ModelAndView mav = new ModelAndView("teacherTemplates/index");
-
+        
+        Semester currentSemester = helper.getCurrentSemesterBasedOnDate(LocalDate.now());
         Exam exam = new Exam();
+        exam.setSemester(currentSemester);
         mav.addObject("exam", exam);
 
-        
         Homework homework = new Homework();
         mav.addObject("homework", homework);
 
-        Semester semester = semesterRepo.findAll().stream().filter(s -> s.getStartDate().isBefore(LocalDate.now()) && s.getEndDate().isAfter(LocalDate.now())).collect(Collectors.toList()).get(0);
-        exam.setSemester(semester);
-
-        List<Course> listCourses = courseRepo.findAll();
-        List<Course> usersCourses = listCourses.stream().filter(c -> c.getUsers().contains(user))
-                .collect(Collectors.toList());
-        mav.addObject("allCourses", usersCourses);
+        List<Course> teacherStudentCourses = helper.getAllTeacherStudentCourses();
+        mav.addObject("allCourses", teacherStudentCourses);
 
         List<ExamType> listTypes = examtypeRepo.findAll();
         mav.addObject("allExamTypes", listTypes);
@@ -74,7 +73,10 @@ public class teacherLanding {
         List<WorkloadDistribution> listDist = distributionRepo.findAll();
         mav.addObject("allWorkloadDistributions", listDist);
 
+        List<Assignment> allTeacherAssignments = helper.getAssignmentsForSevenDaysList(helper.getAllTeacherStudentCourses(), LocalDate.now().with(DayOfWeek.MONDAY));
+        mav.addObject("assignments", allTeacherAssignments);
+
         return mav;
     }
-    
+
 }

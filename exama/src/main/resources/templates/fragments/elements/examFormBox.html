@@ -58,9 +58,9 @@
                     required th:field="*{countingFactor}" />
             </div>
 
-            <div class="optionalParametersTitle">Startdatum, Arbeitsaufwand und Aufwandsverteilung selbst festlegen
+            <div class="optionalParametersTitle optParamTitleExam">Startdatum, Arbeitsaufwand und Aufwandsverteilung selbst festlegen
             </div>
-            <div class="optionalParameters">
+            <div class="optionalParameters optParamExam">
                 <div class="exam-start exam-start-startdate">
                     <input type="text" id="fromDate" class="form-control" th:attr="placeholder='Startdatum'"
                         th:field="*{startDate}" />
@@ -98,8 +98,8 @@
     $(".examToggle").click(function () {
         $(".examContent").slideToggle(function () { rotateArrow("exam") });
     });
-    $(".optionalParametersTitle").click(function () {
-        $(".optionalParameters").slideToggle();
+    $(".optParamTitleExam").click(function () {
+        $(".optParamExam").slideToggle();
     });
 
     var startdate = $("#fromDate");

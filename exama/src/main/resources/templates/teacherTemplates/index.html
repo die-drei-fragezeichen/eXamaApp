@@ -14,13 +14,14 @@
         <div id="content-wrapper">
             <div class="welcome-text">Willkommen <b><span sec:authentication="name"></span></b>!</div>
             <div class="content-box-full">
-                <div class="content-box-header">Die nächsten 14 Tage</div>
+                <div class="content-box-header">Deine Woche</div>
                 <div class="content-box-content">
-                    Blabla
+                    <div th:include="fragments/workloadViews/assignmentsThisWeek"></div>
+                    <div>> alle ansehen</div>
                 </div>
             </div>
-            <div th:include="fragments/elements/homeworkFormBox"/>
-            <div th:include="fragments/elements/examFormBox"/>
+            <div th:include="fragments/elements/homeworkFormBox"></div>
+            <div th:include="fragments/elements/examFormBox"></div>
 
         </div>
 

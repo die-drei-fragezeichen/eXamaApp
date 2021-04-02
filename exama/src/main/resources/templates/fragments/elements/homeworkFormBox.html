@@ -37,13 +37,17 @@
                     th:attr="placeholder='Arbeitsaufwand (Minuten)*'" th:field="*{workloadMinutesTotal}" required />
             </div>
 
-            <div class="homework-start homework-start-distribution">
-                <select class="form-control" id="workloadDistribution" name="workloadDistribution"
-                    th:with="workloadDistribution=*{workloadDistribution}" required>
-                    <option th:selected="true" th:disabled="disabled" value="0">Verteilung des Aufwands*
-                    </option>
-                    <option th:each="dist : ${allWorkloadDistributions}" th:text="${dist.name}" th:value="${dist.id}" />
-                </select>
+            <div class="optionalParametersTitle optParamTitleHomework">Aufwandsverteilung selbst festlegen</div>
+
+            <div class="optionalParameters optParamHomework">
+                <div class="homework-start homework-start-distribution">
+                    <select class="form-control" id="workloadDistribution" name="workloadDistribution"
+                        th:with="workloadDistribution=*{workloadDistribution}" required>
+                        <option th:disabled="disabled" value="0">Verteilung des Aufwands*
+                        </option>
+                        <option th:each="dist : ${allWorkloadDistributions}" th:text="${dist.name}" th:value="${dist.id}" th:selected="3"/>
+                    </select>
+                </div>
             </div>
 
             <div>
@@ -59,5 +63,8 @@
     });
     $(".homeworkToggle").click(function () {
         $(".homeworkContent").slideToggle(function () { rotateArrow("homework") });
+    });
+    $(".optParamTitleHomework").click(function () {
+        $(".optParamHomework").slideToggle();
     });
 </script>
