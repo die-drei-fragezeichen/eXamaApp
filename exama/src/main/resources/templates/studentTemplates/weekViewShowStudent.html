@@ -24,25 +24,24 @@
                     </tr>
                   </thead>
                   <tbody >
-                    <tr th:each="date :${dates}">
+                  <!--th:each="date, iStat: ${dates}" th:style="${iStat.odd}? 'font-weight: bold;'"-->
+                  <!--th:text="${date.getFirst().toString()}"-->
+                    <tr th:each="date: ${dates}">
                     <td th:text="${date}"></td>
-                    <td th:each="exam :${allExams}" th:if="${exam.dueDate == date}" th:text="${exam.name}">
-                    <td unless="${exam.dueDate == date}">kein Exam
+                    <td  th:text="${allExams}" >
                     </td>
-                    <td th:each="homework :${allHomework}" th:if="${homework.dueDate == date}" th:text="${homework.name}">
-                    <td unless="${homework.dueDate == date}">keine Hausaufgaben
+                    <td th:text="${allHomework}">
                     </td>
-                    <td th:text="${date}"></td>
+                    <td>test</td>
                     </tr>
-                    <!--verdoppelte Tabelle zum Test-->
-                    <tr th:each="date :${dates}">
-                    <td th:text="${date}"></td>
-                    <!--Problem: es erkennt miene if unless bedingung nicht wie bei homework zu sehen-->
-                    <td th:each="exam :${allExams}" th:text="${exam.name}">
+                    <!-- Test für Exam-->
+                    <tr th:each="exam: ${examString}">
+                    <td>Datum</td>
+                    <td  th:text="${exam}">
                     </td>
-                    <td th:each="homework :${allHomework}" th:if="${homework.dueDate == date}" th:text="${homework.name}">
+                    <td >hier kommt Homework
                     </td>
-                    <td th:text="${date}"></td>
+                    <td>test</td>
                     </tr>
                   </tbody>
                   

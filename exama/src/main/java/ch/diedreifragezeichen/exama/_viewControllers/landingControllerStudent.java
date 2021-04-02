@@ -39,43 +39,38 @@ public class landingControllerStudent {
         LocalDate today= LocalDate.now();
         String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepo.findUserByEmail(currentUserName);
-
-        ArrayDeque<LocalDate> dates=new ArrayDeque<LocalDate>();
-        for(int i=0;i<7;i++){
-            LocalDate helpDate=today.with(DayOfWeek.MONDAY).plusDays(i);
-            dates.add(helpDate);
-        }
+        
         List<Exam> exams=new ArrayList<Exam>();//Liste mit Exams wird für den eingeloggten User erstellt
+        List<Homework> homeworks=new ArrayList<Homework>();//Liste mit Homeowrk wird für den eingeloggten User erstellt
         for(Course course : user.getCourses()) {
             exams.addAll(examRepo.findAllByCourse(course));
+            homeworks.addAll(homeworkRepo.findAllByCourse(course));
         }
-        List<Exam> allExams=exams.stream().filter(x->((x.getDueDate().isAfter(today.with(DayOfWeek.MONDAY))||
-        x.getDueDate().isEqual(today.with(DayOfWeek.MONDAY))&&
-        (x.getDueDate().isBefore(today.with(DayOfWeek.SUNDAY))||x.getDueDate().isEqual(today.with(DayOfWeek.SUNDAY))))))
-        .collect(Collectors.toList());//stream hat alle Exams für die Woche geladen
-        allExams=allExams.stream()
-        .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
-        .collect(Collectors.toList());
-
-        List<Homework> homework=new ArrayList<Homework>();//Liste mit Homeowrk wird für den eingeloggten User erstellt
-        for(Course course : user.getCourses()) {
-            homework.addAll(homeworkRepo.findAllByCourse(course));
+        
+        List<List> allExamsByWeekday=new ArrayList<List>();//Liste für die Listen der Exams
+        List<List> allHomeworkByWeekday=new ArrayList<List>();//Liste für die Listen der Homework
+        List<LocalDate> dates=new ArrayList<LocalDate>();
+        
+        List<String> examString=new ArrayList<String>();//nur zum Test: soll alle Namen der Examen als String speichern
+        for(int i=0;i<7;i++){
+            LocalDate weekday =today.with(DayOfWeek.MONDAY).minusDays(i);//muss daraus nachher plus machen
+            List<Exam> exam=exams.stream().filter(x->x.getDueDate().equals(weekday)).collect(Collectors.toList());
+            //stream hat alle Exams für den i-ten Wochentag in eine Liste geladen geladen
+            List<Homework> homework=homeworks.stream().filter(x->x.getDueDate().equals(weekday)).collect(Collectors.toList());
+            //stream hat alle homeworks für den i-ten Wochentag in eine Liste geladen geladen
+            dates.add(weekday);
+            allExamsByWeekday.add(exam);
+            allHomeworkByWeekday.add(homework);
+            
+            for (Exam e : exam) {//kann weg, wenn es läuft
+                examString.add(e.getName());  
+            }
         }
-        List<Homework> allHomework=homework.stream().filter(x->((x.getDueDate().isAfter(today.with(DayOfWeek.MONDAY))||
-        x.getDueDate().isEqual(today.with(DayOfWeek.MONDAY))&&
-        (x.getDueDate().isBefore(today.with(DayOfWeek.SUNDAY))||x.getDueDate().isEqual(today.with(DayOfWeek.SUNDAY))))))
-        .collect(Collectors.toList());//stream hat alle Homework für die Woche geladen
-        // List<Assignment> allAssignment =new ArrayList<Assignment>();
-        // allAssignment.addAll(allExams);allAssignment.addAll(allHomework);//jetzt sind alle Hausaufgaben und alle Exams in einer Liste
-        //jetzt die Termine noch ordnen:
-        allHomework=allHomework.stream()
-        .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
-        .collect(Collectors.toList());
-        // allAssignemts der Wochenansicht Student übergeben
         ModelAndView mav=new ModelAndView("studentTemplates/weekViewShowStudent.html");
         mav.addObject("dates", dates);
-        mav.addObject("allHomework", allHomework);
-        mav.addObject("allExams", allExams);
+        mav.addObject("allHomework", allHomeworkByWeekday);
+        mav.addObject("allExams", allExamsByWeekday);
+        mav.addObject("examString", examString);
         //alle Sondertermine anhand von User finden
         return mav;
     }
