@@ -12,7 +12,7 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
-            <h1>Guten Tag, das steht diese Woche an: </h1>
+            <h1>Guten Tag <b>[[${name.getFirstName()}]]</b>! So sieht diese Woche aus: </h1>
             <br><br>
               <table>
                   <thead>
@@ -20,28 +20,17 @@
                     <th>Datum</th>  
                     <th>Prüfungen</th>
                     <th>Hausaufgaben</th>
-                    <th>test</th>
                     </tr>
                   </thead>
                   <tbody >
-                  <!--th:each="date, iStat: ${dates}" th:style="${iStat.odd}? 'font-weight: bold;'"-->
-                  <!--th:text="${date.getFirst().toString()}"-->
-                    <tr th:each="date: ${dates}">
-                    <td th:text="${date}"></td>
-                    <td  th:text="${allExams}" >
+                    <tr th:each="date, iStat: ${dates}">
+                    <td  th:text="${date}"></td>
+                    <td>
+                    <p th:each="exam:${allExams.get(iStat.index)}" th:text="${exam}"></p>
                     </td>
-                    <td th:text="${allHomework}">
+                    <td>
+                    <p th:each="homework:${allHomework.get(iStat.index)}" th:text="${homework}"></p>
                     </td>
-                    <td>test</td>
-                    </tr>
-                    <!-- Test für Exam-->
-                    <tr th:each="exam: ${examString}">
-                    <td>Datum</td>
-                    <td  th:text="${exam}">
-                    </td>
-                    <td >hier kommt Homework
-                    </td>
-                    <td>test</td>
                     </tr>
                   </tbody>
                   
