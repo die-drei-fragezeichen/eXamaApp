@@ -3,7 +3,12 @@
         <!-- header with navigation (only desktop and tablet), title and logout-button -->
         <div id="header">
             <div id="navigation-header">
-                <div class="navigation-header-item nav-burgermenu"></div>
+                <div class="navigation-header-item nav-burgermenu">
+                    <ul>
+                        <li>eins</li>
+                        <li>zwei</li>
+                    </ul>
+                </div>
                 <!-- <a th:href="@{/}"><div class="navigation-header-item nav-home"></div></a> -->
                 <a th:href="@{/teacher}" sec:authorize="hasAnyAuthority('TEACHER')"><div class="navigation-header-item nav-teacher"></div></a>
                 <a th:href="@{/calendarchoose?view=1&coreCourse={cc}(cc=${coreCoursesCurrentUser.get(0).id})}" sec:authorize="hasAnyAuthority('TEACHER', 'STUDENT')"><div class="navigation-header-item nav-diagram"></div></a>

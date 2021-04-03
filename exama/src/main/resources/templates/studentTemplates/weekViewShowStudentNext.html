@@ -1,0 +1,45 @@
+<html lang="DE" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/head :: head"></head>
+
+<body>
+    <div id="wrapper">
+        <!-- header with navigation (only desktop and tablet), title and logout-button -->
+        <div th:include="fragments/header :: header"></div>
+
+        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+
+        <!-- content displayed in the center of the window -->
+        <div id="content-wrapper">
+            <h1>Guten Tag [[${name.getFirstName()}]]! So sieht die nächste Woche aus: </h1>
+            <br><br>
+              <table>
+                  <thead>
+                    <tr class="headings">
+                    <th>Datum</th>  
+                    <th>Prüfungen</th>
+                    <th>Hausaufgaben</th>
+                    </tr>
+                  </thead>
+                  <tbody >
+                    <tr th:each="date, iStat: ${dates}">
+                    <td  th:text="${#temporals.format(date, 'dd.MM.')}"></td>
+                    <td>
+                    <p th:each="exam:${allExams.get(iStat.index)}" th:text="${exam}"></p>
+                    </td>
+                    <td>
+                    <p th:each="homework:${allHomework.get(iStat.index)}" th:text="${homework}"></p>
+                    </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <br><a href="/weekViewStudent/show">aktuelle Woche</a>
+        </div>
+        
+        <!-- footer with navigation (only mobile) -->
+        <div th:include="fragments/footer :: footer"></div>
+
+</body>
+
+</html>
