@@ -1,0 +1,17 @@
+<div class="week-navigation">
+    <div class="this-week">
+        <a th:with="currentURL=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+            th:href="${currentURL.replaceQueryParam('day', #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')).toUriString()}">zur
+            aktuellen Woche</a>
+    </div>
+    <div class="last-week">
+        <a th:with="currentURL=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+            th:href="${currentURL.replaceQueryParam('day', lastMonday).toUriString()}">&lt; letzte
+            Woche</a>
+    </div>
+    <div class="next-week">
+        <a th:with="currentURL=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+            th:href="${currentURL.replaceQueryParam('day', nextMonday).toUriString()}">nächste Woche
+            &gt;</a>
+    </div>
+</div>

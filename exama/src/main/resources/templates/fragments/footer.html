@@ -120,5 +120,24 @@
       }
     });
 
+    /* Fade on page change */
+    $(document).ready(function () {
+      $('#content-wrapper').animate({
+        opacity: '1'
+      }, 800);
+    });
+    $(document).on('click', "a", function (event) {
+      event.preventDefault();
+      linkLocation = this.href;
+      $("#content-wrapper").fadeOut(400, redirectPage(this.href));
+    });
+    function redirectPage(link) {
+      document.location.href = link;
+    }
+    function rotateArrow(divName) {
+      var a = "." + divName + "Content";
+      var b = "." + divName + "Toggle";
+      $(a).is(":hidden") ? $(b).removeClass("rotate180") : $(b).addClass("rotate180");
+    }
   </script>
 </div>

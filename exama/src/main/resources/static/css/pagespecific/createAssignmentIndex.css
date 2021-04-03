@@ -15,16 +15,13 @@
     margin: 0 0.5em 0.5em 0;
     width: calc(50% - 0.25em)
 }
-.exam-start-course, .exam-start-preptime, .exam-start-startdate{
+.exam-start-course, .exam-start-preptime, .exam-start-startdate, .homework-start-distribution{
     clear: left;
 }
 .homework-start-course, .homework-start-workloadminutes{
     clear: left;
 }
-.exam-start-type, .exam-start-factor{
-    margin: 0 0 0.5em 0;
-}
-.homework-start-dueDate, .homework-start-distribution{
+.exam-start-type, .exam-start-factor, .exam-start-distribution, .homework-start-duedate{
     margin: 0 0 0.5em 0;
 }
 .exam-start-name{

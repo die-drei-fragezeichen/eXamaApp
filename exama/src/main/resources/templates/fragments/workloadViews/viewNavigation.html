@@ -1,0 +1,26 @@
+<div th:if="${#httpServletRequest.getParameter('view') == '1'}">
+    <b>Diagramm</b> |
+    <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+        th:href="${urlBuilder.replaceQueryParam('view', '2').toUriString()}">Liste</a> |
+    <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+        th:href="${urlBuilder.replaceQueryParam('view', '3').toUriString()}">Semesterplan</a>
+    <br><br>
+</div>
+
+<div th:if="${#httpServletRequest.getParameter('view') == '2'}">
+    <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+        th:href="${urlBuilder.replaceQueryParam('view', '1').toUriString()}">Diagram</a> |
+    <b>Liste</b> |
+    <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+        th:href="${urlBuilder.replaceQueryParam('view', '3').toUriString()}">Semesterplan</a>
+    <br><br>
+</div>
+
+<div th:if="${#httpServletRequest.getParameter('view') == '3'}">
+    <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+        th:href="${urlBuilder.replaceQueryParam('view', '1').toUriString()}">Diagram</a> |
+    <a th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+        th:href="${urlBuilder.replaceQueryParam('view', '2').toUriString()}">Liste</a> |
+        <b>Semesterplan</b>
+    <br><br>
+</div>

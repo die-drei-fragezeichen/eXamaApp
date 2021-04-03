@@ -1,0 +1,32 @@
+<div id="stack100"></div>
+
+<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
+<script th:inline="javascript">
+    //this is the code for examBarView
+    const Bar = ({ data }) => {
+        return /*#__PURE__*/ (
+            React.createElement("div", { className: "BarChart" },
+                data &&
+                data.map(d => {
+                    return /*#__PURE__*/ (
+                        React.createElement("div", {
+                            className: "BarData",
+                            style: { background: `${d.color}`, width: `${d.percent}%` }
+                        }, /*#__PURE__*/
+                            (d.percent < 5 ? '' : React.createElement("p", { className: "PercentText" }, d.percent + "%"))));
+                })));
+    };
+
+    const stack100 = () => {
+        //assumed max value for exams per week: 6 (counting factor)
+        const data = [{ color: style.getPropertyValue('--lightGreen'), percent: Math.round(((6 - [[${ xFactor }]]) / 6) * 100) }, { color: style.getPropertyValue('--lightRed'), percent: Math.round(([[${ xFactor }]] / 6) * 100) }];
+        return /*#__PURE__*/ (
+            React.createElement("div", { className: "stack100" }, /*#__PURE__*/
+                React.createElement(Bar, { data: data })));
+
+    };
+
+    ReactDOM.render( /*#__PURE__*/ React.createElement(stack100, null), document.querySelector("#stack100"));
+</script>

@@ -41,7 +41,6 @@ public class weekAndSemesterViewController {
         WorkloadDistributionRepository distributionRepo;
         @Autowired
         AppService helper;
-        
 
         @GetMapping("/calendarchoose")
         public String calendarChoose(@RequestParam(name = "view") Long viewId,
@@ -49,7 +48,7 @@ public class weekAndSemesterViewController {
 
                 if (viewId == 1) {// if viewId = 1: redirect User to Workloaddiagram
 
-                        return "redirect:/calendar?view=" + viewId + "&monday=" + LocalDate.now().with(DayOfWeek.MONDAY)
+                        return "redirect:/calendar?view=" + viewId + "&day=" + LocalDate.now().with(DayOfWeek.MONDAY)
                                         + "&coreCourse=" + coreCourseId;
 
                 }
@@ -62,7 +61,7 @@ public class weekAndSemesterViewController {
 
         @GetMapping("/calendar")
         public ModelAndView workloadDiagram(@RequestParam(name = "view") Long viewId,
-                        @RequestParam(name = "monday") String mondayString,
+                        @RequestParam(name = "day") String dayString,
                         @RequestParam(name = "coreCourse") Long coreCourseId) throws NotFoundException {
                 /** Security Check */
                 User user = helper.getCurrentUser();
@@ -78,22 +77,49 @@ public class weekAndSemesterViewController {
 
                 // manage user directing
                 ModelAndView mav;
-                if (viewId == 1) {// direct to workloadDiagram
-                        mav = new ModelAndView("teacherTemplates/workloadDiagram.html");
-                }
-                else if (viewId == 2) {
-                        // direct to weeklyView
-                        mav = new ModelAndView("teacherTemplates/weeklyView.html");
-                } else { // viewId == 3
-                        mav = new ModelAndView("teacherTemplates/semesterViewShow.html");
+                if (viewId == 1) {
+                        // direct to diagramView
+                        mav = new ModelAndView("generalTemplates/weekDiagramView.html");
+                } else if (viewId == 2) {
+                        // direct to listView
+                        mav = new ModelAndView("generalTemplates/weekListView.html");
+                } else if (viewId == 3) {
+                        // direct to semesterView
+                        mav = new ModelAndView("generalTemplates/semesterListView.html");
+                } else {
+                        // direct to diagramView
+                        mav = new ModelAndView("generalTemplates/weekDiagramView.html");
                 }
 
-                LocalDate monday = helper.getLocaldateFromString(mondayString);
+                LocalDate day = helper.getLocaldateFromString(dayString);
+                LocalDate monday = day.with(DayOfWeek.MONDAY);
                 mav.addObject("coreCourse", selectedCourse);
                 // add all necessary dates for scrolling
                 mav.addObject("monday", monday);
                 mav.addObject("nextMonday", monday.plusWeeks(1));
                 mav.addObject("lastMonday", monday.minusWeeks(1));
+
+                // needed objects for exam creation
+                Semester currentSemester = helper.getCurrentSemesterBasedOnDate(LocalDate.now());
+                Semester chosenSemester = helper.getCurrentSemesterBasedOnDate(day);
+                Exam exam = new Exam();
+                exam.setSemester(currentSemester);
+                mav.addObject("exam", exam);
+
+                Homework homework = new Homework();
+                mav.addObject("homework", homework);
+
+                List<Course> teacherStudentCourses = helper.getAllTeacherStudentCourses();
+                mav.addObject("allCourses", teacherStudentCourses);
+
+                List<ExamType> listTypes = examtypeRepo.findAll();
+                mav.addObject("allExamTypes", listTypes);
+
+                List<AvailablePrepTime> listPrepTimes = availablePrepTimeRepo.findAll();
+                mav.addObject("allPrepTimes", listPrepTimes);
+
+                List<WorkloadDistribution> listDist = distributionRepo.findAll();
+                mav.addObject("allWorkloadDistributions", listDist);
 
                 List<Course> selectedCourses = selectedCourse.getCourses();
 
@@ -121,9 +147,20 @@ public class weekAndSemesterViewController {
 
                 } else { // viewId == 3
                          // TODO: figure out how to steer this
-                        Semester currentSemester = helper.getCurrentSemesterBasedOnDate(LocalDate.now());
-                        Semester chosenSemester = currentSemester;
                         mav.addObject("semester", chosenSemester);
+
+                        Semester prevSemester = null; //helper.getCurrentSemesterBasedOnDate(chosenSemester.getStartDate().minusDays(60));
+                        if(prevSemester == null){
+                                mav.addObject("prevStartDate", null);
+                        }else{
+                                mav.addObject("prevStartDate", prevSemester.getStartDate());
+                        }
+                        Semester nextSemester = null; //helper.getCurrentSemesterBasedOnDate(chosenSemester.getEndDate().plusDays(60));
+                        if(nextSemester == null){
+                                mav.addObject("nextStartDate", null);
+                        }else{
+                                mav.addObject("nextStartDate", nextSemester.getStartDate());
+                        }
 
                         List<LocalDate> allMondays = helper.getAllMondaysOfSemester(chosenSemester);
                         mav.addObject("allMondays", allMondays);
@@ -141,8 +178,8 @@ public class weekAndSemesterViewController {
                         while (monday.isBefore(semesterEnd.plusDays(1))) {
                                 List<Exam> examsByWeek = helper.getExamsForSevenDaysList(coreCourseCourses, monday);
                                 HashMap<String, Exam> map = new HashMap<>();
-                                for (Exam exam : examsByWeek) {
-                                        map.put(exam.getCourse().getSubject().getTag(), exam);
+                                for (Exam e : examsByWeek) {
+                                        map.put(e.getCourse().getSubject().getTag(), e);
                                 }
                                 allExams.add(map);
                                 monday = monday.plusWeeks(1);
@@ -165,28 +202,9 @@ public class weekAndSemesterViewController {
                         mav.addObject("allHolidayDates", allHolidayDates);
 
                         // get a list of all the weekly workloads for every week
-                        List<Double> weeklyWorkload = helper.getSemesterWorkloadList(coreCourseId, currentSemester.getId());
+                        List<Double> weeklyWorkload = helper.getSemesterWorkloadList(coreCourseId,
+                                        currentSemester.getId());
                         mav.addObject("weeklyWorkload", weeklyWorkload);
-
-                        Exam exam = new Exam();
-                        mav.addObject("exam", exam);
-
-                        Homework homework = new Homework();
-                        mav.addObject("homework", homework);
-
-                        exam.setSemester(currentSemester);
-
-                        List<Course> teacherStudentCourses = helper.getAllTeacherStudentCourses();
-                        mav.addObject("allCourses", teacherStudentCourses);
-
-                        List<ExamType> listTypes = examtypeRepo.findAll();
-                        mav.addObject("allExamTypes", listTypes);
-
-                        List<AvailablePrepTime> listPrepTimes = availablePrepTimeRepo.findAll();
-                        mav.addObject("allPrepTimes", listPrepTimes);
-
-                        List<WorkloadDistribution> listDist = distributionRepo.findAll();
-                        mav.addObject("allWorkloadDistributions", listDist);
 
                 }
 

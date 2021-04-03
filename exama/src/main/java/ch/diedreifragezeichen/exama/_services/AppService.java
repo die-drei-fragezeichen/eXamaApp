@@ -94,6 +94,7 @@ public class AppService {
         User user = getCurrentUser();
         return user.getCourses().stream().filter(c -> Objects.nonNull(c.getSubject())).map(Course::getSubject)
                 .sorted((c1, c2) -> c1.getId().compareTo(c2.getId())).collect(Collectors.toList());
+
     }
 
     /**
@@ -115,6 +116,47 @@ public class AppService {
         User user = getCurrentUser();
         List<Course> listCourses = courseRepo.findAll();
         return listCourses.stream().filter(c -> c.getUsers().contains(user)).collect(Collectors.toList());
+
+    }
+
+    /**
+     * Service 2d. Get all the exams that a teacher has
+     */
+
+    public List<Exam> getAllTeacherExams() throws NotFoundException {
+        if (currentUserIsA("Student")) {
+            throw new NotFoundException("The current User is not a teacher");
+        }
+        List<Course> allCourses = getAllTeacherStudentCourses();
+        return allCourses.stream().filter(u -> Objects.nonNull(u.getExams())).map(Course::getExams)
+                .flatMap(List::stream).distinct().filter(e -> e.getCreator().equals(getCurrentUser()))
+                .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate())).collect(Collectors.toList());
+    }
+
+    /** Service 2d. Get all the exams that a teacher has */
+    public List<Exam> getAllTeacherExamsFromCurrentDate() throws NotFoundException {
+        return getAllTeacherExams().stream().filter(e -> e.getDueDate().isBefore(LocalDate.now()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Service 2d. Get all the homework that a teacher has assigned
+     */
+
+    public List<Homework> getAllTeacherHomework() throws NotFoundException {
+        if (currentUserIsA("Student")) {
+            throw new NotFoundException("The current User is not a teacher");
+        }
+        List<Course> allCourses = getAllTeacherStudentCourses();
+        return allCourses.stream().filter(u -> Objects.nonNull(u.getHomeworks())).map(Course::getHomeworks)
+        .flatMap(List::stream).distinct().filter(e -> e.getCreator().equals(getCurrentUser()))
+        .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate())).collect(Collectors.toList());
+    }
+
+    /** Service 2d. Get all the exams that a teacher has */
+    public List<Homework> getAllTeacherHomeworkFromCurrentDate() throws NotFoundException {
+        return getAllTeacherHomework().stream().filter(e -> e.getDueDate().isBefore(LocalDate.now()))
+                .collect(Collectors.toList());
     }
 
     /** DATE RELATED SERVICES */

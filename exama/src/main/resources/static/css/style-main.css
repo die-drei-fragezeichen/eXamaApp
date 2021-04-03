@@ -238,8 +238,9 @@ table {
 
 td,
 th {
-    border-left: 1px solid var(--black);
-    border-right: 1px solid var(--black);
+    /* border-left: 1px solid var(--black);
+    border-right: 1px solid var(--black); */
+    border: 1px solid var(--black);
     padding: 0.2em;
 }
 
@@ -294,6 +295,7 @@ textarea {
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    opacity: 0;
 }
 
 #content-wrapper::-webkit-scrollbar {
@@ -309,8 +311,8 @@ textarea {
 }
 
 .landingOption {
-    width: 30%;
-    height: 30%;
+    width: 10em;
+    height: 10em;
     margin: 0;
     clear: none;
     float: left;
@@ -320,7 +322,7 @@ textarea {
 }
 
 .landingOptionTeacher {
-    margin: 0 2em 0 calc(20% - 2em);
+    margin: 0 5% 0 calc(45% - 10em);
     background-image: url(img/navigation-icons/teacher-b.svg);
 }
 
@@ -329,7 +331,7 @@ textarea {
 }
 
 .landingOptionAdmin {
-    margin: 0 calc(20% - 2em) 0 2em;
+    margin: 0 calc(45% - 10em) 0 5%;
     background-image: url(img/navigation-icons/school-b.svg);
 }
 
@@ -341,10 +343,11 @@ textarea {
     width: 100%;
     clear: left;
     float: left;
-    font-size: 0.8em;
+    font-size: 0.6em;
+    text-transform: uppercase;
     color: var(--red);
     cursor: pointer;
-    margin: 0.5em 0 0.75em 0;
+    margin: 0.5em 0 1em 0;
 }
 
 .optionalParameters {
@@ -358,12 +361,14 @@ textarea {
 .save-button {
     width: auto;
     height: auto;
+    float: left;
+    clear: left;
     padding: 0.25em 0.5em;
     background-color: var(--red);
     border-radius: 0.5em;
     font-size: 0.8em;
     color: var(--white);
-    margin: 0;
+    margin: 0 0 0.75em 0;
 }
 
 .save-button:hover {
@@ -425,6 +430,22 @@ textarea {
     height: auto;
     margin: 0;
     padding: 0.5em;
+}
+
+.content-box-toggle{
+    width: 1.75em;
+    height:1.75em;
+    color:var(--white);
+    background-image: url(img/arrow-down-w.svg);
+    background-size: contain;
+    font-weight: bold;
+    background-color: var(--red);
+    position:absolute;
+    top:0;
+    right:0;
+}
+.rotate180{
+    transform: rotate(180deg);
 }
 
 

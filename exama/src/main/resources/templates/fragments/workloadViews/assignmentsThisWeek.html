@@ -1,0 +1,39 @@
+<span style="font-size:1.5em; font-weight:bold;" th:if="${assignments.size == 0}">Nichts zu tun
+    -
+    Partytime!</span>
+<table th:unless="${assignments.size == 0}">
+<table>
+    <thead>
+        <tr>
+            <th>Datum</th>
+            <th>Kurs</th>
+            <th>Beschreibung</th>
+            <th>Aufwand</th>
+            <th>Vorbereitungsintervall / Startdatum</th>
+            <th>Pruefungstyp</th>
+            <th>Gewichtung</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="assignment : ${assignments}"
+            th:style="${assignment.class.simpleName} == 'Exam' ? 'font-weight:bold;'">
+            <td th:text="${#temporals.format(assignment.dueDate, 'dd.MM.yyyy')}"></td>
+            <td th:text="${assignment.course}"></td>
+            <td th:text="${assignment.description}" td:style="max-width: 20%; overflow: hidden; text-overflow: ellipsis;"></td>
+            <td
+                th:text="${assignment.workloadMinutesTotal} == 0 ? ${assignment.examType.timeValue}+'h' : ${assignment.workloadMinutesTotal}+'min'">
+            </td>
+            <td
+                th:text="${assignment.getAvailableDaysTotal} + ' Tag'+ ${assignment.getAvailableDaysTotal==1?'':'e'} +' / '+${#temporals.format(assignment.getRealStartDate, 'dd.MM.yyyy')}">
+            </td>
+            <td
+                th:text="${assignment.class.simpleName} == 'Exam' ? ${assignment.examType.getName()} : '-'">
+            </td>
+            <td
+                th:text="${assignment.class.simpleName} == 'Exam' ? ${assignment.countingFactor} : '-'">
+            </td>
+            <td><a href="#">ansehen</a></td>
+        </tr>
+    </tbody>
+</table>
