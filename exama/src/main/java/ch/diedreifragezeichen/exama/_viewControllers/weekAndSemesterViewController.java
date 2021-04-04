@@ -88,6 +88,7 @@ public class weekAndSemesterViewController {
                         mav = new ModelAndView("generalTemplates/semesterListView.html");
                 } else {
                         // direct to diagramView
+                        viewId=1l;
                         mav = new ModelAndView("generalTemplates/weekDiagramView.html");
                 }
 
@@ -145,7 +146,8 @@ public class weekAndSemesterViewController {
                         List<Exam> exams = helper.getExamsForSevenDaysList(selectedCourses, monday);
                         mav.addObject("allWeekExams", exams);
 
-                } else { // viewId == 3
+                }
+                if (viewId==3){ // viewId == 3
                          // TODO: figure out how to steer this
                         mav.addObject("semester", chosenSemester);
 
