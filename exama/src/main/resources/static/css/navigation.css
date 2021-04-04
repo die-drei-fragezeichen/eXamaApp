@@ -285,21 +285,22 @@
     text-align: center;
     font-size: 1.25em;
 }
-.course-navigation-item:active, .course-navigation-item:hover{
-    background-color: var(--lighterRed);
-}
-.course-navigation-item:active{
-    border-color: var(--red);
-    border-width: 2px;
-}
-.course-navigation-item:first-of-type, .course-navigation-item:first-of-type:hover, .course-navigation-item:last-of-type:active{
+.course-navigation-item-first{
     border-radius: 0 1em 0 0;
 }
 
-.course-navigation-item:last-of-type, .course-navigation-item:last-of-type:hover, .course-navigation-item:last-of-type:active{
+.course-navigation-item-last{
     border-radius: 0 0 1em 0;
 }
 
+.course-navigation-item:hover{
+    background-color: var(--lighterRed);
+}
+.course-navigation-item-active{
+    background-color: var(--lighterRed);
+    border-color: var(--red);
+    border-width: 2px;
+}
 
 
 /* --------------------------------------- */

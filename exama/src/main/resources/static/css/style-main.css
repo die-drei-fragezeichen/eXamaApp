@@ -243,7 +243,9 @@ th {
     border: 1px solid var(--black);
     padding: 0.2em;
 }
-
+tr{
+    cursor: pointer;
+}
 tr:nth-child(even) {
     background-color: var(--lighterGray);
 }

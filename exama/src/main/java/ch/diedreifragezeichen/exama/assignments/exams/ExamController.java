@@ -146,8 +146,7 @@ public class ExamController {
     // Postmapping for creation from teacher landing
     @PostMapping("/exams/modified-start")
     @Transactional
-    public ModelAndView modify(Exam exam) {
-        ModelAndView mav = new ModelAndView("teacherTemplates/index");
+    public String modify(Exam exam) {
         Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findUserByEmail(authLoggedInUser.getName());
         exam.setCreator(user);
@@ -156,8 +155,9 @@ public class ExamController {
             exam.setWorkloadMinutesTotal(0.0);
         }
         em.unwrap(org.hibernate.Session.class).saveOrUpdate(exam);
-        mav.addObject("createdExam", exam);
-        return mav;
+
+        LocalDate day = exam.getDueDate();
+        return "redirect:/teacher?day="+day.toString();
     }
 
     // Postmapping for creation from semesterview

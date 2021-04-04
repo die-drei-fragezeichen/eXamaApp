@@ -1,7 +1,14 @@
 <!-- course navigation (only desktop and tablet) on the left side -->
 <div th:fragment="coursenavigation">
     <div sec:authorize="hasAnyAuthority('TEACHER')" id="course-navigation">
-        <a th:each="coreCourse : ${coreCoursesCurrentUser}" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}" th:href="${urlBuilder.replaceQueryParam('coreCourse', coreCourse.id).toUriString()}"><div class="course-navigation-item" th:text="${coreCourse.name}"></div></a>
+        <a th:each="coreCourse, iStat : ${coreCoursesCurrentUser}"
+            th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+            th:href="${urlBuilder.replaceQueryParam('coreCourse', coreCourse.id).toUriString()}">
+            <div class="course-navigation-item" th:text="${coreCourse.name}"
+                th:classappend="${coreCourse.id}==${#httpServletRequest.getParameter('coreCourse')}?'course-navigation-item-active':''"
+                >
+            </div>
+        </a>
         <!-- <div class="course-navigation-item active">2a</div>
         <div class="course-navigation-item">3c</div>
         <div class="course-navigation-item">3d</div>

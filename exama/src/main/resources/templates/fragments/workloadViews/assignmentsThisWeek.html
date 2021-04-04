@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr th:each="assignment : ${assignments}"
+        <tr th:each="assignment, iStat : ${assignments}"
             th:style="${assignment.class.simpleName} == 'Exam' ? 'background-color:var(--examRed);' : ('background-color:var(--lighterGreen);')">
             <!-- Date -->
             <td th:text="${#temporals.dayOfWeekNameShort(assignment.dueDate)} + ', ' + ${#temporals.format(assignment.dueDate, 'dd.MM.')}"></td>
@@ -39,3 +39,16 @@
         </tr>
     </tbody>
 </table>
+
+<div id="moreInformation">
+    Empty yet
+</div>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $("#moreInformation").hide();
+    });
+    function showMore(assignment){
+        alert(assignment);
+    }
+</script>
