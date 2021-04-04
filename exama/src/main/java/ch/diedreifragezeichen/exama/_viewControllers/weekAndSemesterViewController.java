@@ -48,7 +48,7 @@ public class weekAndSemesterViewController {
 
                 if (viewId == 1) {// if viewId = 1: redirect User to Workloaddiagram
 
-                        return "redirect:/calendar?view=" + viewId + "&day=" + LocalDate.now().with(DayOfWeek.MONDAY)
+                        return "redirect:/calendar?view=" + viewId + "&day=" + LocalDate.now()
                                         + "&coreCourse=" + coreCourseId;
 
                 }
@@ -95,14 +95,15 @@ public class weekAndSemesterViewController {
                 LocalDate monday = day.with(DayOfWeek.MONDAY);
                 mav.addObject("coreCourse", selectedCourse);
                 // add all necessary dates for scrolling
+                //TODO: necessary for all views?
                 mav.addObject("monday", monday);
                 mav.addObject("nextMonday", monday.plusWeeks(1));
                 mav.addObject("lastMonday", monday.minusWeeks(1));
 
                 // add all necessary objects for assignment creation into mav
-                Semester chosenSemester = helper.getCurrentSemesterBasedOnDate(monday);
+                Semester chosenSemester = helper.getCurrentSemesterBasedOnDate(day.plusDays(1));
                 helper.getAssignmentBoxInformation(mav, chosenSemester);
-                
+
                 List<Course> selectedCourses = selectedCourse.getCourses();
                 if (viewId == 1) {
                         // For WORKLOAD DIAGRAM add all workload, the eXam Factor and Exams for two
@@ -129,31 +130,35 @@ public class weekAndSemesterViewController {
                 } else { // viewId == 3
                          // TODO: figure out how to steer this
                         mav.addObject("semester", chosenSemester);
-                        //add semster navigation information
-                        Semester prevSemester = null; //helper.getCurrentSemesterBasedOnDate(chosenSemester.getStartDate().minusDays(10));
-                        if(prevSemester == null){
+                        // add semster navigation information
+                        Semester prevSemester = helper
+                                        .getCurrentSemesterBasedOnDate(chosenSemester.getStartDate().minusDays(182));
+                        if (prevSemester == null) {
                                 mav.addObject("prevStartDate", null);
-                        }else {
-                                mav.addObject("prevStartDate", prevSemester.getStartDate());
+                        } else {
+                                mav.addObject("prevStartDate", prevSemester.getStartDate().plusDays(1));
                         }
-                        Semester nextSemester = helper.getCurrentSemesterBasedOnDate(chosenSemester.getEndDate().plusDays(180));
-                        
-                        if(nextSemester == null){
+                        Semester nextSemester = helper
+                                        .getCurrentSemesterBasedOnDate(chosenSemester.getEndDate().plusDays(182));
+
+                        if (nextSemester == null) {
                                 mav.addObject("nextStartDate", null);
-                        }else{
-                                mav.addObject("nextStartDate", nextSemester.getStartDate());
+                        } else {
+                                mav.addObject("nextStartDate", nextSemester.getStartDate().plusDays(1));
                         }
 
                         List<LocalDate> allMondays = helper.getAllMondaysOfSemester(chosenSemester);
                         mav.addObject("allMondays", allMondays);
-                        //used to define current week in semester view
-                        List<LocalDate> allDaysForTheWeek = helper.getAllDatesBetweenAndWith(LocalDate.now().with(DayOfWeek.MONDAY), LocalDate.now().with(DayOfWeek.SUNDAY));
+                        // used to define current week in semester view
+                        List<LocalDate> allDaysForTheWeek = helper.getAllDatesBetweenAndWith(
+                                        LocalDate.now().with(DayOfWeek.MONDAY), LocalDate.now().with(DayOfWeek.SUNDAY));
                         mav.addObject("allDaysForTheWeek", allDaysForTheWeek);
 
                         mav.addObject("userSubjects", helper
                                         .getAllSubjectsOfACoreCourse(coreCourseRepo.findCoreCourseById(coreCourseId)));
 
-                        //create Exam Hashmap for semester view, starting with the first Monday of the semester
+                        // create Exam Hashmap for semester view, starting with the first Monday of the
+                        // semester
                         monday = chosenSemester.getStartDate().with(DayOfWeek.MONDAY);
                         List<HashMap<String, Exam>> allExams = new ArrayList<>();
                         CoreCourse coreCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
@@ -172,7 +177,8 @@ public class weekAndSemesterViewController {
 
                         // create Hashmap mapping every single day of the holiday with holiday
                         monday = chosenSemester.getStartDate().with(DayOfWeek.MONDAY);
-                        List<Holiday> listHolidays = holidayRepo.findAllByStartDateBetween(chosenSemester.getStartDate(), chosenSemester.getEndDate());
+                        List<Holiday> listHolidays = holidayRepo.findAllByStartDateBetween(
+                                        chosenSemester.getStartDate(), chosenSemester.getEndDate());
                         HashMap<LocalDate, Holiday> allHolidayDates = new HashMap<>();
                         for (Holiday holiday : listHolidays) {
                                 List<LocalDate> allHolyDates = helper.getAllDatesBetweenAndWith(holiday.getStartDate(),
@@ -184,7 +190,8 @@ public class weekAndSemesterViewController {
 
                         mav.addObject("allHolidayDates", allHolidayDates);
 
-                        // get a list of all the weekly workloads for every week (used for background colour)
+                        // get a list of all the weekly workloads for every week (used for background
+                        // colour)
                         List<Double> weeklyWorkload = helper.getSemesterWorkloadList(coreCourseId,
                                         chosenSemester.getId());
                         mav.addObject("weeklyWorkload", weeklyWorkload);

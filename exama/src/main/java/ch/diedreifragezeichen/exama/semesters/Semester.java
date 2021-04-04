@@ -1,6 +1,8 @@
 package ch.diedreifragezeichen.exama.semesters;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 import javax.persistence.*;
@@ -76,7 +78,7 @@ public class Semester {
     }
 
     public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+        this.startDate = startDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
     }
 
     public LocalDate getEndDate() {

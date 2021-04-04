@@ -164,8 +164,8 @@ public class AppService {
         }
         List<Course> allCourses = getAllTeacherStudentCourses();
         return allCourses.stream().filter(u -> Objects.nonNull(u.getHomeworks())).map(Course::getHomeworks)
-        .flatMap(List::stream).distinct().filter(e -> e.getCreator().equals(getCurrentUser()))
-        .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate())).collect(Collectors.toList());
+                .flatMap(List::stream).distinct().filter(e -> e.getCreator().equals(getCurrentUser()))
+                .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate())).collect(Collectors.toList());
     }
 
     /** Service 2d. Get all the exams that a teacher has */
@@ -188,18 +188,14 @@ public class AppService {
     }
 
     /** Service 12 - returns the school semester of any given date */
-    public Semester getCurrentSemesterBasedOnDate(LocalDate date) throws NotFoundException{
-        return semesterRepo.findAll().stream().
-                filter(s -> s.isEnabled()).filter(s -> s.getStartDate().isBefore(date))
-                .sorted((s1, s2) -> s1.compareTo(s2)).reduce((first, second) -> second).get();
-                
-        // if (SemesterStartBasedOnDate == null) {
-        //     return null;
-        //     // throw new NotFoundException("No Semester has been activated for this Date");
-        // }
-        // List<Semester> semesters = semesterRepo.findAll().stream()
-        //         .filter(s -> s.getStartDate() == SemesterStartBasedOnDate).collect(Collectors.toList());
-        // return semesters.get(0);
+    public Semester getCurrentSemesterBasedOnDate(LocalDate date) throws NotFoundException {
+        List<Semester> earlierSemesters = semesterRepo.findAll().stream().filter(s -> s.isEnabled())
+                .filter(s -> s.getStartDate().isBefore(date)).collect(Collectors.toList());
+
+        return !earlierSemesters.isEmpty()
+                ? earlierSemesters.stream().sorted((s1, s2) -> s1.compareTo(s2)).reduce((first, second) -> second).get()
+                : null;
+
     }
 
     /** Service 11 */
@@ -301,26 +297,25 @@ public class AppService {
     // * ASSIGNMENT RELATED SERVICES */
 
     /** Service 1a */
-    public ModelAndView getAssignmentBoxInformation(ModelAndView mav, Semester currentSemester){
-    Exam exam = new Exam();
-                exam.setSemester(currentSemester);
-                mav.addObject("exam", exam);
+    public ModelAndView getAssignmentBoxInformation(ModelAndView mav, Semester currentSemester) {
+        Exam exam = new Exam();
+        exam.setSemester(currentSemester);
+        mav.addObject("exam", exam);
 
-                Homework homework = new Homework();
-                mav.addObject("homework", homework);
+        Homework homework = new Homework();
+        mav.addObject("homework", homework);
 
-                //Assignment Creation Box Elements
-                List<Course> teacherStudentCourses = getAllTeacherStudentCourses();
-                mav.addObject("allCourses", teacherStudentCourses);
-                List<ExamType> listTypes = examtypeRepo.findAll();
-                mav.addObject("allExamTypes", listTypes);
-                List<AvailablePrepTime> listPrepTimes = availablePrepTimeRepo.findAll();
-                mav.addObject("allPrepTimes", listPrepTimes);
-                List<WorkloadDistribution> listDist = distributionRepo.findAll();
-                mav.addObject("allWorkloadDistributions", listDist);
+        // Assignment Creation Box Elements
+        List<Course> teacherStudentCourses = getAllTeacherStudentCourses();
+        mav.addObject("allCourses", teacherStudentCourses);
+        List<ExamType> listTypes = examtypeRepo.findAll();
+        mav.addObject("allExamTypes", listTypes);
+        List<AvailablePrepTime> listPrepTimes = availablePrepTimeRepo.findAll();
+        mav.addObject("allPrepTimes", listPrepTimes);
+        List<WorkloadDistribution> listDist = distributionRepo.findAll();
+        mav.addObject("allWorkloadDistributions", listDist);
         return mav;
     }
-
 
     /** Service 1a */
     public long calculateNumberOfExam(List<Exam> allExams) {
