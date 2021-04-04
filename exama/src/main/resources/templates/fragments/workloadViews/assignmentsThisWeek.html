@@ -9,10 +9,8 @@
             <th>Kurs</th>
             <th>Name</th>
             <th>Beschreibung</th>
-            <th>Startdatum / Vorbereitungsintervall</th>
             <th>Pruefungstyp</th>
-            <th>Faktor</th>
-            <th></th>
+            <th>Gewichtung</th>
         </tr>
     </thead>
     <tbody>
@@ -29,16 +27,15 @@
             <!-- unnecessary? <td
                 th:text="${assignment.workloadMinutesTotal} == 0 ? ${assignment.examType.timeValue}+'h' : ${assignment.workloadMinutesTotal}+'min'">
             </td>-->
-            <td
+            <!-- <td
                 th:text="${#temporals.format(assignment.getRealStartDate, 'dd.MM.')} + ' / ' + ${assignment.getAvailableDaysTotal} + ' Tag'+ ${assignment.getAvailableDaysTotal==1?'':'e'}">
-            </td>
+            </td> -->
             <td
                 th:text="${assignment.class.simpleName} == 'Exam' ? ${assignment.examType.getName()} : '-'">
             </td>
             <td
                 th:text="${assignment.class.simpleName} == 'Exam' ? ${assignment.countingFactor} : '-'">
             </td>
-            <td><a href="#">ansehen</a></td>
         </tr>
     </tbody>
 </table>
