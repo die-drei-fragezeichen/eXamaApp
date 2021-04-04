@@ -16,8 +16,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
+import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTime;
+import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTimeRepository;
+import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
+import ch.diedreifragezeichen.exama.assignments.examTypes.ExamTypeRepository;
 import ch.diedreifragezeichen.exama.assignments.exams.*;
 import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
+import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDistribution;
+import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDistributionRepository;
 import ch.diedreifragezeichen.exama.courses.CoreCourse;
 import ch.diedreifragezeichen.exama.courses.CoreCourseRepository;
 import ch.diedreifragezeichen.exama.courses.Course;
@@ -52,6 +58,15 @@ public class AppService {
 
     @Autowired
     private CourseRepository courseRepo;
+
+    @Autowired
+    private ExamTypeRepository examtypeRepo;
+
+    @Autowired
+    private AvailablePrepTimeRepository availablePrepTimeRepo;
+
+    @Autowired
+    private WorkloadDistributionRepository distributionRepo;
 
     @PersistenceContext
     private EntityManager em;
@@ -173,17 +188,18 @@ public class AppService {
     }
 
     /** Service 12 - returns the school semester of any given date */
-    public Semester getCurrentSemesterBasedOnDate(LocalDate date) throws NotFoundException {
-        LocalDate SemesterStartBasedOnDate = semesterRepo.findAll().stream()
-                .filter(u -> Objects.nonNull(u.getStartDate())).map(Semester::getStartDate)
-                .filter(u -> Objects.nonNull(u.isBefore(date))).filter(d -> d.isBefore(date))
-                .sorted((c1, c2) -> c1.compareTo(c2)).reduce((first, second) -> second).get();
-        if (SemesterStartBasedOnDate == null) {
-            throw new NotFoundException("No Semester has been assigned");
-        }
-        List<Semester> semesters = semesterRepo.findAll().stream()
-                .filter(s -> s.getStartDate() == SemesterStartBasedOnDate).collect(Collectors.toList());
-        return semesters.get(0);
+    public Semester getCurrentSemesterBasedOnDate(LocalDate date) throws NotFoundException{
+        return semesterRepo.findAll().stream().
+                filter(s -> s.isEnabled()).filter(s -> s.getStartDate().isBefore(date))
+                .sorted((s1, s2) -> s1.compareTo(s2)).reduce((first, second) -> second).get();
+                
+        // if (SemesterStartBasedOnDate == null) {
+        //     return null;
+        //     // throw new NotFoundException("No Semester has been activated for this Date");
+        // }
+        // List<Semester> semesters = semesterRepo.findAll().stream()
+        //         .filter(s -> s.getStartDate() == SemesterStartBasedOnDate).collect(Collectors.toList());
+        // return semesters.get(0);
     }
 
     /** Service 11 */
@@ -283,6 +299,28 @@ public class AppService {
     }
 
     // * ASSIGNMENT RELATED SERVICES */
+
+    /** Service 1a */
+    public ModelAndView getAssignmentBoxInformation(ModelAndView mav, Semester currentSemester){
+    Exam exam = new Exam();
+                exam.setSemester(currentSemester);
+                mav.addObject("exam", exam);
+
+                Homework homework = new Homework();
+                mav.addObject("homework", homework);
+
+                //Assignment Creation Box Elements
+                List<Course> teacherStudentCourses = getAllTeacherStudentCourses();
+                mav.addObject("allCourses", teacherStudentCourses);
+                List<ExamType> listTypes = examtypeRepo.findAll();
+                mav.addObject("allExamTypes", listTypes);
+                List<AvailablePrepTime> listPrepTimes = availablePrepTimeRepo.findAll();
+                mav.addObject("allPrepTimes", listPrepTimes);
+                List<WorkloadDistribution> listDist = distributionRepo.findAll();
+                mav.addObject("allWorkloadDistributions", listDist);
+        return mav;
+    }
+
 
     /** Service 1a */
     public long calculateNumberOfExam(List<Exam> allExams) {

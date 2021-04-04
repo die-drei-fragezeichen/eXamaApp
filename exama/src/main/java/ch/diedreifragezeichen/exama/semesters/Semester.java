@@ -45,6 +45,12 @@ public class Semester {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "semester")
     private List<Exam> exams;
 
+    /** Methods */
+
+    public int compareTo(Semester s2) {
+        return this.startDate.compareTo(s2.getStartDate());
+    }
+
     /**
      * Getters and Setters only
      */
