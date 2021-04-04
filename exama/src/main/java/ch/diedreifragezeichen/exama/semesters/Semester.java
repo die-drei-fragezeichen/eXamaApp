@@ -1,6 +1,8 @@
 package ch.diedreifragezeichen.exama.semesters;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 import javax.persistence.*;
@@ -45,6 +47,12 @@ public class Semester {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "semester")
     private List<Exam> exams;
 
+    /** Methods */
+
+    public int compareTo(Semester s2) {
+        return this.startDate.compareTo(s2.getStartDate());
+    }
+
     /**
      * Getters and Setters only
      */
@@ -70,7 +78,7 @@ public class Semester {
     }
 
     public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+        this.startDate = startDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
     }
 
     public LocalDate getEndDate() {

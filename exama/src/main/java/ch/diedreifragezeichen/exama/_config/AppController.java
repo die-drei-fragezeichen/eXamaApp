@@ -8,7 +8,6 @@ import static java.time.DayOfWeek.WEDNESDAY;
 import static java.time.temporal.TemporalAdjusters.nextOrSame;
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,24 +59,23 @@ public class AppController {
             roles.add(role.getAuthority());
         }
 
-        // Systemadmins or admins, that are also teachers will choose there Landing
-        // (teacher or admin)
+        // Systemadmins or admins, that are also teachers will choose there Landing (teacher or admin)
         if ((roles.contains("SYSTEMADMIN") || roles.contains("ADMIN")) && roles.contains("TEACHER")) {
             return "adminTemplates/chooseLanding";
-
-            // only Admins will land on adminLanding
-        } else if (roles.contains("ADMIN")) {
+        
+        //only Admins will land on adminLanding
+        } else if(roles.contains("ADMIN")){
             return "redirect:admin";
-
-            // only Teachers will land on teacherLanding
+        
+        // only Teachers will land on teacherLanding
         } else if (roles.contains("TEACHER")) {
-            return "redirect:teacher?day=" + LocalDate.now().with(DayOfWeek.MONDAY);
-
-            // students or ReferenceStudents will land on studentLanding
+            return "redirect:teacher";
+        
+        //students or ReferenceStudents will land on studentLanding
         } else if (roles.contains("REFERENCESTUDENT") || roles.contains("STUDENT")) {
-            return "redirect:student?view=1&day=" + LocalDate.now().with(DayOfWeek.MONDAY);
-
-            // everyone without any of the defined autorities
+            return "redirect:student";
+        
+        //everyone without any of the defined autorities
         } else {
             return "index";
         }

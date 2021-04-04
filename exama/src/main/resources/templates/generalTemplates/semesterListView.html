@@ -22,7 +22,7 @@
                 <div class="content-box-header">
                     <span sec:authorize="hasAnyAuthority('TEACHER')">Klasse [[${coreCourse.name}]] | </span>
                     <span sec:authorize="hasAnyAuthority('STUDENT')">Dein </span>
-                    <span th:text="${semester.name}"></span>
+                    <span th:text="${semester.name}">
                 </div>
                 <div class="content-box-content">
                     <div th:include="fragments/workloadViews/viewNavigation"></div>
