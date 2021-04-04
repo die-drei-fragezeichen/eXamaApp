@@ -99,8 +99,8 @@ public class weekAndSemesterViewController {
                 mav.addObject("nextMonday", monday.plusWeeks(1));
                 mav.addObject("lastMonday", monday.minusWeeks(1));
 
-                // needed objects for exam creation
-                Semester currentSemester = helper.getCurrentSemesterBasedOnDate(LocalDate.now());
+                // necessary objects for exam creation and semester view
+                Semester currentSemester = helper.getCurrentSemesterBasedOnDate(monday);
                 Semester chosenSemester = helper.getCurrentSemesterBasedOnDate(day);
                 Exam exam = new Exam();
                 exam.setSemester(currentSemester);
@@ -164,6 +164,9 @@ public class weekAndSemesterViewController {
 
                         List<LocalDate> allMondays = helper.getAllMondaysOfSemester(chosenSemester);
                         mav.addObject("allMondays", allMondays);
+                        //used to define current week in semester view
+                        List<LocalDate> allDaysForTheWeek = helper.getAllDatesBetweenAndWith(LocalDate.now().with(DayOfWeek.MONDAY), LocalDate.now().with(DayOfWeek.SUNDAY));
+                        mav.addObject("allDaysForTheWeek", allDaysForTheWeek);
 
                         mav.addObject("userSubjects", helper
                                         .getAllSubjectsOfACoreCourse(coreCourseRepo.findCoreCourseById(coreCourseId)));

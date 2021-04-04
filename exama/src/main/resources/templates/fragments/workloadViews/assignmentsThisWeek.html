@@ -7,25 +7,30 @@
         <tr>
             <th>Datum</th>
             <th>Kurs</th>
+            <th>Name</th>
             <th>Beschreibung</th>
-            <th>Aufwand</th>
-            <th>Vorbereitungsintervall / Startdatum</th>
+            <th>Startdatum / Vorbereitungsintervall</th>
             <th>Pruefungstyp</th>
-            <th>Gewichtung</th>
+            <th>Faktor</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         <tr th:each="assignment : ${assignments}"
-            th:style="${assignment.class.simpleName} == 'Exam' ? 'font-weight:bold;'">
-            <td th:text="${#temporals.format(assignment.dueDate, 'dd.MM.yyyy')}"></td>
-            <td th:text="${assignment.course}"></td>
+            th:style="${assignment.class.simpleName} == 'Exam' ? 'background-color:var(--examRed);' : ('background-color:var(--lighterGreen);')">
+            <!-- Date -->
+            <td th:text="${#temporals.dayOfWeekNameShort(assignment.dueDate)} + ', ' + ${#temporals.format(assignment.dueDate, 'dd.MM.')}"></td>
+            <!-- Course -->
+            <td th:text="${assignment.course}"></td>            
+            <!-- Name -->
+            <td th:text="${assignment.name}"></td>
+            <!-- Decription -->
             <td th:text="${assignment.description}" td:style="max-width: 20%; overflow: hidden; text-overflow: ellipsis;"></td>
-            <td
+            <!-- unnecessary? <td
                 th:text="${assignment.workloadMinutesTotal} == 0 ? ${assignment.examType.timeValue}+'h' : ${assignment.workloadMinutesTotal}+'min'">
-            </td>
+            </td>-->
             <td
-                th:text="${assignment.getAvailableDaysTotal} + ' Tag'+ ${assignment.getAvailableDaysTotal==1?'':'e'} +' / '+${#temporals.format(assignment.getRealStartDate, 'dd.MM.yyyy')}">
+                th:text="${#temporals.format(assignment.getRealStartDate, 'dd.MM.')} + ' / ' + ${assignment.getAvailableDaysTotal} + ' Tag'+ ${assignment.getAvailableDaysTotal==1?'':'e'}">
             </td>
             <td
                 th:text="${assignment.class.simpleName} == 'Exam' ? ${assignment.examType.getName()} : '-'">
