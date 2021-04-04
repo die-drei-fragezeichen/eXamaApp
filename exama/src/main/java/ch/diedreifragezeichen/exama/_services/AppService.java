@@ -188,7 +188,7 @@ public class AppService {
     }
 
     /** Service 12 - returns the school semester of any given date */
-    public Semester getCurrentSemesterBasedOnDate(LocalDate date) throws NotFoundException {
+    public Semester getCurrentSemesterBasedOnDate(LocalDate date) { // throws NotFoundException {
         List<Semester> earlierSemesters = semesterRepo.findAll().stream().filter(s -> s.isEnabled())
                 .filter(s -> s.getStartDate().isBefore(date)).collect(Collectors.toList());
 
@@ -364,6 +364,22 @@ public class AppService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Service 9aa - return all the Assignments for a semester of a number of
+     * courses
+     */
+    public List<Assignment> getAssignmentsForSemesterList(List<Course> courses, LocalDate monday) {
+        List<Assignment> assignments = new ArrayList<>();
+        // add every exam for the week
+        assignments.addAll(getExamsForSemesterList(courses, monday));
+
+        // add every homework for the week
+        assignments.addAll(getHomeworkForSemesterList(courses, monday));
+
+        return assignments.stream().sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
+                .collect(Collectors.toList());
+    }
+
     /** Service 9b - return all the Assignments for a week of a particular course */
     public List<Assignment> getAssignmentsForSevenDaysList(Course course, LocalDate monday) {
         List<Course> courses = new ArrayList<>();
@@ -371,11 +387,27 @@ public class AppService {
         return getAssignmentsForSevenDaysList(courses, monday);
     }
 
+    /**
+     * Service 9bb - return all the Assignments for a week of a particular course
+     */
+    public List<Assignment> getAssignmentsForSemesterList(Course course, LocalDate monday) {
+        List<Course> courses = new ArrayList<>();
+        courses.add(course);
+        return getAssignmentsForSemesterList(courses, monday);
+    }
+
     /** Service 9c - return all the Assignments for a week of a particular user */
     public List<Assignment> getAssignmentsForSevenDaysList(User user, LocalDate monday) {
 
         List<Course> courses = new ArrayList<>(user.getCourses());
         return getAssignmentsForSevenDaysList(courses, monday);
+    }
+
+    /** Service 9cc - return all the Assignments for a week of a particular user */
+    public List<Assignment> getAssignmentsForSemesterList(User user, LocalDate monday) {
+
+        List<Course> courses = new ArrayList<>(user.getCourses());
+        return getAssignmentsForSemesterList(courses, monday);
     }
 
     /** Service 10a - Get every exam for a particular week for List of courses */
@@ -386,6 +418,20 @@ public class AppService {
                 .distinct().filter(e -> e.getDueDate().isAfter(monday.minusDays(1)))
                 .filter(e -> e.getDueDate().isBefore(monday.plusDays(7))).collect(Collectors.toCollection(() -> exams));
 
+        return exams;
+    }
+
+    /**
+     * Service 10aa - Get every exam for a particular Semester for List of courses
+     */
+    public List<Exam> getExamsForSemesterList(List<Course> courses, LocalDate monday) {
+        List<Exam> exams = new ArrayList<>();
+        // add every exam for the week
+        courses.stream().filter(c -> Objects.nonNull(c.getExams())).map(c -> c.getExams()).flatMap(List::stream)
+                .distinct()
+                .filter(e -> e.getDueDate().isAfter(getCurrentSemesterBasedOnDate(monday).getStartDate().minusDays(1)))
+                .filter(e -> e.getDueDate().isBefore(getCurrentSemesterBasedOnDate(monday).getEndDate().plusDays(1)))
+                .collect(Collectors.toCollection(() -> exams));
         return exams;
     }
 
@@ -412,6 +458,22 @@ public class AppService {
                 .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
                 .collect(Collectors.toCollection(() -> homework));
 
+        return homework;
+    }
+
+    /**
+     * Service 10cc - Get every homework for a particular Semester for list of
+     * courses
+     */
+    public List<Homework> getHomeworkForSemesterList(List<Course> courses, LocalDate monday) {
+        List<Homework> homework = new ArrayList<>();
+        // add every homework for the week
+        courses.stream().filter(c -> Objects.nonNull(c.getHomeworks())).map(c -> c.getHomeworks()).flatMap(List::stream)
+                .distinct()
+                .filter(e -> e.getDueDate().isAfter(getCurrentSemesterBasedOnDate(monday).getStartDate().minusDays(1)))
+                .filter(e -> e.getDueDate().isBefore(getCurrentSemesterBasedOnDate(monday).getEndDate().plusDays(1)))
+                .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
+                .collect(Collectors.toCollection(() -> homework));
         return homework;
     }
 

@@ -46,17 +46,7 @@ public class weekAndSemesterViewController {
         public String calendarChoose(@RequestParam(name = "view") Long viewId,
                         @RequestParam(name = "coreCourse") Long coreCourseId) {
 
-                if (viewId == 1) {// if viewId = 1: redirect User to Workloaddiagram
-
-                        return "redirect:/calendar?view=" + viewId + "&day=" + LocalDate.now()
-                                        + "&coreCourse=" + coreCourseId;
-
-                }
-                if (viewId == 3) { // if viewID = 3: redirect User to SemesterView
-                        return "redirect:/calendar?view=" + viewId + "&coreCourse=" + coreCourseId;
-
-                }
-                return "redirect:/";
+                return "redirect:/calendar?view=" + viewId + "&day=" + LocalDate.now() + "&coreCourse=" + coreCourseId;
         }
 
         @GetMapping("/calendar")
@@ -95,7 +85,7 @@ public class weekAndSemesterViewController {
                 LocalDate monday = day.with(DayOfWeek.MONDAY);
                 mav.addObject("coreCourse", selectedCourse);
                 // add all necessary dates for scrolling
-                //TODO: necessary for all views?
+                // TODO: necessary for all views?
                 mav.addObject("monday", monday);
                 mav.addObject("nextMonday", monday.plusWeeks(1));
                 mav.addObject("lastMonday", monday.minusWeeks(1));

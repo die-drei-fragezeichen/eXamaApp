@@ -3,14 +3,11 @@ package ch.diedreifragezeichen.exama._landingControllers;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.*;
@@ -19,41 +16,39 @@ import ch.diedreifragezeichen.exama.assignments.exams.*;
 import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
 import ch.diedreifragezeichen.exama.assignments.workloadDistributions.*;
 import ch.diedreifragezeichen.exama._services.AppService;
-import ch.diedreifragezeichen.exama.assignments.*;
 import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
 import ch.diedreifragezeichen.exama.courses.*;
-import ch.diedreifragezeichen.exama.operator.*;
 import ch.diedreifragezeichen.exama.semesters.*;
-import ch.diedreifragezeichen.exama.users.*;
 import javassist.NotFoundException;
 
 @Controller
 public class teacherLanding {
     @Autowired
-    private ExamRepository examRepo;
-    @Autowired
     private ExamTypeRepository examtypeRepo;
     @Autowired
     private AvailablePrepTimeRepository availablePrepTimeRepo;
     @Autowired
-    private CourseRepository courseRepo;
-    @Autowired
-    private UserRepository userRepo;
-    @Autowired
     private WorkloadDistributionRepository distributionRepo;
-    @Autowired
-    private SemesterRepository semesterRepo;
     @Autowired
     AppService helper;
 
     @GetMapping("/teacher")
-    public ModelAndView teacherLandingPage(Model model) throws NotFoundException {
-
-        Authentication authLoggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepo.findUserByEmail(authLoggedInUser.getName());
+    public ModelAndView teacherLandingPage(@RequestParam(name = "day", required = false) String dayString)
+            throws NotFoundException {
         ModelAndView mav = new ModelAndView("teacherTemplates/index");
-        
-        Semester currentSemester = helper.getCurrentSemesterBasedOnDate(LocalDate.now());
+
+        LocalDate day = LocalDate.now().with(DayOfWeek.MONDAY);
+        LocalDate monday = day;
+        if (dayString != null && !dayString.equals("")) {
+            day = helper.getLocaldateFromString(dayString);
+            monday = day.with(DayOfWeek.MONDAY);
+        }
+
+        mav.addObject("monday", monday);
+        mav.addObject("nextMonday", monday.plusWeeks(1));
+        mav.addObject("lastMonday", monday.minusWeeks(1));
+
+        Semester currentSemester = helper.getCurrentSemesterBasedOnDate(day);
         Exam exam = new Exam();
         exam.setSemester(currentSemester);
         mav.addObject("exam", exam);
@@ -73,8 +68,61 @@ public class teacherLanding {
         List<WorkloadDistribution> listDist = distributionRepo.findAll();
         mav.addObject("allWorkloadDistributions", listDist);
 
-        List<Assignment> allTeacherAssignments = helper.getAssignmentsForSevenDaysList(helper.getAllTeacherStudentCourses(), LocalDate.now().with(DayOfWeek.MONDAY));
-        mav.addObject("assignments", allTeacherAssignments);
+        List<Assignment> allTeacherAssignmentsWeek = helper
+                .getAssignmentsForSevenDaysList(helper.getAllTeacherStudentCourses(), monday);
+        mav.addObject("assignments", allTeacherAssignmentsWeek);
+
+        return mav;
+    }
+
+    @GetMapping("/teacher/semester-overview")
+    public ModelAndView teacherSemesterOverview(@RequestParam(name = "day", required = false) String dayString)
+            throws NotFoundException {
+        ModelAndView mav = new ModelAndView("teacherTemplates/semesterOverview");
+
+        LocalDate day = LocalDate.now().with(DayOfWeek.MONDAY);
+        if (dayString != null && !dayString.equals("")) {
+            day = helper.getLocaldateFromString(dayString);
+        }
+
+        Semester semester = helper.getCurrentSemesterBasedOnDate(day);
+        mav.addObject("semester", semester);
+        Semester prevSemester = helper.getCurrentSemesterBasedOnDate(semester.getStartDate().minusDays(182));
+        if (prevSemester == null) {
+            mav.addObject("prevStartDate", null);
+        } else {
+            mav.addObject("prevStartDate", prevSemester.getStartDate().plusDays(1));
+        }
+        Semester nextSemester = helper.getCurrentSemesterBasedOnDate(semester.getEndDate().plusDays(182));
+
+        if (nextSemester == null) {
+            mav.addObject("nextStartDate", null);
+        } else {
+            mav.addObject("nextStartDate", nextSemester.getStartDate().plusDays(1));
+        }
+
+        Exam exam = new Exam();
+        exam.setSemester(semester);
+        mav.addObject("exam", exam);
+
+        Homework homework = new Homework();
+        mav.addObject("homework", homework);
+
+        List<Course> teacherStudentCourses = helper.getAllTeacherStudentCourses();
+        mav.addObject("allCourses", teacherStudentCourses);
+
+        List<ExamType> listTypes = examtypeRepo.findAll();
+        mav.addObject("allExamTypes", listTypes);
+
+        List<AvailablePrepTime> listPrepTimes = availablePrepTimeRepo.findAll();
+        mav.addObject("allPrepTimes", listPrepTimes);
+
+        List<WorkloadDistribution> listDist = distributionRepo.findAll();
+        mav.addObject("allWorkloadDistributions", listDist);
+
+        List<Assignment> allTeacherAssignmentsSemester = helper
+                .getAssignmentsForSemesterList(helper.getAllTeacherStudentCourses(), day);
+        mav.addObject("assignments", allTeacherAssignmentsSemester);
 
         return mav;
     }

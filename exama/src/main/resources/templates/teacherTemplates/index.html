@@ -12,12 +12,17 @@
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
+            
             <div class="welcome-text">Willkommen <b><span sec:authentication="name"></span></b>!</div>
+            
+            <div th:include="fragments/workloadViews/weekNavigation"></div>
             <div class="content-box-full">
-                <div class="content-box-header">Deine Woche</div>
+                <div class="content-box-header">Deine Woche vom Montag, [[${#temporals.format(monday, 'dd.MM.yyyy')}]]</div>
                 <div class="content-box-content">
                     <div th:include="fragments/workloadViews/assignmentsThisWeek"></div>
-                    <div>> alle ansehen</div>
+                    <br>
+                    <a th:unless="${#httpServletRequest.getParameter('day')} == null" th:href="@{/teacher/semester-overview?day={day}(day=${#httpServletRequest.getParameter('day')})}" class="save-button">ganzes Semester ansehen</a>
+                    <a th:if="${#httpServletRequest.getParameter('day')} == null" th:href="@{/teacher/semester-overview}" class="save-button">ganzes Semester ansehen</a>
                 </div>
             </div>
             <div th:include="fragments/elements/homeworkFormBox"></div>

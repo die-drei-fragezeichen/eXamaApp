@@ -306,6 +306,7 @@ textarea {
 
 .welcome-text {
     width: 100%;
+    height: 2em;
     text-align: center;
     clear: left;
     float: left;
