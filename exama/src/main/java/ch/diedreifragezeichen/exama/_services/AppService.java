@@ -232,10 +232,8 @@ public class AppService {
             for (int i = 0; i < workloadTotalSevenDaysArray.length; i++) {
                 LocalDate currentDay = weekDays.get(i);
                 List<Assignment> assignments = getOngoingAssignmentsForDateList(courses, currentDay);
-                if(assignments.isEmpty()) workloadTotalSevenDaysArray[i] = 0.5;
-                else workloadTotalSevenDaysArray[i] = Math.min(
+                workloadTotalSevenDaysArray[i] = Math.min(
                         assignments.stream().map(c -> c.getWorkloadValue(currentDay)).mapToDouble(w -> w).sum(), 1);
-                //workloadTotalSevenDaysArray[i] = 0.5;
             }
         }
         return workloadTotalSevenDaysArray;
@@ -261,7 +259,7 @@ public class AppService {
         // add every exam for the week
         return courses.stream().filter(c -> Objects.nonNull(c.getExams())).map(c -> c.getExams()).flatMap(List::stream)
                 .distinct().filter(e -> e.getDueDate().isAfter(date.minusDays(1)))
-                .filter(c -> Objects.nonNull(c.getStartDate())).filter(e -> e.getStartDate().isBefore(date.plusDays(1)))
+                .filter(e -> Objects.nonNull(e.getRealStartDate())).filter(e -> e.getRealStartDate().isBefore(date.plusDays(1)))
                 .collect(Collectors.toList());
     }
 
@@ -273,7 +271,7 @@ public class AppService {
         // add every exam for the week
         return courses.stream().filter(c -> Objects.nonNull(c.getHomeworks())).map(c -> c.getHomeworks())
                 .flatMap(List::stream).distinct().filter(e -> e.getDueDate().isAfter(date.minusDays(1)))
-                .filter(c -> Objects.nonNull(c.getStartDate())).filter(e -> e.getStartDate().isBefore(date.plusDays(1)))
+                .filter(h -> Objects.nonNull(h.getRealStartDate())).filter(h -> h.getRealStartDate().isBefore(date.plusDays(1)))
                 .collect(Collectors.toList());
     }
 

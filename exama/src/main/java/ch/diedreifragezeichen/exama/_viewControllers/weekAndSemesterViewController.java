@@ -97,7 +97,7 @@ public class weekAndSemesterViewController {
                 if (viewId == 1) {
                         // For WORKLOAD DIAGRAM add all workload, the eXam Factor and Exams for two
                         // weeks (all of which will be displayed)
-                        Double[] workloadTotalDaysList = helper.getWorkloadValueForSevenDaysArray(coreCourseId, monday);
+                        Double[] workloadTotalDaysList = helper.getOngoingWorkloadTotalSevenDaysArray(coreCourseId, monday);
                         mav.addObject("workloadValueList", workloadTotalDaysList);
 
                         List<Exam> examsThisWeek = helper.getExamsForSevenDaysList(selectedCourses, monday);

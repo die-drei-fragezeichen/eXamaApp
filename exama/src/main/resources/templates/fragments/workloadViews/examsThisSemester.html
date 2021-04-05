@@ -10,7 +10,7 @@
     <tbody>
         <!-- check if week is holiday, change background-->
         <tr th:each="monday, iStat : ${allMondays}"
-            th:style="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--gray);'"
+            th:style="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--gray);' : (${weeklyWorkload.get(iStat.index)} >= 2.4 ? 'background-color:var(--examRed);' : ((${weeklyWorkload.get(iStat.index)} < 0.6) ? 'background-color:var(--lighterGreen);' : ('background-color:var(--lightOrange);')))"
             th:with="currentUrl=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
             th:data-url="@{${currentUrl.replaceQueryParam('view', 1).replaceQueryParam('day', monday).toUriString()}}"
             th:onclick="window.location.href=this.getAttribute('data-url')"> <!--  : (${weeklyWorkload.get(iStat.index)} >= 2.4 ? 'background-color:var(--examRed);' : ((${weeklyWorkload.get(iStat.index)} < 0.6) ? 'background-color:var(--lighterGreen);' : ('background-color:var(--lightOrange);'))) -->
