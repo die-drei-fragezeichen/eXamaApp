@@ -73,6 +73,7 @@ public class weekAndSemesterViewController {
                         mav = new ModelAndView("generalTemplates/semesterListView.html");
                 } else {
                         // direct to diagramView
+                        viewId = 1l;
                         mav = new ModelAndView("generalTemplates/weekDiagramView.html");
                 }
                 LocalDate day = LocalDate.now();

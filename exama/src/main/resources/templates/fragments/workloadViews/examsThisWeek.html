@@ -10,7 +10,7 @@
     </thead>
     <tbody>
         <tr th:each="exam : ${examsThisWeek}">
-            <td th:text="${#temporals.format(exam.dueDate, 'dd.MM.yyyy')}"></td>
+            <td th:text="${#temporals.dayOfWeekNameShort(exam.dueDate)}+', '+${#temporals.format(exam.dueDate, 'dd.MM.')}"></td>
             <td th:text="${exam.course.subject.tag}"></td>
             <td th:text="${exam.examType.getName()}"></td>
             <td><a href="#">ansehen</a></td>

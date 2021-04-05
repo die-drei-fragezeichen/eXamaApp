@@ -217,6 +217,19 @@ public class AppService {
 
     /** ONGOING BLOCK */
 
+    /** Service 6 - Calculate Workload Value */
+    public double getOngoingWorkloadValueForSevenDays(Long coreCourseId, LocalDate monday) {
+
+        Double[] workloadTotalDaysArray = getOngoingWorkloadTotalSevenDaysArray(coreCourseId, monday);
+
+        // this method is not finished, but the value will define the background color
+        double sum = 0;
+        for (int i = 0; i < workloadTotalDaysArray.length; i++) {
+            sum += workloadTotalDaysArray[i];
+        }
+        return sum;
+    }
+
     /** Service 9a - Get ONGOING Workload total for each day of the week */
     public Double[] getOngoingWorkloadTotalSevenDaysArray(Long coreCourseId, LocalDate monday) {
         List<Course> allCourses = coreCourseRepo.findCoreCourseById(coreCourseId).getCourses();
@@ -294,7 +307,7 @@ public class AppService {
         // list.
         List<Double> workloadForEveryWeekList = new ArrayList<>();
         while (allMondaysIterator.hasNext()) {
-            workloadForEveryWeekList.add(getWorkloadValueForSevenDays(coreCourseId, allMondaysIterator.next()));
+            workloadForEveryWeekList.add(getOngoingWorkloadValueForSevenDays(coreCourseId, allMondaysIterator.next()));
         }
         return workloadForEveryWeekList;
 
@@ -479,7 +492,9 @@ public class AppService {
         // add every exam for the week
         courses.stream().filter(c -> Objects.nonNull(c.getExams())).map(c -> c.getExams()).flatMap(List::stream)
                 .distinct().filter(e -> e.getDueDate().isAfter(monday.minusDays(1)))
-                .filter(e -> e.getDueDate().isBefore(monday.plusDays(7))).collect(Collectors.toCollection(() -> exams));
+                .filter(e -> e.getDueDate().isBefore(monday.plusDays(7)))
+                .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
+                .collect(Collectors.toCollection(() -> exams));
 
         return exams;
     }

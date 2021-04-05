@@ -15,7 +15,7 @@
     </thead>
     <tbody>
         <tr th:each="assignment, iStat : ${assignments}"
-            th:style="${assignment.class.simpleName} == 'Exam' ? 'background-color:var(--examRed);' : ('background-color:var(--lighterGreen);')" th:classappend="${assignment.class.simpleName} == 'Exam' ? 'linkDetailExam' : (${assignment.class.simpleName} == 'Homework' ? 'linkDetailHomework' : '')" href="'/exams/details/'+${exam.id}">
+            th:style="${assignment.class.simpleName} == 'Exam' ? 'background-color:var(--lightOrange);' : ('background-color:var(--lighterOrange);')" th:classappend="${assignment.class.simpleName} == 'Exam' ? 'linkDetailExam' : (${assignment.class.simpleName} == 'Homework' ? 'linkDetailHomework' : '')" href="'/exams/details/'+${exam.id}">
             <!-- Date -->
             <td th:text="${#temporals.dayOfWeekNameShort(assignment.dueDate)} + ', ' + ${#temporals.format(assignment.dueDate, 'dd.MM.')}"></td>
             <!-- Course -->
