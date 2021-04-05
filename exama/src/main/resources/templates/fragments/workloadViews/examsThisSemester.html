@@ -10,14 +10,16 @@
     <tbody>
         <!-- check if week is holiday, change background-->
         <tr th:each="monday, iStat : ${allMondays}"
-            th:style="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--gray);' : (${weeklyWorkload.get(iStat.index)} >= 2.4 ? 'background-color:var(--examRed);' : ((${weeklyWorkload.get(iStat.index)} < 0.6) ? 'background-color:var(--lighterGreen);' : ('background-color:var(--lightOrange);')))" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-            th:data-url="@{${urlBuilder.replaceQueryParam('view', 1).replaceQueryParam('day', monday).toUriString()}}" th:onclick="window.location.href=this.getAttribute('data-url')">
-            
+            th:style="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})} ? 'background-color:var(--gray);'"
+            th:with="currentUrl=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+            th:data-url="@{${currentUrl.replaceQueryParam('view', 1).replaceQueryParam('day', monday).toUriString()}}"
+            th:onclick="window.location.href=this.getAttribute('data-url')"> <!--  : (${weeklyWorkload.get(iStat.index)} >= 2.4 ? 'background-color:var(--examRed);' : ((${weeklyWorkload.get(iStat.index)} < 0.6) ? 'background-color:var(--lighterGreen);' : ('background-color:var(--lightOrange);'))) -->
             <!-- If the school week is a holiday, print the holiday name, collapse row, if current week, style bold -->
             <td th:if="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}"
                 colspan="100%" th:text="${iStat.count} + ' ' + ${allHolidayDates.get(monday)}"
                 th:style="${#lists.contains(allDaysForTheWeek, monday)} ? 'font-weight: bold;'">
-                <!-- Else write the Monday and Date, if current week, style bold.-->
+            </td>
+            <!-- Else write the Monday and Date, if current week, style bold.-->
             <td th:unless="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}"
                 th:text="${iStat.count} + ' ' + ${#temporals.dayOfWeekNameShort(monday)} +', ' + ${#temporals.format(monday, 'dd.MM')}"
                 th:style="${#lists.contains(allDaysForTheWeek, monday)} ? 'font-weight: bold;'">
@@ -28,10 +30,11 @@
             <td th:unless="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}"
                 th:each="subject: ${userSubjects}"
                 th:text="${#maps.containsKey(allExams.get(iStat.index), subject.getTag())} ? (${allExams.get(iStat.index).get(subject.getTag()).countingFactor} >= 1 ? ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)} : (('(' + ${#temporals.dayOfWeekNameShort(allExams.get(iStat.index).get(subject.getTag()).dueDate)} + ')')))"
-                th:style="'text-align:center;'" </td>
+                th:style="'text-align:center;'">
+            </td>
 
 
-                <!-- Only if some of the days of the week are holidays, change the background color and write a comment -->
+            <!-- Only if some of the days of the week are holidays, change the background color and write a comment -->
             <td th:unless="${#maps.containsAllKeys(allHolidayDates, new Object[] {monday, monday.plusDays(1), monday.plusDays(2), monday.plusDays(3), monday.plusDays(4)})}"
                 th:text="${#maps.containsKey(allHolidayDates, monday)} ? ${allHolidayDates.get(monday).getName()} : (${#maps.containsKey(allHolidayDates, monday.plusDays(1))} ? ${allHolidayDates.get(monday.plusDays(1)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(2))} ? ${allHolidayDates.get(monday.plusDays(2)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(3))} ? ${allHolidayDates.get(monday.plusDays(3)).getName()}: (${#maps.containsKey(allHolidayDates, monday.plusDays(4))} ? ${allHolidayDates.get(monday.plusDays(4)).getName()}))))"
                 th:style="${#maps.containsKey(allHolidayDates, monday)} ?'background-color:var(--gray);': (${#maps.containsKey(allHolidayDates, monday.plusDays(1))} ?'background-color:var(--gray);': (${#maps.containsKey(allHolidayDates, monday.plusDays(2))} ?'background-color:var(--gray);' :(${#maps.containsKey(allHolidayDates, monday.plusDays(3))} ?'background-color:var(--gray);':(${#maps.containsKey(allHolidayDates, monday.plusDays(4))} ?'background-color:var(--gray);'))))">
@@ -39,3 +42,7 @@
         </tr>
     </tbody>
 </table>
+
+<!--
+    
+-->

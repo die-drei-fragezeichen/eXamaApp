@@ -1,0 +1,44 @@
+<h1>Prüfung Details</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Exam ID</th>
+            <th>Semester</th>
+            <th>Name</th>
+            <th>Beschreibung</th>
+            <th>editDate</th>
+            <th>startDate</th>
+            <th>dueDate</th>
+            <th>Kurs</th>
+            <th>Faktor</th>
+            <th>Pruefungstyp</th>
+            <th>ungefähre Vorbereitungszeit (optional)</th>
+            <th>Preptime</th>
+            <th>Distribution</th>
+            <th>Creator</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td th:text="${exam.id}"></td>
+            <td th:text="${exam.semester}"></td>
+            <td th:text="${exam.name}"></td>
+            <td th:text="${exam.description}"></td>
+            <td th:text="${exam.editDate}"></td>
+            <td th:text="${exam.startDate}"></td>
+            <td th:text="${exam.dueDate}"></td>
+            <td th:text="${exam.course}"></td>
+            <td th:text="${exam.countingFactor}"></td>
+            <td th:text="${exam.examType.getName()}"></td>
+            <td th:text="${exam.workloadMinutesTotal} == 0 ? '-' : ${exam.workloadMinutesTotal}"></td>
+            <td th:text="${exam.availablePrepTime.getName()}"></td>
+            <td th:text="${exam.workloadDistribution}"></td>
+            <td th:text="${exam.creator}"></td>
+            <td><a th:href="@{/exams/edit?id={id}(id=${exam.id})}">bearbeiten</a></td>
+            <td><a th:href="@{/exams/delete?id={id}(id=${exam.id})}">löschen</a></td>
+        </tr>
+    </tbody>
+</table>

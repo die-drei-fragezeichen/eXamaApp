@@ -7,18 +7,17 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.diedreifragezeichen.exama._services.AppService;
 import ch.diedreifragezeichen.exama.assignments.assignment.Assignment;
-import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTime;
 import ch.diedreifragezeichen.exama.assignments.availablePrepTimes.AvailablePrepTimeRepository;
-import ch.diedreifragezeichen.exama.assignments.examTypes.ExamType;
 import ch.diedreifragezeichen.exama.assignments.examTypes.ExamTypeRepository;
 import ch.diedreifragezeichen.exama.assignments.exams.Exam;
-import ch.diedreifragezeichen.exama.assignments.homeworks.Homework;
-import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDistribution;
+import ch.diedreifragezeichen.exama.assignments.exams.ExamRepository;
 import ch.diedreifragezeichen.exama.assignments.workloadDistributions.WorkloadDistributionRepository;
 import ch.diedreifragezeichen.exama.courses.*;
 import ch.diedreifragezeichen.exama.semesters.Holiday;
@@ -39,6 +38,8 @@ public class weekAndSemesterViewController {
         AvailablePrepTimeRepository availablePrepTimeRepo;
         @Autowired
         WorkloadDistributionRepository distributionRepo;
+        @Autowired
+        ExamRepository examRepo;
         @Autowired
         AppService helper;
 
@@ -189,5 +190,13 @@ public class weekAndSemesterViewController {
                 }
 
                 return mav;
+        }
+
+        @GetMapping("/exams/detail/{id}")
+        public String viewOrEditExam(@PathVariable("id") long id, Model model, RedirectAttributes ra){
+                Exam exam = examRepo.findExamById(id);
+                model.addAttribute("exam", exam);
+                model.addAttribute("pageTitle", "Prüfung: "+exam.getName());
+                return "generalTemplates/examDetails";
         }
 }

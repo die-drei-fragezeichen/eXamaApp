@@ -60,13 +60,13 @@ public class AppService {
     private CourseRepository courseRepo;
 
     @Autowired
-    private ExamTypeRepository examtypeRepo;
+    ExamTypeRepository examtypeRepo;
 
     @Autowired
-    private AvailablePrepTimeRepository availablePrepTimeRepo;
+    AvailablePrepTimeRepository availablePrepTimeRepo;
 
     @Autowired
-    private WorkloadDistributionRepository distributionRepo;
+    WorkloadDistributionRepository distributionRepo;
 
     @PersistenceContext
     private EntityManager em;
@@ -188,7 +188,7 @@ public class AppService {
     }
 
     /** Service 12 - returns the school semester of any given date */
-    public Semester getCurrentSemesterBasedOnDate(LocalDate date) { // throws NotFoundException {
+    public Semester getCurrentSemesterBasedOnDate(LocalDate date) {//throws NotFoundException {
         List<Semester> earlierSemesters = semesterRepo.findAll().stream().filter(s -> s.isEnabled())
                 .filter(s -> s.getStartDate().isBefore(date)).collect(Collectors.toList());
 
@@ -297,6 +297,11 @@ public class AppService {
     // * ASSIGNMENT RELATED SERVICES */
 
     /** Service 1a */
+    public long calculateNumberOfExam(List<Exam> allExams) {
+
+        return allExams.stream().filter(e -> Objects.nonNull(e.getId())).map(e -> e.getId()).distinct().count();
+    }
+
     public ModelAndView getAssignmentBoxInformation(ModelAndView mav, Semester currentSemester) {
         Exam exam = new Exam();
         exam.setSemester(currentSemester);
@@ -315,12 +320,6 @@ public class AppService {
         List<WorkloadDistribution> listDist = distributionRepo.findAll();
         mav.addObject("allWorkloadDistributions", listDist);
         return mav;
-    }
-
-    /** Service 1a */
-    public long calculateNumberOfExam(List<Exam> allExams) {
-
-        return allExams.stream().filter(e -> Objects.nonNull(e.getId())).map(e -> e.getId()).distinct().count();
     }
 
     /** Service 1b */
@@ -450,11 +449,12 @@ public class AppService {
     /**
      * Service 10c - Get every homework for a particular week for list of courses
      */
-    public List<Homework> getHomeworkForSevenDaysList(List<Course> coreCourses, LocalDate monday) {
+    public List<Homework> getHomeworkForSevenDaysList(List<Course> courses, LocalDate monday) {
         List<Homework> homework = new ArrayList<>();
         // add every homework for the week
-        coreCourses.stream().filter(c -> Objects.nonNull(c.getHomeworks())).map(c -> c.getHomeworks())
-                .flatMap(List::stream).distinct().filter(e -> e.getDueDate().isAfter(monday.minusDays(1)))
+        courses.stream().filter(c -> Objects.nonNull(c.getHomeworks())).map(c -> c.getHomeworks()).flatMap(List::stream)
+                .distinct().filter(e -> e.getDueDate().isAfter(monday.minusDays(1)))
+                .filter(e -> e.getDueDate().isBefore(monday.plusDays(7)))
                 .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
                 .collect(Collectors.toCollection(() -> homework));
 
@@ -474,6 +474,7 @@ public class AppService {
                 .filter(e -> e.getDueDate().isBefore(getCurrentSemesterBasedOnDate(monday).getEndDate().plusDays(1)))
                 .sorted((e1, e2) -> e1.getDueDate().compareTo(e2.getDueDate()))
                 .collect(Collectors.toCollection(() -> homework));
+
         return homework;
     }
 
