@@ -43,16 +43,16 @@ public class weekAndSemesterViewController {
         @Autowired
         AppService helper;
 
-        @GetMapping("/calendarchoose")
-        public String calendarChoose(@RequestParam(name = "view") Long viewId,
-                        @RequestParam(name = "coreCourse") Long coreCourseId) {
+        // @GetMapping("/calendarchoose")
+        // public String calendarChoose(@RequestParam(name = "view") Long viewId,
+        //                 @RequestParam(name = "coreCourse") Long coreCourseId) {
 
-                return "redirect:/calendar?view=" + viewId + "&day=" + LocalDate.now() + "&coreCourse=" + coreCourseId;
-        }
+        //         return "redirect:/calendar?view=" + viewId + "&coreCourse=" + coreCourseId;
+        // }
 
         @GetMapping("/calendar")
         public ModelAndView workloadDiagram(@RequestParam(name = "view") Long viewId,
-                        @RequestParam(name = "day") String dayString,
+                        @RequestParam(name = "day", required=false) String dayString,
                         @RequestParam(name = "coreCourse") Long coreCourseId) throws NotFoundException {
                 /** Security Check */
                 User user = helper.getCurrentUser();
@@ -81,8 +81,10 @@ public class weekAndSemesterViewController {
                         // direct to diagramView
                         mav = new ModelAndView("generalTemplates/weekDiagramView.html");
                 }
-
-                LocalDate day = helper.getLocaldateFromString(dayString);
+                LocalDate day = LocalDate.now();
+                if(!dayString.equals("") || dayString!=null){
+                        day = helper.getLocaldateFromString(dayString);
+                }
                 LocalDate monday = day.with(DayOfWeek.MONDAY);
                 mav.addObject("coreCourse", selectedCourse);
                 // add all necessary dates for scrolling
