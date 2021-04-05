@@ -60,11 +60,11 @@ public class weekAndSemesterViewController {
                 CoreCourse selectedCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
                 // if chosen CoreCourse empty, if coreCourse wrong -> redirect home
                 // TODO: later errorpage
-                if (selectedCourse == null
+               /*  if (selectedCourse == null
                                 || (helper.currentUserIsA("Student") && !user.getCoreCourse().equals(selectedCourse))
                                 || (helper.currentUserIsA("Teacher") && !userCoreCourses.contains(selectedCourse))) {
                         return new ModelAndView("redirect:/");
-                }
+                } */
 
                 // manage user directing
                 ModelAndView mav;
