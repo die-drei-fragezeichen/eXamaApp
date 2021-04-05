@@ -37,12 +37,11 @@ public class teacherLanding {
             throws NotFoundException {
         ModelAndView mav = new ModelAndView("teacherTemplates/index");
 
-        LocalDate day = LocalDate.now().with(DayOfWeek.MONDAY);
-        LocalDate monday = day;
-        if (dayString != null && !dayString.equals("")) {
+        LocalDate day = LocalDate.now();
+        if (dayString != null) {
             day = helper.getLocaldateFromString(dayString);
-            monday = day.with(DayOfWeek.MONDAY);
         }
+        LocalDate monday = day.with(DayOfWeek.MONDAY);
 
         mav.addObject("monday", monday);
         mav.addObject("nextMonday", monday.plusWeeks(1));

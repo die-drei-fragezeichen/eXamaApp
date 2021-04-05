@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import ch.diedreifragezeichen.exama._services.AppService;
 import ch.diedreifragezeichen.exama.courses.CoreCourse;
 import ch.diedreifragezeichen.exama.courses.Course;
 import ch.diedreifragezeichen.exama.semesters.Holiday;
@@ -34,6 +35,8 @@ public class MvcControllerAdvice {
     HolidayRepository holidayRepo2;
     @Autowired
     SemesterRepository semesterRepo2;
+    @Autowired
+    AppService helper;
 
     // @ModelAttribute("currentUser")
     // public User getCurrentUser(){
@@ -61,7 +64,7 @@ public class MvcControllerAdvice {
         if (currentUser == null || currentUser.getCourses() == null) {
             return null;
         }
-        return currentUser.getCoreCourses();
+        return helper.getAllTeacherStudentCoreCourses();
     }
 
     @ModelAttribute("allHolidayDays")

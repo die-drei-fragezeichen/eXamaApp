@@ -188,7 +188,7 @@ public class AppService {
     }
 
     /** Service 12 - returns the school semester of any given date */
-    public Semester getCurrentSemesterBasedOnDate(LocalDate date) {//throws NotFoundException {
+    public Semester getCurrentSemesterBasedOnDate(LocalDate date) {// throws NotFoundException {
         List<Semester> earlierSemesters = semesterRepo.findAll().stream().filter(s -> s.isEnabled())
                 .filter(s -> s.getStartDate().isBefore(date)).collect(Collectors.toList());
 
@@ -214,6 +214,72 @@ public class AppService {
         }
         return allMondays;
     }
+
+    /** ONGOING BLOCK */
+
+    /** Service 9a - Get ONGOING Workload total for each day of the week */
+    public Double[] getOngoingWorkloadTotalSevenDaysArray(Long coreCourseId, LocalDate monday) {
+        List<Course> allCourses = coreCourseRepo.findCoreCourseById(coreCourseId).getCourses();
+        return getOngoingWorkloadTotalSevenDaysArray(allCourses, monday);
+    }
+
+    /** Service C - Get ONGOING Workload total for each day of the week */
+    public Double[] getOngoingWorkloadTotalSevenDaysArray(List<Course> courses, LocalDate monday) {
+        List<LocalDate> weekDays = getAllDatesBetweenAndWith(monday, monday.plusDays(6));
+        // Calculate Workload Values for each day
+        Double[] workloadTotalSevenDaysArray = new Double[7];
+        {
+            for (int i = 0; i < workloadTotalSevenDaysArray.length; i++) {
+                LocalDate currentDay = weekDays.get(i);
+                List<Assignment> assignments = getOngoingAssignmentsForDateList(courses, currentDay);
+                if(assignments.isEmpty()) workloadTotalSevenDaysArray[i] = 0.5;
+                else workloadTotalSevenDaysArray[i] = Math.min(
+                        assignments.stream().map(c -> c.getWorkloadValue(currentDay)).mapToDouble(w -> w).sum(), 1);
+                //workloadTotalSevenDaysArray[i] = 0.5;
+            }
+        }
+        return workloadTotalSevenDaysArray;
+    }
+
+    /**
+     * Service B - return all the ONGOING Assignments for a week of a particular
+     * user
+     */
+    public List<Assignment> getOngoingAssignmentsForDateList(List<Course> courses, LocalDate date) {
+
+        List<Assignment> assignments = new ArrayList<>();
+        assignments.addAll(getOngoingExamsForDateList(courses, date));
+        assignments.addAll(getOngoingHomeworkForDateList(courses, date));
+
+        return assignments;
+    }
+    /**
+     * Service Aa - Get every ONGOING exam for a particular DATE for List of
+     * courses
+     */
+    public List<Exam> getOngoingExamsForDateList(List<Course> courses, LocalDate date) {
+        // add every exam for the week
+        return courses.stream().filter(c -> Objects.nonNull(c.getExams())).map(c -> c.getExams()).flatMap(List::stream)
+                .distinct().filter(e -> e.getDueDate().isAfter(date.minusDays(1)))
+                .filter(c -> Objects.nonNull(c.getStartDate())).filter(e -> e.getStartDate().isBefore(date.plusDays(1)))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Service Ab - Get every ONGOING exam for a particular DATE for List of
+     * courses
+     */
+    public List<Homework> getOngoingHomeworkForDateList(List<Course> courses, LocalDate date) {
+        // add every exam for the week
+        return courses.stream().filter(c -> Objects.nonNull(c.getHomeworks())).map(c -> c.getHomeworks())
+                .flatMap(List::stream).distinct().filter(e -> e.getDueDate().isAfter(date.minusDays(1)))
+                .filter(c -> Objects.nonNull(c.getStartDate())).filter(e -> e.getStartDate().isBefore(date.plusDays(1)))
+                .collect(Collectors.toList());
+    }
+
+
+    /** ONGOING BLOCK END */
+
 
     /** WORKLOAD RELATED SERVICES */
 

@@ -97,12 +97,6 @@ public class User {
 		return courseList;
 	}
 
-	public List<CoreCourse> getCoreCourses() {
-		return this.getCoursesList().stream().filter(c -> Objects.nonNull(c.getAllCoreCourses()))
-				.map(Course::getAllCoreCourses).flatMap(List::stream)
-				.sorted((c1, c2) -> c1.getName().compareTo(c2.getName())).distinct().collect(Collectors.toList());
-	}
-
 	/**
 	 * Getters and Setters only
 	 */

@@ -43,28 +43,22 @@ public class weekAndSemesterViewController {
         @Autowired
         AppService helper;
 
-        // @GetMapping("/calendarchoose")
-        // public String calendarChoose(@RequestParam(name = "view") Long viewId,
-        //                 @RequestParam(name = "coreCourse") Long coreCourseId) {
-
-        //         return "redirect:/calendar?view=" + viewId + "&coreCourse=" + coreCourseId;
-        // }
-
         @GetMapping("/calendar")
         public ModelAndView workloadDiagram(@RequestParam(name = "view") Long viewId,
-                        @RequestParam(name = "day", required=false) String dayString,
+                        @RequestParam(name = "day", required = false) String dayString,
                         @RequestParam(name = "coreCourse") Long coreCourseId) throws NotFoundException {
                 /** Security Check */
                 User user = helper.getCurrentUser();
-                List<CoreCourse> userCoreCourses = user.getCoreCourses();
+                List<CoreCourse> userCoreCourses = helper.currentUserIsA("Teacher")
+                                ? helper.getAllTeacherStudentCoreCourses()
+                                : null;
                 CoreCourse selectedCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
                 // if chosen CoreCourse empty, if coreCourse wrong -> redirect home
-                // TODO: later errorpage
-               /*  if (selectedCourse == null
+                if (selectedCourse == null
                                 || (helper.currentUserIsA("Student") && !user.getCoreCourse().equals(selectedCourse))
                                 || (helper.currentUserIsA("Teacher") && !userCoreCourses.contains(selectedCourse))) {
                         return new ModelAndView("redirect:/");
-                } */
+                }
 
                 // manage user directing
                 ModelAndView mav;
@@ -82,10 +76,12 @@ public class weekAndSemesterViewController {
                         mav = new ModelAndView("generalTemplates/weekDiagramView.html");
                 }
                 LocalDate day = LocalDate.now();
-                if(!dayString.equals("") || dayString!=null){
-                        day = helper.getLocaldateFromString(dayString);
+                if (dayString != null) {
+                day = helper.getLocaldateFromString(dayString);
                 }
                 LocalDate monday = day.with(DayOfWeek.MONDAY);
+                
+               
                 mav.addObject("coreCourse", selectedCourse);
                 // add all necessary dates for scrolling
                 // TODO: necessary for all views?
@@ -195,10 +191,10 @@ public class weekAndSemesterViewController {
         }
 
         @GetMapping("/exams/detail/{id}")
-        public String viewOrEditExam(@PathVariable("id") long id, Model model, RedirectAttributes ra){
+        public String viewOrEditExam(@PathVariable("id") long id, Model model, RedirectAttributes ra) {
                 Exam exam = examRepo.findExamById(id);
                 model.addAttribute("exam", exam);
-                model.addAttribute("pageTitle", "Prüfung: "+exam.getName());
+                model.addAttribute("pageTitle", "Prüfung: " + exam.getName());
                 return "generalTemplates/examDetails";
         }
 }
