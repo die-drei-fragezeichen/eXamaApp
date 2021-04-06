@@ -32,8 +32,8 @@ public class CoreCourseRepositoryTest {
     
         //when
         CoreCourse expected = underTest.findCoreCourseById(id);
-
         //then
+        //assertThat(expected).isEqualTo(coreCourse);
         assertThat(expected.getName()).isEqualTo("1A");
         assertThat(expected.getId()).isEqualTo(1L);
         assertThat(expected.isEnabled()).isTrue();
