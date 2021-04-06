@@ -29,12 +29,6 @@ public class CoreCourseControllerTest {
 
     @MockBean
     private CoreCourseRepository repo;
-    @MockBean
-    private UserRepository userRepo;
-    @MockBean
-    private RoleRepository roleRepo;
-    @MockBean
-    private EntityManager em;
 
     @Test
     void testGetCoreCourses() throws Exception{
