@@ -72,7 +72,7 @@
                 
                     <a class="grid-item" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN')" href="homeworks/show">Hausaufgaben</a>
                 
-                    <a class="grid-item" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN', 'TEACHER', 'STUDENT')" href="semesterView/choose"> Semesterübersicht</a>
+                    <a class="grid-item" sec:authorize="hasAnyAuthority('SYSTEMADMIN', 'ADMIN', 'TEACHER', 'STUDENT')" th:href="@{/calendar?view=3&coreCourse={cc}(cc=${coreCoursesCurrentUser.get(0).id})}"> Semesterübersicht</a>
                    
                 </div>
             </div>
