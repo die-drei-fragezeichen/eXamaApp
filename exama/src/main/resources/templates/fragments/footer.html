@@ -42,10 +42,10 @@
         dateFormat: "yy-mm-dd",
         firstDay: 1,
         //defines how many months are shown in the view
-        numberOfMonths: 2,
+        numberOfMonths: 1,
         //allows changing the month/year in the calender view
         changeMonth: true,
-        changeYear: true,
+        changeYear: false,
         //alternative for "today" minDate: 0
         //this function activates the "restrictions"
         beforeShowDay: DisableDates,
@@ -60,9 +60,9 @@
         .datepicker({
           dateFormat: "yy-mm-dd",
           firstDay: 1,
-          numberOfMonths: 2,
+          numberOfMonths: 1,
           changeMonth: true,
-          changeYear: true,
+          changeYear: false,
           beforeShowDay: DisableDates,
           minDate: semesterStart,
           maxDate: semesterEnd,
@@ -74,10 +74,10 @@
         to = $("#toDate").datepicker({
           dateFormat: "yy-mm-dd",
           firstDay: 1,
-          numberOfMonths: 2,
+          numberOfMonths: 1,
           beforeShowDay: DisableDates,
           changeMonth: true,
-          changeYear: true,
+          changeYear: false,
           minDate: semesterStart,
           maxDate: semesterEnd,
         })
@@ -88,10 +88,10 @@
         to = $("#toDate2").datepicker({
           dateFormat: "yy-mm-dd",
           firstDay: 1,
-          numberOfMonths: 2,
+          numberOfMonths: 1,
           beforeShowDay: DisableDates,
           changeMonth: true,
-          changeYear: true,
+          changeYear: false,
           minDate: semesterStart,
           maxDate: semesterEnd,
         })
