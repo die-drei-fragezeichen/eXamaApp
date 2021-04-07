@@ -7,10 +7,11 @@
 
 ### Backend:
 - continuous development of project architecture and component logic database support
+- user registration
 - initial JPA unit tests for base components
 - Spring framework research (hitherto unknown)
 - development of main app controllers and services
-- continuous general java code refinement and refactoring, e.g. work java stream or work with localDate objects (bug fix)
+- continuous java code refinement and refactoring, e.g. work java stream or work with localDate objects (bug fix)
 
 ### Frontend:
 - giant leaps into understanding css, html (hitherto completely unknown) 
