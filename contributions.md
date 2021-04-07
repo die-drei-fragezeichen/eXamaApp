@@ -4,6 +4,7 @@
 ### Documentation:
 - Co-development of project mock up
 - Parts of user story development / review
+- 1st Presentation
 
 ### Backend:
 - continuous development of project architecture and component logic database support
@@ -25,6 +26,7 @@
 - Co-Development of project mock up
 - development of prototype in Adobe XD
 - production of prototype video
+- 2nd Presentation
 
 ### Backend:
 - main architecture and Logic of courses, users, coreCourses, subjects (Classes and database)
@@ -41,3 +43,22 @@
 
 ### Deployment
 - setting up ubuntu webserver with exama-service (running jar-file), mysql-database and domain-mapping
+
+
+## Kosta Kyriases
+### Documentation:
+- Relation-Entity-Model for Database
+- Co-Development Component- & Deployment-Diagramm
+- 3rd Presentation
+
+### Backend:
+- Co-Development courses
+- Co-Development courseNavigation 
+- Unit- & Integrationtests
+
+### Frontend:
+- ProfileView (HTML & CSS)
+- Confirm-Password-Functionality (Javascript)
+
+
+
