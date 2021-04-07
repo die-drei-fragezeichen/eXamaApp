@@ -7,7 +7,7 @@
 
 ### Backend:
 - continuous development of project architecture and component logic database support
-- user registration
+- user registration & role-based user login
 - initial JPA unit tests for base components
 - Spring framework research (hitherto unknown)
 - development of main app controllers and services
