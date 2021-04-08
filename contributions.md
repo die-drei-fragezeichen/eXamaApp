@@ -47,7 +47,7 @@
 
 ## Kosta Kyriases
 ### Documentation:
-- Relation-Entity-Model for Database
+- Entity-Relationship-Model for Database
 - Co-Development Component- & Deployment-Diagramm
 - 3rd Presentation
 
