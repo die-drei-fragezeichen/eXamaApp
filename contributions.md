@@ -60,5 +60,15 @@
 - ProfileView (HTML & CSS)
 - Confirm-Password-Functionality (Javascript)
 
+## Benedict Grupp
+### Documentation:
+- Parts of User-Stories
+- 5th Presentation
+
+### Backend:
+- Co-Development Homework
+- Co-Development HomeworkRepository 
+- Unittests
+
 
 
