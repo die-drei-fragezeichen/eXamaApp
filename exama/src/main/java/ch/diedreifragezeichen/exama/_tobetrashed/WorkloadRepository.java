@@ -1,9 +1,8 @@
-package ch.diedreifragezeichen.exama._tobetrashed;
-/* package ch.diedreifragezeichen.exama.assignments.workloadDistributions;
+// package ch.diedreifragezeichen.exama._tobetrashed;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+// import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WorkloadRepository extends JpaRepository<Workload, Long> {
+// public interface WorkloadRepository extends JpaRepository<Workload, Long> {
 
-    public Workload findWorkloadById(Long id);
-} */
+//     public Workload findWorkloadById(Long id);
+// }

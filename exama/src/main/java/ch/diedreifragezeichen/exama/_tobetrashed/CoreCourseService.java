@@ -1,5 +1,4 @@
-package ch.diedreifragezeichen.exama._tobetrashed;
-// package ch.diedreifragezeichen.exama._unused;
+// package ch.diedreifragezeichen.exama._tobetrashed;
 
 // import javax.persistence.*;
 // import javax.transaction.Transactional;
