@@ -60,6 +60,20 @@
 - ProfileView (HTML & CSS)
 - Confirm-Password-Functionality (Javascript)
 
+
+## Jacqueline Issa
+### Documentation:
+- Co-Development Component- & Deployment-Diagramm
+- 4th Presentation
+
+### Backend:
+- landing-page
+- Settings
+
+### Frontend:
+- landing-page
+
+
 ## Benedict Grupp
 ### Documentation:
 - Parts of User-Stories
