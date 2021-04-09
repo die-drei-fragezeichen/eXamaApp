@@ -64,11 +64,13 @@
 ## Jacqueline Issa
 ### Documentation:
 - Co-Development Component- & Deployment-Diagramm
+- Co-Development of User Stories
 - 4th Presentation
 
 ### Backend:
-- landing-page
+- landing-page 
 - Settings
+- Started to work on week view incl. development of automated dates (localedate). 
 
 ### Frontend:
 - landing-page
