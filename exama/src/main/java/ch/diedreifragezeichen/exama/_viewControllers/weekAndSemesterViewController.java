@@ -55,7 +55,7 @@ public class weekAndSemesterViewController {
                 CoreCourse selectedCourse = coreCourseRepo.findCoreCourseById(coreCourseId);
                 // if chosen CoreCourse empty, if coreCourse wrong -> redirect home
                 if (selectedCourse == null
-                                || (helper.currentUserIsA("Student") && !user.getCoreCourse().equals(selectedCourse))
+                                || (helper.currentUserIsA("Student") && !user.getCoreCourse().getName().equals(selectedCourse.getName()))
                                 || (helper.currentUserIsA("Teacher") && !userCoreCourses.contains(selectedCourse))) {
                         return new ModelAndView("redirect:/");
                 }
@@ -116,6 +116,9 @@ public class weekAndSemesterViewController {
                         // add ALL EXAMS for examBar
                         List<Exam> exams = helper.getExamsForSevenDaysList(selectedCourses, monday);
                         mav.addObject("allWeekExams", exams);
+                        for(Assignment e : assignments){
+                                System.out.println(e.getName());
+                        }
 
                 } else { // viewId == 3
                          // TODO: figure out how to steer this

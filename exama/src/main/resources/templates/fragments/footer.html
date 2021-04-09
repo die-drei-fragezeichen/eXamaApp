@@ -1,21 +1,5 @@
 <!-- footer with navigation (only mobile) -->
 <div th:fragment="footer">
-  <!-- <div id="footer">
-    <div id="navigation-footer">
-      <a th:href="@{/}">
-        <div class="navigation-footer-item nav2-home"></div>
-      </a>
-      <a th:href="@{/calendarchoose?view=1&coreCourse={cc}(cc=${coreCoursesCurrentUser.get(0).id})}">
-        <div class="navigation-footer-item nav2-calendar"></div>
-      </a>
-      <a th:href="@{/exams/create}">
-        <div class="navigation-footer-item nav2-notifications"></div>
-      </a>
-      <a th:href="@{/profile}">
-        <div class="navigation-footer-item nav2-settings"></div>
-      </a>
-    </div>
-  </div> -->
 
   <script th:inline="javascript">
     var i = 1;
@@ -45,7 +29,7 @@
         numberOfMonths: 1,
         //allows changing the month/year in the calender view
         changeMonth: true,
-        changeYear: false,
+        // changeYear: false,
         //alternative for "today" minDate: 0
         //this function activates the "restrictions"
         beforeShowDay: DisableDates,
@@ -62,10 +46,10 @@
           firstDay: 1,
           numberOfMonths: 1,
           changeMonth: true,
-          changeYear: false,
+          // changeYear: false,
           beforeShowDay: DisableDates,
           minDate: semesterStart,
-          maxDate: semesterEnd,
+          maxDate: semesterEnd
         })
         .on("change", function () {
           to.datepicker("option", "minDate", getDate(this));
@@ -77,9 +61,9 @@
           numberOfMonths: 1,
           beforeShowDay: DisableDates,
           changeMonth: true,
-          changeYear: false,
+          // changeYear: false,
           minDate: semesterStart,
-          maxDate: semesterEnd,
+          maxDate: semesterEnd
         })
           .on("change", function () {
             from.datepicker("option", "maxDate", getDate(this));
@@ -91,9 +75,9 @@
           numberOfMonths: 1,
           beforeShowDay: DisableDates,
           changeMonth: true,
-          changeYear: false,
+          // changeYear: false,
           minDate: semesterStart,
-          maxDate: semesterEnd,
+          maxDate: semesterEnd
         })
           .on("change", function () {
             from.datepicker("option", "maxDate", getDate(this));
@@ -140,4 +124,5 @@
       $(a).is(":hidden") ? $(b).removeClass("rotate180") : $(b).addClass("rotate180");
     }
   </script>
+
 </div>

@@ -8,7 +8,7 @@
         <!-- header with navigation (only desktop and tablet), title and logout-button -->
         <div th:include="fragments/header :: header"></div>
 
-        <div th:include="fragments/coursenavigation :: coursenavigation"></div>
+        <div  sec:authorize="hasAnyAuthority('TEACHER')" th:include="fragments/coursenavigation :: coursenavigation"></div>
 
         <!-- content displayed in the center of the window -->
         <div id="content-wrapper">
@@ -25,8 +25,8 @@
                     <span>Woche vom Montag, [[${#temporals.format(monday, 'dd.MM.yyyy')}]]</span>
                 </div>
                 <div class="content-box-content">
-                    <div sec:authorize="hasAnyAuthority('TEACHER')" th:include="fragments/workloadViews/viewNavigation"></div>
-                    <div sec:authorize="hasAnyAuthority('TEACHER')" th:include="fragments/workloadViews/assignmentsThisWeek"></div>
+                    <div th:include="fragments/workloadViews/viewNavigation"></div>
+                    <div th:include="fragments/workloadViews/assignmentsThisWeek"></div>
                 </div>
             </div>
 

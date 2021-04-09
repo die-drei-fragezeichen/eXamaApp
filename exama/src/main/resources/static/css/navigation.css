@@ -128,14 +128,15 @@
 
 
 .nav-logout{
-    width: calc(var(--naviHeight) * 0.9);
-    height: calc(var(--naviHeight) * 0.9);
-    margin: 0;
-    background-image:url(img/navigation-icons/logout-w.svg);
-    background-size: contain;
-    background-repeat: no-repeat;
+    position: relative;
+    width: var(--naviHeight);
+    height: var(--naviHeight);
     clear:none;
     float: left;
+    margin: 0;
+    background-image: url(img/navigation-icons/logout-w.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 .nav-logout:hover{
     background-image:url(img/navigation-icons/logout-r2.svg);
