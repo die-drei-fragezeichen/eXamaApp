@@ -61,4 +61,30 @@
 - Confirm-Password-Functionality (Javascript)
 
 
+## Jacqueline Issa
+### Documentation:
+- Co-Development Component- & Deployment-Diagramm
+- Co-Development of User Stories
+- 4th Presentation
+
+### Backend:
+- landing-page 
+- Settings
+- Started to work on week view incl. development of automated dates (localedate). 
+
+### Frontend:
+- landing-page
+
+
+## Benedict Grupp
+### Documentation:
+- Parts of User-Stories
+- 5th Presentation
+
+### Backend:
+- Co-Development Homework
+- Co-Development HomeworkRepository 
+- Unittests
+
+
 
